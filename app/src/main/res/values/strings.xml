@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">LiveAction_ext</string>
+    <string-array name="Education">
+        <item>graduation</item>
+        <item>Post-graduation</item>
+        <item>10th</item>
+        <item>Doctorate</item>
+        <item>12th</item>
+    </string-array>
+    <string-array name="Ocupation">
+        <item>not applicable</item>
+        <item>Teacher</item>
+        <item>Student</item>
+        <item>Businessman</item>
+        <item>Employ</item>
+    </string-array>
+</resources>
