@@ -25,6 +25,10 @@ import com.example.liveaction_int.Dir_serve;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
     Button Sbmt_btn,Access_btn;
     Spinner Education,Ocupation ;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     Dir_serve lets;
     StringBuilder result;
     Profile_data_stream pds;
+    Pack_api pa;
     CheckBox tw_wlr,refrgtr,pc,Ac,colrtv,wshingmchine,car,agri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         if(pc.isChecked()){
             result.append("Personal Computer / Laptop ,");
         }
-
+pa = new Pack_api();
 
 pds= new Profile_data_stream();
 
@@ -117,6 +122,9 @@ pds= new Profile_data_stream();
             @Override
             public void onClick(View v) {
                 lets.letshit();
+
+
+//                set.addAll(arrPackage);
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                 StrictMode.setThreadPolicy(policy);
@@ -139,10 +147,14 @@ pds= new Profile_data_stream();
                 jsonBody.put("occupation", U_ocu);
                 jsonBody.put("durables_used", U_Chek);
                 String respons = pds.datasender(urlString,jsonBody);              //calling Profile data stream
+                    ArrayList pack=pa.pack_rule();
 
                     SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-
                     SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                    Set<String> set = new HashSet<String>();
+                    set.addAll(pack);
+
+                    myEdit.putStringSet("APP_LIST", set);
                     myEdit.putString("endpt", About);
 
                     myEdit.putString("Userid", respons);
