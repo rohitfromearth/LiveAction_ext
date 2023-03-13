@@ -25,14 +25,13 @@ public class Pack_api {
         String[] appslist = new String []{};
         try {
             String response = "";
-            URL url = new URL("https://3685-182-70-71-190.in.ngrok.io/apps/list");
+            URL url = new URL("https://lifeactions.online/apps/list");
             HttpURLConnection urlConn = null;
 
             urlConn = (HttpURLConnection) url.openConnection();
             urlConn.setRequestMethod("GET");
             urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             urlConn.setRequestProperty("Accept", "application/json");
-            Log.e("datastream","nice3");
             urlConn.setDoInput(true);
             int responseCode = urlConn.getResponseCode();
             if (responseCode == HttpsURLConnection.HTTP_OK) {
@@ -49,11 +48,9 @@ public class Pack_api {
                     JSONArray appsList = app.getJSONArray("data");
                     for(int i=0;i< appsList.length();i++) {
 //                         String fg = app.get("data").getString(i);
-                        Log.e("datastream",appsList.getString(i));
 //                         appslist[i]= appsList.getString(i);
                         appl.add(appsList.getString(i));
 
-                        Log.e("datastream", String.valueOf(appl));
                     }
 
 //                    appslist= appl.toArray(appslist);

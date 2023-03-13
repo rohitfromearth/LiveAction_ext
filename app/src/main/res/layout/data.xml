@@ -2,8 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/dialog_bg"
     android:layout_height="match_parent">
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
 
+        android:background="#95C59687"
+        android:fontFamily="@font/adamina"
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#EF8C85"
+        android:text="Information/permission Form" />
     <EditText
         android:id="@+id/et_about"
 
@@ -15,23 +27,27 @@
 
         android:ems="10"
         android:hint="About"
+        android:textColorHint="#595858"
         android:inputType="textPostalAddress" />
     <Spinner
         android:id="@+id/Edu_spn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="50dp"
-        android:text= "Education"/>
+        android:text= "Education"
+        android:background="@drawable/spinner_border"/>
     <Spinner
         android:id="@+id/ocup_spn"
+        android:background="@drawable/spinner_border"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="50dp"
-        android:text= "Occupation"/>
+        android:text= "Occupation"
+        />
 
 
 <LinearLayout
@@ -42,18 +58,20 @@
     android:gravity="center"  >
 <LinearLayout
     android:orientation="vertical"
+
     android:layout_height="match_parent"
     android:layout_width="wrap_content"
     android:layout_weight="1">
     <CheckBox
         android:id="@+id/ckbx_twler"
         android:layout_width="wrap_content"
-
+android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:text="Two Wheeler"
         />
     <CheckBox
         android:id="@+id/ckbx_pc"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -61,13 +79,13 @@
         android:text="Refrigerator"/>
     <CheckBox
         android:id="@+id/ckbx_ac"
-
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Personal Computer / Laptop"/>
     <CheckBox
         android:id="@+id/ckbx_refrigtr"
-
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Air Conditioner"/>
@@ -77,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:text="perm" />
+        android:text="Usage Stat Permission" />
 
 
 
@@ -89,7 +107,7 @@
         android:layout_weight="1">
         <CheckBox
             android:id="@+id/ckbx_clrtv"
-
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Color Tv"/>
@@ -97,19 +115,21 @@
         <CheckBox
             android:id="@+id/ckbx_wshingmchin"
             android:layout_width="wrap_content"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:layout_marginRight="0dp"
 
             android:text="Washing Machine"/>
         <CheckBox
             android:id="@+id/ckbx_car"
-
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Car / Jeep/ Van"/>
 
         <CheckBox
             android:id="@+id/ckbx_agri"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
 
 
@@ -122,9 +142,12 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            android:text="Submit" />
+            android:text="Submit"
+            />
     </LinearLayout>
 </LinearLayout>
+
+
 
 
 </LinearLayout>

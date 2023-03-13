@@ -29,19 +29,19 @@ public class Profile_data_stream {
         urlConnection.setDoInput(true);
 
 
-        Log.i("jsonBody", jsonBody.toString());
+
         DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
 
         o.writeBytes(jsonBody.toString());
         o.flush();
         o.close();
-        Log.e("close", "After close:" + o);
+
         int responseCode = urlConnection.getResponseCode();
-        Log.e("ghr", "Response code " + responseCode);
+
         if (responseCode == HttpsURLConnection.HTTP_OK) {
             String line;
             BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            Log.e("dee", "hhhh");
+
             while ((line = br.readLine()) != null) {
                 response += line;
                 String resid = response;
@@ -49,7 +49,6 @@ public class Profile_data_stream {
 //                             final JSONArray geodata = obj.getJSONArray("geodata");
                 final JSONObject user = new JSONObject(response);
 
-                Log.e("resid", user.getString(("user_id")));
 ////////////////////////////////////
                 UserID = user.getString(("user_id"));
 
@@ -59,8 +58,7 @@ public class Profile_data_stream {
             }
         }
 
-        Log.e("connn", String.valueOf(urlConnection.getResponseCode()));
-        Log.e("connn", String.valueOf(urlConnection.getResponseMessage()));
+
 
 
         urlConnection.disconnect();
