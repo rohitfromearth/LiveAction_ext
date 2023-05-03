@@ -244,7 +244,7 @@ pds= new Profile_data_stream();
                 String U_edu=  education;
                 String U_ocu=  occupation;
                 String U_Chek =  chekbox_choices;
-                String U_data = About+education+occupation+chekbox_choices;
+                String U_daa = About+education+occupation+chekbox_choices;
                 String urlString = "https://lifeactions.online/user/create";
 
 //                String urlString = "https://perfect-eel-fashion.cyclic.app/user/create"; // URL to call dont touch
@@ -256,16 +256,16 @@ pds= new Profile_data_stream();
 
      mob_no= share.getString("Mob_no", "");
 
-                JSONObject jsonBody = new JSONObject();
-                jsonBody.put("about", U_abt);
-                jsonBody.put("education", U_edu);
-                jsonBody.put("occupation", U_ocu);
-                jsonBody.put("durables_used", U_Chek);
-                jsonBody.put("Mobile_no", mob_no);
-                String respons = pds.datasender(urlString,jsonBody);              //calling Profile data stream
+                    JSONObject jsonBody = new JSONObject();
+                         jsonBody.put("about", U_abt);
+                  jsonBody.put("education", U_edu);
+                  jsonBody.put("occupation", U_ocu);
+                  jsonBody.put("durables_used", U_Chek);
+                      jsonBody.put("Mobile_no", mob_no);
+                 String respons = pds.datasender(urlString,jsonBody);              //calling Profile data stream
                     ArrayList pack=pa.pack_rule();
                     String dir= getObbDir().getPath();
-String endpoint= "https://lifeactions.online";
+                    String endpoint= "https://lifeactions.online";//release url
                     SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                     SharedPreferences.Editor myEdit = sharedPreferences.edit();
                     Set<String> set = new HashSet<String>();

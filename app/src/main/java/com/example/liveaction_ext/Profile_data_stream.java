@@ -31,7 +31,6 @@ public class Profile_data_stream {
 
 
         DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
-
         o.writeBytes(jsonBody.toString());
         o.flush();
         o.close();
