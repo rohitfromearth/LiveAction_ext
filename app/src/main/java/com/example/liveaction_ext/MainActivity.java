@@ -245,11 +245,11 @@ pds= new Profile_data_stream();
                 String U_ocu=  occupation;
                 String U_Chek =  chekbox_choices;
                 String U_daa = About+education+occupation+chekbox_choices;
-                String urlString = "https://lifeactions.online/user/create";
+//                String urlString = "https://lifeactions.online/user/create";
 
 //                String urlString = "https://perfect-eel-fashion.cyclic.app/user/create"; // URL to call dont touch
 //                String urlString = "https://9f88-122-169-92-160.in.ngrok.io/user/create";//temp_url
-//                String urlString = About+"/user/create";
+                String urlString = About+"/user/create";
 
                 try {
                     SharedPreferences share = getSharedPreferences("MySharedPref", MODE_PRIVATE);
@@ -263,7 +263,7 @@ pds= new Profile_data_stream();
                   jsonBody.put("durables_used", U_Chek);
                       jsonBody.put("Mobile_no", mob_no);
                  String respons = pds.datasender(urlString,jsonBody);              //calling Profile data stream
-                    ArrayList pack=pa.pack_rule();
+                    ArrayList pack=pa.pack_rule(About);
                     String dir= getObbDir().getPath();
                     String endpoint= "https://lifeactions.online";//release url
                     SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
@@ -272,8 +272,8 @@ pds= new Profile_data_stream();
                     set.addAll(pack);
                     myEdit.putString("dir",dir);
                     myEdit.putStringSet("APP_LIST", set);
-                    myEdit.putString("endpt", endpoint);
-
+//                    myEdit.putString("endpt", endpoint);
+                    myEdit.putString("endpt", About);
                     myEdit.putString("Userid", respons);
 
                     myEdit.apply();

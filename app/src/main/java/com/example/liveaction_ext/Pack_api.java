@@ -18,14 +18,16 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Pack_api {
     ArrayList<String> appl = new ArrayList<String>();
-    public ArrayList pack_rule(){
+    public ArrayList pack_rule(String About){
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
         String[] appslist = new String []{};
         try {
             String response = "";
-            URL url = new URL("https://lifeactions.online/apps/list");
+            URL url = new URL(About+"/apps/list");
+//            URL url = new URL("https://lifeactions.online/apps/list");
             HttpURLConnection urlConn = null;
 
             urlConn = (HttpURLConnection) url.openConnection();
