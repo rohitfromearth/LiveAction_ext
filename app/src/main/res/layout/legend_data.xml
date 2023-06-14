@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center">
+    <TextView
+        android:id="@+id/tv_legend_color"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:padding="2dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text=" "
+        android:textColor="@android:color/black"/>
+    <TextView
+        android:id="@+id/tv_legend_Category"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:padding="2dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="categary name text"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/tv_legend_per"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:padding="2dp"
+        android:text="last week value"
+        android:gravity="center"
+        android:textColor="@android:color/black"/>
+
+
+
+</TableRow>

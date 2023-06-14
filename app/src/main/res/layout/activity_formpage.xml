@@ -1,0 +1,1081 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F6F0E8"
+    android:orientation="vertical"
+    tools:context=".Formpage">
+    <LinearLayout  android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:paddingHorizontal="10dp">
+        <TextView  android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#EE4E34"
+            android:layout_marginBottom="10dp"
+            android:text="All About You"/>
+
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dropdown_background"
+                android:hint="Name"
+                android:textSize="15sp"
+                android:textColorHint="@color/black"
+                android:padding="7dp" />
+            <!--</androidx.cardview.widget.CardView>-->
+        </LinearLayout>////
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Age"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <EditText
+                android:id="@+id/dateEditText"
+                android:layout_marginLeft="40dp"
+                android:autofillHints="Date Of Birth"
+                android:hint="Date Of Birth"
+                android:textSize="15dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/black"
+                android:layout_height="wrap_content"
+                android:layout_width="160dp"/>
+        </LinearLayout>////
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:text="State"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/spinner_background"
+                >
+                <Spinner
+                    android:id="@+id/spinner_indian_states"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black"
+                    /></LinearLayout>
+        </LinearLayout>////
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:text="City"
+                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/spinner_background"
+                >
+                <Spinner
+                    android:id="@+id/spinner_indian_districts"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+        </LinearLayout>////
+
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <TextView android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:text="Gender"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/spinner_background"
+                >
+                <Spinner
+                    android:id="@+id/genderSpinner"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+        </LinearLayout>////
+        <RelativeLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/email"
+                android:text="Personal email id:"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/black"
+                />
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:inputType="textEmailAddress"
+                android:layout_toRightOf="@+id/email"/>
+        </RelativeLayout>////
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            >
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="110dp"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:text="Education"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    />
+                <TextView
+                    android:text="(highest level):"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="#EE4E34"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/spinner_background"
+                >
+
+                <Spinner
+                    android:id="@+id/educationSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>////
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+
+            >
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="110dp"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:text="Occupation:"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_background"
+                >
+
+                <Spinner
+                    android:id="@+id/ocupationSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>////
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:text=" Durables you own or your household has, and are in working condition"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="160dp"
+                    android:text="(select all durables owned)"
+                    android:textSize="15sp"
+                    android:textColor="#EE4E34"/>
+            </LinearLayout>
+
+            <LinearLayout  android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+
+                >
+                <androidx.cardview.widget.CardView
+                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:id="@+id/durable_click"
+                    app:cardCornerRadius="10dp"
+                    android:background="@color/white"
+                    android:layout_gravity="center_vertical"
+
+                    >
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="select"
+                        android:layout_margin="10dp"
+                        android:layout_marginHorizontal="30dp"
+                        android:layout_gravity="center"
+
+                        android:textColor="@color/black"/>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>////
+
+
+        <LinearLayout  android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            >
+            <LinearLayout  android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="160dp"
+                    android:text="Have you ever shopped online from an online store eg. Amazon, Flipkart, Myntra or any other portal?"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+            <LinearLayout  android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                >
+                <Switch
+                    android:id="@+id/switch_shop_onlyn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    />
+            </LinearLayout>
+        </LinearLayout>////
+        <androidx.cardview.widget.CardView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/productcard"
+            app:cardCornerRadius="3dp"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp">
+
+                <LinearLayout  android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:text="Which of the following products have you purchased online in the last 1 year?"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:text="(Select all you have purchased)"
+                        android:textSize="15sp"
+                        android:textColor="#EE4E34"
+                        />
+                </LinearLayout>
+                <LinearLayout  android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    >
+                    <Spinner
+                        android:id="@+id/onlineshoppingSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/spinner_background" />
+                </LinearLayout>
+            </LinearLayout>///
+        </androidx.cardview.widget.CardView>///
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:text="When was the last time you watched video online?
+(could be YouTube &amp; Netflix or any other platform)"
+            android:textSize="15sp"
+            android:textColor="@color/black"/>
+        <RadioGroup
+            android:id="@+id/radiogrpp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="left"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textColor="@color/gray"
+                android:text="Never done/ Not sure"
+                android:textSize="15sp"/>
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Yesterday"
+                android:textColor="@color/gray"
+                android:textSize="15sp"/>
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textColor="@color/gray"
+                android:text="In last 1 week"
+                android:textSize="15sp"/>
+
+
+            <RadioButton
+                android:id="@+id/radioButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textColor="@color/gray"
+                android:text="In last 1 month"
+                android:textSize="15sp"/>
+            <RadioButton
+                android:id="@+id/radioButton5"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textColor="@color/gray"
+                android:text="In last 3 months"
+                android:textSize="15sp"/>
+            <RadioButton
+                android:id="@+id/radioButton6"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textColor="@color/gray"
+                android:text="More than 3 months ago"
+                android:textSize="15sp"/>
+
+
+
+        </RadioGroup>
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:text="Which OTT apps have you currently installed watched on your mobile in the last 1 year"
+            android:textSize="15sp"
+            />
+        <TableLayout
+            android:id="@+id/simpleLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#F6F0E8"
+            android:layout_gravity="center"
+            android:stretchColumns="*"
+            >
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <!-- first element of the row-->
+                <TextView
+                    android:id="@+id/platform"
+
+                    android:text="Platform"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/tablehead"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:id="@+id/install"
+                    android:text="Installed on phone"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/tablehead"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+
+                <TextView
+                    android:id="@+id/watched"
+                    android:text="Watched in last 1 year"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/tablehead"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+            </TableRow>
+
+            <!-- second row-->
+            <TableRow
+                android:id="@+id/heading2"
+                >
+
+                <TextView
+                    android:id="@+id/netflix"
+                    android:text="Netflix"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/netflix_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+
+                <Switch
+                    android:id="@+id/netflix_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"
+                    ></Switch>
+
+            </TableRow>
+
+            <!-- Third row-->
+            <TableRow
+                android:id="@+id/heading3"
+                >
+
+                <TextView
+                    android:id="@+id/prime"
+                    android:text="Prime Video"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+
+                <Switch
+                    android:id="@+id/prime_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+
+                <Switch
+                    android:id="@+id/prime_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+            </TableRow>
+
+            <!-- fifth row-->
+            <TableRow
+                android:id="@+id/heading4">
+
+                <TextView
+                    android:id="@+id/disney"
+                    android:text="Disney+ Hotstar"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+
+                <Switch
+                    android:id="@+id/disney_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+
+                <Switch
+                    android:id="@+id/disney_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/heading5">
+
+                <TextView
+                    android:id="@+id/zee"
+                    android:text="Zee5"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+
+                <Switch
+                    android:id="@+id/zee5_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+
+                <Switch
+                    android:id="@+id/zee5_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+            </TableRow>
+            <TableRow
+                android:id="@+id/heading7">
+
+                <TextView
+                    android:id="@+id/youtube"
+                    android:text="YouTube"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+
+                <Switch
+                    android:id="@+id/youtube_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+
+                <Switch
+                    android:id="@+id/youtube_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/heading6">
+
+                <EditText
+                    android:id="@+id/otherSpecify"
+                    android:layout_gravity="center"
+                    android:hint="Others(Specify)"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"
+                    />
+
+                <Switch
+                    android:id="@+id/other_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+                <Switch
+                    android:id="@+id/other_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"
+                    />
+            </TableRow>
+        </TableLayout>
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="Which Music Streaming apps do you have currently installed &amp; listened to on your mobile in the last 1 year"
+            tools:ignore="HardcodedText" />
+
+        <TableLayout
+            android:id="@+id/simpleTableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#F6F0E8"
+            android:layout_gravity="center"
+            android:stretchColumns="*"
+            >
+            <TableRow
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <!-- first element of the row-->
+                <TextView
+                    android:id="@+id/platformHeading"
+                    android:text="Platform"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/tablehead"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black" />
+                <TextView
+                    android:id="@+id/installed"
+                    android:text="Installed on phone"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/tablehead"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:id="@+id/listen"
+                    android:text="Listened to in the last 1 year"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/tablehead"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black" />
+            </TableRow>
+
+            <!-- second row-->
+            <TableRow
+                android:id="@+id/jioHeading">
+
+                <TextView
+                    android:id="@+id/jioSavan"
+                    android:text="Jio Savan"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/jio_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+
+                <Switch
+                    android:id="@+id/jio_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/ganaHeading">
+
+                <TextView
+                    android:id="@+id/ganaText"
+                    android:text="Gana"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/gana_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+
+                <Switch
+                    android:id="@+id/gana_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/spotifyHeading">
+
+                <TextView
+                    android:id="@+id/spotify"
+
+                    android:text="Spotify"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/spotify_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+
+                <Switch
+                    android:id="@+id/spotify_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/zeeHeading">
+
+                <TextView
+                    android:id="@+id/zee5"
+                    android:text="Zee5"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black"/>
+
+                <Switch
+                    android:id="@+id/zee5_m_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+
+                <Switch
+                    android:id="@+id/zee5_m_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/youtubeHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/table_border">
+
+                <TextView
+                    android:id="@+id/youTube"
+                    android:text="YouTube"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+
+                    android:textColor="@android:color/black" />
+
+                <Switch
+                    android:id="@+id/youtube_m_Switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+
+                <Switch
+                    android:id="@+id/youtube_m_Switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/otherheading">
+
+                <EditText
+                    android:id="@+id/others"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/category_cell"
+                    android:gravity="center"
+
+                    android:textColor="@android:color/black"
+                    android:hint="Others" />
+
+                <Switch
+                    android:id="@+id/others_m_switch1"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+                <Switch
+                    android:id="@+id/others_m_switch2"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:textStyle="bold"
+                    android:background="@drawable/middle_cell" />
+            </TableRow>
+        </TableLayout>
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="We may want to reach out to you through calls, WhatsApp or SMS to take feedback on your experience as a panelist or for any other relevant information. Will you be willing to recieve communication from us? We promise not to spam you."/>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/fdbk_chk1"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="15sp"
+                android:textColor="@color/gray"
+                android:text="Yes, via call or via Sms" />
+            <CheckBox
+                android:id="@+id/fdbk_chk2"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="15sp"
+                android:textColor="@color/gray"
+                android:text="Yes, only via Call" />
+            <CheckBox
+                android:id="@+id/fdbk_chk3"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="15sp"
+                android:textColor="@color/gray"
+                android:text="Yes, only via Sms" />
+            <CheckBox
+                android:id="@+id/fdbk_chk4"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textColor="@color/gray"
+                android:textSize="15sp"
+                android:text="Yes, via WhatsApp" />
+            <CheckBox
+                android:id="@+id/fdbk_chk5"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:textSize="15sp"
+                android:textColor="@color/gray"
+                android:text="No, do not reach out to me" />
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/piechart_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="30dp"
+            android:layout_marginHorizontal="40dp"
+            app:cardBackgroundColor="#fe7e34"
+            app:cardCornerRadius="20dp"
+            android:paddingVertical="20dp"
+            app:cardElevation="20dp" >
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Complete Registration"
+                android:textColor="@color/white"
+                android:layout_marginVertical="10dp"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</ScrollView>
