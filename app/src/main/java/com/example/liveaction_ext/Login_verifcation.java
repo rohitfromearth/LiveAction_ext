@@ -44,12 +44,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Login_verifcation extends AppCompatActivity {
 CardView btn_verify, perm,usaegstat,Accessibilty,sendotp;
+    String phone;
 ImageButton close;
+    Calendar c;
+    String end="";
     private static  final int REQUEST_LOCATION=1;
+    Date currentTime;
     LocationManager locationManager;
     String latitude,longitude, lati,longit;
     EditText edtPhone, edtOTP;
@@ -77,6 +83,9 @@ edtPhone=findViewById(R.id.editTextPhone);
     dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
     dialog.show();
 
+    SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+    end = sh.getString("endpt","");
+
     mAuth = FirebaseAuth.getInstance();
     locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
     String locat= locationfinder();
@@ -95,7 +104,7 @@ edtPhone=findViewById(R.id.editTextPhone);
                 // if the text field is not empty we are calling our
                 // send OTP method for getting OTP from Firebase.
                 Log.e("new_string", "onClick: " + edtPhone.getText().toString());
-                String phone = "+91" + edtPhone.getText().toString();
+                phone = "+91" + edtPhone.getText().toString();
                 Log.e("new_string", "onClick: "+phone);
                 sendVerificationCode(phone);
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
@@ -277,8 +286,19 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
                         } else {
                             // if the code is not correct then we are
                             // displaying an error message to the user.
+
+                            c = Calendar.getInstance();
+                            int min = c.get(Calendar.MINUTE);
+                            int hr = c.get(Calendar.HOUR_OF_DAY);
+                            int sec = c.get(Calendar.SECOND);
+                            int day =c.get(Calendar.DAY_OF_MONTH);
+                            int year=c.get(Calendar.YEAR);
+                            int mnth=c.get(Calendar.MONTH)+1;
+                            String result_str = "Time:"+day+"/"+mnth+"/"+year+":"+hr+":"+min+":"+sec+"Mobile_number:"+phone+"Error:"+task.getException();
                             Log.e("new_string---sign in",task.getException().toString());
+                            Log.e("new_exception",result_str);
                             Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            servic.crashLog(result_str,end);
 
                         }
                     }
@@ -305,8 +325,10 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
             // verification callback method.
             mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
+
         // below method is used when
         // OTP is sent from Firebase
+
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
@@ -315,6 +337,8 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
             // we are storing in our string
             // which we have already created.
             verificationId = s;
+
+            Log.e("onCodeSent", "in oncodesend method");
             Log.e("tokenForm firebase", String.valueOf(forceResendingToken));
         }
 
@@ -349,6 +373,16 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
             // displaying error message with firebase exception.
             Log.e("new_string", e.getMessage());
             Toast.makeText(Login_verifcation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            c = Calendar.getInstance();
+            int min = c.get(Calendar.MINUTE);
+            int hr = c.get(Calendar.HOUR_OF_DAY);
+            int sec = c.get(Calendar.SECOND);
+            int day =c.get(Calendar.DAY_OF_MONTH);
+            int year=c.get(Calendar.YEAR);
+            int mnth=c.get(Calendar.MONTH)+1;
+            String result_str = "Time:"+day+"/"+mnth+"/"+year+":"+hr+":"+min+":"+sec+"Mobile_number:"+phone+"Error:"+e.getMessage();
+            Log.e("new_exception",result_str);
+            servic.crashLog(result_str,end);
         }
     };
 

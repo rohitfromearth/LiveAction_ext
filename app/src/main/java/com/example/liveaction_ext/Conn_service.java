@@ -195,6 +195,68 @@ Log.e("Exect", String.valueOf(e));
 
         return response;
     }
+    ///////////////////////////////////////
 
+
+    public String crashLog(String str1, String str2) {
+
+        try {
+            String response = "";
+
+            JSONObject obj = new JSONObject();
+            obj.put("exception_msg",str1);
+
+
+            //make single thread
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
+
+            String urlString= endpot+"/appException";
+            URL url = new URL(urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+
+            urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            //urlConnection.setRequestProperty("authorization",  "Bearer " + firbaseTokenn);
+
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+
+
+
+            DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
+            o.writeBytes(obj.toString());
+            o.flush();
+            o.close();
+
+            int responseCode = urlConnection.getResponseCode();
+            Log.e("Resposes",String.valueOf(responseCode));
+            String reso = urlConnection.getResponseMessage();
+            Log.e("reponsemsage",reso);
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                    UserID = response;
+                    Log.e("responseee", response);
+
+                }
+            }
+
+
+            urlConnection.disconnect();
+
+        }
+        catch (Exception e) {
+            Log.e("Exect", String.valueOf(e));
+        }
+
+        return str1;
+    }
 
 }
