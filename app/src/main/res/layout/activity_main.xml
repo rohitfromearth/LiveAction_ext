@@ -127,7 +127,7 @@ in this panel" />
             android:textStyle="italic"
             android:id="@+id/validationmasg"
             android:layout_gravity="center"
-            android:textColor="@color/black"
+            android:textColor="#fe7e34"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"/>
     </LinearLayout>

@@ -62,11 +62,21 @@ ImageButton close;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_verifcation);
+
 btn_verify= findViewById(R.id.verifybtn);
 sendotp=findViewById(R.id.sendotp);
-perm=findViewById(R.id.Permissions);
+//perm=findViewById(R.id.Permissions);
 edtOTP=findViewById(R.id.editTextOtp);
 edtPhone=findViewById(R.id.editTextPhone);
+
+
+    dialog = new Dialog(Login_verifcation.this);
+    dialog.setContentView(R.layout.dialog_for_perrmisson);
+    dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    dialog.setCancelable(false);
+    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+    dialog.show();
+
     mAuth = FirebaseAuth.getInstance();
     locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
     String locat= locationfinder();
@@ -86,7 +96,7 @@ edtPhone=findViewById(R.id.editTextPhone);
                 // send OTP method for getting OTP from Firebase.
                 Log.e("new_string", "onClick: " + edtPhone.getText().toString());
                 String phone = "+91" + edtPhone.getText().toString();
-
+                Log.e("new_string", "onClick: "+phone);
                 sendVerificationCode(phone);
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
@@ -132,21 +142,17 @@ edtPhone=findViewById(R.id.editTextPhone);
             }
         }
     });
-    dialog = new Dialog(Login_verifcation.this);
-    dialog.setContentView(R.layout.dialog_for_perrmisson);
 
-    dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    dialog.setCancelable(false);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
     usaegstat=dialog.findViewById(R.id.usaegstat_perm);
     Accessibilty=dialog.findViewById(R.id.accessibilty_perm);
    close =dialog.findViewById(R.id.close_permission);
-perm.setOnClickListener(new View.OnClickListener() {
+/*perm.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
 dialog.show();
     }
-});
+});*/
 close.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -271,7 +277,7 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
                         } else {
                             // if the code is not correct then we are
                             // displaying an error message to the user.
-                            Log.e("new_string",task.getException().toString());
+                            Log.e("new_string---sign in",task.getException().toString());
                             Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
 
                         }
