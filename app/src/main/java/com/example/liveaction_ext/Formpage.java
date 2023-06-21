@@ -23,6 +23,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,11 +61,11 @@ public class Formpage extends AppCompatActivity {
     CheckBox checkBo;
     private EditText dateEditText;
     Dialog dialog;
-    Switch[] switches_froott = new Switch[12];
-    Switch[] switches_frms = new Switch[12];
+    Switch[] switches_froott = new Switch[14];
+    Switch[] switches_frms = new Switch[14];
 
-    Switch sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10, sw11, sw12;
-    Switch sw_1, sw_2, sw_3, sw_4, sw_5, sw_6, sw_7, sw_8, sw_9, sw_10, sw_11, sw_12;
+    Switch sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10, sw11, sw12, sw13, sw14;
+    Switch sw_1, sw_2, sw_3, sw_4, sw_5, sw_6, sw_7, sw_8, sw_9, sw_10, sw_11, sw_12, sw_13, sw_14;
     int selectedId;
     private List<String> allCheckedItems = new ArrayList<>();
 
@@ -87,10 +88,21 @@ EditText Et_name,Et_email;
 //    private StringBuilder selectedOptions;
     private List<String> selected_dur_Options = new ArrayList<>();
     private List<String> selectedOFeedback = new ArrayList<>();
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formpage);
+
+
+        final String[] select_purchase = {
+                "Select","product","Grocery (staples, packaged food, snacks, beverages, dairy items, etc)",
+        "Beauty & Personal Care (soaps, shampoo, skin creams, makeup, etc)",
+        "Mobile & Mobile accessories",
+        "Clothing & Footwear","Children toys & games","None"};//////////cust ui change
+
+        textView = findViewById(R.id.change_text);
+        //textView.setText("Select");
 Et_name=findViewById(R.id.et_name);
 Et_email=findViewById(R.id.et_email);
 onlyn_used_swtch= findViewById(R.id.switch_shop_onlyn);
@@ -106,6 +118,7 @@ sw1=findViewById(R.id.netflix_switch1);
 sw2=findViewById(R.id.netflix_switch2);
 sw3=findViewById(R.id.prime_switch1);
 sw4=findViewById(R.id.prime_switch2);
+        sw4.setChecked(true);///cust ui change
 sw5=findViewById(R.id.disney_switch1);
 sw6=findViewById(R.id.disney_switch2);
 sw7=findViewById(R.id.zee5_switch1);
@@ -115,6 +128,8 @@ sw7=findViewById(R.id.zee5_switch1);
         sw10=findViewById(R.id.youtube_switch2);
         sw11=findViewById(R.id.other_switch1);
         sw12=findViewById(R.id.other_switch2);
+        sw13 = findViewById(R.id.none_switch1);
+        sw14 = findViewById(R.id.none_switch2);
 
 
 
@@ -131,6 +146,8 @@ sw7=findViewById(R.id.zee5_switch1);
         switches_froott[9] = sw10;
         switches_froott[10] = sw11;
         switches_froott[11] = sw12;
+        switches_froott[12] = sw13;
+        switches_froott[13] = sw14;
 //////////////////////////////////////////////////
         sw_1=findViewById(R.id.jio_switch1);
         sw_2=findViewById(R.id.jio_switch2);
@@ -139,13 +156,16 @@ sw7=findViewById(R.id.zee5_switch1);
         sw_5=findViewById(R.id.spotify_switch1);
         sw_6=findViewById(R.id.spotify_switch2);
         sw_7=findViewById(R.id.zee5_m_switch1);
-
+        sw_7.setChecked(true);////cust ui change
         sw_8=findViewById(R.id.zee5_m_switch2);
         sw_9=findViewById(R.id.youtube_m_Switch1);
         sw_10=findViewById(R.id.youtube_m_Switch2);
-        sw_11=findViewById(R.id.others_m_switch1);
-        sw_12=findViewById(R.id.others_m_switch2);
 
+        sw_11=findViewById(R.id.others_m_switch1);
+
+        sw_12=findViewById(R.id.others_m_switch2);
+        sw_13=findViewById(R.id.nonet_Switch1);
+        sw_14 =findViewById(R.id.nonet_Switch2);
 
 
 
@@ -161,14 +181,14 @@ sw7=findViewById(R.id.zee5_switch1);
         switches_frms[9] = sw_10;
         switches_frms[10] = sw_11;
         switches_frms[11] = sw_12;
+        switches_frms[12] = sw_13;
+        switches_frms[13] = sw_14;
 
         checkboxe_fdbk = new CheckBox[]{
                findViewById(R.id.fdbk_chk1),
                findViewById(R.id.fdbk_chk2),
                findViewById(R.id.fdbk_chk3),
                findViewById(R.id.fdbk_chk4),
-               findViewById(R.id.fdbk_chk5),
-
 
         };
 
@@ -198,6 +218,9 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
                 dialog.findViewById(R.id.durable_chk2)
         };
 
+
+
+
         for (int i = 0; i < checkboxe_fdbk.length; i++) {
             final int index = i;
             checkboxe_fdbk[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -206,7 +229,10 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
                     String checkboxText = checkboxe_fdbk[index].getText().toString();
                     if (isChecked) {
                         if (!selectedOFeedback.contains(checkboxText)) {
+
                             selectedOFeedback.add(checkboxText);
+
+
                         }
                     } else {
                         selectedOFeedback.remove(checkboxText);
@@ -344,10 +370,43 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
                 showDatePickerDialog();
             }
         });
-        ArrayAdapter<CharSequence>productlis=ArrayAdapter.createFromResource(this, R.array.productslist, android.R.layout.simple_spinner_item);
 
-        productlis.setDropDownViewResource(android.R.layout.simple_spinner_item);
-       product_spinner.setAdapter(productlis);
+        //////cust ui change
+        ArrayList<Purchase> listVOs = new ArrayList<>();
+
+        for (int i = 0; i < select_purchase.length; i++) {
+            Purchase stateVO = new Purchase();
+            stateVO.setTitle(select_purchase[i]);
+            stateVO.setSelected(false);
+            listVOs.add(stateVO);
+        }
+        CheckboxAdapter myAdapter = new CheckboxAdapter(Formpage.this, 0,
+                listVOs);
+
+        //ArrayAdapter<CharSequence> productList =ArrayAdapter.createFromResource(this, R.array.productslist, R.layout.purchase_online_layout);
+
+        myAdapter.setDropDownViewResource(R.layout.purchase_online_layout);
+        product_spinner.setAdapter(myAdapter);
+
+
+        product_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String ss = product_spinner.getSelectedItem().toString();
+
+                Log.e("in formpage","get item"+myAdapter.getItem(position));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+///////////////////////////////cust ui change
         gender=findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> gendersip=ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_item);
 
@@ -362,10 +421,8 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
 
         occu_adap.setDropDownViewResource(android.R.layout.simple_spinner_item);
         Ocupation.setAdapter(occu_adap);
+
         stateSpinner = findViewById(R.id.spinner_indian_states);
-
-
-
 
         stateAdapter = ArrayAdapter.createFromResource(this,R.array.array_indian_states, R.layout.spinner_layout);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -640,6 +697,10 @@ boolean tr10 = isradios(selectedValue);
         app2.put("installed", sw11.isChecked());
         app2.put("watched_in_last_year", sw12.isChecked());
 
+        JSONObject app7 = new JSONObject();
+        app2.put("app_name", "None");
+        app2.put("installed", sw13.isChecked());
+        app2.put("watched_in_last_year", sw14.isChecked());
 
         arry_ott.put(app1);
         arry_ott.put(app2);
@@ -679,6 +740,11 @@ boolean tr10 = isradios(selectedValue);
         app2.put("app_name", Otherapp_music);
         app2.put("installed", sw_11.isChecked());
         app2.put("watched_in_last_year", sw_12.isChecked());
+
+        JSONObject app7 = new JSONObject();
+        app2.put("app_name", "None");
+        app2.put("installed", sw_13.isChecked());
+        app2.put("watched_in_last_year", sw_14.isChecked());
 
 
         arry_music.put(app1);
