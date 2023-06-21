@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     // Perform the button action
                     // Add your logic here
                     // For example, start the Manage_screen activity
-                    startActivity(new Intent(MainActivity.this,Login_verifcation.class));
+                    startActivity(new Intent(MainActivity.this,Formpage.class));
                 } else {
                     // Display a message below the button
                     messageTextView.setText("*Please check both checkboxes.");
@@ -97,36 +97,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-//    private class FloatingViewTouchListener implements View.OnTouchListener {
-//        @Override
-//        public boolean onTouch(View v, MotionEvent event) {
-//            switch (event.getAction()) {
-//                case MotionEvent.ACTION_DOWN:
-//                    // Record initial position and touch coordinates
-//                    initialX = (int) event.getRawX();
-//                    initialY = (int) event.getRawY();
-//                    initialTouchX = event.getX();
-//                    initialTouchY = event.getY();
-//                    return true;
-//                case MotionEvent.ACTION_MOVE:
-//                    // Calculate the new position based on touch movement
-//                    int deltaX = (int) (event.getRawX() - initialX);
-//                    int deltaY = (int) (event.getRawY() - initialY);
-//
-//                    // Calculate the new position of the floating view within the container
-//                    int newX = (int) (initialX + deltaX - initialTouchX);
-//                    int newY = (int) (initialY + deltaY - initialTouchY);
-//
-//                    // Set the new position of the floating view
-//                    floatingView.setX(newX);
-//                    floatingView.setY(newY);
-//                    return true;
-//                default:
-//                    return false;
-//            }
-//        }
-//    }
-
 
 
 

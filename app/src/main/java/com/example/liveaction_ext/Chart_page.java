@@ -13,12 +13,14 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.liveaction_int.Access_new;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class Chart_page extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -27,6 +29,8 @@ public class Chart_page extends AppCompatActivity {
     CardView manag_btn, achieve_btn,faq_btn,connect_btn;
 
     String id, username;
+
+    Access_new acc = new Access_new();
     int uid_z;
     int uid=0;
     private ViewPager viewPager;
@@ -34,7 +38,6 @@ public class Chart_page extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);

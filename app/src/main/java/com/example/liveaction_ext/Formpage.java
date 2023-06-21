@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -52,8 +54,7 @@ public class Formpage extends AppCompatActivity {
     String selectedValue,validationmsg;
        Conn_service servic= new Conn_service();
 
-    private String[] selectedArray=   new String[0];;
-    Spinner gender,Education,Ocupation,du_spinner,product_spinner;
+    Spinner gender,Education,Ocupation,product_spinner,Durable_spinn;
     int year = 0;
     int month = 0;
     Boolean chek;
@@ -61,8 +62,11 @@ public class Formpage extends AppCompatActivity {
     CheckBox checkBo;
     private EditText dateEditText;
     Dialog dialog;
-    Switch[] switches_froott = new Switch[14];
-    Switch[] switches_frms = new Switch[14];
+    Switch[] switches_froott_in = new Switch[7];
+
+    Switch[] switches_froott_wt = new Switch[7];
+    Switch[] switches_frms_in = new Switch[7];
+    Switch[] switches_frms_wt = new Switch[7];
 
     Switch sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10, sw11, sw12, sw13, sw14;
     Switch sw_1, sw_2, sw_3, sw_4, sw_5, sw_6, sw_7, sw_8, sw_9, sw_10, sw_11, sw_12, sw_13, sw_14;
@@ -70,14 +74,11 @@ public class Formpage extends AppCompatActivity {
     private List<String> allCheckedItems = new ArrayList<>();
 
 
-    private Spinner spinner;
-    private List<String> items;
-    private List<String> checkedItems;
     private CheckBox[] checkboxes;
     private CheckBox[] checkboxe_fdbk;
     String message=" ";
     private DatePickerDialog.OnDateSetListener dateSetListener;
-    private CheckBox chk_tw,chk_fw, chk_clr,chk_rf,chk_wm,chk_pc,chk_ac,chk_al;
+
 
 EditText Et_name,Et_email;
 
@@ -87,42 +88,38 @@ EditText Et_name,Et_email;
     private ArrayAdapter<CharSequence> stateAdapter, districtAdapter;
 //    private StringBuilder selectedOptions;
     private List<String> selected_dur_Options = new ArrayList<>();
+
     private List<String> selectedOFeedback = new ArrayList<>();
+
+    private List<String> selectedProducts = new ArrayList<>();
     TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formpage);
 
+//
+//        textView = findViewById(R.id.change_text);
 
-        final String[] select_purchase = {
-                "Select","product","Grocery (staples, packaged food, snacks, beverages, dairy items, etc)",
-        "Beauty & Personal Care (soaps, shampoo, skin creams, makeup, etc)",
-        "Mobile & Mobile accessories",
-        "Clothing & Footwear","Children toys & games","None"};//////////cust ui change
-
-        textView = findViewById(R.id.change_text);
-        //textView.setText("Select");
 Et_name=findViewById(R.id.et_name);
 Et_email=findViewById(R.id.et_email);
 onlyn_used_swtch= findViewById(R.id.switch_shop_onlyn);
         Education =findViewById(R.id.educationSpinner);
         Ocupation = findViewById(R.id.ocupationSpinner);
         productcrd=findViewById(R.id.productcard);
-durbles_opn=findViewById(R.id.durable_click);
+        Durable_spinn=findViewById(R.id.Durables_spinner);
 
         radioGroup = findViewById(R.id.radiogrpp);
 
 
-sw1=findViewById(R.id.netflix_switch1);
-sw2=findViewById(R.id.netflix_switch2);
-sw3=findViewById(R.id.prime_switch1);
-sw4=findViewById(R.id.prime_switch2);
-        sw4.setChecked(true);///cust ui change
-sw5=findViewById(R.id.disney_switch1);
-sw6=findViewById(R.id.disney_switch2);
-sw7=findViewById(R.id.zee5_switch1);
+ sw1=findViewById(R.id.netflix_switch1);
+ sw2=findViewById(R.id.netflix_switch2);
+ sw3=findViewById(R.id.prime_switch1);
+    sw4=findViewById(R.id.prime_switch2);
 
+         sw5=findViewById(R.id.disney_switch1);
+         sw6=findViewById(R.id.disney_switch2);
+        sw7=findViewById(R.id.zee5_switch1);
         sw8=findViewById(R.id.zee5_switch2);
         sw9=findViewById(R.id.youtube_switch1);
         sw10=findViewById(R.id.youtube_switch2);
@@ -134,20 +131,21 @@ sw7=findViewById(R.id.zee5_switch1);
 
 
 
-        switches_froott[0] = sw1;
-        switches_froott[1] = sw2;
-        switches_froott[2] = sw3;
-        switches_froott[3] = sw4;
-        switches_froott[4] = sw5;
-        switches_froott[5] = sw6;
-        switches_froott[6] = sw7;
-        switches_froott[7] = sw8;
-        switches_froott[8] = sw9;
-        switches_froott[9] = sw10;
-        switches_froott[10] = sw11;
-        switches_froott[11] = sw12;
-        switches_froott[12] = sw13;
-        switches_froott[13] = sw14;
+        switches_froott_in[0] = sw1;
+        switches_froott_in[1] = sw3;
+        switches_froott_in[2]=sw5;
+        switches_froott_in[3] = sw7;
+        switches_froott_in[4] = sw9;
+        switches_froott_in[5] = sw11;
+        switches_froott_in[6] = sw13;
+
+        switches_froott_wt[0] = sw2;
+        switches_froott_wt[1] = sw4;
+        switches_froott_wt[2] = sw6;
+        switches_froott_wt[3] = sw8;
+        switches_froott_wt[4] = sw10;
+        switches_froott_wt[5] = sw12;
+        switches_froott_wt[6] = sw14;
 //////////////////////////////////////////////////
         sw_1=findViewById(R.id.jio_switch1);
         sw_2=findViewById(R.id.jio_switch2);
@@ -156,7 +154,7 @@ sw7=findViewById(R.id.zee5_switch1);
         sw_5=findViewById(R.id.spotify_switch1);
         sw_6=findViewById(R.id.spotify_switch2);
         sw_7=findViewById(R.id.zee5_m_switch1);
-        sw_7.setChecked(true);////cust ui change
+
         sw_8=findViewById(R.id.zee5_m_switch2);
         sw_9=findViewById(R.id.youtube_m_Switch1);
         sw_10=findViewById(R.id.youtube_m_Switch2);
@@ -169,21 +167,28 @@ sw7=findViewById(R.id.zee5_switch1);
 
 
 
-        switches_frms[0] = sw_1;
-        switches_frms[1] = sw_2;
-        switches_frms[2] = sw_3;
-        switches_frms[3] = sw_4;
-        switches_frms[4] = sw_5;
-        switches_frms[5] = sw_6;
-        switches_frms[6] = sw_7;
-        switches_frms[7] = sw_8;
-        switches_frms[8] = sw_9;
-        switches_frms[9] = sw_10;
-        switches_frms[10] = sw_11;
-        switches_frms[11] = sw_12;
-        switches_frms[12] = sw_13;
-        switches_frms[13] = sw_14;
+        switches_frms_in[0] = sw_1;
 
+        switches_frms_in[1] = sw_3;
+
+        switches_frms_in[2] = sw_5;
+
+        switches_frms_in[3] = sw_7;
+
+        switches_frms_in[4] = sw_9;
+
+        switches_frms_in[5] = sw_11;
+
+        switches_frms_in[6] = sw_13;
+
+        switches_frms_wt[0] = sw_2;
+        switches_frms_wt[1] = sw_4;
+
+        switches_frms_wt[2] = sw_6;
+        switches_frms_wt[3] = sw_8;
+        switches_frms_wt[4] = sw_10;
+        switches_frms_wt[5] = sw_12;
+        switches_frms_wt[6] = sw_14;
         checkboxe_fdbk = new CheckBox[]{
                findViewById(R.id.fdbk_chk1),
                findViewById(R.id.fdbk_chk2),
@@ -194,29 +199,29 @@ sw7=findViewById(R.id.zee5_switch1);
 
 
 
-        dialog = new Dialog(Formpage.this);
-        dialog.setContentView(R.layout.dialog_for_durables);
-
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        durbles_opn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.show();
-            }
-        });
-durble_cls= dialog.findViewById(R.id.close_dial_durables);
-        checkboxes = new CheckBox[]{
-                dialog.findViewById(R.id.durable_chk1),
-                dialog.findViewById(R.id.durable_chk3),
-                dialog.findViewById(R.id.durable_chk4),
-                dialog.findViewById(R.id.durable_chk5),
-                dialog.findViewById(R.id.durable_chk6),
-                dialog.findViewById(R.id.durable_chk7),
-                dialog.findViewById(R.id.durable_chk8),
-                dialog.findViewById(R.id.durable_chk2)
-        };
+//        dialog = new Dialog(Formpage.this);
+//        dialog.setContentView(R.layout.dialog_for_durables);
+//
+//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        dialog.setCancelable(false);
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+//        durbles_opn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.show();
+//            }
+//        });
+//durble_cls= dialog.findViewById(R.id.close_dial_durables);
+//        checkboxes = new CheckBox[]{
+//                dialog.findViewById(R.id.durable_chk1),
+//                dialog.findViewById(R.id.durable_chk3),
+//                dialog.findViewById(R.id.durable_chk4),
+//                dialog.findViewById(R.id.durable_chk5),
+//                dialog.findViewById(R.id.durable_chk6),
+//                dialog.findViewById(R.id.durable_chk7),
+//                dialog.findViewById(R.id.durable_chk8),
+//                dialog.findViewById(R.id.durable_chk2)
+//        };
 
 
 
@@ -251,12 +256,18 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
 //                    throw new RuntimeException(e);
 //                }
 //
+                StringBuilder concatenatedString = new StringBuilder();
+                for (String product : selectedProducts) {
+                    concatenatedString.append(product);
+                }
+                String result = concatenatedString.toString();
+                Log.e("pusing", result);
 
 
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                RadioButton radioButton = findViewById(selectedId);
                 if (selectedId != -1) {
-//          radioButton = findViewById(selectedId);
+
                     selectedValue = radioButton.getText().toString();
                     Log.e("hvyg",selectedValue);
                 }
@@ -265,7 +276,7 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
                 }
 
 
-                Log.e("denger",selectedValue);
+
                 try {
                     boolean valid = validat();
                     if (valid) {
@@ -292,28 +303,28 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
             }
         });
 //        selectedOptions = new ArrayList<>();
-        for (int i = 0; i < checkboxes.length; i++) {
-            final int index = i;
-            checkboxes[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String checkboxText = checkboxes[index].getText().toString();
-                    if (isChecked) {
-                        if (!selected_dur_Options.contains(checkboxText)) {
-                            selected_dur_Options.add(checkboxText);
-                        }
-                    } else {
-                        selected_dur_Options.remove(checkboxText);
-                    }
-                }
-            });
-        }
-        durble_cls.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+//        for (int i = 0; i < checkboxes.length; i++) {
+//            final int index = i;
+//            checkboxes[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    String checkboxText = checkboxes[index].getText().toString();
+//                    if (isChecked) {
+//                        if (!selected_dur_Options.contains(checkboxText)) {
+//                            selected_dur_Options.add(checkboxText);
+//                        }
+//                    } else {
+//                        selected_dur_Options.remove(checkboxText);
+//                    }
+//                }
+//            });
+//        }
+//        durble_cls.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.dismiss();
+//            }
+//        });
 
 
         product_spinner= findViewById(R.id.onlineshoppingSpinner);
@@ -341,15 +352,65 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
 
 
 /////////durables code
+        ArrayAdapter<String>durabllist = new ArrayAdapter<String>(this, R.layout.item_dropdown_for_durables) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
 
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
 
+            private View createItemView(int position, View convertView, ViewGroup parent) {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown_for_durables, parent, false);
+                CheckBox checkbox = view.findViewById(R.id.checkboxq);
+                TextView textView = view.findViewById(R.id.textviewq);
 
+                String item = getItem(position);
+                textView.setText(item);
+                checkbox.setChecked(selected_dur_Options.contains(item));
 
-        // Create a list of items for the spinner
+                checkbox.setOnClickListener(v -> {
+                    if (checkbox.isChecked()) {
+                        selected_dur_Options.add(item);
+                    } else {
+                        selected_dur_Options.remove(item);
+                    }
+                });
 
+                return view;
+            }
+        };
 
-//        Toast.makeText(MainActivity.this, "Selected items: " + selectedItems.toString(), Toast.LENGTH_SHORT).show();
+        Durable_spinn.setAdapter(durabllist);
 
+        List<String> items = new ArrayList<>();
+
+        items.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
+        items.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
+        items.add("Mobile & Mobile accessories");
+        items.add("Clothing & Footwear");
+        items.add("Children toys & games");
+      durabllist.addAll(items);
+    Durable_spinn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                Log.e("Custom",selectedItem);
+                if (selected_dur_Options.contains(selectedItem)) {
+                    selected_dur_Options.remove(selectedItem);
+                } else {
+                    selected_dur_Options.add(selectedItem);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
 
         dateEditText = findViewById(R.id.dateEditText);
 
@@ -372,40 +433,64 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
         });
 
         //////cust ui change
-        ArrayList<Purchase> listVOs = new ArrayList<>();
+                ArrayAdapter<String>productList = new ArrayAdapter<String>(this, R.layout.item_dropdown) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
 
-        for (int i = 0; i < select_purchase.length; i++) {
-            Purchase stateVO = new Purchase();
-            stateVO.setTitle(select_purchase[i]);
-            stateVO.setSelected(false);
-            listVOs.add(stateVO);
-        }
-        CheckboxAdapter myAdapter = new CheckboxAdapter(Formpage.this, 0,
-                listVOs);
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
 
-        //ArrayAdapter<CharSequence> productList =ArrayAdapter.createFromResource(this, R.array.productslist, R.layout.purchase_online_layout);
+            private View createItemView(int position, View convertView, ViewGroup parent) {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown, parent, false);
+                CheckBox checkbox = view.findViewById(R.id.checkboxq);
+                TextView textView = view.findViewById(R.id.textviewq);
 
-        myAdapter.setDropDownViewResource(R.layout.purchase_online_layout);
-        product_spinner.setAdapter(myAdapter);
+                String item = getItem(position);
+                textView.setText(item);
+                checkbox.setChecked(selectedProducts.contains(item));
 
+                checkbox.setOnClickListener(v -> {
+                    if (checkbox.isChecked()) {
+                        selectedProducts.add(item);
+                    } else {
+                        selectedProducts.remove(item);
+                    }
+                });
 
+                return view;
+            }
+        };
+        product_spinner.setAdapter(productList);
+
+        List<String> itemse = new ArrayList<>();
+
+        itemse.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
+        itemse.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
+        itemse.add("Mobile & Mobile accessories");
+        itemse.add("Clothing & Footwear");
+        itemse.add("Children toys & games");
+       productList.addAll(itemse);
         product_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String ss = product_spinner.getSelectedItem().toString();
-
-                Log.e("in formpage","get item"+myAdapter.getItem(position));
-
+                String selectedItem = (String) parent.getItemAtPosition(position);
+            Log.e("Custom",selectedItem);
+                if (selectedProducts.contains(selectedItem)) {
+                    selectedProducts.remove(selectedItem);
+                } else {
+                    selectedProducts.add(selectedItem);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                // Do nothing
             }
         });
-
-
-
 ///////////////////////////////cust ui change
         gender=findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> gendersip=ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_item);
@@ -599,8 +684,10 @@ durble_cls= dialog.findViewById(R.id.close_dial_durables);
         boolean tr8 = isValideducation(Education_);
 boolean tr9 = isValidage(dayOfMonth,month,year);
 boolean tr10 = isradios(selectedValue);
-        boolean tr11 = isAnySwitchottChecked(switches_froott);
-        boolean tr12 = isAnySwitchottChecked(switches_frms);
+        boolean tr11 = isAnySwitchottChecked(switches_froott_in);
+        boolean tr12 = isAnySwitchottChecked(switches_frms_in);
+        boolean tr14 = isAnySwitchottChecked(switches_froott_wt);
+        boolean tr15 = isAnySwitchottChecked(switches_frms_wt);
         if (!tr) {
             validationmsg = "Invalid Name";
         }
@@ -637,12 +724,18 @@ boolean tr10 = isradios(selectedValue);
         if (!tr12) {
             validationmsg = "Invalid Music_app selection";
         }
+        if (!tr14) {
+            validationmsg = "Invalid OTT selection";
+        }
+        if (!tr15) {
+            validationmsg = "Invalid Music_app selection";
+        }
         if (!tr13) {
             validationmsg = "Invalid feedback";
         }
 
-            if (tr && tr2 && tr3 && tr13 && tr4 && tr5 && tr6 && tr7 && tr8 && tr9 && tr10 && tr11 && tr12) {
-//            if (tr13) {
+            if (tr && tr2 && tr3 && tr13 && tr4 && tr5 && tr6 && tr7 && tr8 && tr9 && tr10 && tr11 && tr12 && tr14 && tr15) {
+
             Log.e("","check");
             return true;
         } else {
@@ -778,7 +871,7 @@ String Email= Et_email.getText().toString().trim();
 
     String selectedOptionsString = String.join(", ", selected_dur_Options);
         String choice = String.join(", ", selectedOFeedback);
-        String prdo = (String)product_spinner.getSelectedItem();
+        String prdo = String.join(", ", selectedProducts);
 
 
 
@@ -836,15 +929,6 @@ String userId= servic.formdatasend(jsonBody, "/user/create");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-//        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-//        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-//
-//        myEdit.putInt("UID",userId);
-//        myEdit.putString("username",userName);
-//
-//        myEdit.apply();
-//        Log.e("major",uid);
-
 
     }
     private static class DropdownItem {
@@ -985,7 +1069,7 @@ String userId= servic.formdatasend(jsonBody, "/user/create");
     }
     public static boolean isproduct(String prod) {
         // Check if the name is null or empty
-        if(prod=="Products")
+        if(Objects.equals(prod, "Products"))
         {
             return false;
         }
