@@ -31,6 +31,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,12 +45,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Login_verifcation extends AppCompatActivity {
-CardView btn_verify, perm,usaegstat,Accessibilty,sendotp;
-ImageButton close;
+    CardView btn_verify, perm,usaegstat,Accessibilty,sendotp;
+    String phone;
+    ImageButton close;
+    Calendar c;
+    String end="";
     private static  final int REQUEST_LOCATION=1;
+    Date currentTime;
     LocationManager locationManager;
     String latitude,longitude, lati,longit;
     EditText edtPhone, edtOTP;
@@ -58,119 +65,123 @@ ImageButton close;
     private FirebaseAuth mAuth;
 
     Dialog dialog;
-@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_verifcation);
-btn_verify= findViewById(R.id.verifybtn);
-sendotp=findViewById(R.id.sendotp);
-perm=findViewById(R.id.Permissions);
-edtOTP=findViewById(R.id.editTextOtp);
-edtPhone=findViewById(R.id.editTextPhone);
-    mAuth = FirebaseAuth.getInstance();
-    locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
-    String locat= locationfinder();
-    sendotp.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if( isValidMobileNumber(edtPhone.getText().toString())){
-            // below line is for checking whether the user
-            // has entered his mobile number or not.
-            if (TextUtils.isEmpty(edtPhone.getText().toString())) {
-                // when mobile number text field is empty
-                // displaying a toast message.
-                Log.e("new_string", "Mobile number field is empty");
-                Toast.makeText(Login_verifcation.this, "Please enter a valid phone number.", Toast.LENGTH_SHORT).show();
-            } else {
-                // if the text field is not empty we are calling our
-                // send OTP method for getting OTP from Firebase.
-                Log.e("new_string", "onClick: " + edtPhone.getText().toString());
-                String phone = "+91" + edtPhone.getText().toString();
+        FirebaseApp.initializeApp(this);
+        btn_verify= findViewById(R.id.verifybtn);
+        sendotp=findViewById(R.id.sendotp);
+//perm=findViewById(R.id.Permissions);
+        edtOTP=findViewById(R.id.editTextOtp);
+        edtPhone=findViewById(R.id.editTextPhone);
 
-                sendVerificationCode(phone);
-                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("mobile_no", phone);
 
-                myEdit.apply();
-            }
-        }
-        else{
-                AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
+        dialog = new Dialog(Login_verifcation.this);
+        dialog.setContentView(R.layout.dialog_for_perrmisson);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
 
-                // Set the title and message for the dialog
-                builder.setTitle("Validation Error");
-                builder.setMessage("Enter valid mobile number");
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        end = sh.getString("endpt","");
 
-                // Set a positive button and its click listener
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle the click event (if needed)
+        mAuth = FirebaseAuth.getInstance();
+        locationManager=(LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        String locat= locationfinder();
+        sendotp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( isValidMobileNumber(edtPhone.getText().toString())){
+                    // below line is for checking whether the user
+                    // has entered his mobile number or not.
+                    if (TextUtils.isEmpty(edtPhone.getText().toString())) {
+                        // when mobile number text field is empty
+                        // displaying a toast message.
+                        Log.e("new_string", "Mobile number field is empty");
+                        Toast.makeText(Login_verifcation.this, "Please enter a valid phone number.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // if the text field is not empty we are calling our
+                        // send OTP method for getting OTP from Firebase.
+                        Log.e("new_string", "onClick: " + edtPhone.getText().toString());
+                        phone = "+91" + edtPhone.getText().toString();
+                        Log.e("new_string", "onClick: "+phone);
+                        sendVerificationCode(phone);
+                        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                        myEdit.putString("mobile_no", phone);
+
+                        myEdit.apply();
                     }
-                });
+                }
+                else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
 
-                // Create and show the alert dialog
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }}
-    });
-    btn_verify.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // validating if the OTP text field is empty or not.
-            if (TextUtils.isEmpty(edtOTP.getText().toString())) {
-                // if the OTP text field is empty display
-                // a message to user to enter OTP
-                Toast.makeText(Login_verifcation.this, "Please enter OTP", Toast.LENGTH_SHORT).show();
-            } else {
-                // if OTP field is not empty calling
-                // method to verify the OTP.
+                    // Set the title and message for the dialog
+                    builder.setTitle("Validation Error");
+                    builder.setMessage("Enter valid mobile number");
 
-                verifyCode(edtOTP.getText().toString());
+                    // Set a positive button and its click listener
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Handle the click event (if needed)
+                        }
+                    });
 
+                    // Create and show the alert dialog
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }}
+        });
+        btn_verify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // validating if the OTP text field is empty or not.
+                if (TextUtils.isEmpty(edtOTP.getText().toString())) {
+                    // if the OTP text field is empty display
+                    // a message to user to enter OTP
+                    Toast.makeText(Login_verifcation.this, "Please enter OTP", Toast.LENGTH_SHORT).show();
+                } else {
+                    // if OTP field is not empty calling
+                    // method to verify the OTP.
+
+                    verifyCode(edtOTP.getText().toString());
+
+                }
             }
-        }
-    });
-    dialog = new Dialog(Login_verifcation.this);
-    dialog.setContentView(R.layout.dialog_for_perrmisson);
+        });
 
-    dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    dialog.setCancelable(false);
-    dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-    usaegstat=dialog.findViewById(R.id.usaegstat_perm);
-    Accessibilty=dialog.findViewById(R.id.accessibilty_perm);
-   close =dialog.findViewById(R.id.close_permission);
-perm.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-dialog.show();
-    }
-});
-close.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-       dialog.dismiss();
-    }
-});
-usaegstat.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
-        if (usaegstat.isEnabled()) {
-            Accessibilty.setEnabled(true);  // Enable button2
-        } else {
-            Accessibilty.setEnabled(false); // Disable button2
-        }
-    }
-});
-    Accessibilty.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-        }
-    });
+        usaegstat=dialog.findViewById(R.id.usaegstat_perm);
+        Accessibilty=dialog.findViewById(R.id.accessibilty_perm);
+        close =dialog.findViewById(R.id.close_permission);
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        usaegstat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+
+                if (usaegstat.isEnabled()) {
+                    Accessibilty.setEnabled(true);  // Enable button2
+                } else {
+                    Accessibilty.setEnabled(false); // Disable button2
+                }
+            }
+        });
+        Accessibilty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+            }
+        });
 
 
     }
@@ -183,15 +194,15 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
     }
     private boolean hasUsageAccessPermission() {
 
-            try {
-                PackageManager packageManager = getPackageManager();
-                ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
-                AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
-                int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-                return mode == AppOpsManager.MODE_ALLOWED;
-            } catch (PackageManager.NameNotFoundException e) {
-                return false;
-            }
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
+            AppOpsManager appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+            return mode == AppOpsManager.MODE_ALLOWED;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
 
     }
 
@@ -221,44 +232,46 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
                                                 if (task.isSuccessful()) {
                                                     String firebaseToken = task.getResult().getToken();
 
-                                                        boolean pageID= senddata(edtPhone.getText().toString(),firebaseToken);
+                                                    boolean pageID= senddata(edtPhone.getText().toString(),firebaseToken);
                                                     boolean hasPermission = hasUsageAccessPermission();
-                                    if(hasPermission){
-                                        if (pageID) {
-                                            startActivity(new Intent(Login_verifcation.this, Chart_page.class));
-                                        }
-                                        else{
-                                            startActivity(new Intent(Login_verifcation.this,Formpage.class ));
-                                        }
-                                    }
-                                    else{
+                                                    if(hasPermission){
+                                                        if (pageID) {
+                                                            Log.e("mauth", String.valueOf(mAuth));
+                                                            startActivity(new Intent(Login_verifcation.this, Chart_page.class));
+                                                        }
+                                                        else{
+                                                            startActivity(new Intent(Login_verifcation.this,Formpage.class ));
+                                                        }
+                                                    }
+                                                    else{
 
-                                        btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
+                                                        btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
+                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
 
-                                        // Set the title and message for the dialog
-                                        builder.setTitle("Permission Requirement:");
-                                        builder.setMessage("Give Usage Stat Permission");
-                                        //builder.setMessage("Thank You");
+                                                        // Set the title and message for the dialog
+                                                        builder.setTitle("Permission Requirement:");
+                                                        builder.setMessage("Give Usage Stat Permission");
+                                                        //builder.setMessage("Thank You");
 
 
-                                        // Set a positive button and its click listener
-                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                // Handle the click event (if needed)
-                                            }
-                                        });
+                                                        // Set a positive button and its click listener
+                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                // Handle the click event (if needed)
+                                                            }
+                                                        });
 
-                                        // Create and show the alert dialog
-                                        AlertDialog alertDialog = builder.create();
-                                        alertDialog.show();
-                                    }
+                                                        // Create and show the alert dialog
+                                                        AlertDialog alertDialog = builder.create();
+                                                        alertDialog.show();
+                                                    }
 
 
                                                     // Pass the firebaseToken to your backend developer through the API
                                                     // You can make an API call and include the token in the request headers or body
                                                 }  // Handle error getting the token
+
 
                                             }
                                         });
@@ -271,10 +284,22 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
                         } else {
                             // if the code is not correct then we are
                             // displaying an error message to the user.
-                            Log.e("new_string",task.getException().toString());
+
+                            c = Calendar.getInstance();
+                            int min = c.get(Calendar.MINUTE);
+                            int hr = c.get(Calendar.HOUR_OF_DAY);
+                            int sec = c.get(Calendar.SECOND);
+                            int day =c.get(Calendar.DAY_OF_MONTH);
+                            int year=c.get(Calendar.YEAR);
+                            int mnth=c.get(Calendar.MONTH)+1;
+                            String result_str = "Time:"+day+"/"+mnth+"/"+year+":"+hr+":"+min+":"+sec+"Mobile_number:"+phone+"Error:"+task.getException();
+                            Log.e("new_string---sign in",task.getException().toString());
+                            Log.e("new_exception",result_str);
                             Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            servic.crashLog(result_str,end);
 
                         }
+
                     }
                 });
     }
@@ -299,8 +324,10 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
             // verification callback method.
             mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
+
         // below method is used when
         // OTP is sent from Firebase
+
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
@@ -309,6 +336,8 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
             // we are storing in our string
             // which we have already created.
             verificationId = s;
+
+            Log.e("onCodeSent", "in oncodesend method");
             Log.e("tokenForm firebase", String.valueOf(forceResendingToken));
         }
 
@@ -343,6 +372,16 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
             // displaying error message with firebase exception.
             Log.e("new_string", e.getMessage());
             Toast.makeText(Login_verifcation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            c = Calendar.getInstance();
+            int min = c.get(Calendar.MINUTE);
+            int hr = c.get(Calendar.HOUR_OF_DAY);
+            int sec = c.get(Calendar.SECOND);
+            int day =c.get(Calendar.DAY_OF_MONTH);
+            int year=c.get(Calendar.YEAR);
+            int mnth=c.get(Calendar.MONTH)+1;
+            String result_str = "Time:"+day+"/"+mnth+"/"+year+":"+hr+":"+min+":"+sec+"Mobile_number:"+phone+"Error:"+e.getMessage();
+            Log.e("new_exception",result_str);
+            servic.crashLog(result_str,end);
         }
     };
 
@@ -374,7 +413,7 @@ usaegstat.setOnClickListener(new View.OnClickListener() {
                 String userName = data.getString("user_name");
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
-         myEdit.putString("firebaseToken",firbastkn);
+                myEdit.putString("firebaseToken",firbastkn);
                 Log.e("datastream", String.valueOf(firbastkn));
                 myEdit.putInt("UID",userId);
 

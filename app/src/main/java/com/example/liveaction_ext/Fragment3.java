@@ -14,9 +14,17 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -31,11 +39,13 @@ import java.util.Random;
 public class Fragment3 extends Fragment {
     PieChart pieChart;
     String firebaseToken="";
+    private FirebaseAuth mAuth;
     int  uid_z;
     int uid =  0;
 
     Conn_service conn = new Conn_service();
     private RecyclerView recyclerView;
+    String firebaseToke= "";
     private CardAdapter cardAdapter;
     TableLayout tbklayout;
 
@@ -47,6 +57,35 @@ public class Fragment3 extends Fragment {
         View view = inflater.inflate(R.layout.fragment3, container, false);
         tbklayout =view. findViewById(R.id.tabl_lrgrnd_for_month);
         pieChart = view.findViewById(R.id.piechart_for_month);
+        recyclerView = view.findViewById(R.id.recyclerView_formonth);
+        mAuth = FirebaseAuth.getInstance();
+        Log.e("mAuth3", String.valueOf(mAuth));
+        FirebaseUser use= mAuth.getCurrentUser();
+        Log.e("mAuth4", String.valueOf(use));
+ if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                firebaseToke = task.getResult().getToken();
+                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                myEdit.putString("firebaseToken", firebaseToke);
+                                myEdit.apply();
+                                Data_Show(firebaseToke);
+                            }
+
+
+                        }
+
+                    });
+
+        }
+
+        return view;
+    }
+    private void Data_Show(String firebaseToken){
         SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
         firebaseToken= sh.getString("firebaseToken","");
@@ -88,7 +127,7 @@ public class Fragment3 extends Fragment {
 
         // To animate the pie chart
         pieChart.startAnimation();
-        recyclerView = view.findViewById(R.id.recyclerView_formonth);
+
 
         // Create the list of card items
         List<CardItem> cardItems = createCardItems(res);
@@ -99,7 +138,6 @@ public class Fragment3 extends Fragment {
         recyclerView.setAdapter(cardAdapter);
 
 
-        return view;
     }
 
     private List<CardItem> createCardItems(String res) {
@@ -123,7 +161,7 @@ public class Fragment3 extends Fragment {
                 String variences= String.valueOf(variance);
 
                 cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
-//                addTableRow(categoryName, lastWeek, cumulative,pointslastweek,pointscumm);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -133,28 +171,8 @@ public class Fragment3 extends Fragment {
 
         return cardItems;
     }
-    private void onPostExecute(String result) {
-        if (result != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item = jsonArray.getJSONObject(i);
-
-                    String categoryName = item.getString("category");
-                    String lastWeek = item.getString("usage_percent");
-
-
-                    //addTableRow(categoryName, lastWeek);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
-//        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
 
         TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.legend_data, null);
 

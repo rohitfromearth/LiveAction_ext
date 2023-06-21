@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,6 +38,7 @@ public class Chart_page extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
+        FirebaseApp.initializeApp(this);
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
           uid = sh.getInt("UID", uid_z);
         Log.e("uesrid", String.valueOf(uid));

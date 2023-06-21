@@ -11,8 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,10 +35,12 @@ public class Achieve extends AppCompatActivity {
     private LinearLayout floatingViewContainer;
     TextView tv_red_points;
     private View floatingView;
+    private FirebaseAuth mAuth;
     String  firebaseToken= "";
     private int initialX;
     private int initialY;
     private float initialTouchX;
+    String firebaseToke= "";
     private float initialTouchY;
 
 
@@ -41,7 +50,31 @@ public class Achieve extends AppCompatActivity {
         setContentView(R.layout.activity_achieve);
 rede=findViewById(R.id.reddem_btn);
         tableLayout = findViewById(R.id.tableLayout);
-//        fetchTableData();
+        mAuth = FirebaseAuth.getInstance();
+        Log.e("mAuth3", String.valueOf(mAuth));
+        FirebaseUser use= mAuth.getCurrentUser();
+        Log.e("mAuth4", String.valueOf(use));
+
+     if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                firebaseToke = task.getResult().getToken();
+                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                myEdit.putString("firebaseToken", firebaseToke);
+                                myEdit.apply();
+                            }
+
+
+                        }
+
+                    });
+
+        }
+
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 

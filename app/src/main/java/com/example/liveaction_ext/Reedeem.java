@@ -15,8 +15,15 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +32,7 @@ import org.json.JSONObject;
 public class Reedeem extends AppCompatActivity {
     Conn_service conn=new Conn_service();
 
-    String firebasetoken;
+    String firebaseToken="";
     CardView reed_btn,dash_bt,achiv_bt;
     ImageButton close_dial;
     private TableLayout tableLayout;
@@ -35,8 +42,10 @@ public class Reedeem extends AppCompatActivity {
     int uid_z;
     int uid=0;
     CardView plus_count,minus_count;
+    private FirebaseAuth mAuth;
     Dialog dialog;
     int pointsAvailable;
+    String firebaseToke= "";
     int totalPoints;
 
     @Override
@@ -66,10 +75,33 @@ public class Reedeem extends AppCompatActivity {
         close_dial= dialog.findViewById(R.id.close_permission);
 
         tableLayout =dialog.findViewById(R.id.tableLayout);
+        mAuth = FirebaseAuth.getInstance();
+        Log.e("mAuth3", String.valueOf(mAuth));
+        FirebaseUser use= mAuth.getCurrentUser();
+        Log.e("mAuth4", String.valueOf(use));
+ if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                firebaseToke = task.getResult().getToken();
+                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                myEdit.putString("firebaseToken", firebaseToke);
+                                myEdit.apply();
+                            }
+
+
+                        }
+
+                    });
+
+        }
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
-    firebasetoken= sh.getString("firebaseToken","");
-//        String res=""
+    firebaseToken= sh.getString("firebaseToken","");
+
         dash_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +114,7 @@ public class Reedeem extends AppCompatActivity {
                 startActivity(new Intent(Reedeem.this,Achieve.class));
             }
         });
-        String ress = conn.pack_rule("/usageStats/getPoints/"+uid, firebasetoken);
+        String ress = conn.pack_rule("/usageStats/getPoints/"+uid, firebaseToken);
 
         try {
             JSONObject jsonResponse = new JSONObject(ress);
@@ -113,7 +145,7 @@ public class Reedeem extends AppCompatActivity {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                 StrictMode.setThreadPolicy(policy);
-                String res = conn.pack_rule("/usageStats/redemptionHistory/"+uid,firebasetoken);
+                String res = conn.pack_rule("/usageStats/redemptionHistory/"+uid,firebaseToken);
 
                 onPostExecute(res);
 
@@ -131,6 +163,7 @@ public class Reedeem extends AppCompatActivity {
                 if(limit_point < pointsAvailable){
                     Log.e("tag---","match");
                     reed_btn.setEnabled(true);
+                    reed_btn.setCardBackgroundColor(Color.parseColor("#fe7e34"));
                 }
                 else{
                     reed_btn.setEnabled(false);
@@ -215,7 +248,7 @@ public class Reedeem extends AppCompatActivity {
 
                     jsonBody.put("userId", uid);
                     jsonBody.put("count",  counter);
-                    String uid= conn.datasender(jsonBody,"/usageStats/redemption",firebasetoken);
+                    String uid= conn.datasender(jsonBody,"/usageStats/redemption",firebaseToken);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }

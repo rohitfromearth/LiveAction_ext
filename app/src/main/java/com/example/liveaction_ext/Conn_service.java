@@ -20,15 +20,15 @@ import javax.net.ssl.HttpsURLConnection;
 public class Conn_service {
 
 
-        String UserID = "";
+    String UserID = "";
 
-//String endpot= "https://ec4c-2401-4900-5502-32c3-f825-5b5f-e4c9-de4b.ngrok-free.app";
+    //String endpot= "https://ec4c-2401-4900-5502-32c3-f825-5b5f-e4c9-de4b.ngrok-free.app";
     String endpot= " https://lifeactions.online";
 
-        public String datasender( JSONObject jsonBody, String end,String firbaseTokenn) {
-            try {
-                String response = "";
-                Log.e("hyhgf0",firbaseTokenn);
+    public String datasender( JSONObject jsonBody, String end,String firbaseTokenn) {
+        try {
+            String response = "";
+            Log.e("hyhgf0",firbaseTokenn);
 //                SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 //
 //            String endpot = sh.getString("url","");
@@ -37,42 +37,42 @@ public class Conn_service {
 //                String urlString="https://31fe-2401-4900-5292-3df5-f47c-1cac-a932-43f9.ngrok-free.app/usageStats/redemptionHistory/231";
 //                String urlString="https://31fe-2401-4900-5292-3df5-f47c-1cac-a932-43f9.ngrok-free.app/usageStats/setWeeklyTarget";
 //              String urlString="https://31fe-2401-4900-5292-3df5-f47c-1cac-a932-43f9.ngrok-free.app/user/create";
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-                StrictMode.setThreadPolicy(policy);
-                String urlString= endpot+end;
-                URL url = new URL(urlString);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
+            StrictMode.setThreadPolicy(policy);
+            String urlString= endpot+end;
+            URL url = new URL(urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
 
-                urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                urlConnection.setRequestProperty("Accept", "application/json");
-                urlConnection.setRequestProperty("authorization",  "Bearer " + firbaseTokenn);
-
-
-                urlConnection.setDoOutput(true);
-                urlConnection.setDoInput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            urlConnection.setRequestProperty("authorization",  "Bearer " + firbaseTokenn);
 
 
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
 
-                DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
-                o.writeBytes(jsonBody.toString());
-                o.flush();
-                o.close();
 
-                int responseCode = urlConnection.getResponseCode();
-                Log.e("Resposes",String.valueOf(responseCode));
-                String reso = urlConnection.getResponseMessage();
-                Log.e("reponsemsage",reso);
 
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
-                    String line;
-                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
+            o.writeBytes(jsonBody.toString());
+            o.flush();
+            o.close();
 
-                    while ((line = br.readLine()) != null) {
-                        response += line;
-                        UserID = response;
-                        Log.e("responseee", response);
+            int responseCode = urlConnection.getResponseCode();
+            Log.e("Resposes",String.valueOf(responseCode));
+            String reso = urlConnection.getResponseMessage();
+            Log.e("reponsemsage",reso);
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                    UserID = response;
+                    Log.e("responseee", response);
 //                             final JSONObject obj = new JSONObject(response);
 //                             final JSONArray geodata = obj.getJSONArray("geodata");
 //              JSONObject UserID = new JSONObject(response);
@@ -83,31 +83,25 @@ public class Conn_service {
 /////////////////////////////////////////////////
 
 
-                    }
                 }
-
-
-
-
-                urlConnection.disconnect();
-
             }
-            catch (Exception e) {
-Log.e("Exect", String.valueOf(e));
-            }
-            return UserID;
+
+
+
+
+            urlConnection.disconnect();
+
         }
+        catch (Exception e) {
+            Log.e("Exect", String.valueOf(e));
+        }
+        return UserID;
+    }
     public String formdatasend( JSONObject jsonBody, String end) {
         try {
             String response = "";
 
-//                String urlString="https://f1c5-2409-4042-4e88-f034-259c-8cf5-f3d3-24d5.ngrok-free.app/usageStats/setWeeklyTarget";
-//                String urlString="https://31fe-2401-4900-5292-3df5-f47c-1cac-a932-43f9.ngrok-free.app/usageStats/redemption";
-//                String urlString="https://31fe-2401-4900-5292-3df5-f47c-1cac-a932-43f9.ngrok-free.app/usageStats/redemptionHistory/231";
-//                String urlString="https://31fe-2401-4900-5292-3df5-f47c-1cac-a932-43f9.ngrok-free.app/usageStats/setWeeklyTarget";
-//              String urlString="https://31fe-2401-4900-5292-3df5-f47c-1cac-a932-43f9.ngrok-free.app/user/create";
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
             StrictMode.setThreadPolicy(policy);
             String urlString= endpot+end;
             URL url = new URL(urlString);
@@ -195,6 +189,68 @@ Log.e("Exect", String.valueOf(e));
 
         return response;
     }
+    ///////////////////////////////////////
 
+
+    public String crashLog(String str1, String str2) {
+
+        try {
+            String response = "";
+
+            JSONObject obj = new JSONObject();
+            obj.put("exception_msg",str1);
+
+
+            //make single thread
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
+
+            String urlString= endpot+"/appException";
+            URL url = new URL(urlString);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("POST");
+
+            urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            urlConnection.setRequestProperty("Accept", "application/json");
+            //urlConnection.setRequestProperty("authorization",  "Bearer " + firbaseTokenn);
+
+            urlConnection.setDoOutput(true);
+            urlConnection.setDoInput(true);
+
+
+
+            DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
+            o.writeBytes(obj.toString());
+            o.flush();
+            o.close();
+
+            int responseCode = urlConnection.getResponseCode();
+            Log.e("Resposes",String.valueOf(responseCode));
+            String reso = urlConnection.getResponseMessage();
+            Log.e("reponsemsage",reso);
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
+                while ((line = br.readLine()) != null) {
+                    response += line;
+                    UserID = response;
+                    Log.e("responseee", response);
+
+                }
+            }
+
+
+            urlConnection.disconnect();
+
+        }
+        catch (Exception e) {
+            Log.e("Exect", String.valueOf(e));
+        }
+
+        return str1;
+    }
 
 }

@@ -13,9 +13,17 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -29,9 +37,12 @@ import java.util.Random;
 
 public class Fragment2 extends Fragment {
     PieChart pieChart;
+    private FirebaseAuth mAuth;
 
     int  uid_z;
+//    private FirebaseAuth FirebaseAuh;
     String  firebaseToken="";
+    String firebaseToke= "";
     int uid =  0;
     Conn_service conn = new Conn_service();
     private RecyclerView recyclerView;
@@ -45,62 +56,88 @@ public class Fragment2 extends Fragment {
         View view = inflater.inflate(R.layout.fragment2, container, false);
         tbklayout =view.findViewById(R.id.tabl_lrgrnd_forweek);
         pieChart = view.findViewById(R.id.piechart_for_week);
-        SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        recyclerView = view.findViewById(R.id.recyclerView_week);
+        mAuth = FirebaseAuth.getInstance();
+        Log.e("mAuth3", String.valueOf(mAuth));
+        FirebaseUser use= mAuth.getCurrentUser();
+        Log.e("mAuth4", String.valueOf(use));
+
+         if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                firebaseToke = task.getResult().getToken();
+                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                myEdit.putString("firebaseToken", firebaseToke);
+                                myEdit.apply();
+                                Data_show(firebaseToke);
+                            }
 
 
-        firebaseToken= sh.getString("firebaseToken","");
+                        }
 
-        uid = sh.getInt("UID", uid_z);
-        String res = conn.pack_rule("/usageStats/getUsageData?screen=dashboard&duration=week&userId="+uid, firebaseToken);
-        //onPostExecute(res);
-        try {
-            JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+                    });
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-                Random random = new Random();
-                int red = random.nextInt(256);
-                int green = random.nextInt(256);
-                int blue = random.nextInt(256);
-
-                // Format the RGB values into a hexadecimal color code
-                String colorCode = String.format("#%02x%02x%02x", red, green, blue);
-
-                String categoryName = item.getString("category");
-                if(!categoryName.equals("Total")) {
-                    int pievalue = item.getInt("usage_percent");
-                    Log.e("random", String.valueOf(pievalue));
-                    pieChart.addPieSlice(
-                            new PieModel(
-                                    categoryName,
-                                    pievalue,
-                                    Color.parseColor(colorCode)));
-
-                    addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
-                }
-            }
-        }catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("Exception", String.valueOf(e));
         }
 
-        // To animate the pie chart
-        pieChart.startAnimation();
-        recyclerView = view.findViewById(R.id.recyclerView_week);
-
-        // Create the list of card items
-        List<CardItem> cardItems = createCardItems(res);
-
-        // Set up the RecyclerView
-        cardAdapter = new CardAdapter(cardItems, requireContext());
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        recyclerView.setAdapter(cardAdapter);
 
 
         return view;
     }
+private void Data_show(String firebaseToken){
+    SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
+    uid = sh.getInt("UID", uid_z);
+    String res = conn.pack_rule("/usageStats/getUsageData?screen=dashboard&duration=week&userId="+uid, firebaseToken);
+
+    try {
+        JSONObject jsonObject = new JSONObject(res);
+        JSONArray jsonArray = jsonObject.getJSONArray("result");
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject item = jsonArray.getJSONObject(i);
+            Random random = new Random();
+            int red = random.nextInt(256);
+            int green = random.nextInt(256);
+            int blue = random.nextInt(256);
+
+            // Format the RGB values into a hexadecimal color code
+            String colorCode = String.format("#%02x%02x%02x", red, green, blue);
+
+            String categoryName = item.getString("category");
+            if(!categoryName.equals("Total")) {
+                int pievalue = item.getInt("usage_percent");
+                Log.e("random", String.valueOf(pievalue));
+                pieChart.addPieSlice(
+                        new PieModel(
+                                categoryName,
+                                pievalue,
+                                Color.parseColor(colorCode)));
+
+                addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
+            }
+        }
+    }catch (JSONException e) {
+        e.printStackTrace();
+        Log.e("Exception", String.valueOf(e));
+    }
+
+    // To animate the pie chart
+    pieChart.startAnimation();
+
+
+    // Create the list of card items
+    List<CardItem> cardItems = createCardItems(res);
+
+    // Set up the RecyclerView
+    cardAdapter = new CardAdapter(cardItems, requireContext());
+    recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+    recyclerView.setAdapter(cardAdapter);
+
+}
     private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
 
@@ -131,49 +168,11 @@ public class Fragment2 extends Fragment {
             e.printStackTrace();
             Log.e("Execption", String.valueOf(e));
         }
-        ////
 
-
-        // Add your card items here
-        // Example:
-//        cardItems.add(new CardItem( R.drawable.logo_mails,"Mails", "Info 1", "Info 2", "Info 3"));
-//        cardItems.add(new CardItem( R.drawable.logo_games,"Games", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem( R.drawable.logo_meetings,"E-meetings", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_music, "Music", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_video, "OTT/Video", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_social, "Social", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_travel, "Travel", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_fitness, "Fitness", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem( R.drawable.logo_learn,"Learn", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_sleep, "Sleep", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_shopping, "Shop", "Info 4", "Info 5", "Info 6"));
-//        cardItems.add(new CardItem(R.drawable.logo_others, "Others", "Info 4", "Info 5", "Info 6"));
-
-
-        // ...
 
         return cardItems;
     }
-    private void onPostExecute(String result) {
-        if (result != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item = jsonArray.getJSONObject(i);
-
-                    String categoryName = item.getString("category");
-                    String lastWeek = item.getString("usage_percent");
-
-
-                    // addTableRow(categoryName, lastWeek);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
 //        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
 
