@@ -78,24 +78,49 @@ public class Chart_page extends AppCompatActivity {
         manag_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Chart_page.this,Manage_screen.class));
             }
         });
       achieve_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Chart_page.this,Achieve.class));
             }
         });
        faq_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Chart_page.this,FaQ.class));
             }
         });
         connect_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Chart_page.this,ContactUs.class));
             }
         });

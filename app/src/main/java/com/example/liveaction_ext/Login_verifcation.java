@@ -93,6 +93,12 @@ public class Login_verifcation extends AppCompatActivity {
         sendotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        v.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 if( isValidMobileNumber(edtPhone.getText().toString())){
                     // below line is for checking whether the user
                     // has entered his mobile number or not.
@@ -138,6 +144,13 @@ public class Login_verifcation extends AppCompatActivity {
         btn_verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                v.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        v.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 // validating if the OTP text field is empty or not.
                 if (TextUtils.isEmpty(edtOTP.getText().toString())) {
                     // if the OTP text field is empty display
@@ -161,12 +174,24 @@ public class Login_verifcation extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 dialog.dismiss();
             }
         });
         usaegstat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
                 if (usaegstat.isEnabled()) {
@@ -179,6 +204,12 @@ public class Login_verifcation extends AppCompatActivity {
         Accessibilty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             }
         });

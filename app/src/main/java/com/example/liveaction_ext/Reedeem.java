@@ -105,12 +105,26 @@ public class Reedeem extends AppCompatActivity {
         dash_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Reedeem.this,Chart_page.class));
             }
         });
         achiv_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(Reedeem.this,Achieve.class));
             }
         });
@@ -234,6 +248,15 @@ public class Reedeem extends AppCompatActivity {
         reed_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 Log.e("tag--=","inside btn reedeem");
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 

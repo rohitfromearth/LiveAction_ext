@@ -130,7 +130,12 @@ btn_sv.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
 
-
+        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                view.animate().alpha(1f).setDuration(200);
+            }
+        }).start();
 if(edit){
         for (EditText editTextforhr : etListforhr) {
             String value = editTextforhr.getTag().toString();

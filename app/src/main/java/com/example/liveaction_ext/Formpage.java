@@ -43,8 +43,8 @@ import java.util.regex.Pattern;
 
 
 public class Formpage extends AppCompatActivity {
-    CardView nextActivity_btn,productcrd,durbles_opn;
-    ImageView durble_cls;
+    CardView nextActivity_btn,productcrd;
+
     RadioGroup radioGroup;
 
     String Otherapp ="";
@@ -70,11 +70,10 @@ public class Formpage extends AppCompatActivity {
 
     Switch sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10, sw11, sw12, sw13, sw14;
     Switch sw_1, sw_2, sw_3, sw_4, sw_5, sw_6, sw_7, sw_8, sw_9, sw_10, sw_11, sw_12, sw_13, sw_14;
-    int selectedId;
-    private List<String> allCheckedItems = new ArrayList<>();
 
 
-    private CheckBox[] checkboxes;
+
+
     private CheckBox[] checkboxe_fdbk;
     String message=" ";
     private DatePickerDialog.OnDateSetListener dateSetListener;
@@ -256,12 +255,13 @@ onlyn_used_swtch= findViewById(R.id.switch_shop_onlyn);
 //                    throw new RuntimeException(e);
 //                }
 //
-                StringBuilder concatenatedString = new StringBuilder();
-                for (String product : selectedProducts) {
-                    concatenatedString.append(product);
-                }
-                String result = concatenatedString.toString();
-                Log.e("pusing", result);
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
+
 
 
                 int selectedId = radioGroup.getCheckedRadioButtonId();
@@ -388,11 +388,14 @@ onlyn_used_swtch= findViewById(R.id.switch_shop_onlyn);
 
         List<String> items = new ArrayList<>();
 
-        items.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
-        items.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
-        items.add("Mobile & Mobile accessories");
-        items.add("Clothing & Footwear");
-        items.add("Children toys & games");
+        items.add("Two-Wheeler");
+        items.add("4-wheeler (Car/Jeep/Van/Tractor)");
+        items.add("Colour TV");
+        items.add("Refrigerator");
+        items.add("Washing Machine");
+        items.add("PC and/or Laptop");
+        items.add("Air Conditioner");
+        items.add("Agricultural Land");
       durabllist.addAll(items);
     Durable_spinn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -467,13 +470,14 @@ onlyn_used_swtch= findViewById(R.id.switch_shop_onlyn);
         product_spinner.setAdapter(productList);
 
         List<String> itemse = new ArrayList<>();
-
+        itemse.add("Clothing & Footwear");
         itemse.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
         itemse.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
         itemse.add("Mobile & Mobile accessories");
-        itemse.add("Clothing & Footwear");
+
         itemse.add("Children toys & games");
        productList.addAll(itemse);
+       product_spinner.setPadding(0,0,0,15);
         product_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -688,6 +692,7 @@ boolean tr10 = isradios(selectedValue);
         boolean tr12 = isAnySwitchottChecked(switches_frms_in);
         boolean tr14 = isAnySwitchottChecked(switches_froott_wt);
         boolean tr15 = isAnySwitchottChecked(switches_frms_wt);
+
         if (!tr) {
             validationmsg = "Invalid Name";
         }
@@ -1057,6 +1062,20 @@ String userId= servic.formdatasend(jsonBody, "/user/create");
         // Name is valid
         return true;
     }
+    public static boolean isCheckItem(ArrayList<String>  selectItem){
+
+        if (!selectItem.isEmpty()) {
+            // The selectedOptions ArrayList is not empty
+            // Your code here
+            Log.e("check","empty");
+            return true ;
+
+        } else {
+            // The selectedOptions ArrayList is empty
+            // Your code here
+            return false;
+        }
+    }
     public static boolean isValidocupation(String ocupton) {
         // Check if the name is null or empty
         if(Objects.equals(ocupton, "Ocupation"))
@@ -1067,16 +1086,7 @@ String userId= servic.formdatasend(jsonBody, "/user/create");
         // Name is valid
         return true;
     }
-    public static boolean isproduct(String prod) {
-        // Check if the name is null or empty
-        if(Objects.equals(prod, "Products"))
-        {
-            return false;
-        }
 
-        // Name is valid
-        return true;
-    }
     public static boolean isradios(String selection) {
 
 

@@ -6,14 +6,13 @@
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
-        <item>Prefer not to tell</item>
+
 
     </string-array>
     <string-array name="Education">
-        <item>Educaton</item>
-
+        <item>Education</item>
         <item>Illiterate/ No formal schooling</item>
-        <item>Upto standard 4</item>
+        <item>Up to standard 4</item>
         <item>Standard 5 to 9</item>
         <item>SSC/ HSC e. Diploma/ Went to college but did not complete graduation</item>
         <item>Graduate/ Post Graduate - General: BA/MA, BSC/MSc/BCom, etc</item>
@@ -30,7 +29,6 @@
         <item>  Agricultural Land (Checkbox)</item>
     </string-array>
     <string-array name="productslist">
-
         <item>product</item>
         <item>Grocery (staples, packaged food, snacks, beverages, dairy items, etc)</item>
         <item>Beauty &amp; Personal Care (soaps, shampoo, skin creams, makeup, etc)</item>
@@ -39,7 +37,6 @@
         <item>Children toys &amp; games</item>
     </string-array>
     <string-array name="Ocupation">
-
         <item>Ocupation</item>
         <item>Student</item>
         <item>Housewife</item>

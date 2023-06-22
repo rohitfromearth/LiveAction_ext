@@ -25,12 +25,14 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/img"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LiveAction_ext"
+        android:theme="@style/Theme.LiveAction"
+
         tools:targetApi="31"
         >
         <activity
             android:name=".Chart_page"
-            android:exported="true" >   <intent-filter>
+            android:exported="true" >
+            <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />

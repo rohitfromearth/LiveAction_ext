@@ -17,6 +17,13 @@ CardView btn_dash;
         btn_dash.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 startActivity(new Intent(ContactUs.this,Chart_page.class));
             }
         });

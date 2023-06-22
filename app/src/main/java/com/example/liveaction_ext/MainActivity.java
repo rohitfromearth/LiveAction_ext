@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
         Viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        v.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
                 boolean termsChecked = termsCheckbox.isChecked();
                 boolean privacyChecked = privacyCheckbox.isChecked();
 
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     // Perform the button action
                     // Add your logic here
                     // For example, start the Manage_screen activity
-                    startActivity(new Intent(MainActivity.this,Formpage.class));
+                    startActivity(new Intent(MainActivity.this,Login_verifcation.class));
                 } else {
                     // Display a message below the button
                     messageTextView.setText("*Please check both checkboxes.");
