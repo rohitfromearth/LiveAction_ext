@@ -20,19 +20,16 @@ import com.google.firebase.FirebaseApp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 public class Chart_page extends AppCompatActivity {
-    private TabLayout tabLayout;
-    Pack_api pc=new Pack_api();
+    Pack_api pc = new Pack_api();
     TextView tvP_usernme;
-    CardView manag_btn, achieve_btn,faq_btn,connect_btn;
-
+    CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String id, username;
-
     Access_new acc = new Access_new();
     int uid_z;
-    int uid=0;
+    int uid = 0;
+    private TabLayout tabLayout;
     private ViewPager viewPager;
 
     @Override
@@ -43,37 +40,36 @@ public class Chart_page extends AppCompatActivity {
                 4);
         FirebaseApp.initializeApp(this);
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-          uid = sh.getInt("UID", uid_z);
+        uid = sh.getInt("UID", uid_z);
         Log.e("uesrid", String.valueOf(uid));
-        username = sh.getString("username","");
+        username = sh.getString("username", "");
         String endpot = "https://lifeactions.online";
-//        String endpot= "https://ec4c-2401-4900-5502-32c3-f825-5b5f-e4c9-de4b.ngrok-free.app";
-        String dir= getObbDir().getPath();
-        ArrayList pack =  pc.pack_rule(endpot);
+
+        String dir = getObbDir().getPath();
+        ArrayList pack = pc.pack_rule(endpot);
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putString("endpt", endpot);
-        myEdit.putString("dir",dir);
+        myEdit.putString("dir", dir);
         Set<String> set = new HashSet<String>();
         set.addAll(pack);
         myEdit.putStringSet("APP_LIST", set);
         myEdit.apply();
-        if (uid==0){
+        if (uid == 0) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish(); // Optional: Finish the DashboardActivity so that it's not accessible from the back stack
             return;
-        }
-        else{
+        } else {
             setContentView(R.layout.activity_chart_page);
         }
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
-        manag_btn=findViewById(R.id.mange_btn);
-        achieve_btn=findViewById(R.id.achie_btn);
-      connect_btn=findViewById(R.id.connectbtn);
-        faq_btn=findViewById(R.id.FAQ_btn);
+        manag_btn = findViewById(R.id.mange_btn);
+        achieve_btn = findViewById(R.id.achie_btn);
+        connect_btn = findViewById(R.id.connectbtn);
+        faq_btn = findViewById(R.id.FAQ_btn);
 
         manag_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,10 +80,10 @@ public class Chart_page extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Chart_page.this,Manage_screen.class));
+                startActivity(new Intent(Chart_page.this, Manage_screen.class));
             }
         });
-      achieve_btn.setOnClickListener(new View.OnClickListener() {
+        achieve_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
@@ -96,10 +92,10 @@ public class Chart_page extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Chart_page.this,Achieve.class));
+                startActivity(new Intent(Chart_page.this, Achieve.class));
             }
         });
-       faq_btn.setOnClickListener(new View.OnClickListener() {
+        faq_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -109,7 +105,7 @@ public class Chart_page extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Chart_page.this,FaQ.class));
+                startActivity(new Intent(Chart_page.this, FaQ.class));
             }
         });
         connect_btn.setOnClickListener(new View.OnClickListener() {
@@ -121,12 +117,12 @@ public class Chart_page extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Chart_page.this,ContactUs.class));
+                startActivity(new Intent(Chart_page.this, ContactUs.class));
             }
         });
-tvP_usernme=findViewById(R.id.usrname);
+        tvP_usernme = findViewById(R.id.usrname);
 
-tvP_usernme.setText(username);
+        tvP_usernme.setText(username);
 
         // Create and set the adapter for the ViewPager
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -135,6 +131,7 @@ tvP_usernme.setText(username);
         // Link the TabLayout with the ViewPager
         tabLayout.setupWithViewPager(viewPager);
     }
+
     @Override
     public void onBackPressed() {
         // Disable going back to the previous activity (login page)

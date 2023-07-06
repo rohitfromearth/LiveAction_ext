@@ -1,11 +1,11 @@
 package com.example.liveaction_ext;
 
 public class CardItem {
-    private int logoResId;
-    private String title;
-    private String info1;
-    private String info2;
-    private String info3;
+    private final int logoResId;
+    private final String title;
+    private final String info1;
+    private final String info2;
+    private final String info3;
 
     public CardItem(int logoResId, String title, String info1, String info2, String info3) {
         this.logoResId = logoResId;

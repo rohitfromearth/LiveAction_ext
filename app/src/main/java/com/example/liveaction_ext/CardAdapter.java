@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
-    private List<CardItem> cardItems;
-    private Context context;
+    private final List<CardItem> cardItems;
+    private final Context context;
 
     public CardAdapter(List<CardItem> cardItems, Context context) {
         this.cardItems = cardItems;

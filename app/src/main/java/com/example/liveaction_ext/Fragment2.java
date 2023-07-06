@@ -1,7 +1,7 @@
 package com.example.liveaction_ext;
+
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -23,7 +23,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -37,32 +36,31 @@ import java.util.Random;
 
 public class Fragment2 extends Fragment {
     PieChart pieChart;
-    private FirebaseAuth mAuth;
-
-    int  uid_z;
-//    private FirebaseAuth FirebaseAuh;
-    String  firebaseToken="";
-    String firebaseToke= "";
-    int uid =  0;
+    int uid_z;
+    //    private FirebaseAuth FirebaseAuh;
+    String firebaseToken = "";
+    String firebaseToke = "";
+    int uid = 0;
     Conn_service conn = new Conn_service();
+    TableLayout tbklayout;
+    private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
-    TableLayout tbklayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment2, container, false);
-        tbklayout =view.findViewById(R.id.tabl_lrgrnd_forweek);
+        tbklayout = view.findViewById(R.id.tabl_lrgrnd_forweek);
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
-        FirebaseUser use= mAuth.getCurrentUser();
+        FirebaseUser use = mAuth.getCurrentUser();
         Log.e("mAuth4", String.valueOf(use));
 
-         if (use != null) {
+        if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         @Override
@@ -84,60 +82,64 @@ public class Fragment2 extends Fragment {
         }
 
 
-
         return view;
     }
-private void Data_show(String firebaseToken){
-    SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
-    uid = sh.getInt("UID", uid_z);
-    String res = conn.pack_rule("/usageStats/getUsageData?screen=dashboard&duration=week&userId="+uid, firebaseToken);
+    private void Data_show(String firebaseToken) {
+        SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
-    try {
-        JSONObject jsonObject = new JSONObject(res);
-        JSONArray jsonArray = jsonObject.getJSONArray("result");
+        uid = sh.getInt("UID", uid_z);
+        String res = conn.pack_rule("/usageStats/getUsageData?screen=dashboard&duration=week&userId=" + uid, firebaseToken);
 
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject item = jsonArray.getJSONObject(i);
-            Random random = new Random();
-            int red = random.nextInt(256);
-            int green = random.nextInt(256);
-            int blue = random.nextInt(256);
+        try {
+            JSONObject jsonObject = new JSONObject(res);
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
 
-            // Format the RGB values into a hexadecimal color code
-            String colorCode = String.format("#%02x%02x%02x", red, green, blue);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+                Random random = new Random();
+                int red = random.nextInt(256);
+                int green = random.nextInt(256);
+                int blue = random.nextInt(256);
 
-            String categoryName = item.getString("category");
-            if(!categoryName.equals("Total")) {
-                int pievalue = item.getInt("usage_percent");
-                Log.e("random", String.valueOf(pievalue));
-                pieChart.addPieSlice(
-                        new PieModel(
-                                categoryName,
-                                pievalue,
-                                Color.parseColor(colorCode)));
+                // Format the RGB values into a hexadecimal color code
+                String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
-                addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
+                String categoryName = item.getString("category");
+                if (!categoryName.equals("Total")) {
+//            String Pieval=     item.getString("usage_percent");
+                    double pievalue = item.getDouble("usage_percent");
+                    float fpi_Value = (float) pievalue;
+                    Log.e("random", String.valueOf(pievalue));
+                    pieChart.addPieSlice(
+                            new PieModel(
+                                    categoryName,
+                                    fpi_Value,
+                                    Color.parseColor(colorCode)));
+
+                    addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
+                }
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("Exception", String.valueOf(e));
         }
-    }catch (JSONException e) {
-        e.printStackTrace();
-        Log.e("Exception", String.valueOf(e));
+
+        // To animate the pie chart
+        pieChart.startAnimation();
+
+
+        // Create the list of card items
+        List<CardItem> cardItems = createCardItems(res);
+
+        // Set up the RecyclerView
+        cardAdapter = new CardAdapter(cardItems, requireContext());
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(cardAdapter);
+
     }
 
-    // To animate the pie chart
-    pieChart.startAnimation();
-
-
-    // Create the list of card items
-    List<CardItem> cardItems = createCardItems(res);
-
-    // Set up the RecyclerView
-    cardAdapter = new CardAdapter(cardItems, requireContext());
-    recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-    recyclerView.setAdapter(cardAdapter);
-
-}
     private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
 
@@ -152,13 +154,11 @@ private void Data_show(String firebaseToken){
                 String categoryName = item.getString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
                 int tsthisday = item.getInt("usage_in_mins");
-                int average= item.getInt("last_4_week_usage_in_mins");
+                int average = item.getInt("last_4_week_usage_in_mins");
                 int variance = item.getInt("variance");
-                String tsthisdays= "TS this week  "+tsthisday;
-                String averages ="Average\n(last 4 weeks)  "+ average;
-                String variences= String.valueOf(variance);
-
-
+                String tsthisdays = "TS this week  " + tsthisday;
+                String averages = "Average\n(last 4 weeks)  " + average;
+                String variences = String.valueOf(variance);
 
 
                 cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
@@ -185,7 +185,7 @@ private void Data_show(String firebaseToken){
 
 
         tvCategory.setText(categoryName);
-        tvLastWeek.setText(lastWeek+"%");
+        tvLastWeek.setText(lastWeek + "%");
 
         tvLegendColor.setBackgroundColor(color_code);
 

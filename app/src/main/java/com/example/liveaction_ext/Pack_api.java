@@ -1,7 +1,6 @@
 package com.example.liveaction_ext;
 
 import android.os.StrictMode;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,15 +17,16 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Pack_api {
     ArrayList<String> appl = new ArrayList<String>();
-    public ArrayList pack_rule(String About){
+
+    public ArrayList pack_rule(String About) {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
-        String[] appslist = new String []{};
+        String[] appslist = new String[]{};
         try {
             String response = "";
-            URL url = new URL(About+"/apps/list");
+            URL url = new URL(About + "/apps/list");
 //            URL url = new URL("https://lifeactions.online/apps/list");
             HttpURLConnection urlConn = null;
 
@@ -41,14 +41,14 @@ public class Pack_api {
                 String applist;
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
 
-                while ((applist= br.readLine()) != null) {
+                while ((applist = br.readLine()) != null) {
                     response += applist;
                     final JSONObject app = new JSONObject(response);
 //                     appslist
 
 
                     JSONArray appsList = app.getJSONArray("data");
-                    for(int i=0;i< appsList.length();i++) {
+                    for (int i = 0; i < appsList.length(); i++) {
 //                         String fg = app.get("data").getString(i);
 //                         appslist[i]= appsList.getString(i);
                         appl.add(appsList.getString(i));

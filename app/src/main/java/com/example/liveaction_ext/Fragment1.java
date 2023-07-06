@@ -2,7 +2,6 @@ package com.example.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -40,30 +38,29 @@ public class Fragment1 extends Fragment {
     PieChart pieChart;
 
     String username;
-   String  firebaseToken = "";
+    String firebaseToken = "";
     DummyData dumdta = new DummyData();
-    private FirebaseAuth mAuth;
     int uid_z;
-    String firebaseToke= "";
-    int uid=  0;
-
+    String firebaseToke = "";
+    int uid = 0;
     Conn_service conn = new Conn_service();
+    TableLayout tbklayout;
+    private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
-    TableLayout tbklayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment1, container, false);
-        tbklayout =view. findViewById(R.id.tabl_lrgrnd);
+        tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
         //////////new added to refresh token
         mAuth = FirebaseAuth.getInstance();
-Log.e("mAuth3", String.valueOf(mAuth));
-FirebaseUser use= mAuth.getCurrentUser();
+        Log.e("mAuth3", String.valueOf(mAuth));
+        FirebaseUser use = mAuth.getCurrentUser();
 
         if (use != null) {
             use.getIdToken(true)
@@ -86,15 +83,13 @@ FirebaseUser use= mAuth.getCurrentUser();
 
         }
 
-Log.e("mAuth4", String.valueOf(use));
-
-
-
+        Log.e("mAuth4", String.valueOf(use));
 
 
         return view;
     }
-    private void Data_Show(String firebaseToken){
+
+    private void Data_Show(String firebaseToken) {
         try {
 
             SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
@@ -102,37 +97,36 @@ Log.e("mAuth4", String.valueOf(use));
             uid = sh.getInt("UID", uid_z);
 
 
-
-
-            String res = conn.pack_rule("/usageStats/getUsageData?duration=day&userId="+uid, firebaseToken);
-            String resultdummy= dumdta.Data_for_dash();
+            String res = conn.pack_rule("/usageStats/getUsageData?duration=day&userId=" + uid, firebaseToken);
+            String resultdummy = dumdta.Data_for_dash();
             JSONObject jsonncheck = new JSONObject(res);
             boolean showDummy = jsonncheck.getBoolean("showDummy");
-            if(showDummy) {
+            if (showDummy) {
 //                 onPostExecute(resultdummy);
                 piecreate(resultdummy);
-
 
 
                 // Create the list of card items
                 List<CardItem> cardItems = createCardItems(resultdummy);
                 cardAdapter = new CardAdapter(cardItems, requireContext());
                 recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+                recyclerView.setNestedScrollingEnabled(false);
                 recyclerView.setAdapter(cardAdapter);
-            }
-            else{
+            } else {
 
                 piecreate(res);
 
 
-
-                // Create the list of card items
+//                // Create the list of card items
                 List<CardItem> cardItems = createCardItems(res);
                 cardAdapter = new CardAdapter(cardItems, requireContext());
                 recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+                recyclerView.setNestedScrollingEnabled(false);
                 recyclerView.setAdapter(cardAdapter);
             }
         } catch (JSONException e) {
+
+
             throw new RuntimeException(e);
         }
     }
@@ -151,11 +145,11 @@ Log.e("mAuth4", String.valueOf(use));
                 String categoryName = item.getString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
                 int tsthisday = item.getInt("usage_in_mins");
-                int average= item.getInt("last_7_day_usage_in_mins");
+                int average = item.getInt("last_7_day_usage_in_mins");
                 int variance = item.getInt("variance");
-                String tsthisdays= "TS for Day     "+tsthisday;
-                String averages ="Average \n (last 7 days) "+ average;
-                String variences= String.valueOf(variance);
+                String tsthisdays = "TS for Day     " + tsthisday;
+                String averages = "Average \n (last 7 days) " + average;
+                String variences = String.valueOf(variance);
 
                 cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
 
@@ -168,7 +162,8 @@ Log.e("mAuth4", String.valueOf(use));
 
         return cardItems;
     }
-    private void piecreate(String res){
+
+    private void piecreate(String res) {
         try {
             JSONObject jsonObject = new JSONObject(res);
 
@@ -186,24 +181,24 @@ Log.e("mAuth4", String.valueOf(use));
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
                 String categoryName = item.getString("category");
-                if(!categoryName.equals("Total")) {
-                    int pievalue = item.getInt("usage_percent");
+                if (!categoryName.equals("Total")) {
+                    double pievalue = item.getDouble("usage_percent");
+                    float fpi_Value = (float) pievalue;
                     Log.e("random", String.valueOf(pievalue));
                     ///pieModel = new PieModel();
                     //pieChart.addPieSlice();
                     pieChart.addPieSlice(
                             new PieModel(
                                     categoryName,
-                                    pievalue,
+                                    fpi_Value,
                                     Color.parseColor(colorCode)));
 //                    Log.e("color code---------", String.valueOf(pieModel.getColor()));
                     addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
 
 
-
                 }
             }
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));
         }
@@ -227,12 +222,10 @@ Log.e("mAuth4", String.valueOf(use));
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
 
-
         tvCategory.setText(categoryName);
-        tvLastWeek.setText(lastWeek+"%");
+        tvLastWeek.setText(lastWeek + "%");
 
         tvLegendColor.setBackgroundColor(color_code);
-
 
 
         //tvLastWeek.setBackgroundColor(color_code);

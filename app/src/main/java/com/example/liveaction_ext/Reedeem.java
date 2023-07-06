@@ -30,39 +30,38 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Reedeem extends AppCompatActivity {
-    Conn_service conn=new Conn_service();
+    Conn_service conn = new Conn_service();
 
-    String firebaseToken="";
-    CardView reed_btn,dash_bt,achiv_bt;
+    String firebaseToken = "";
+    CardView reed_btn, dash_bt, achiv_bt;
     ImageButton close_dial;
-    private TableLayout tableLayout;
-
-    TextView total_pnt, pnt_redmed,pnt_avalble,count_txt, txt_hstry,achi_points;
-    int counter= 00;
+    TextView total_pnt, pnt_redmed, pnt_avalble, count_txt, txt_hstry, achi_points;
+    int counter = 00;
     int uid_z;
-    int uid=0;
-    CardView plus_count,minus_count;
-    private FirebaseAuth mAuth;
+    int uid = 0;
+    CardView plus_count, minus_count;
     Dialog dialog;
     int pointsAvailable;
-    String firebaseToke= "";
+    String firebaseToke = "";
     int totalPoints;
+    private TableLayout tableLayout;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reedeem);
-        total_pnt=findViewById(R.id.tv_Total_pnt);
-        pnt_redmed= findViewById(R.id.tv_pnt_redmed);
-        pnt_avalble=findViewById(R.id.tv_pont_avalbl);
+        total_pnt = findViewById(R.id.tv_Total_pnt);
+        pnt_redmed = findViewById(R.id.tv_pnt_redmed);
+        pnt_avalble = findViewById(R.id.tv_pont_avalbl);
         count_txt = findViewById(R.id.tv_count);
-        dash_bt=findViewById(R.id.dashbord_btn);
-        achiv_bt=findViewById(R.id.achev_btn);
+        dash_bt = findViewById(R.id.dashbord_btn);
+        achiv_bt = findViewById(R.id.achev_btn);
         minus_count = findViewById(R.id.tv_minus_count);
         plus_count = findViewById(R.id.tv_plus_count);
-        achi_points= findViewById(R.id.achi_points);
-        reed_btn= findViewById(R.id.Reedem_btn);
-        txt_hstry=findViewById(R.id.red_histry);
+        achi_points = findViewById(R.id.achi_points);
+        reed_btn = findViewById(R.id.Reedem_btn);
+        txt_hstry = findViewById(R.id.red_histry);
 
         dialog = new Dialog(Reedeem.this);
         dialog.setContentView(R.layout.dialog_for_reedeem);
@@ -72,14 +71,14 @@ public class Reedeem extends AppCompatActivity {
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
 
-        close_dial= dialog.findViewById(R.id.close_permission);
+        close_dial = dialog.findViewById(R.id.close_permission);
 
-        tableLayout =dialog.findViewById(R.id.tableLayout);
+        tableLayout = dialog.findViewById(R.id.tableLayout);
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
-        FirebaseUser use= mAuth.getCurrentUser();
+        FirebaseUser use = mAuth.getCurrentUser();
         Log.e("mAuth4", String.valueOf(use));
- if (use != null) {
+        if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         @Override
@@ -100,7 +99,7 @@ public class Reedeem extends AppCompatActivity {
         }
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
-    firebaseToken= sh.getString("firebaseToken","");
+        firebaseToken = sh.getString("firebaseToken", "");
 
         dash_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +111,7 @@ public class Reedeem extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Reedeem.this,Chart_page.class));
+                startActivity(new Intent(Reedeem.this, Chart_page.class));
             }
         });
         achiv_bt.setOnClickListener(new View.OnClickListener() {
@@ -125,10 +124,10 @@ public class Reedeem extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Reedeem.this,Achieve.class));
+                startActivity(new Intent(Reedeem.this, Achieve.class));
             }
         });
-        String ress = conn.pack_rule("/usageStats/getPoints/"+uid, firebaseToken);
+        String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken);
 
         try {
             JSONObject jsonResponse = new JSONObject(ress);
@@ -144,11 +143,11 @@ public class Reedeem extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        close_dial.setOnClickListener(new View.OnClickListener(){
+        close_dial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                int countOf_row = tableLayout.getChildCount()-1;
+                int countOf_row = tableLayout.getChildCount() - 1;
                 tableLayout.removeViews(1, countOf_row);
             }
         });
@@ -159,7 +158,7 @@ public class Reedeem extends AppCompatActivity {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                 StrictMode.setThreadPolicy(policy);
-                String res = conn.pack_rule("/usageStats/redemptionHistory/"+uid,firebaseToken);
+                String res = conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToken);
 
                 onPostExecute(res);
 
@@ -169,17 +168,16 @@ public class Reedeem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                int pp =  decreaseCounter();
+                int pp = decreaseCounter();
                 String before_msg = "Sorry!!! You have already get";
                 String after_msg = "voucher according to the available points. Thank you";
 
-                int limit_point = pp*30;
-                if(limit_point < pointsAvailable){
-                    Log.e("tag---","match");
+                int limit_point = pp * 30;
+                if (limit_point < pointsAvailable) {
+                    Log.e("tag---", "match");
                     reed_btn.setEnabled(true);
                     reed_btn.setCardBackgroundColor(Color.parseColor("#fe7e34"));
-                }
-                else{
+                } else {
                     reed_btn.setEnabled(false);
                     reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
                     AlertDialog.Builder builder = new AlertDialog.Builder(Reedeem.this);
@@ -210,23 +208,22 @@ public class Reedeem extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                int pp =  increaseCounter();
+                int pp = increaseCounter();
                 String before_msg = "Sorry!!! You have already get";
                 String after_msg = "voucher according to the available points. Thank you";
 
-                int limit_point = pp*30;
-                if(limit_point < pointsAvailable){
-                    Log.e("tag---","match");
+                int limit_point = pp * 30;
+                if (limit_point < pointsAvailable) {
+                    Log.e("tag---", "match");
                     reed_btn.setEnabled(true);
-                }
-                else{
+                } else {
                     reed_btn.setEnabled(false);
                     reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
                     AlertDialog.Builder builder = new AlertDialog.Builder(Reedeem.this);
 
                     // Set the title and message for the dialog
                     builder.setTitle("Incorrect Redemtion:");
-                    builder.setMessage("sorry you are not allowed for more vouchers " );
+                    builder.setMessage("sorry you are not allowed for more vouchers ");
                     //builder.setMessage("Thank You");
 
 
@@ -250,14 +247,13 @@ public class Reedeem extends AppCompatActivity {
             public void onClick(View view) {
 
 
-
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
                     @Override
                     public void run() {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                Log.e("tag--=","inside btn reedeem");
+                Log.e("tag--=", "inside btn reedeem");
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                 StrictMode.setThreadPolicy(policy);
@@ -268,10 +264,9 @@ public class Reedeem extends AppCompatActivity {
                     JSONObject jsonBody = new JSONObject();
 
 
-
                     jsonBody.put("userId", uid);
-                    jsonBody.put("count",  counter);
-                    String uid= conn.datasender(jsonBody,"/usageStats/redemption",firebaseToken);
+                    jsonBody.put("count", counter);
+                    String uid = conn.datasender(jsonBody, "/usageStats/redemption", firebaseToken);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -280,6 +275,7 @@ public class Reedeem extends AppCompatActivity {
 
 
     }
+
     private int decreaseCounter() {
         if (counter > 0) {
 
@@ -295,6 +291,7 @@ public class Reedeem extends AppCompatActivity {
         count_txt.setText(String.valueOf(counter));
         return counter;
     }
+
     private void onPostExecute(String result) {
         if (result != null) {
             try {
@@ -307,18 +304,16 @@ public class Reedeem extends AppCompatActivity {
                     int value1 = item.getInt("no_of_vouchers");
                     int value2 = item.getInt("total_points_redeemed");
                     Log.e("denodata", String.valueOf(value2));
-                    String value1_s= String.valueOf(value1);
-                    String value2_s= String.valueOf(value2);
+                    String value1_s = String.valueOf(value1);
+                    String value2_s = String.valueOf(value2);
                     String value3 = item.getString("redemption_date");
                     int indexOfT = value3.indexOf('T');
 
 
-
-                    String value3_s =value3.substring(0, indexOfT);
-
+                    String value3_s = value3.substring(0, indexOfT);
 
 
-                    addTableRow(value1_s, value2_s,value3_s);
+                    addTableRow(value1_s, value2_s, value3_s);
 
                 }
             } catch (JSONException e) {
@@ -328,7 +323,8 @@ public class Reedeem extends AppCompatActivity {
 
 
     }
-    private void addTableRow(String vhr,String amnt, String Rdate) {
+
+    private void addTableRow(String vhr, String amnt, String Rdate) {
 //        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
 
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_reedem_hstry_item, null);

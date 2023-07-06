@@ -18,6 +18,7 @@
         <item>Graduate/ Post Graduate - General: BA/MA, BSC/MSc/BCom, etc</item>
         <item>Graduate/ Post Graduate - Professional: MBBS, MBA, BE/ME, Law, Architecture, etc</item>
     </string-array>
+
     <string-array name="Durables">
         <item>Two Wheeler</item>
         <item>4 wheeler  </item>

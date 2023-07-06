@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckboxAdapter extends ArrayAdapter<Purchase> {
-    private Context mContext;
-    private ArrayList<Purchase> listState;
-    private CheckboxAdapter myAdapter;
+    private final Context mContext;
+    private final ArrayList<Purchase> listState;
+    private final CheckboxAdapter myAdapter;
     private boolean isFromView = false;
 
     public CheckboxAdapter(Context context, int resource, List<Purchase> objects) {
@@ -45,9 +45,9 @@ public class CheckboxAdapter extends ArrayAdapter<Purchase> {
             LayoutInflater layoutInflator = LayoutInflater.from(mContext);
             convertView = layoutInflator.inflate(R.layout.purchase_online_layout, null);
             holder = new ViewHolder();
-            holder.mTextView = (TextView) convertView
+            holder.mTextView = convertView
                     .findViewById(R.id.text);
-            holder.mCheckBox = (CheckBox) convertView
+            holder.mCheckBox = convertView
                     .findViewById(R.id.checkbox);
             convertView.setTag(holder);
         } else {
@@ -76,7 +76,7 @@ public class CheckboxAdapter extends ArrayAdapter<Purchase> {
                 if (!isFromView) {
                     listState.get(position).setSelected(true);
 
-                    Log.e("checked---","title : "+listState.get(position).getTitle());
+                    Log.e("checked---", "title : " + listState.get(position).getTitle());
                 }
             }
         });

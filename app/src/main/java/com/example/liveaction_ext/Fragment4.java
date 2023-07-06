@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -38,16 +37,15 @@ import java.util.Random;
 
 public class Fragment4 extends Fragment {
     PieChart pieChart;
-    String firebaseToken= "";
-    int  uid_z;
-    int uid =  0;
+    String firebaseToken = "";
+    int uid_z;
+    int uid = 0;
 
     Conn_service conn = new Conn_service();
+    String firebaseToke = "";
+    TableLayout tbklayout;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
-    String firebaseToke= "";
-
-    TableLayout tbklayout;
     private FirebaseAuth mAuth;
 
     @SuppressLint("MissingInflatedId")
@@ -56,12 +54,12 @@ public class Fragment4 extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment4, container, false);
-        tbklayout =view. findViewById(R.id.tabl_lrgrnd_for_year);
+        tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_year);
         pieChart = view.findViewById(R.id.piechart_for_year);
         recyclerView = view.findViewById(R.id.recyclerView_for_year);
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
-        FirebaseUser use= mAuth.getCurrentUser();
+        FirebaseUser use = mAuth.getCurrentUser();
         Log.e("mAuth4", String.valueOf(use));
         if (use != null) {
             use.getIdToken(true)
@@ -87,13 +85,13 @@ public class Fragment4 extends Fragment {
 
         return view;
     }
-    private void Data_show(String firebaseToken){
+
+    private void Data_show(String firebaseToken) {
         SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
 
-
         uid = sh.getInt("UID", uid_z);
-        String res = conn.pack_rule("/usageStats/getUsageData?duration=year&userId="+uid, firebaseToken);
+        String res = conn.pack_rule("/usageStats/getUsageData?duration=year&userId=" + uid, firebaseToken);
 
         try {
             JSONObject jsonObject = new JSONObject(res);
@@ -110,19 +108,20 @@ public class Fragment4 extends Fragment {
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
                 String categoryName = item.getString("category");
-                if(!categoryName.equals("Total")) {
-                    int pievalue = item.getInt("usage_percent");
+                if (!categoryName.equals("Total")) {
+                    double pievalue = item.getDouble("usage_percent");
+                    float fpi_Value = (float) pievalue;
                     Log.e("random", String.valueOf(pievalue));
                     pieChart.addPieSlice(
                             new PieModel(
                                     categoryName,
-                                    pievalue,
+                                    fpi_Value,
                                     Color.parseColor(colorCode)));
 
                     addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
                 }
             }
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));
         }
@@ -155,11 +154,11 @@ public class Fragment4 extends Fragment {
                 String categoryName = item.getString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
                 int tsthisday = item.getInt("usage_in_mins");
-                int average= item.getInt("last_year_usage_in_mins");
+                int average = item.getInt("last_year_usage_in_mins");
                 int variance = item.getInt("variance");
-                String tsthisdays= "TS this year  "+tsthisday;
-                String averages ="Average\n(last year)  "+ average;
-                String variences= String.valueOf(variance);
+                String tsthisdays = "TS this year  " + tsthisday;
+                String averages = "Average\n(last year)  " + average;
+                String variences = String.valueOf(variance);
                 cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
 
             }
@@ -171,7 +170,7 @@ public class Fragment4 extends Fragment {
         return cardItems;
     }
 
-    private void addTableRow(String categoryName, String lastWeek,int color_code) {
+    private void addTableRow(String categoryName, String lastWeek, int color_code) {
 //        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
 
         TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.legend_data, null);
@@ -182,7 +181,7 @@ public class Fragment4 extends Fragment {
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
         tvCategory.setText(categoryName);
-        tvLastWeek.setText(lastWeek+"%");
+        tvLastWeek.setText(lastWeek + "%");
         tvLegendColor.setBackgroundColor(color_code);
 
         tbklayout.addView(row);

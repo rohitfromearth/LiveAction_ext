@@ -2,7 +2,6 @@ package com.example.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -38,31 +36,29 @@ import java.util.Random;
 
 public class Fragment3 extends Fragment {
     PieChart pieChart;
-    String firebaseToken="";
-    private FirebaseAuth mAuth;
-    int  uid_z;
-    int uid =  0;
-
+    String firebaseToken = "";
+    int uid_z;
+    int uid = 0;
     Conn_service conn = new Conn_service();
-    private RecyclerView recyclerView;
-    String firebaseToke= "";
-    private CardAdapter cardAdapter;
+    String firebaseToke = "";
     TableLayout tbklayout;
-
+    private FirebaseAuth mAuth;
+    private RecyclerView recyclerView;
+    private CardAdapter cardAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment3, container, false);
-        tbklayout =view. findViewById(R.id.tabl_lrgrnd_for_month);
+        tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_month);
         pieChart = view.findViewById(R.id.piechart_for_month);
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
-        FirebaseUser use= mAuth.getCurrentUser();
+        FirebaseUser use = mAuth.getCurrentUser();
         Log.e("mAuth4", String.valueOf(use));
- if (use != null) {
+        if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         @Override
@@ -85,13 +81,14 @@ public class Fragment3 extends Fragment {
 
         return view;
     }
-    private void Data_Show(String firebaseToken){
+
+    private void Data_Show(String firebaseToken) {
         SharedPreferences sh = requireActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
-        firebaseToken= sh.getString("firebaseToken","");
+        firebaseToken = sh.getString("firebaseToken", "");
 
         uid = sh.getInt("UID", uid_z);
-        String res = conn.pack_rule("/usageStats/getUsageData?duration=month&userId="+uid, firebaseToken);
+        String res = conn.pack_rule("/usageStats/getUsageData?duration=month&userId=" + uid, firebaseToken);
         //onPostExecute(res);
         try {
             JSONObject jsonObject = new JSONObject(res);
@@ -108,19 +105,20 @@ public class Fragment3 extends Fragment {
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
                 String categoryName = item.getString("category");
-                if(!categoryName.equals("Total")) {
-                    int pievalue = item.getInt("usage_percent");
+                if (!categoryName.equals("Total")) {
+                    double pievalue = item.getDouble("usage_percent");
+                    float fpi_Value = (float) pievalue;
                     Log.e("random", String.valueOf(pievalue));
                     pieChart.addPieSlice(
                             new PieModel(
                                     categoryName,
-                                    pievalue,
+                                    fpi_Value,
                                     Color.parseColor(colorCode)));
 
                     addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
                 }
             }
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));
         }
@@ -154,11 +152,11 @@ public class Fragment3 extends Fragment {
                 String categoryName = item.getString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
                 int tsthisday = item.getInt("usage_in_mins");
-                int average= item.getInt("last_month_in_mins");
+                int average = item.getInt("last_month_in_mins");
                 int variance = item.getInt("variance");
-                String tsthisdays= "TS this Month  "+tsthisday;
-                String averages ="Average\n(last month)  "+ average;
-                String variences= String.valueOf(variance);
+                String tsthisdays = "TS this Month  " + tsthisday;
+                String averages = "Average\n(last month)  " + average;
+                String variences = String.valueOf(variance);
 
                 cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
 
@@ -182,7 +180,7 @@ public class Fragment3 extends Fragment {
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
         tvCategory.setText(categoryName);
-        tvLastWeek.setText(lastWeek+"%");
+        tvLastWeek.setText(lastWeek + "%");
 
         tvLegendColor.setBackgroundColor(color_code);
 

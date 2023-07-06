@@ -26,21 +26,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Achieve extends AppCompatActivity {
-    private TableLayout tableLayout;
-    CardView rede,congrats_tv;
-
-    Conn_service servic= new Conn_service();
-    int  uid_z;
+    CardView rede, congrats_tv;
+    Conn_service servic = new Conn_service();
+    int uid_z;
     int uid = 0;
-    private LinearLayout floatingViewContainer;
     TextView tv_red_points;
+    String firebaseToken = "";
+    String firebaseToke = "";
+    private TableLayout tableLayout;
+    private LinearLayout floatingViewContainer;
     private View floatingView;
     private FirebaseAuth mAuth;
-    String  firebaseToken= "";
     private int initialX;
     private int initialY;
     private float initialTouchX;
-    String firebaseToke= "";
     private float initialTouchY;
 
 
@@ -48,14 +47,14 @@ public class Achieve extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achieve);
-rede=findViewById(R.id.reddem_btn);
+        rede = findViewById(R.id.reddem_btn);
         tableLayout = findViewById(R.id.tableLayout);
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
-        FirebaseUser use= mAuth.getCurrentUser();
+        FirebaseUser use = mAuth.getCurrentUser();
         Log.e("mAuth4", String.valueOf(use));
 
-     if (use != null) {
+        if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         @Override
@@ -78,13 +77,13 @@ rede=findViewById(R.id.reddem_btn);
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
-        firebaseToken= sh.getString("firebaseToken","");
+        firebaseToken = sh.getString("firebaseToken", "");
 
-congrats_tv=findViewById(R.id.congrats_tv);
-tv_red_points= findViewById(R.id.earn_number);
-        String res=servic.pack_rule("/usageStats/getAchievements/"+uid, firebaseToken);
+        congrats_tv = findViewById(R.id.congrats_tv);
+        tv_red_points = findViewById(R.id.earn_number);
+        String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
         congrats_tv.setVisibility(View.GONE);
-     onPostExecute(res);
+        onPostExecute(res);
         floatingViewContainer = findViewById(R.id.floatingViewContainer);
 
         // Inflate the floating view layout
@@ -98,16 +97,76 @@ tv_red_points= findViewById(R.id.earn_number);
         floatingViewContainer.addView(floatingView);
 
 
+        rede.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-rede.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
+                startActivity(new Intent(Achieve.this, Reedeem.class));
+            }
+        });
 
-        startActivity(new Intent(Achieve.this,Reedeem.class));
     }
-});
+
+    private void onPostExecute(String result) {
+        if (result != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("result");
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject item = jsonArray.getJSONObject(i);
+
+                    String categoryName = item.getString("category_name");
+                    String lastWeek = item.getString("last_week");
+                    String cumulative = item.getString("cumulative_till_date");
+                    int pointslastweekint = item.getInt("points_last_week");
+                    int pointscumm_I = item.getInt("points_cumulative");
+                    String pointslastweek = String.valueOf(pointslastweekint);
+                    String pointscumm = String.valueOf(pointscumm_I);
+
+                    if (categoryName.equals("Total")) {
+                        Log.e("datalegend", pointslastweek);
+                        if (pointslastweekint > 0) {
+                            congrats_tv.setVisibility(View.VISIBLE);
+                            tv_red_points.setText(pointslastweekint);
+
+                        }
+
+                    }
+
+                    addTableRow(categoryName, lastWeek, cumulative, pointslastweek, pointscumm);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
 
     }
+
+    private void addTableRow(String categoryName, String lastWeek, String cumulative, String pointslastWe, String pointscumu) {
+//        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
+
+        TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_achive_item, null);
+
+        TextView tvCategory = row.findViewById(R.id.tvCategory);
+        TextView tvLastWeek = row.findViewById(R.id.tvLastWeek);
+        TextView tvCumulative = row.findViewById(R.id.tvCumulative);
+        TextView tvpointsLastWeek = row.findViewById(R.id.tv_pnt_last_week);
+        TextView tvpointsCumu = row.findViewById(R.id.tv_pnt_cumu);
+
+        tvCategory.setText(categoryName);
+        tvLastWeek.setText(lastWeek);
+        tvCumulative.setText(cumulative);
+        tvpointsLastWeek.setText(pointslastWe);
+        tvpointsCumu.setText(pointscumu);
+
+        tableLayout.addView(row);
+
+
+    }
+
     private class FloatingViewTouchListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -136,63 +195,5 @@ rede.setOnClickListener(new View.OnClickListener() {
                     return false;
             }
         }
-    }
-    private void onPostExecute(String result) {
-        if (result != null) {
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item = jsonArray.getJSONObject(i);
-
-                    String categoryName = item.getString("category_name");
-                    String lastWeek = item.getString("last_week");
-                    String cumulative = item.getString("cumulative_till_date");
-                    int pointslastweekint = item.getInt("points_last_week");
-                    int pointscumm_I =  item.getInt("points_cumulative");
-                    String pointslastweek = String.valueOf(pointslastweekint);
-                    String pointscumm = String.valueOf(pointscumm_I);
-
-                    if(categoryName.equals("Total")){
-                        Log.e("datalegend",pointslastweek );
-                        if(pointslastweekint>0){
-                            congrats_tv.setVisibility(View.VISIBLE);
-                            tv_red_points.setText(pointslastweekint);
-
-                        }
-
-                    }
-
-               addTableRow(categoryName, lastWeek, cumulative,pointslastweek,pointscumm);
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-    }
-    private void addTableRow(String categoryName, String lastWeek, String cumulative,String pointslastWe, String pointscumu) {
-//        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
-
-        TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_achive_item, null);
-
-        TextView tvCategory = row.findViewById(R.id.tvCategory);
-        TextView tvLastWeek = row.findViewById(R.id.tvLastWeek);
-        TextView tvCumulative = row.findViewById(R.id.tvCumulative);
-        TextView tvpointsLastWeek = row.findViewById(R.id.tv_pnt_last_week);
-        TextView tvpointsCumu = row.findViewById(R.id.tv_pnt_cumu);
-
-        tvCategory.setText(categoryName);
-        tvLastWeek.setText(lastWeek);
-        tvCumulative.setText(cumulative);
-        tvpointsLastWeek.setText(pointslastWe);
-        tvpointsCumu.setText(pointscumu);
-
-        tableLayout.addView(row);
-
-
     }
 }
