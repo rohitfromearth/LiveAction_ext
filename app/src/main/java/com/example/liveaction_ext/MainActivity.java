@@ -27,11 +27,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int REQUEST_LOCATION = 1;
+
 
     Pack_api pc = new Pack_api();
-    String cityName="";
-    String stateName="";
+
 
     LocationManager locationManager;
     String latitude, longitude, lati, longit;
@@ -53,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 //        ArrayList pack =  pc.pack_rule(endpot);
 //        Set<String> set = new HashSet<String>();
 //        set.addAll(pack);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-locationfinder();
+
+
 
         messageTextView = findViewById(R.id.validationmasg);
 
@@ -82,30 +81,7 @@ locationfinder();
                     // Perform the button action
                     // Add your logic here
                     // For example, start the Manage_screen activity
-                    double[] locat= locationfinder();
-                    double log1=locat[0];
-                    double log2=locat[1];
 
-                cityName = getCityName(getApplicationContext(), log1, log2);
-                 stateName = getStateName(getApplicationContext(), log1, log2);
-                    boolean is_val;
-                    if(Objects.equals(cityName, "") && Objects.equals(stateName, "")){
-                        is_val = false;
-                    }
-                    else{
-                        is_val = true;
-                    }
-
-
-                    SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                    myEdit.putBoolean("locat", is_val);
-                    myEdit.putString("latitude", longit);
-                    myEdit.putString("longitude", lati);
-
-
-                    myEdit.putString("city", cityName);
-                    myEdit.putString("state", stateName);
 
                     startActivity(new Intent(MainActivity.this, Login_verifcation.class));
                 } else {
@@ -133,128 +109,7 @@ locationfinder();
     }
 
 
-    public double[] locationfinder(){
-        double[] result = new double[2];
-        if (ActivityCompat.checkSelfPermission(   this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,android.Manifest.permission.ACCESS_COARSE_LOCATION) !=PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,new String[]
-                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        }
-        else
-        {
-            Location LocationGps= locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Location LocationNetwork=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Location LocationPassive=locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
-            if (LocationGps !=null)
-            {
-                double lat=LocationGps.getLatitude();
-                double longi=LocationGps.getLongitude();
-                latitude = String.valueOf(lat);
-                longitude = String.valueOf(longi);
-
-                Log.e("dataloc", latitude + longitude);
-                lati = latitude;
-                longit = longitude;
-
-                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("latitude", longit);
-                myEdit.putString("longitude", lati);
-
-                myEdit.apply();
-                result[0] = lat;
-                result[1] = longi;
-
-                return result;
-
-            }
-            else if (LocationNetwork !=null)
-            {
-                double lat=LocationNetwork.getLatitude();
-                double longi=LocationNetwork.getLongitude();
-                latitude = String.valueOf(lat);
-                longitude = String.valueOf(longi);
-
-                Log.e("dataloc", latitude + longitude);
-                lati = latitude;
-                longit = longitude;
-
-                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("latitude", longit);
-                myEdit.putString("longitude", lati);
-
-                myEdit.apply();
-                result[0] = lat;
-                result[1] = longi;
-
-                return result;
-            }
-            else if (LocationPassive !=null)
-            {
-                double lat=LocationPassive.getLatitude();
-                double longi=LocationPassive.getLongitude();
-                latitude = String.valueOf(lat);
-                longitude = String.valueOf(longi);
-
-                Log.e("dataloc", latitude + longitude);
-                lati = latitude;
-                longit = longitude;
-
-                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("latitude", longit);
-                myEdit.putString("longitude", lati);
-
-                myEdit.apply();
-                result[0] = lat;
-                result[1] = longi;
-
-                return result;
-            }
-            else
-            {
-                Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
-                return null;
-            }
-
-        }
-
-        return result ;
-    }
-    public static String getCityName(Context context, double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-        String cityName = "";
-
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses != null && addresses.size() > 0) {
-                Address address = addresses.get(0);
-                cityName = address.getLocality();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return cityName;
-    }
-
-    public static String getStateName(Context context, double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
-        String stateName = "";
-
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses != null && addresses.size() > 0) {
-                Address address = addresses.get(0);
-                stateName = address.getAdminArea();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return stateName;
-    }
 
 
 }

@@ -63,12 +63,16 @@ public class Login_verifcation extends AppCompatActivity {
     String end = "";
     Date currentTime;
     LocationManager locationManager;
-
+    private static final int REQUEST_LOCATION = 1;
     EditText edtPhone, edtOTP;
     Conn_service servic = new Conn_service();
     Dialog dialog, dialog1;
     private String verificationId;
     private FirebaseAuth mAuth;
+    double[] locat;
+    String latitude, longitude, lati, longit;
+    String cityName="";
+    String stateName="";
     private FirebaseAuthSettings firebaseAuthSettings;
 
     // callback method is called on Phone auth provider.
@@ -143,7 +147,12 @@ public class Login_verifcation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_verifcation);
+
         FirebaseApp.initializeApp(this);
+
+
+        locat= locationfinder();
+
         btn_verify = findViewById(R.id.verifybtn);
         sendotp = findViewById(R.id.sendotp);
         permission_usage = findViewById(R.id.permission_button);
@@ -166,7 +175,7 @@ public class Login_verifcation extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 
 
 
@@ -410,7 +419,31 @@ public class Login_verifcation extends AppCompatActivity {
                                                             startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                         } else {
 
+                                                            double log1=locat[0];
+                                                            double log2=locat[1];
 
+                                                            cityName = getCityName(getApplicationContext(), log1, log2);
+                                                            stateName = getStateName(getApplicationContext(), log1, log2);
+                                                            Log.e("name","recent==="+cityName);
+                                                            Log.e("name","recentstate==="+stateName);
+                                                            boolean is_val;
+                                                            if(Objects.equals(cityName, "") && Objects.equals(stateName, "")){
+                                                                is_val = false;
+                                                            }
+                                                            else{
+                                                                is_val = true;
+                                                            }
+
+
+                                                            SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                                            myEdit.putBoolean("locat", is_val);
+                                                            myEdit.putString("latitude", longit);
+                                                            myEdit.putString("longitude", lati);
+
+
+                                                            myEdit.putString("city", cityName);
+                                                            myEdit.putString("state", stateName);
 
                                                                 startActivity(new Intent(Login_verifcation.this, Formpage.class));
 
@@ -541,7 +574,130 @@ public class Login_verifcation extends AppCompatActivity {
 
 
 
+    public double[] locationfinder(){
+        double[] result = new double[2];
+        if (ActivityCompat.checkSelfPermission(   this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Login_verifcation.this,android.Manifest.permission.ACCESS_COARSE_LOCATION) !=PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        }
+        else
+        {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location LocationGps= locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location LocationNetwork=locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location LocationPassive=locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
+            if (LocationGps !=null)
+            {
+                double lat=LocationGps.getLatitude();
+                double longi=LocationGps.getLongitude();
+                latitude = String.valueOf(lat);
+                longitude = String.valueOf(longi);
+
+                Log.e("dataloc", latitude + longitude);
+
+                lati = latitude;
+                longit = longitude;
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("latitude", longit);
+                myEdit.putString("longitude", lati);
+
+                myEdit.apply();
+                result[0] = lat;
+                result[1] = longi;
+
+                return result;
+
+            }
+            else if (LocationNetwork !=null)
+            {
+                double lat=LocationNetwork.getLatitude();
+                double longi=LocationNetwork.getLongitude();
+                latitude = String.valueOf(lat);
+                longitude = String.valueOf(longi);
+
+                Log.e("dataloc", latitude + longitude);
+                lati = latitude;
+                longit = longitude;
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("latitude", longit);
+                myEdit.putString("longitude", lati);
+
+                myEdit.apply();
+                result[0] = lat;
+                result[1] = longi;
+
+                return result;
+            }
+            else if (LocationPassive !=null)
+            {
+                double lat=LocationPassive.getLatitude();
+                double longi=LocationPassive.getLongitude();
+                latitude = String.valueOf(lat);
+                longitude = String.valueOf(longi);
+
+                Log.e("dataloc", latitude + longitude);
+                lati = latitude;
+                longit = longitude;
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("latitude", longit);
+                myEdit.putString("longitude", lati);
+
+                myEdit.apply();
+                result[0] = lat;
+                result[1] = longi;
+
+                return result;
+            }
+            else
+            {
+                Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+
+        }
+
+        return result ;
+    }
+    public static String getCityName(Context context, double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        String cityName = "";
+
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                Address address = addresses.get(0);
+                cityName = address.getLocality();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return cityName;
+    }
+
+    public static String getStateName(Context context, double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        String stateName = "";
+
+        try {
+            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (addresses != null && addresses.size() > 0) {
+                Address address = addresses.get(0);
+                stateName = address.getAdminArea();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stateName;
+    }
 
 
 }
