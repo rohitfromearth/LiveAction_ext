@@ -22,9 +22,9 @@
         android:layout_gravity="center"
         android:padding="9dp"
         android:textSize="20dp"
-        android:textStyle="bold"
+        android:textStyle="bold|italic"
 
-        android:text="of your LifeAction Points"/>
+        android:text="of your Life Action Points"/>
     <TextView       android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
@@ -32,7 +32,7 @@
         android:textSize="20dp"
         android:textStyle="bold"
 
-        android:text="Summary of your LifeActions Points"/>
+        android:text="Summary of your Life Actions Points"/>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

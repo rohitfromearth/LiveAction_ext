@@ -85,11 +85,20 @@
                 android:orientation="horizontal"
                 android:background="@drawable/spinner_background"
                 >
-                <Spinner
-                    android:id="@+id/spinner_indian_states"
+               <Spinner
+                     android:id="@+id/spinner_indian_states"
+                     android:layout_width="160dp"
+                     android:layout_height="wrap_content"
+                     android:spinnerMode="dropdown"
+                     android:textColor="@color/black"
+                     />
+                <TextView
+                    android:id="@+id/states_text"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
+                    android:text="state text"
+                    android:padding="5dp"
+                    android:textSize="15sp"
                     android:textColor="@color/black"
                     /></LinearLayout>
         </LinearLayout>////
@@ -115,6 +124,16 @@
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"
                     android:textColor="@color/black"
+                    />
+                <EditText
+                    android:id="@+id/city_text"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="City text"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
                     />
             </LinearLayout>
         </LinearLayout>////

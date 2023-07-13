@@ -27,12 +27,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:textColor="#fe7e34"
-                android:text="LifeActions"/>
+                android:text="Life Actions"/>
             <TextView
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
+                android:textColor="@color/black"
                 android:text="Connect"/>
         </LinearLayout>
         <androidx.cardview.widget.CardView
@@ -44,6 +45,7 @@
             android:layout_marginTop="20dp"
             android:layout_below="@+id/connect_layout"
 
+            app:cardBackgroundColor="#ffffff"
             android:layout_marginHorizontal="30dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
@@ -93,6 +95,7 @@
             android:layout_below="@+id/about_us"
             android:layout_above="@+id/bottom_layout"
 
+            app:cardBackgroundColor="#ffffff"
             android:layout_marginHorizontal="30dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"

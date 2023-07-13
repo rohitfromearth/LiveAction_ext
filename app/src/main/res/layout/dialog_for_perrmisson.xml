@@ -80,6 +80,7 @@
             android:layout_marginHorizontal="40dp"
             app:cardBackgroundColor="#fe7e34"
             app:cardCornerRadius="40dp"
+
             android:padding="40dp"
             app:cardElevation="20dp" >
             <TextView

@@ -98,6 +98,7 @@ public class Conn_service {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
+            Log.e("checkRes21","hi"+urlString);
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -115,7 +116,7 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
-            Log.e("Resposes", String.valueOf(responseCode));
+            Log.e("checkRes", String.valueOf(responseCode));
             String reso = urlConnection.getResponseMessage();
             Log.e("reponsemsage", reso);
 
@@ -126,7 +127,7 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                    Log.e("responseee", response);
+                    Log.e("checkRes2", response);
 
                 }
             }
@@ -134,7 +135,7 @@ public class Conn_service {
             urlConnection.disconnect();
 
         } catch (Exception e) {
-            Log.e("Exect", String.valueOf(e));
+            Log.e("checkRes3", String.valueOf(e));
         }
         return UserID;
     }

@@ -147,11 +147,17 @@ public class Fragment1 extends Fragment {
                 int tsthisday = item.getInt("usage_in_mins");
                 int average = item.getInt("last_7_day_usage_in_mins");
                 int variance = item.getInt("variance");
-                String tsthisdays = "TS for Day     " + tsthisday;
-                String averages = "Average \n (last 7 days) " + average;
+
+                String tsText = " TS this day";
+                String averageText = " Average\n(last 7 days)";
+                String varianceText = " Variance";
+
+
+                String tsthisdays = " "+ tsthisday;
+                String averages = " " + average;
                 String variences = String.valueOf(variance);
 
-                cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
+                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsthisdays, averages, variences));
 
             }
         } catch (JSONException e) {
@@ -182,7 +188,7 @@ public class Fragment1 extends Fragment {
 
                 String categoryName = item.getString("category");
                 if (!categoryName.equals("Total")) {
-                    double pievalue = item.getDouble("usage_percent");
+                    double pievalue = item.getDouble("usage_in_mins");
                     float fpi_Value = (float) pievalue;
                     Log.e("random", String.valueOf(pievalue));
                     ///pieModel = new PieModel();
@@ -206,8 +212,8 @@ public class Fragment1 extends Fragment {
         // To animate the pie chart
         pieChart.startAnimation();
 
-    }
 
+    }
 
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
 //        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
@@ -236,7 +242,7 @@ public class Fragment1 extends Fragment {
 
     private int getLogoResIdForCategory(String category) {
         switch (category) {
-            case "Emails":
+            case "Email":
                 return R.drawable.logo_mail;
             case "Games":
                 return R.drawable.logo_games;

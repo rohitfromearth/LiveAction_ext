@@ -3,16 +3,24 @@ package com.example.liveaction_ext;
 public class CardItem {
     private final int logoResId;
     private final String title;
-    private final String info1;
-    private final String info2;
-    private final String info3;
+    private final String ts_text;
+    private final String average_text;
+    private final String variance_text;
+    private final String ts_value;
+    private final String average_value;
+    private final String variance_value;
 
-    public CardItem(int logoResId, String title, String info1, String info2, String info3) {
+    public CardItem(int logoResId, String title, String ts_text, String average_text, String variance_text, String ts_value, String average_value, String variance_value) {
         this.logoResId = logoResId;
         this.title = title;
-        this.info1 = info1;
-        this.info2 = info2;
-        this.info3 = info3;
+
+        this.ts_text = ts_text;
+        this.average_text = average_text;
+        this.variance_text = variance_text;
+
+        this.ts_value = ts_value;
+        this.average_value = average_value;
+        this.variance_value = variance_value;
     }
 
     public int getLogoResId() {
@@ -24,15 +32,28 @@ public class CardItem {
         return title;
     }
 
-    public String getInfo1() {
-        return info1;
+
+    public String getTs_text() {
+        return ts_text;
     }
 
-    public String getInfo2() {
-        return info2;
+    public String getAverage_text() {
+        return average_text;
     }
 
-    public String getInfo3() {
-        return info3;
+    public String getVariance_text() {
+        return variance_text;
+    }
+
+    public String getTs_value() {
+        return ts_value;
+    }
+
+    public String getAverage_value() {
+        return average_value;
+    }
+
+    public String getVariance_value() {
+        return variance_value;
     }
 }

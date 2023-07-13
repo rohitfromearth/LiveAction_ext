@@ -1,5 +1,7 @@
 package com.example.liveaction_ext;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,14 +12,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,7 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Manage_screen extends AppCompatActivity {
+public class Manage_screen extends Fragment {
     Conn_service servic = new Conn_service();
     TextView tv_commnt;
     ArrayList<Integer> valuesList = new ArrayList<>(); // Create an ArrayList to store the values
@@ -57,44 +63,43 @@ public class Manage_screen extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private float initialTouchY;
 
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_screen);
-        btn_sv = findViewById(R.id.save_btn);
-        tv_btn = findViewById(R.id.savetargt);
-        tableLayout = findViewById(R.id.tableLayout);
-        floatingViewContainer = findViewById(R.id.floatingViewContainer);
-        tv_commnt = findViewById(R.id.comment_live_act);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
+        btn_sv = view.findViewById(R.id.save_btn);
+        tv_btn = view.findViewById(R.id.savetargt);
+        tableLayout = view.findViewById(R.id.tableLayout);
+        floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
+        tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
         FirebaseUser use = mAuth.getCurrentUser();
         Log.e("mAuth4", String.valueOf(use));
+
         if (use != null) {
             use.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                 @Override
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         firebaseToke = task.getResult().getToken();
-                        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MySharedPref", MODE_PRIVATE);
                         SharedPreferences.Editor myEdit = sharedPreferences.edit();
                         myEdit.putString("firebaseToken", firebaseToke);
                         myEdit.apply();
                     }
-
-
                 }
-
             });
-
         }
-        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences sh = getContext().getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
 
 
         // Inflate the floating view layout
-        LayoutInflater inflater = LayoutInflater.from(this);
+        inflater = LayoutInflater.from(getContext());
         floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
 
         // Add touch listener to make the view movable
@@ -120,6 +125,7 @@ public class Manage_screen extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
 
 
         btn_sv.setOnClickListener(new View.OnClickListener() {
@@ -180,10 +186,16 @@ public class Manage_screen extends AppCompatActivity {
                     boolean validate = validationonper(valuesList);
                     if (validate) {
                         addData(jsonBody);
-                        startActivity(new Intent(Manage_screen.this, Achieve.class));
+                        //startActivity(new Intent(getContext(), Achieve.class));
+                        Fragment go_next = new Achieve();
+                        FragmentManager fragmentManager = getParentFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+                        actionBar.setTitle("Achievements");
+                       // getActivity().getActionBar().setTitle("Achievements");
                     } else {
                         valuesList.clear();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Manage_screen.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                         // Set the title and message for the dialog
                         builder.setTitle("Validation Error");
@@ -204,10 +216,17 @@ public class Manage_screen extends AppCompatActivity {
 
 
                 } else {
-                    startActivity(new Intent(Manage_screen.this, Achieve.class));
+                    //startActivity(new Intent(getContext(), Achieve.class));
+                    Fragment go_next = new Achieve();
+                    FragmentManager fragmentManager = getParentFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                    ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+                    actionBar.setTitle("Achievements");
+                   // getActivity().getActionBar().setTitle("Achievements");
                 }
             }
         });
+        return view;
     }
     private boolean onPostExecute(String result) {
         boolean editable = false;
@@ -319,4 +338,17 @@ public class Manage_screen extends AppCompatActivity {
             }
         }
     }
+
+    /*public void onClick(final View v) { //check for what button is pressed
+        switch (v.getId()) {
+            case R.id.save_btn:
+                Fragment go_next = new Manage_screen();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                //getSupportActionBar().setTitle("Manage");
+                break;
+
+        }
+    }
+    */
 }

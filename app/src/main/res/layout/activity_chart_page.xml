@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_marginHorizontal="12dp"
+    android:paddingHorizontal="12dp"
     android:background="#F6F0E8"
     android:layout_height="wrap_content">
+    <!-- The ActionBar displayed at the top -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:gravity="center">
+
     <TextView android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center"

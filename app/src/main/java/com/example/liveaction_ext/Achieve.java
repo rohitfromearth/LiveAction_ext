@@ -1,5 +1,7 @@
 package com.example.liveaction_ext;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,13 +9,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,7 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Achieve extends AppCompatActivity {
+public class Achieve extends Fragment {
     CardView rede, congrats_tv;
     Conn_service servic = new Conn_service();
     int uid_z;
@@ -44,11 +50,13 @@ public class Achieve extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_achieve);
-        rede = findViewById(R.id.reddem_btn);
-        tableLayout = findViewById(R.id.tableLayout);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        View view = inflater.inflate(R.layout.activity_achieve, container, false);
+
+        rede = view.findViewById(R.id.reddem_btn);
+        tableLayout = view.findViewById(R.id.tableLayout);
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
         FirebaseUser use = mAuth.getCurrentUser();
@@ -61,7 +69,7 @@ public class Achieve extends AppCompatActivity {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
                                 firebaseToke = task.getResult().getToken();
-                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("MySharedPref", MODE_PRIVATE);
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
@@ -74,20 +82,20 @@ public class Achieve extends AppCompatActivity {
 
         }
 
-        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences sh = getContext().getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
         firebaseToken = sh.getString("firebaseToken", "");
 
-        congrats_tv = findViewById(R.id.congrats_tv);
-        tv_red_points = findViewById(R.id.earn_number);
+        congrats_tv = view.findViewById(R.id.congrats_tv);
+        tv_red_points = view.findViewById(R.id.earn_number);
         String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
         congrats_tv.setVisibility(View.GONE);
         onPostExecute(res);
-        floatingViewContainer = findViewById(R.id.floatingViewContainer);
+        floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
 
         // Inflate the floating view layout
-        LayoutInflater inflater = LayoutInflater.from(this);
+        inflater = LayoutInflater.from(getContext());
         floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
 
         // Add touch listener to make the view movable
@@ -101,10 +109,16 @@ public class Achieve extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(Achieve.this, Reedeem.class));
+                Fragment go_next = new Reedeem();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+                actionBar.setTitle("Redeem");
             }
         });
 
+
+        return view;
     }
 
     private void onPostExecute(String result) {

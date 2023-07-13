@@ -25,12 +25,13 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:textColor="#fe7e34"
-                android:text="LifeActions"/>
+                android:text="Life Actions"/>
             <TextView
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
+                android:textColor="@color/black"
                 android:text="FAQ"/>
         </LinearLayout>
         <androidx.cardview.widget.CardView
@@ -44,6 +45,8 @@
             android:layout_marginHorizontal="30dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
+
+            app:cardBackgroundColor="#ffffff"
             tools:ignore="NotSibling">
             <LinearLayout
                 android:layout_width="match_parent"

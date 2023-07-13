@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">LiveAction_ext</string>
     <string name="hyperlink_gmail"><a href="lifeactionstrack@gmail.com">lifeactionstrack</a></string>
+
+    <string name="instruction_one">After verifying your mobile number, the Usage Data Access page will open.
+Please switch on the button or LifeActions app.</string>
+    <string name="instruction_two">After that please click on Usage Stat Permission button below.</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+    <string name="dialog_option_yes">yes</string>
+    <string name="dialog_msg">msg</string>
+    <string name="dialog_option_no">no</string>
+
     <string-array name="Gender">
         <item>Gender</item>
         <item>Male</item>

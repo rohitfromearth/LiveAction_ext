@@ -156,12 +156,17 @@ public class Fragment2 extends Fragment {
                 int tsthisday = item.getInt("usage_in_mins");
                 int average = item.getInt("last_4_week_usage_in_mins");
                 int variance = item.getInt("variance");
-                String tsthisdays = "TS this week  " + tsthisday;
-                String averages = "Average\n(last 4 weeks)  " + average;
+
+                String tsText = " TS this week";
+                String averageText = " Average\n(last 4 weeks)";
+                String varianceText = " Variance";
+
+                String tsthisdays = " " + tsthisday;
+                String averages = " " + average;
                 String variences = String.valueOf(variance);
 
 
-                cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
+                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
 //                addTableRow(categoryName, lastWeek, cumulative,pointslastweek,pointscumm);
             }
         } catch (JSONException e) {
@@ -195,7 +200,7 @@ public class Fragment2 extends Fragment {
 
     private int getLogoResIdForCategory(String category) {
         switch (category) {
-            case "Emails":
+            case "Email":
                 return R.drawable.logo_mail;
             case "Games":
                 return R.drawable.logo_games;

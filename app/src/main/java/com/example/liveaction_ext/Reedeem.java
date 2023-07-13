@@ -1,5 +1,7 @@
 package com.example.liveaction_ext;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -9,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Reedeem extends AppCompatActivity {
+public class Reedeem extends Fragment {
     Conn_service conn = new Conn_service();
 
     String firebaseToken = "";
@@ -48,22 +52,23 @@ public class Reedeem extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reedeem);
-        total_pnt = findViewById(R.id.tv_Total_pnt);
-        pnt_redmed = findViewById(R.id.tv_pnt_redmed);
-        pnt_avalble = findViewById(R.id.tv_pont_avalbl);
-        count_txt = findViewById(R.id.tv_count);
-        dash_bt = findViewById(R.id.dashbord_btn);
-        achiv_bt = findViewById(R.id.achev_btn);
-        minus_count = findViewById(R.id.tv_minus_count);
-        plus_count = findViewById(R.id.tv_plus_count);
-        achi_points = findViewById(R.id.achi_points);
-        reed_btn = findViewById(R.id.Reedem_btn);
-        txt_hstry = findViewById(R.id.red_histry);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
 
-        dialog = new Dialog(Reedeem.this);
+        View view = inflater.inflate(R.layout.activity_reedeem, container, false);
+        total_pnt = view.findViewById(R.id.tv_Total_pnt);
+        pnt_redmed = view.findViewById(R.id.tv_pnt_redmed);
+        pnt_avalble = view.findViewById(R.id.tv_pont_avalbl);
+        count_txt = view.findViewById(R.id.tv_count);
+        dash_bt = view.findViewById(R.id.dashbord_btn);
+        achiv_bt = view.findViewById(R.id.achev_btn);
+        minus_count = view.findViewById(R.id.tv_minus_count);
+        plus_count = view.findViewById(R.id.tv_plus_count);
+        achi_points = view.findViewById(R.id.achi_points);
+        reed_btn = view.findViewById(R.id.Reedem_btn);
+        txt_hstry = view.findViewById(R.id.red_histry);
+
+        dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_for_reedeem);
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -85,7 +90,8 @@ public class Reedeem extends AppCompatActivity {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
                                 firebaseToke = task.getResult().getToken();
-                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("MySharedPref", MODE_PRIVATE);
+
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
@@ -97,7 +103,7 @@ public class Reedeem extends AppCompatActivity {
                     });
 
         }
-        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        SharedPreferences sh = getContext().getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
 
@@ -111,7 +117,7 @@ public class Reedeem extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Reedeem.this, Chart_page.class));
+                startActivity(new Intent(getContext(), Chart_page.class));
             }
         });
         achiv_bt.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +130,7 @@ public class Reedeem extends AppCompatActivity {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(Reedeem.this, Achieve.class));
+                startActivity(new Intent(getContext(), Achieve.class));
             }
         });
         String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken);
@@ -180,7 +186,7 @@ public class Reedeem extends AppCompatActivity {
                 } else {
                     reed_btn.setEnabled(false);
                     reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Reedeem.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                     // Set the title and message for the dialog
                     builder.setTitle("Incorrect Reedeemtion:");
@@ -219,7 +225,7 @@ public class Reedeem extends AppCompatActivity {
                 } else {
                     reed_btn.setEnabled(false);
                     reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Reedeem.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                     // Set the title and message for the dialog
                     builder.setTitle("Incorrect Redemtion:");
@@ -267,6 +273,7 @@ public class Reedeem extends AppCompatActivity {
                     jsonBody.put("userId", uid);
                     jsonBody.put("count", counter);
                     String uid = conn.datasender(jsonBody, "/usageStats/redemption", firebaseToken);
+                    Log.e("redeemclick","data==="+uid);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -274,6 +281,7 @@ public class Reedeem extends AppCompatActivity {
         });
 
 
+        return view;
     }
 
     private int decreaseCounter() {

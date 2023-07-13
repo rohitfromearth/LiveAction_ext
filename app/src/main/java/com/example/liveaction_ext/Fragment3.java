@@ -141,7 +141,6 @@ public class Fragment3 extends Fragment {
     private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
 
-
         try {
             JSONObject jsonObject = new JSONObject(res);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -154,11 +153,16 @@ public class Fragment3 extends Fragment {
                 int tsthisday = item.getInt("usage_in_mins");
                 int average = item.getInt("last_month_in_mins");
                 int variance = item.getInt("variance");
-                String tsthisdays = "TS this Month  " + tsthisday;
-                String averages = "Average\n(last month)  " + average;
+
+                String tsText = " TS this month";
+                String averageText = " Average\n(last month)";
+                String varianceText = " Variance";
+
+                String tsthisdays = " " + tsthisday;
+                String averages = " " + average;
                 String variences = String.valueOf(variance);
 
-                cardItems.add(new CardItem(logoResId, categoryName, tsthisdays, averages, variences));
+                cardItems.add(new CardItem(logoResId, categoryName,  tsText, averageText, varianceText, tsthisdays, averages, variences));
 
             }
         } catch (JSONException e) {
@@ -189,7 +193,7 @@ public class Fragment3 extends Fragment {
 
     private int getLogoResIdForCategory(String category) {
         switch (category) {
-            case "Emails":
+            case "Email":
                 return R.drawable.logo_mail;
             case "Games":
                 return R.drawable.logo_games;

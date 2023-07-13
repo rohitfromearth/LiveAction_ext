@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
 
     app:cardBackgroundColor="#E2DAC4"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="0dp"
     android:gravity="center"
 
     android:paddingVertical="20dp"

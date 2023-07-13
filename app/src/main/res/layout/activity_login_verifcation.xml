@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50pt"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
 
         android:text="Verification"
@@ -21,13 +21,16 @@
         android:textStyle="bold" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:paddingHorizontal="10dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         android:text="May i know your mobile number"
     />
         <LinearLayout
@@ -131,11 +134,34 @@ android:hint="OTP"
 <!--            android:textStyle="bold"-->
 <!--            android:layout_gravity="center"/>-->
 <!--    </androidx.cardview.widget.CardView>-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="Instructions:"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:text="@string/instruction_one"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:text="@string/instruction_two"
+            />
         <androidx.cardview.widget.CardView
             android:id="@+id/verifybtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
+            android:layout_marginTop="30dp"
             android:layout_marginHorizontal="40dp"
 
             app:cardBackgroundColor="#fe7e34"
@@ -146,6 +172,28 @@ android:hint="OTP"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Verify"
+
+                android:textColor="@color/white"
+                android:layout_marginVertical="10dp"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/permission_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="40dp"
+
+            app:cardBackgroundColor="#fe7e34"
+            app:cardCornerRadius="20dp"
+            android:paddingVertical="20dp"
+            app:cardElevation="20dp" >
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Usage Stat Permission"
 
                 android:textColor="@color/white"
                 android:layout_marginVertical="10dp"

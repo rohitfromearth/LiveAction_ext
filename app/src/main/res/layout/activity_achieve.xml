@@ -24,10 +24,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:textColor="#fe7e34"
+                android:textColor="@color/black"
                 android:text="Your"/>
             <TextView
                 android:textStyle="bold"
+                android:textColor="#fe7e34"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
@@ -59,7 +60,7 @@
                         android:gravity="center"
                         android:textColor="@color/black"
                         android:background="@drawable/tablehead"
-                        android:text="LiveActions"
+                        android:text="Live Actions"
                         android:textStyle="bold"/>
                     <TextView
 

@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -44,15 +46,19 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Login_verifcation extends AppCompatActivity {
     private static final int REQUEST_LOCATION = 1;
-    CardView btn_verify, perm, usaegstat, Accessibilty, sendotp;
+    CardView btn_verify, perm, usaegstat, usaegstat1, Accessibilty, Accessibilty1, sendotp, permission_usage;
     String phone;
-    ImageButton close;
+    ImageButton close, close1;
     Calendar c;
     String end = "";
     Date currentTime;
@@ -60,10 +66,13 @@ public class Login_verifcation extends AppCompatActivity {
     String latitude, longitude, lati, longit;
     EditText edtPhone, edtOTP;
     Conn_service servic = new Conn_service();
-    Dialog dialog;
+    Dialog dialog, dialog1;
     private String verificationId;
     private FirebaseAuth mAuth;
     private FirebaseAuthSettings firebaseAuthSettings;
+    boolean is_value;
+
+    private String city_fromLocation = "", state_fromLocation = "";
     // callback method is called on Phone auth provider.
     private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
@@ -139,10 +148,14 @@ public class Login_verifcation extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         btn_verify = findViewById(R.id.verifybtn);
         sendotp = findViewById(R.id.sendotp);
+        permission_usage = findViewById(R.id.permission_button);
 //perm=findViewById(R.id.Permissions);
         edtOTP = findViewById(R.id.editTextOtp);
         edtPhone = findViewById(R.id.editTextPhone);
 
+
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        end = sh.getString("endpt", "");
 
         dialog = new Dialog(Login_verifcation.this);
         dialog.setContentView(R.layout.dialog_for_perrmisson);
@@ -151,13 +164,77 @@ public class Login_verifcation extends AppCompatActivity {
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
 
-        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-        end = sh.getString("endpt", "");
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        String locat = locationfinder();
+
+        getLocation();
+
+        usaegstat = dialog.findViewById(R.id.usaegstat_perm);
+        Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
+        close = dialog.findViewById(R.id.close_permission);
+        permission_usage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Dialog dialog1 = new Dialog(Login_verifcation.this);
+                dialog1.setContentView(R.layout.dialog_for_perrmisson);
+                dialog1.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog1.setCancelable(false);
+                dialog1.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog1.show();
+
+                usaegstat1 = dialog1.findViewById(R.id.usaegstat_perm);
+                Accessibilty1 = dialog1.findViewById(R.id.accessibilty_perm);
+                close1 = dialog1.findViewById(R.id.close_permission);
+
+                close1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                view.animate().alpha(1f).setDuration(200);
+                            }
+                        }).start();
+                        dialog1.dismiss();
+                    }
+                });
+                usaegstat1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                view.animate().alpha(1f).setDuration(200);
+                            }
+                        }).start();
+                        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+
+                        // Disable button2
+                        Accessibilty1.setEnabled(usaegstat1.isEnabled());  // Enable button2
+                    }
+                });
+                Accessibilty1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                view.animate().alpha(1f).setDuration(200);
+                            }
+                        }).start();
+                        startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+                    }
+                });
+
+            }
+        });
+
+
         sendotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,17 +308,13 @@ public class Login_verifcation extends AppCompatActivity {
                     // if OTP field is not empty calling
                     // method to verify the OTP.
 
-                    verifyCode(edtOTP.getText().toString());
+
+                        verifyCode(edtOTP.getText().toString());
+
 
                 }
             }
         });
-
-
-        usaegstat = dialog.findViewById(R.id.usaegstat_perm);
-        Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
-        close = dialog.findViewById(R.id.close_permission);
-
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -340,8 +413,34 @@ public class Login_verifcation extends AppCompatActivity {
                                                             Log.e("mauth", String.valueOf(mAuth));
                                                             startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                         } else {
-                                                            startActivity(new Intent(Login_verifcation.this, Formpage.class));
-                                                        }
+
+
+                                                            if(Objects.equals(city_fromLocation, "") && Objects.equals(state_fromLocation, "")){
+                                                                 is_value = false;
+                                                            }
+                                                            else{
+                                                                is_value = true;
+                                                            }
+
+
+                                                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                                                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                                                myEdit.putBoolean("locat", is_value);
+                                                                myEdit.putString("latitude", longit);
+                                                                myEdit.putString("longitude", lati);
+
+
+                                                                myEdit.putString("city", city_fromLocation);
+                                                                myEdit.putString("state", state_fromLocation);
+
+                                                                Log.e("city","city name=========-"+city_fromLocation);
+                                                            Log.e("city","city name=========-"+state_fromLocation);
+                                                            Log.e("city","city name=========-"+is_value);
+
+                                                                startActivity(new Intent(Login_verifcation.this, Formpage.class));
+
+
+                                                            }
                                                     } else {
 
                                                         btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
@@ -465,7 +564,7 @@ public class Login_verifcation extends AppCompatActivity {
 
     }
 
-    public String locationfinder() {
+   /* public String locationfinder() {
 
         //Check Permissions again
 
@@ -489,6 +588,7 @@ public class Login_verifcation extends AppCompatActivity {
                 Log.e("dataloc", latitude + longitude);
                 lati = latitude;
                 longit = longitude;
+
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("latitude", longit);
@@ -538,6 +638,114 @@ public class Login_verifcation extends AppCompatActivity {
         }
 
         return latitude + longitude;
-    }
+    }*/
+   private boolean getLocation() {
+       if (ActivityCompat.checkSelfPermission( Login_verifcation.this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+               Login_verifcation.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+       {
+           ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+       } else {
+
+           Location lGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+           Location netPro = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+           Location pasee = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+
+           if (lGps != null) {
+               double lat = lGps.getLatitude();
+               double longi = lGps.getLongitude();
+               latitude = String.valueOf(lat);
+               longitude = String.valueOf(longi);
+
+               Geocoder geocoder = new Geocoder(
+                       Login_verifcation.this, Locale
+                       .getDefault());
+
+               List<Address> addresses;
+               try {
+
+                   addresses = geocoder.getFromLocation(lat,
+                           longi, 1);
+                   Log.e("addresstag", "addresses ====" + addresses);
+                   String cityName = addresses.get(0).getAddressLine(0);
+                   city_fromLocation = addresses.get(0).getLocality();
+                   state_fromLocation = addresses.get(0).getAdminArea();
+
+
+                   Log.e("citytag", "CityName : ====" + city_fromLocation);
+
+               } catch (IOException e) {
+
+                   e.printStackTrace();
+               }
+
+           } else if(netPro != null){
+               double lat = netPro.getLatitude();
+               double longi = netPro.getLongitude();
+               latitude = String.valueOf(lat);
+               longitude = String.valueOf(longi);
+
+               Geocoder geocoder = new Geocoder(
+                       Login_verifcation.this, Locale
+                       .getDefault());
+
+               List<Address> addresses;
+               try {
+
+                   addresses = geocoder.getFromLocation(lat,
+                           longi, 1);
+                   Log.e("addresstag", "addresses ====" + addresses);
+                   String cityName = addresses.get(0).getAddressLine(0);
+                   city_fromLocation = addresses.get(0).getLocality();
+                   state_fromLocation = addresses.get(0).getAdminArea();
+
+
+                   Log.e("citytag", "CityName : ====" + city_fromLocation);
+
+               } catch (IOException e) {
+
+                   e.printStackTrace();
+               }
+           }
+           else if(pasee != null){
+               double lat = pasee.getLatitude();
+               double longi = pasee.getLongitude();
+               latitude = String.valueOf(lat);
+               longitude = String.valueOf(longi);
+
+               Toast.makeText(getApplicationContext(), "lat"+lat, Toast.LENGTH_LONG);
+               Log.e("paseelat","lat"+lat);
+
+               Geocoder geocoder = new Geocoder(
+                       Login_verifcation.this, Locale
+                       .getDefault());
+
+               List<Address> addresses;
+               try {
+
+                   addresses = geocoder.getFromLocation(lat,
+                           longi, 1);
+                   Log.e("addresstag", "addresses ====" + addresses);
+                   String cityName = addresses.get(0).getAddressLine(0);
+                   city_fromLocation = addresses.get(0).getLocality();
+                   state_fromLocation = addresses.get(0).getAdminArea();
+
+                   Log.e("citytag", "CityName : ====" + city_fromLocation);
+
+               } catch (IOException e) {
+
+                   e.printStackTrace();
+               }
+
+           }
+           else{
+               Toast.makeText(this, "not find location.", Toast.LENGTH_SHORT).show();
+           }
+
+
+       }
+
+       return true;
+   }////////////end method
+
 
 }
