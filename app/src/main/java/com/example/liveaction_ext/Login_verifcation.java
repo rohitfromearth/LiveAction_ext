@@ -413,13 +413,12 @@ public class Login_verifcation extends AppCompatActivity {
                                                             Log.e("mauth", String.valueOf(mAuth));
                                                             startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                         } else {
-
-
+                                                            boolean is_val = getLocation();
                                                             if(Objects.equals(city_fromLocation, "") && Objects.equals(state_fromLocation, "")){
-                                                                 is_value = false;
+                                                                 is_val = false;
                                                             }
                                                             else{
-                                                                is_value = true;
+                                                                is_val = true;
                                                             }
 
 

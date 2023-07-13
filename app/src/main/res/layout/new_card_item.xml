@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background"
+    android:padding="1dp"
+    android:layout_margin="5dp"
+    android:elevation="10dp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:text="Title"
+        android:textColor="#424140"
+        />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/ts_text"
+            android:layout_weight="1.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text=""
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp"
+            />
+
+        <TextView
+            android:id="@+id/ts_value"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginRight="2dp"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text="Info 1"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/average_text"
+            android:layout_weight="1.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text=""
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp"
+            />
+
+        <TextView
+            android:id="@+id/average_value"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginRight="2dp"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text="Info 1"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/variance_text"
+            android:layout_weight="1.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text=""
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp"
+            />
+
+        <TextView
+            android:id="@+id/variance_value"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginRight="2dp"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:text="Info 1"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="4dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>
