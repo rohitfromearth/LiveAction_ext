@@ -55,7 +55,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Login_verifcation extends AppCompatActivity {
-    private static final int REQUEST_LOCATION = 1;
+
     CardView btn_verify, perm, usaegstat, usaegstat1, Accessibilty, Accessibilty1, sendotp, permission_usage;
     String phone;
     ImageButton close, close1;
@@ -63,16 +63,14 @@ public class Login_verifcation extends AppCompatActivity {
     String end = "";
     Date currentTime;
     LocationManager locationManager;
-    String latitude, longitude, lati, longit;
+
     EditText edtPhone, edtOTP;
     Conn_service servic = new Conn_service();
     Dialog dialog, dialog1;
     private String verificationId;
     private FirebaseAuth mAuth;
     private FirebaseAuthSettings firebaseAuthSettings;
-    boolean is_value;
 
-    private String city_fromLocation = "", state_fromLocation = "";
     // callback method is called on Phone auth provider.
     private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
@@ -170,7 +168,7 @@ public class Login_verifcation extends AppCompatActivity {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        getLocation();
+
 
         usaegstat = dialog.findViewById(R.id.usaegstat_perm);
         Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
@@ -367,7 +365,6 @@ public class Login_verifcation extends AppCompatActivity {
     }
 
     private boolean hasUsageAccessPermission() {
-
         try {
             PackageManager packageManager = getPackageManager();
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
@@ -377,7 +374,6 @@ public class Login_verifcation extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
-
     }
 
     private void signInWithCredential(PhoneAuthCredential credential) {
@@ -413,28 +409,8 @@ public class Login_verifcation extends AppCompatActivity {
                                                             Log.e("mauth", String.valueOf(mAuth));
                                                             startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                         } else {
-                                                            boolean is_val = getLocation();
-                                                            if(Objects.equals(city_fromLocation, "") && Objects.equals(state_fromLocation, "")){
-                                                                 is_val = false;
-                                                            }
-                                                            else{
-                                                                is_val = true;
-                                                            }
 
 
-                                                                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                                                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                                                myEdit.putBoolean("locat", is_value);
-                                                                myEdit.putString("latitude", longit);
-                                                                myEdit.putString("longitude", lati);
-
-
-                                                                myEdit.putString("city", city_fromLocation);
-                                                                myEdit.putString("state", state_fromLocation);
-
-                                                                Log.e("city","city name=========-"+city_fromLocation);
-                                                            Log.e("city","city name=========-"+state_fromLocation);
-                                                            Log.e("city","city name=========-"+is_value);
 
                                                                 startActivity(new Intent(Login_verifcation.this, Formpage.class));
 
@@ -563,188 +539,9 @@ public class Login_verifcation extends AppCompatActivity {
 
     }
 
-   /* public String locationfinder() {
-
-        //Check Permissions again
-
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Login_verifcation.this,
-
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]
-                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
-            Location LocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Location LocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            Location LocationPassive = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-
-            if (LocationGps != null) {
-                double lat = LocationGps.getLatitude();
-                double longi = LocationGps.getLongitude();
-
-                latitude = String.valueOf(lat);
-                longitude = String.valueOf(longi);
-
-                Log.e("dataloc", latitude + longitude);
-                lati = latitude;
-                longit = longitude;
-
-                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("latitude", longit);
-                myEdit.putString("longitude", lati);
-
-                myEdit.apply();
 
 
-                //showLocationTxt.setText("Your Location:"+"\n"+"Latitude= "+latitude+"\n"+"Longitude= "+longitude);
-            } else if (LocationNetwork != null) {
-                double lat = LocationNetwork.getLatitude();
-                double longi = LocationNetwork.getLongitude();
 
-                latitude = String.valueOf(lat);
-                longitude = String.valueOf(longi);
-                Log.e("dataloc2", latitude + longitude);
-                lati = latitude;
-                longit = longitude;
-                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("latitude", longit);
-                myEdit.putString("longitude", lati);
-
-                myEdit.apply();
-
-
-                //showLocationTxt.setText("Your Location:"+"\n"+"Latitude= "+latitude+"\n"+"Longitude= "+longitude);
-            } else if (LocationPassive != null) {
-                double lat = LocationPassive.getLatitude();
-                double longi = LocationPassive.getLongitude();
-
-                latitude = String.valueOf(lat);
-                longitude = String.valueOf(longi);
-                Log.e("dataloc3", latitude + longitude);
-                lati = latitude;
-                longit = longitude;
-                SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("latitude", longit);
-                myEdit.putString("longitude", lati);
-                myEdit.apply();
-                     } else {
-                Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
-            }
-
-
-        }
-
-        return latitude + longitude;
-    }*/
-   private boolean getLocation() {
-       if (ActivityCompat.checkSelfPermission( Login_verifcation.this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-               Login_verifcation.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-       {
-           ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-       } else {
-
-           Location lGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-           Location netPro = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-           Location pasee = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-
-           if (lGps != null) {
-               double lat = lGps.getLatitude();
-               double longi = lGps.getLongitude();
-               latitude = String.valueOf(lat);
-               longitude = String.valueOf(longi);
-
-               Geocoder geocoder = new Geocoder(
-                       Login_verifcation.this, Locale
-                       .getDefault());
-
-               List<Address> addresses;
-               try {
-
-                   addresses = geocoder.getFromLocation(lat,
-                           longi, 1);
-                   Log.e("addresstag", "addresses ====" + addresses);
-                   String cityName = addresses.get(0).getAddressLine(0);
-                   city_fromLocation = addresses.get(0).getLocality();
-                   state_fromLocation = addresses.get(0).getAdminArea();
-
-
-                   Log.e("citytag", "CityName : ====" + city_fromLocation);
-
-               } catch (IOException e) {
-
-                   e.printStackTrace();
-               }
-
-           } else if(netPro != null){
-               double lat = netPro.getLatitude();
-               double longi = netPro.getLongitude();
-               latitude = String.valueOf(lat);
-               longitude = String.valueOf(longi);
-
-               Geocoder geocoder = new Geocoder(
-                       Login_verifcation.this, Locale
-                       .getDefault());
-
-               List<Address> addresses;
-               try {
-
-                   addresses = geocoder.getFromLocation(lat,
-                           longi, 1);
-                   Log.e("addresstag", "addresses ====" + addresses);
-                   String cityName = addresses.get(0).getAddressLine(0);
-                   city_fromLocation = addresses.get(0).getLocality();
-                   state_fromLocation = addresses.get(0).getAdminArea();
-
-
-                   Log.e("citytag", "CityName : ====" + city_fromLocation);
-
-               } catch (IOException e) {
-
-                   e.printStackTrace();
-               }
-           }
-           else if(pasee != null){
-               double lat = pasee.getLatitude();
-               double longi = pasee.getLongitude();
-               latitude = String.valueOf(lat);
-               longitude = String.valueOf(longi);
-
-               Toast.makeText(getApplicationContext(), "lat"+lat, Toast.LENGTH_LONG);
-               Log.e("paseelat","lat"+lat);
-
-               Geocoder geocoder = new Geocoder(
-                       Login_verifcation.this, Locale
-                       .getDefault());
-
-               List<Address> addresses;
-               try {
-
-                   addresses = geocoder.getFromLocation(lat,
-                           longi, 1);
-                   Log.e("addresstag", "addresses ====" + addresses);
-                   String cityName = addresses.get(0).getAddressLine(0);
-                   city_fromLocation = addresses.get(0).getLocality();
-                   state_fromLocation = addresses.get(0).getAdminArea();
-
-                   Log.e("citytag", "CityName : ====" + city_fromLocation);
-
-               } catch (IOException e) {
-
-                   e.printStackTrace();
-               }
-
-           }
-           else{
-               Toast.makeText(this, "not find location.", Toast.LENGTH_SHORT).show();
-           }
-
-
-       }
-
-       return true;
-   }////////////end method
 
 
 }
