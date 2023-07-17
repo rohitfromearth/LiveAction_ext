@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean isLocationEnabled = isLocationServicesEnabled(getApplicationContext());
 
-        getSupportActionBar().setTitle("Lifeactions");
+        getSupportActionBar().setTitle("Life Actions");
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},4);
 //        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);

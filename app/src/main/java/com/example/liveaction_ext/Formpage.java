@@ -111,11 +111,8 @@ EditText Et_name,Et_email;
 
 //
 //        textView = findViewById(R.id.change_text);
-        SharedPreferences sharedPreferences = getSharedPreferences("myKey", MODE_PRIVATE);
-        String value = sharedPreferences.getString("value","");
-        String valueState = sharedPreferences.getString("valueState","");
-        enabled = sharedPreferences.getBoolean("enabled",val);
 
+        getSupportActionBar().setTitle("Life Actions");
         state_text = findViewById(R.id.states_text);
         state_text.setVisibility(View.GONE);
 
@@ -539,7 +536,10 @@ EditText Et_name,Et_email;
         stateAdapter = ArrayAdapter.createFromResource(this,R.array.array_indian_states, R.layout.spinner_layout);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(stateAdapter);
-
+        SharedPreferences sharedPreferences = getSharedPreferences("myKey", MODE_PRIVATE);
+        String value = sharedPreferences.getString("value","");
+        String valueState = sharedPreferences.getString("valueState","");
+        enabled = sharedPreferences.getBoolean("enabled",val);
         if(enabled){
             stateSpinner.setVisibility(View.GONE);
             districtSpinner.setVisibility(View.GONE);

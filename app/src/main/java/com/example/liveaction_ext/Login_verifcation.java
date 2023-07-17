@@ -74,8 +74,8 @@ public class Login_verifcation extends AppCompatActivity {
     private FirebaseAuth mAuth;
     double[] locat;
     String lati, longit;
-    String latitude, longitude, cityName="", city;
-    String stateName="", state;
+    String latitude="", longitude="", cityName="", city="";
+    String stateName="", state="";
     int PERMISSION_ID = 44;
     Context context;
     Location lGps, netPro, pasee;
@@ -161,7 +161,7 @@ public class Login_verifcation extends AppCompatActivity {
 
 
         //locat= locationfinder();
-        getSupportActionBar().setTitle("Lifeactions");
+        getSupportActionBar().setTitle("Life Actions");
         btn_verify = findViewById(R.id.verifybtn);
         sendotp = findViewById(R.id.sendotp);
         permission_usage = findViewById(R.id.permission_button);
@@ -172,7 +172,8 @@ public class Login_verifcation extends AppCompatActivity {
 
         //showSettingsAlert();
         locationManager = (LocationManager) getSystemService(context.LOCATION_SERVICE);
-       getLocation();
+String data =getLocation();
+Log.e("ghi",data);
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         end = sh.getString("endpt", "");
@@ -423,24 +424,27 @@ public class Login_verifcation extends AppCompatActivity {
                                                             Log.e("mauth", String.valueOf(mAuth));
                                                             startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                         } else {
+                                                            String data =getLocation();
+                                                            Log.e("ghi",data);
 
-                                                            String locString = getLocation();
-                                                            Log.e("locString", "locString==="+locString);
-                                                            if(!lgps_enabled || !netpro_enabled || !passive_enabled){
-                                                             getLocation();
-                                                            }else{
-
-                                                                Log.e("locString", "locString==="+locString);
+                                                            boolean is_val;
+                                                            if(Objects.equals(city, "") && Objects.equals(state, "")){
+                                                                is_val = false;
+                                                            }
+                                                            else{
+                                                                is_val = true;
+                                                            }
+Log.e("datastrem",city+latitude);
                                                                 SharedPreferences sharedPref = getSharedPreferences("myKey", MODE_PRIVATE);
                                                                 SharedPreferences.Editor editor = sharedPref.edit();
                                                                 editor.putString("value", city);
                                                                 editor.putString("valueState", state);
                                                                 editor.putString("longitude", longitude);
                                                                 editor.putString("latitude", latitude);
-                                                                editor.putBoolean("enabled", true);
+                                                                editor.putBoolean("enabled", is_val);
                                                                 editor.apply();
                                                                 startActivity(new Intent(Login_verifcation.this, Formpage.class));
-                                                            }
+
 
                                                           /* double log1=locat[0];
                                                             double log2=locat[1];
@@ -585,11 +589,12 @@ public class Login_verifcation extends AppCompatActivity {
 
 //code start location
 private String getLocation() {
-    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
+        Log.e("ghegf","ggyy");
+    if (ActivityCompat.checkSelfPermission(   this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Login_verifcation.this,android.Manifest.permission.ACCESS_COARSE_LOCATION) !=PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(this,new String[]
+                {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
     }else {
+        Log.e("gh","ggybhvy");
         lgps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         netpro_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         passive_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -617,7 +622,7 @@ private String getLocation() {
                 String cityName = addresses.get(0).getAddressLine(0);
                 city = addresses.get(0).getLocality();
                 state = addresses.get(0).getAdminArea();
-
+Log.e("city", city);
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -641,7 +646,7 @@ private String getLocation() {
                 String cityName = addresses.get(0).getAddressLine(0);
                 city = addresses.get(0).getLocality();
                 state = addresses.get(0).getAdminArea();
-
+                Log.e("city", city);
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -665,7 +670,7 @@ private String getLocation() {
                 String cityName = addresses.get(0).getAddressLine(0);
                 city = addresses.get(0).getLocality();
                 state = addresses.get(0).getAdminArea();
-
+                Log.e("city", city);
             } catch (IOException e) {
 
                 e.printStackTrace();

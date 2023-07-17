@@ -110,7 +110,7 @@ public class Fragment1 extends Fragment {
                 List<CardItem> cardItems = createCardItems(resultdummy);
                 cardAdapter = new CardAdapter(cardItems, requireContext());
                 recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-                recyclerView.setNestedScrollingEnabled(false);
+
                 recyclerView.setAdapter(cardAdapter);
             } else {
 
@@ -121,7 +121,7 @@ public class Fragment1 extends Fragment {
                 List<CardItem> cardItems = createCardItems(res);
                 cardAdapter = new CardAdapter(cardItems, requireContext());
                 recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-                recyclerView.setNestedScrollingEnabled(false);
+
                 recyclerView.setAdapter(cardAdapter);
             }
         } catch (JSONException e) {
@@ -230,12 +230,12 @@ public class Fragment1 extends Fragment {
 
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
-        double str1 = Double.parseDouble(lastWeek);
+       /* double str1 = Double.parseDouble(lastWeek);
         float hrs = (float) (str1/60);
-        String strHrs = String.format("%.2f",hrs);
+        String strHrs = String.format("%.2f",hrs);*/
 
         tvCategory.setText(categoryName);
-        tvLastWeek.setText(strHrs + "Hr");
+        tvLastWeek.setText(lastWeek + "hr");
 
         tvLegendColor.setBackgroundColor(color_code);
 

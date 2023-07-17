@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">LiveAction_ext</string>
-    <string name="hyperlink_gmail"><a href="lifeactionstrack@gmail.com">lifeactionstrack</a></string>
+    <string name="hyperlink_gmail"><a href="lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>
 
     <string name="instruction_one">After verifying your mobile number, the Usage Data Access page will open.
 Please switch on the button or LifeActions app.</string>

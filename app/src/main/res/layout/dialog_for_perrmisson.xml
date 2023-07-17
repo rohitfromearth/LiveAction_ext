@@ -31,7 +31,7 @@
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Direction : abcde Demo Text / Direction for user to proced with usage stst permission "
+            android:text="Direction : The button will redirect to usage stat permission,find Liveaction_ext turn switch on "
             android:gravity="center"
             android:layout_marginTop="30dp"
             android:textColor="@color/white"
@@ -64,7 +64,7 @@
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Direction : abcde Demo  i am typping here Text / Direction for user to proced with Accessbilty permission "
+            android:text="Direction : the button will redirect to the Accessibility service's settings, click on 'Installed apps', find LiveAction and turn switch on "
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"

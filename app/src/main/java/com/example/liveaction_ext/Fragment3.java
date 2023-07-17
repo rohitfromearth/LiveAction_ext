@@ -187,11 +187,11 @@ public class Fragment3 extends Fragment {
 
         tvCategory.setText(categoryName);
 
-        double str1 = Double.parseDouble(lastWeek);
+        /*double str1 = Double.parseDouble(lastWeek);
         float hrs = (float) (str1/60);
-        String strHrs = String.format("%.2f",hrs);
+        String strHrs = String.format("%.2f",hrs);*/
         tvCategory.setText(categoryName);
-        tvLastWeek.setText(strHrs + "Hr");
+        tvLastWeek.setText(lastWeek + "hr");
 
         tvLegendColor.setBackgroundColor(color_code);
 

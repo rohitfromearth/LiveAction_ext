@@ -192,7 +192,7 @@ public class Chart_page extends AppCompatActivity {
         // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle("Lifeactions");
+        getSupportActionBar().setTitle("Life Actions");
 
 
         // Lookup navigation view
@@ -354,6 +354,11 @@ public class Chart_page extends AppCompatActivity {
             //query - is it going to directly login verification page or only we have to show permission
         }else if (itemId == R.id.Logout) {
             //go_next = new Reedeem();
+
+            SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            myEdit.putString("firebaseToken", "");
+            myEdit.apply();
             startActivity(new Intent(this, Login_verifcation.class));
             getSupportActionBar().setTitle("Verification");
         }
