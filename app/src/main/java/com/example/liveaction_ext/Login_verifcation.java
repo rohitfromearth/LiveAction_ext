@@ -435,6 +435,8 @@ public class Login_verifcation extends AppCompatActivity {
                                                                 SharedPreferences.Editor editor = sharedPref.edit();
                                                                 editor.putString("value", city);
                                                                 editor.putString("valueState", state);
+                                                                editor.putString("longitude", longitude);
+                                                                editor.putString("latitude", latitude);
                                                                 editor.putBoolean("enabled", true);
                                                                 editor.apply();
                                                                 startActivity(new Intent(Login_verifcation.this, Formpage.class));
