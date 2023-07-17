@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -47,7 +48,7 @@ import java.util.Set;
 
 public class Chart_page extends AppCompatActivity {
     Pack_api pc = new Pack_api();
-    TextView tvP_usernme;
+    TextView tvP_usernme, user_nameText;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String id, username;
     Access_new acc = new Access_new();
@@ -64,6 +65,7 @@ public class Chart_page extends AppCompatActivity {
     Dialog dialog;
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
+    String mobile;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,9 @@ public class Chart_page extends AppCompatActivity {
         uid = sh.getInt("UID", uid_z);
         Log.e("uesrid", String.valueOf(uid));
         username = sh.getString("username", "");
+
+        mobile=sh.getString("mobile_number","");
+        Log.d("mob","mob===="+mobile);
         String endpot = "https://lifeactions.online";
 
         String dir = getObbDir().getPath();
@@ -97,6 +102,7 @@ public class Chart_page extends AppCompatActivity {
 
 
             setContentView(R.layout.drawer_layout);
+
             if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
                 Dialog dd = new Dialog( Chart_page.this);
@@ -160,11 +166,22 @@ public class Chart_page extends AppCompatActivity {
         connect_btn = findViewById(R.id.connectbtn);
         faq_btn = findViewById(R.id.FAQ_btn);
 
+
         //navigation drawer start
         // Set a Toolbar to replace the ActionBar.
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         // This will display an Up icon (<-), we will replace it with hamburger later
+       /* drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
+
+        // pass the Open and Close toggle for the drawer layout listener
+        // to toggle the button
+        mDrawer.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();*/
+
+        //------------To change Navigation drawer icon ---------------//
+
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
 
         // pass the Open and Close toggle for the drawer layout listener
@@ -172,16 +189,20 @@ public class Chart_page extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        //------------To change Navigation drawer icon ---------------//
-
+        // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setTitle("Lifeactions");
 
 
         // Lookup navigation view
         navigationView = (NavigationView) findViewById(R.id.nvView);
+        View header = navigationView.getHeaderView(0);
+        TextView name = header.findViewById(R.id.user_name);
+        TextView phone = header.findViewById(R.id.user_phone);
+        name.setText(username);
+        phone.setText(mobile);
         setupDrawerContent(navigationView);
-
-
 
         manag_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,7 +283,7 @@ public class Chart_page extends AppCompatActivity {
 
 
 
-   @Override
+ /*  @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // The action bar home/up action should open or close the drawer.
 
@@ -272,6 +293,19 @@ public class Chart_page extends AppCompatActivity {
                 return true;
         }
 
+        return super.onOptionsItemSelected(item);
+    }*/
+    // override the onOptionsItemSelected()
+    // function to implement
+    // the item click listener callback
+    // to open and close the navigation
+    // drawer when the icon is clicked
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

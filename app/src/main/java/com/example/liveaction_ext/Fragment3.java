@@ -106,7 +106,9 @@ public class Fragment3 extends Fragment {
 
                 String categoryName = item.getString("category");
                 if (!categoryName.equals("Total")) {
+
                     double pievalue = item.getDouble("usage_percent");
+                    double minvalue = item.getDouble("usage_in_mins");
                     float fpi_Value = (float) pievalue;
                     Log.e("random", String.valueOf(pievalue));
                     pieChart.addPieSlice(
@@ -115,7 +117,7 @@ public class Fragment3 extends Fragment {
                                     fpi_Value,
                                     Color.parseColor(colorCode)));
 
-                    addTableRow(categoryName, String.valueOf(pievalue), Color.parseColor(colorCode));
+                    addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
             }
         } catch (JSONException e) {
@@ -184,7 +186,12 @@ public class Fragment3 extends Fragment {
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
         tvCategory.setText(categoryName);
-        tvLastWeek.setText(lastWeek + "%");
+
+        double str1 = Double.parseDouble(lastWeek);
+        float hrs = (float) (str1/60);
+        String strHrs = String.format("%.2f",hrs);
+        tvCategory.setText(categoryName);
+        tvLastWeek.setText(strHrs + "Hr");
 
         tvLegendColor.setBackgroundColor(color_code);
 

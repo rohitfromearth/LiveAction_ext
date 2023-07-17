@@ -5,6 +5,7 @@ import static java.security.AccessController.getContext;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -95,12 +96,14 @@ EditText Et_name,Et_email;
     private List<String> selectedProducts = new ArrayList<>();
 
     TextView state_text;
-    EditText city_text;
-    String city_location="";
+    TextView city_text;
+    String city_location="", state_location="";
     String get_city = "", get_state="";
 
     boolean temp;
-     boolean isState ;
+     boolean isState = false;
+     Context context;
+     boolean val, enabled;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,14 +111,10 @@ EditText Et_name,Et_email;
 
 //
 //        textView = findViewById(R.id.change_text);
-        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-        isState = sh.getBoolean("locat", temp);
-        get_city = sh.getString("city", "");
-        get_state = sh.getString("state", "");
-
-        Log.e("city","get_ name=========-"+isState);
-        Log.e("city","city name=========-"+get_city);
-        Log.e("city","city name=========-"+get_state);
+        SharedPreferences sharedPreferences = getSharedPreferences("myKey", MODE_PRIVATE);
+        String value = sharedPreferences.getString("value","");
+        String valueState = sharedPreferences.getString("valueState","");
+        enabled = sharedPreferences.getBoolean("enabled",val);
 
         state_text = findViewById(R.id.states_text);
         state_text.setVisibility(View.GONE);
@@ -541,13 +540,14 @@ EditText Et_name,Et_email;
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(stateAdapter);
 
-        if(isState){
+        if(enabled){
             stateSpinner.setVisibility(View.GONE);
             districtSpinner.setVisibility(View.GONE);
             state_text.setVisibility(View.VISIBLE);
-            state_text.setText(get_state);
+            state_text.setText(valueState);
             city_text.setVisibility(View.VISIBLE);
-            city_text.setText(get_city);
+            city_text.setText(value);
+
 
         }
         else{
@@ -557,6 +557,7 @@ EditText Et_name,Et_email;
             stateSpinner.setVisibility(View.VISIBLE);
             districtSpinner.setVisibility(View.VISIBLE);
         }
+
         stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -937,8 +938,17 @@ JSONArray musicdata = MusictData();
         jsonBody.put("birthDate", dayOfMonth);
         jsonBody.put("birthMonth", month);
         jsonBody.put("birthYear", year);
-        jsonBody.put("city", selectedDistrict);
-        jsonBody.put("state",selectedState);
+        if(enabled){
+            String cityTextvalue  =  city_text.getText().toString();
+            String stateTextvalue  =  state_text.getText().toString();
+            jsonBody.put("city", cityTextvalue);
+
+            jsonBody.put("state",stateTextvalue);
+        }else{
+            jsonBody.put("city", selectedDistrict);
+
+            jsonBody.put("state",selectedState);}
+
         jsonBody.put( "gender", genders);
         jsonBody.put("emailId", Email);
         jsonBody.put("education",Education_);
@@ -963,6 +973,7 @@ String userId= servic.formdatasend(jsonBody, "/user/create");
 
             myEdit.putInt("UID",uId);
             myEdit.putString("username",Name);
+
 
             myEdit.apply();
             Log.e("userid", String.valueOf(uId));

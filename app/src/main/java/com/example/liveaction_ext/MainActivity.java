@@ -1,7 +1,9 @@
 package com.example.liveaction_ext;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -10,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -44,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        boolean isLocationEnabled = isLocationServicesEnabled(getApplicationContext());
+
+        getSupportActionBar().setTitle("Lifeactions");
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},4);
 //        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
@@ -54,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
 //        set.addAll(pack);
 
 
+        if(!isLocationEnabled){
+            showSettingsAlert();
+        }
 
         messageTextView = findViewById(R.id.validationmasg);
 
@@ -107,7 +117,45 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    public static boolean isLocationServicesEnabled(Context context) {
+        int locationMode;
+        try {
+            locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+    }
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                MainActivity.this);
+        alertDialog.setTitle("SETTINGS");
+        alertDialog.setMessage("Enable Location Provider! Go to settings menu?");
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        MainActivity.this.startActivity(intent);
+/*
+                        int valwhich = which;
+                        userChose(String.valueOf(valwhich));
+                        Log.e("positive","positive=="+which);*/
+                    }
+                });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
 
+                        /*String valwhich = String.valueOf(which);
+                        userChose(valwhich);
+                        Log.e("positive","positive=="+which);*/
+                    }
+                });
+        alertDialog.show();
+    }
 
 
 

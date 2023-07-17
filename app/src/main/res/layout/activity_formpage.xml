@@ -125,16 +125,16 @@
                     android:spinnerMode="dropdown"
                     android:textColor="@color/black"
                     />
-                <EditText
+                <TextView
                     android:id="@+id/city_text"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:text="City text"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingTop="5dp"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
                     />
+
             </LinearLayout>
         </LinearLayout>////
 
