@@ -51,16 +51,15 @@ public class Achieve extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.activity_achieve, container, false);
 
         rede = view.findViewById(R.id.reddem_btn);
         tableLayout = view.findViewById(R.id.tableLayout);
         mAuth = FirebaseAuth.getInstance();
-        Log.e("mAuth3", String.valueOf(mAuth));
+        //Log.e("mAuth3", String.valueOf(mAuth));
         FirebaseUser use = mAuth.getCurrentUser();
-        Log.e("mAuth4", String.valueOf(use));
+       // Log.e("mAuth4", String.valueOf(use));
 
         if (use != null) {
             use.getIdToken(true)
@@ -74,8 +73,6 @@ public class Achieve extends Fragment {
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
                             }
-
-
                         }
 
                     });
@@ -94,14 +91,11 @@ public class Achieve extends Fragment {
         onPostExecute(res);
         floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
 
-        // Inflate the floating view layout
         inflater = LayoutInflater.from(getContext());
         floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
 
-        // Add touch listener to make the view movable
         floatingView.setOnTouchListener(new FloatingViewTouchListener());
 
-        // Add the floating view to the container
         floatingViewContainer.addView(floatingView);
 
 
@@ -186,22 +180,18 @@ public class Achieve extends Fragment {
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Record initial position and touch coordinates
                     initialX = (int) event.getRawX();
                     initialY = (int) event.getRawY();
                     initialTouchX = event.getX();
                     initialTouchY = event.getY();
                     return true;
                 case MotionEvent.ACTION_MOVE:
-                    // Calculate the new position based on touch movement
                     int deltaX = (int) (event.getRawX() - initialX);
                     int deltaY = (int) (event.getRawY() - initialY);
 
-                    // Calculate the new position of the floating view within the container
                     int newX = (int) (initialX + deltaX - initialTouchX);
                     int newY = (int) (initialY + deltaY - initialTouchY);
 
-                    // Set the new position of the floating view
                     floatingView.setX(newX);
                     floatingView.setY(newY);
                     return true;

@@ -58,14 +58,12 @@ import java.util.concurrent.TimeUnit;
 public class Login_verifcation extends AppCompatActivity {
 
     protected LocationManager locationManager;
-
     CardView btn_verify, perm, usaegstat, usaegstat1, Accessibilty, Accessibilty1, sendotp, permission_usage;
     String phone;
     ImageButton close, close1;
     Calendar c;
     String end = "";
     Date currentTime;
-
     private static final int REQUEST_LOCATION = 1;
     EditText edtPhone, edtOTP;
     Conn_service servic = new Conn_service();
@@ -85,72 +83,7 @@ public class Login_verifcation extends AppCompatActivity {
     private FirebaseAuthSettings firebaseAuthSettings;
 
     // callback method is called on Phone auth provider.
-    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
-            // initializing our callbacks for on
-            // verification callback method.
-            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-
-        // below method is used when
-        // OTP is sent from Firebase
-
-        @Override
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            super.onCodeSent(s, forceResendingToken);
-            // when we receive the OTP it
-            // contains a unique id which
-            // we are storing in our string
-            // which we have already created.
-            verificationId = s;
-
-            Log.e("onCodeSent", "in oncodesend method");
-            Log.e("tokenForm firebase", String.valueOf(forceResendingToken));
-        }
-
-        // this method is called when user
-        // receive OTP from Firebase.
-        @Override
-        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-            // below line is used for getting OTP code
-            // which is sent in phone auth credentials.
-            final String code = phoneAuthCredential.getSmsCode();
-
-            // checking if the code
-            // is null or not.
-            if (code != null) {
-                // if the code is not null then
-                // we are setting that code to
-                // our OTP edittext field.
-                edtOTP.setText(code);
-
-                // after setting this code
-                // to OTP edittext field we
-                // are calling our verifycode method.
-                verifyCode(code);
-
-            }
-        }
-
-        // this method is called when firebase doesn't
-        // sends our OTP code due to any error or issue.
-        @Override
-        public void onVerificationFailed(FirebaseException e) {
-            // displaying error message with firebase exception.
-            Log.e("new_string", e.getMessage());
-            Toast.makeText(Login_verifcation.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            c = Calendar.getInstance();
-            int min = c.get(Calendar.MINUTE);
-            int hr = c.get(Calendar.HOUR_OF_DAY);
-            int sec = c.get(Calendar.SECOND);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            int year = c.get(Calendar.YEAR);
-            int mnth = c.get(Calendar.MONTH) + 1;
-            String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + e.getMessage();
-            Log.e("new_exception", result_str);
-            servic.crashLog(result_str, end);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,15 +98,15 @@ public class Login_verifcation extends AppCompatActivity {
         btn_verify = findViewById(R.id.verifybtn);
         sendotp = findViewById(R.id.sendotp);
         permission_usage = findViewById(R.id.permission_button);
-//perm=findViewById(R.id.Permissions);
+        //perm=findViewById(R.id.Permissions);
         edtOTP = findViewById(R.id.editTextOtp);
         edtPhone = findViewById(R.id.editTextPhone);
 
 
         //showSettingsAlert();
         locationManager = (LocationManager) getSystemService(context.LOCATION_SERVICE);
-String data =getLocation();
-Log.e("ghi",data);
+        String data =getLocation();
+        Log.e("ghi",data);
 
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         end = sh.getString("endpt", "");
@@ -370,6 +303,72 @@ Log.e("ghi",data);
 
     }
 
+    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
+
+            // initializing our callbacks for on
+            // verification callback method.
+            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+
+        // below method is used when
+        // OTP is sent from Firebase
+
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+            // when we receive the OTP it
+            // contains a unique id which
+            // we are storing in our string
+            // which we have already created.
+            verificationId = s;
+
+            Log.e("onCodeSent", "in oncodesend method");
+            Log.e("tokenForm firebase", String.valueOf(forceResendingToken));
+        }
+
+        // this method is called when user
+        // receive OTP from Firebase.
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+            // below line is used for getting OTP code
+            // which is sent in phone auth credentials.
+            final String code = phoneAuthCredential.getSmsCode();
+
+            // checking if the code
+            // is null or not.
+            if (code != null) {
+                // if the code is not null then
+                // we are setting that code to
+                // our OTP edittext field.
+                edtOTP.setText(code);
+
+                // after setting this code
+                // to OTP edittext field we
+                // are calling our verifycode method.
+                verifyCode(code);
+
+            }
+        }
+
+        // this method is called when firebase doesn't
+        // sends our OTP code due to any error or issue.
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            // displaying error message with firebase exception.
+            Log.e("new_string", e.getMessage());
+            Toast.makeText(Login_verifcation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            c = Calendar.getInstance();
+            int min = c.get(Calendar.MINUTE);
+            int hr = c.get(Calendar.HOUR_OF_DAY);
+            int sec = c.get(Calendar.SECOND);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            int year = c.get(Calendar.YEAR);
+            int mnth = c.get(Calendar.MONTH) + 1;
+            String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + e.getMessage();
+            Log.e("new_exception", result_str);
+            servic.crashLog(result_str, end);
+        }
+    };
     public boolean isValidMobileNumber(String number) {
         // Regular expression pattern for mobile number validation
         String regex = "^[1-9]\\d{9}$";
@@ -696,5 +695,17 @@ Log.e("city", city);
             Toast.makeText(Login_verifcation.this, "YOU CHOSE cancel", Toast.LENGTH_LONG).show();
 
     }*/
+
+    @Override
+    public void onBackPressed() {
+        // Disable going back to the previous activity (login page)
+        // You can show a toast message or perform any other desired action here
+
+        // Do nothing or show a message
+//        Toast.makeText(this, "Back button is disabled", Toast.LENGTH_SHORT).show();
+
+        // Uncomment the line below to exit the app instead of showing a message
+         super.onBackPressed();
+    }
 
 }

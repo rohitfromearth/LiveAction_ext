@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -31,16 +32,13 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-
     Pack_api pc = new Pack_api();
-
-
     LocationManager locationManager;
     String latitude, longitude, lati, longit;
     CardView Viewbtn;
     String endpot;
     CheckBox termsCheckbox, privacyCheckbox;
-    TextView messageTextView;
+    TextView messageTextView, privacyText, termsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +59,38 @@ public class MainActivity extends AppCompatActivity {
 //        set.addAll(pack);
 
 
+
         if(!isLocationEnabled){
             showSettingsAlert();
         }
 
         messageTextView = findViewById(R.id.validationmasg);
+        privacyText = findViewById(R.id.privacyId);
+        termsText = findViewById(R.id.termsId);
 
         termsCheckbox = findViewById(R.id.checkBox); // Replace R.id.checkbox_terms with your actual checkbox ID
         privacyCheckbox = findViewById(R.id.checkBox2); // Replace R.id.checkbox_privacy with your actual checkbox ID
         messageTextView = findViewById(R.id.validationmasg); // Replace R.id.message_textview with your actual TextView ID
 
 
+        //privacyText.setMovementMethod(LinkMovementMethod.getInstance());
+        privacyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("hiiiiiii","helooooo");
+                startActivity(new Intent(getApplicationContext(), PrivacyActivity.class));
+            }
+        });
+        termsText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("hiiiiiii","helooooo");
+                startActivity(new Intent(getApplicationContext(), TermsActivity.class));
+            }
+        });
+
+
         Viewbtn = findViewById(R.id.disclaimerCardView);
-
-
         Viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -27,11 +27,9 @@ public class CardItem {
         return logoResId;
     }
 
-
     public String getTitle() {
         return title;
     }
-
 
     public String getTs_text() {
         return ts_text;

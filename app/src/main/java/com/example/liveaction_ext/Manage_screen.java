@@ -191,6 +191,7 @@ public class Manage_screen extends Fragment {
                         FragmentManager fragmentManager = getParentFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
                         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+                        assert actionBar != null;
                         actionBar.setTitle("Achievements");
                        // getActivity().getActionBar().setTitle("Achievements");
                     } else {

@@ -66,6 +66,7 @@ public class Chart_page extends AppCompatActivity {
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
     String mobile;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,13 +75,14 @@ public class Chart_page extends AppCompatActivity {
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
         FirebaseApp.initializeApp(this);
+        Log.e("uesridbfr", String.valueOf(uid_z));
         SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         Log.e("uesrid", String.valueOf(uid));
         username = sh.getString("username", "");
 
-        mobile=sh.getString("mobile_number","");
-        Log.d("mob","mob===="+mobile);
+        mobile = sh.getString("mobile_number", "");
+        Log.d("mob", "mob====" + mobile);
         String endpot = "https://lifeactions.online";
 
         String dir = getObbDir().getPath();
@@ -105,16 +107,16 @@ public class Chart_page extends AppCompatActivity {
 
             if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
-                Dialog dd = new Dialog( Chart_page.this);
+                Dialog dd = new Dialog(Chart_page.this);
 
-            dd.setContentView(R.layout.navigation_permission_dialog);
-            dd.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dd.setCancelable(false);
-            dd.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-            dd.show();
-            usage_stat = dd.findViewById(R.id.usaegstat_perm1);
-            accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
-            close_dialog = dd.findViewById(R.id.close_permission1);
+                dd.setContentView(R.layout.navigation_permission_dialog);
+                dd.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                dd.setCancelable(false);
+                dd.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dd.show();
+                usage_stat = dd.findViewById(R.id.usaegstat_perm1);
+                accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
+                close_dialog = dd.findViewById(R.id.close_permission1);
 
                 close_dialog.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -172,16 +174,7 @@ public class Chart_page extends AppCompatActivity {
         // Find our drawer view
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         // This will display an Up icon (<-), we will replace it with hamburger later
-       /* drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
 
-        // pass the Open and Close toggle for the drawer layout listener
-        // to toggle the button
-        mDrawer.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();*/
-
-        //------------To change Navigation drawer icon ---------------//
-
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
 
         // pass the Open and Close toggle for the drawer layout listener
@@ -191,9 +184,7 @@ public class Chart_page extends AppCompatActivity {
 
         // to make the Navigation drawer icon always appear on the action bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getSupportActionBar().setTitle("Life Actions");
-
 
         // Lookup navigation view
         navigationView = (NavigationView) findViewById(R.id.nvView);
@@ -282,19 +273,18 @@ public class Chart_page extends AppCompatActivity {
     }
 
 
+    /*  @Override
+       public boolean onOptionsItemSelected(MenuItem item) {
+           // The action bar home/up action should open or close the drawer.
 
- /*  @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
+           switch (item.getItemId()) {
+               case android.R.id.home:
+                   mDrawer.openDrawer(GravityCompat.START);
+                   return true;
+           }
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawer.openDrawer(GravityCompat.START);
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
+           return super.onOptionsItemSelected(item);
+       }*/
     // override the onOptionsItemSelected()
     // function to implement
     // the item click listener callback
@@ -319,6 +309,7 @@ public class Chart_page extends AppCompatActivity {
                     }
                 });
     }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment go_next = null;
@@ -326,25 +317,37 @@ public class Chart_page extends AppCompatActivity {
 
         int itemId = menuItem.getItemId(); // get selected menu item's id
 // check selected menu item's id and replace a Fragment Accordingly
-        if(itemId == R.id.chart_page) {
+        if (itemId == R.id.chart_page) {
+
             startActivity(new Intent(this, Chart_page.class));
             getSupportActionBar().setTitle("Dashboard");
+
         } else if (itemId == R.id.manage_page) {
+
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
-        }else if (itemId == R.id.achieve_page) {
+
+        } else if (itemId == R.id.achieve_page) {
+
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
-        }else  if (itemId == R.id.redeem_page) {
+
+        } else if (itemId == R.id.redeem_page) {
+
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
+
         } else if (itemId == R.id.contact_us) {
+
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Connect Us");
-        }else if (itemId == R.id.faq) {
+
+        } else if (itemId == R.id.faq) {
+
             go_next = new FaQ();
             getSupportActionBar().setTitle("FAQ");
-        }else if (itemId == R.id.perm_new) {
+
+        } else if (itemId == R.id.perm_new) {
 
             Intent intent = new Intent(this, Chart_page.class);
             intent.putExtra("show_permission_dialog", true);
@@ -352,8 +355,7 @@ public class Chart_page extends AppCompatActivity {
 
 
             //query - is it going to directly login verification page or only we have to show permission
-        }else if (itemId == R.id.Logout) {
-            //go_next = new Reedeem();
+        } else if (itemId == R.id.Logout) {
 
             SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
@@ -363,20 +365,17 @@ public class Chart_page extends AppCompatActivity {
             getSupportActionBar().setTitle("Verification");
         }
 
-            // Insert the fragment by replacing any existing fragment
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-
-            // Highlight the selected item has been done by NavigationView
-            menuItem.setChecked(true);
-            // Set action bar title
-            setTitle(menuItem.getTitle());
-            // Close the navigation drawer
-            mDrawer.closeDrawers();
-
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
     }
-
 
     @Override
     public void onBackPressed() {

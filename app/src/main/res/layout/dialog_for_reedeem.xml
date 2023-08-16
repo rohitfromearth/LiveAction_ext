@@ -1,98 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:gravity="center"
+    android:paddingVertical="20dp"
     app:cardBackgroundColor="#E2DAC4"
     app:cardCornerRadius="0dp"
-    android:gravity="center"
+    app:cardElevation="10dp">
 
-    android:paddingVertical="20dp"
-    app:cardElevation="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <ImageButton
             android:id="@+id/close_permission"
-            app:cardCornerRadius="20dp"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="top|right"
+            android:background="@drawable/close_bg"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:background="@drawable/close_bg"/>
+            app:cardCornerRadius="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Redemption history"
             android:layout_gravity="center"
-            android:textSize="30dp"
             android:layout_margin="10dp"
-            android:textStyle="bold"
-            />
+            android:text="Redemption history"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
         <TableLayout
             android:id="@+id/tableLayout"
-android:layout_marginHorizontal="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:stretchColumns="*"
-            >
+            android:layout_marginHorizontal="30dp"
+            android:stretchColumns="*">
 
             <!-- Headers -->
-            <TableRow
-                >
+            <TableRow>
+
                 <TextView
                     android:layout_width="0dp"
-
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-
+                    android:background="@drawable/tablehead"
                     android:gravity="center"
-                    android:textColor="@color/black"
-                    android:background="@drawable/tablehead"
+                    android:padding="5dp"
                     android:text="Vouchers"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
                 <TextView
 
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/tablehead"
-
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="Amount"
                     android:textColor="@color/black"
-
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:padding="5dp"
-
-                    android:textColor="@color/black"
-                    android:gravity="center"
                     android:background="@drawable/tablehead"
+                    android:gravity="center"
+                    android:padding="5dp"
                     android:text="Redemption Date"
-                    android:textStyle="bold"/>
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
             </TableRow>
+
         </TableLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" "
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
             android:layout_margin="10dp"
-
-            />
+            android:layout_marginTop="50dp"
+            android:text=" " />
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

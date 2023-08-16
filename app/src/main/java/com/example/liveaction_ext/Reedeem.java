@@ -70,7 +70,6 @@ public class Reedeem extends Fragment {
 
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_for_reedeem);
-
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(true);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -79,6 +78,7 @@ public class Reedeem extends Fragment {
         close_dial = dialog.findViewById(R.id.close_permission);
 
         tableLayout = dialog.findViewById(R.id.tableLayout);
+
         mAuth = FirebaseAuth.getInstance();
         Log.e("mAuth3", String.valueOf(mAuth));
         FirebaseUser use = mAuth.getCurrentUser();
@@ -96,10 +96,7 @@ public class Reedeem extends Fragment {
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
                             }
-
-
                         }
-
                     });
 
         }
@@ -120,10 +117,10 @@ public class Reedeem extends Fragment {
                 startActivity(new Intent(getContext(), Chart_page.class));
             }
         });
+
         achiv_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
                     @Override
                     public void run() {
@@ -157,6 +154,7 @@ public class Reedeem extends Fragment {
                 tableLayout.removeViews(1, countOf_row);
             }
         });
+
         txt_hstry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,13 +168,14 @@ public class Reedeem extends Fragment {
 
             }
         });
+
         minus_count.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 int pp = decreaseCounter();
                 String before_msg = "Sorry!!! You have already get";
-                String after_msg = "voucher according to the available points. Thank you";
+                String after_msg = "Voucher according to the available points. Thank you";
 
                 int limit_point = pp * 30;
                 if (limit_point < pointsAvailable) {
@@ -209,20 +208,60 @@ public class Reedeem extends Fragment {
 
             }
         });
+
         plus_count.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-                int pp = increaseCounter();
                 String before_msg = "Sorry!!! You have already get";
                 String after_msg = "voucher according to the available points. Thank you";
 
-                int limit_point = pp * 30;
-                if (limit_point < pointsAvailable) {
+
+                if(pointsAvailable < 30){
+
+                    Log.e("false","notvoucher");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Incorrect Redemption:");
+                    builder.setMessage("Sorry you are not allowed for vouchers until total points greater than 30");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Handle the click event (if needed)
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    plus_count.setEnabled(false);
+                }
+                else {
+                    int pp = increaseCounter();
+
+                    int limit_point = pp * 30;
+                    if((totalPoints -limit_point) < 30){
+                        Log.e("tag---", "pointsAvailable==="+limit_point);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Incorrect Redemption:");
+                        builder.setMessage("Sorry you are not allowed for more vouchers");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Handle the click event (if needed)
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                        plus_count.setEnabled(false);
+                        //count_txt.setText(pp-1);
+                    }
+
+                }
+
+
+               /* if (limit_point < pointsAvailable) {
                     Log.e("tag---", "match");
                     reed_btn.setEnabled(true);
-                } else {
+                }
+                else {
                     reed_btn.setEnabled(false);
                     reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -244,7 +283,7 @@ public class Reedeem extends Fragment {
                     // Create and show the alert dialog
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                }
+                }*/
 
             }
         });

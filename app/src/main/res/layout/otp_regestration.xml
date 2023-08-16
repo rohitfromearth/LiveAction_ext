@@ -1,50 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/dialog_bg"
     android:layout_height="match_parent"
-    >
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
 
 
     <Button
-
         android:id="@+id/close"
         android:layout_width="50dp"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:text="X"
         android:background="@android:color/transparent"
-
-
-android:textStyle="bold"
+        android:text="X"
         android:textColor="@android:color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
         android:background="#95C59687"
         android:fontFamily="@font/adamina"
         android:text="OTP Verification"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#EF8C85" />
+        android:textColor="#EF8C85"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/idEdtPhoneNumber"
-android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:hint="Enter your phone"
-        android:textColorHint="#858484"
         android:color="#EF8C85"
+        android:hint="Enter your phone"
         android:importantForAutofill="no"
-        android:inputType="phone" />
+        android:inputType="phone"
+        android:textColor="@color/black"
+        android:textColorHint="#858484" />
 
     <!--Button for getting OTP-->
     <Button
@@ -63,14 +59,12 @@ android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:layout_below="@id/idBtnGetOtp"
         android:layout_margin="10dp"
-        android:hint="Enter OTP"
-        android:textColor="@color/black"
-        android:textColorHint="#858484"
         android:color="#EF8C85"
-
-
+        android:hint="Enter OTP"
         android:importantForAutofill="no"
-        android:inputType="phone" />
+        android:inputType="phone"
+        android:textColor="@color/black"
+        android:textColorHint="#858484" />
 
     <!--button for verifying user OTP-->
     <Button
@@ -81,6 +75,5 @@ android:textColor="@color/black"
         android:layout_margin="10dp"
         android:text="Verify OTP"
         android:textAllCaps="false" />
-
 
 </LinearLayout>

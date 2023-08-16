@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,62 +9,35 @@
     app:cardCornerRadius="0dp"
     app:cardElevation="10dp">
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:gravity="center"-->
-    <!--        android:orientation="vertical" >-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:cardBackgroundColor="#9DB2BF">
+
         <ImageButton
             android:id="@+id/close_dial_durables"
-            app:cardCornerRadius="20dp"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="top|right"
+            android:background="@drawable/close_bg"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:background="@drawable/close_bg"/></LinearLayout>
-
-    <!-- <androidx.cardview.widget.CardView
-         android:id="@+id/close_dial_durables"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="end|top"
-         android:layout_marginRight="10dp"
-         android:layout_marginTop="10dp"
-         android:padding="10dp"
-         app:cardBackgroundColor="@color/black"
-         app:cardCornerRadius="100dp">
-
-         <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center"
-             android:layout_marginHorizontal="10dp"
-             android:layout_marginVertical="5dp"
-             android:text="X"
-             android:textColor="@color/white"
-             android:textSize="20dp"
-             android:textStyle="bold" />
-     </androidx.cardview.widget.CardView>-->
+            app:cardCornerRadius="20dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_margin="20dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-
             android:layout_marginLeft="20dp"
+
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <CheckBox
@@ -96,9 +68,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginRight="20dp"
-
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <CheckBox
@@ -125,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="Agricultural Land" />
         </LinearLayout>
+
     </LinearLayout>
-    <!--    </LinearLayout>-->
+
 </androidx.cardview.widget.CardView>

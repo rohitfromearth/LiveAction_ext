@@ -3,24 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:background="#fe8a48"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:gravity="bottom"
     android:orientation="vertical"
-    android:gravity="bottom">
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
-        android:textSize="18dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:textSize="18dp" />
+
     <TextView
         android:id="@+id/user_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
-        android:textSize="13dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        android:textSize="13dp" />
 
 </LinearLayout>

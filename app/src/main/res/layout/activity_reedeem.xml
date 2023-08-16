@@ -2,278 +2,306 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#F6F0E8"
-    android:paddingHorizontal="5dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F6F0E8"
     android:orientation="vertical"
+    android:paddingHorizontal="5dp"
     tools:context=".Reedeem">
+
     <TextView
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Redemption"
         android:textColor="#fe7e34"
-        android:text="Redemption"/>
-    <TextView       android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="9dp"
+        android:text="of your Life Action Points"
         android:textSize="20dp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold|italic" />
 
-        android:text="of your Life Action Points"/>
-    <TextView       android:layout_height="wrap_content"
+    <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="9dp"
+        android:text="Summary of your Life Actions Points"
         android:textSize="20dp"
-        android:textStyle="bold"
+        android:textStyle="bold" />
 
-        android:text="Summary of your Life Actions Points"/>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="5dp"
-
         android:padding="4dp">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@drawable/table_border"
-            >
+            android:gravity="center">
 
-            <LinearLayout    android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingHorizontal="4dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="4dp">
 
-                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Points from your"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
-                <TextView android:layout_height="wrap_content"
+                <TextView
                     android:layout_width="wrap_content"
-                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="Achievements"
                     android:textColor="@color/black"
-                    android:text="Points from your"/>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:text="Achievements"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
 
-            <TextView       android:layout_height="match_parent"
+            <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:paddingHorizontal="4dp"
-                android:textStyle="bold"
+                android:text="Points from Survey"
                 android:textColor="@color/black"
-                android:text="Points from Survey"/>
+                android:textStyle="bold" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@drawable/drwele"
-
-            >
+            android:gravity="center">
 
 
             <TextView
                 android:id="@+id/achi_points"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/black"
-                android:text=""/>
+                android:text=""
+                android:textColor="@color/black" />
+
             <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text=" 0"/>
+                android:text=" 0"
+                android:textColor="@color/black" />
         </TableRow>
+
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@drawable/table_border"
-            >
+            android:gravity="center">
 
-            <TextView android:layout_height="wrap_content"
+            <TextView
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textStyle="bold"
+                android:text=" Total Points"
                 android:textColor="@color/black"
-                android:text=" Total Points"/>
+                android:textStyle="bold" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@drawable/drwele"
+            android:gravity="center">
 
-            >
 
-
-            <TextView android:layout_height="wrap_content"
+            <TextView
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Total Points "/>
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="@color/black"
+                android:text="Total Points "
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/tv_Total_pnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text=""/>
+                android:text=""
+                android:textColor="@color/black" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@drawable/drwele"
-            >
+            android:gravity="center">
 
 
-            <TextView android:layout_height="wrap_content"
+            <TextView
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
-                android:text="Points redeemed "/>
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Points redeemed "
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/tv_pnt_redmed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/black"
-                android:text=" "/>
+                android:text=" "
+                android:textColor="@color/black" />
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="@drawable/drwele"
-            >
+            android:gravity="center">
 
 
-            <TextView android:layout_height="wrap_content"
+            <TextView
                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
-                android:text="Points available"/>
-            <TextView android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Points available"
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/tv_pont_avalbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/black"
-                android:text=" "/>
+                android:text=" "
+                android:textColor="@color/black" />
         </TableRow>
 
 
     </TableLayout>
-    <TextView       android:layout_height="wrap_content"
+
+    <TextView
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="9dp"
+        android:text="Redemption options"
         android:textSize="20dp"
-        android:textStyle="bold"
-
-        android:text="Redemption options"/>
+        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardCornerRadius="10dp"
         android:gravity="center"
+        app:cardCornerRadius="10dp"
 
-        app:cardElevation="10dp" >
+        app:cardElevation="10dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:orientation="vertical">
-            <LinearLayout  android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/tv_plus_count"
                     android:layout_width="wrap_content"
-                    app:cardBackgroundColor="#E2DAC4"
-                    app:cardCornerRadius="10dp"
+                    android:layout_height="wrap_content"
                     android:elevation="5dp"
-                    android:layout_height="wrap_content">
-                    <TextView       android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#E2DAC4"
+                    app:cardCornerRadius="10dp">
+
+                    <TextView
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="8dp"
+                        android:text="+"
                         android:textSize="20dp"
-                        android:textStyle="bold"
-
-                        android:text="+"/>
+                        android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp">
+
                     <TextView
                         android:id="@+id/tv_count"
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="3dp"
+                        android:text="00"
                         android:textSize="20dp"
-                        android:textStyle="bold"
-
-                        android:text="00"/>
+                        android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/tv_minus_count"
                     android:layout_width="wrap_content"
-                    app:cardBackgroundColor="#FFE3E3"
+                    android:layout_height="wrap_content"
                     android:elevation="5dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_height="wrap_content">
+                    app:cardBackgroundColor="#FFE3E3"
+                    app:cardCornerRadius="10dp">
+
                     <TextView
-                        android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="8dp"
 
+                        android:text="-"
                         android:textSize="20dp"
-                        android:textStyle="bold"
 
-                        android:text="-"/>
+                        android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/Reedem_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="30dp"
                 android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="30dp"
+                android:paddingVertical="20dp"
                 app:cardBackgroundColor="#fe7e34"
                 app:cardCornerRadius="20dp"
-                android:paddingVertical="20dp"
-                app:cardElevation="20dp" >
+                app:cardElevation="20dp">
+
                 <TextView
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="10dp"
                     android:text="Redeem"
                     android:textColor="@color/white"
-                    android:layout_marginVertical="10dp"
                     android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -282,38 +310,39 @@
             android:id="@+id/noteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Note on Redemption:" />
+            android:text="Note on Redemption:"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/red_histry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="italic"
             android:layout_alignParentEnd="true"
+            android:text="Redemption History"
             android:textColor="@color/black"
-            android:text="Redemption History" />
+            android:textStyle="italic" />
 
     </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:text="You can redeem points in multiple of 30\n 1 Voucher= ₹30\n Redemption can be Done once in 4 weeks "
-        />
+        android:textColor="@color/black" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal">
+
         <androidx.cardview.widget.CardView
             android:id="@+id/dashbord_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2dp"
             android:layout_marginVertical="5dp"
-
             app:cardBackgroundColor="#fe7e34"
             app:cardCornerRadius="20dp">
 
@@ -321,8 +350,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="DashBoard "
                 android:layout_margin="10dp"
+                android:text="DashBoard "
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
@@ -340,11 +369,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Achievements"
                 android:layout_margin="10dp"
+                android:text="Achievements"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
 </LinearLayout>

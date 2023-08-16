@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">LiveAction_ext</string>
+
+    <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
+    <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> of participating in this panel</string>
+
+
     <string name="hyperlink_gmail"><a href="lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>
 
     <string name="instruction_one">After verifying your mobile number, the Usage Data Access page will open.
