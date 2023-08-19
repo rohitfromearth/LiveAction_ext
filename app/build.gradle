@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace 'com.example.liveaction_ext'
+    namespace 'com.ext.liveaction_ext'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.liveaction_ext"
+        applicationId "com.ext.liveaction_ext"
         minSdk 21
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
         archivesBaseName = "Live_Action"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

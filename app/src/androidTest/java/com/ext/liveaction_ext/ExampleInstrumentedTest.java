@@ -1,4 +1,4 @@
-package com.example.liveaction_ext;
+package com.ext.liveaction_ext;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.liveaction_ext", appContext.getPackageName());
+        assertEquals("com.ext.liveaction_ext", appContext.getPackageName());
     }
 }

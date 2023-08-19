@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:456788082297:android:53b961e3651a0ca84b1ea8",
         "android_client_info": {
-          "package_name": "com.example.liveaction_ext"
+          "package_name": "com.ext.liveaction_ext"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "456788082297-c6b1a6osg3dkadeghm562ms1am4ku7t3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.liveaction_ext",
+            "package_name": "com.ext.liveaction_ext",
             "certificate_hash": "8e94db1e8a40d417149251ebfc65f598527b6bc5"
           }
         },

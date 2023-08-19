@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.liveaction_ext",
+  "applicationId": "com.ext.liveaction_ext",
   "variantName": "release",
   "elements": [
     {

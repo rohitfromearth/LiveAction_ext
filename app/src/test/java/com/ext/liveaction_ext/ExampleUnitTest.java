@@ -1,4 +1,4 @@
-package com.example.liveaction_ext;
+package com.ext.liveaction_ext;
 
 import org.junit.Test;
 
