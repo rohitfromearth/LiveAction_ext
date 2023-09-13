@@ -16,7 +16,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Conn_service {
     String UserID = "";
-    String endpot = " https://lifeactions.online";
+    String endpot = "https://lifeactions.online";
 
     public String datasender(JSONObject jsonBody, String end, String firbaseTokenn) {
         try {
@@ -53,7 +53,7 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                    Log.e("responseee", response);
+                 //   Log.e("responseee", response);
                 }
             }
             urlConnection.disconnect();
@@ -71,7 +71,7 @@ public class Conn_service {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
-            Log.e("checkRes21","hi"+urlString);
+           // Log.e("checkRes21","hi"+urlString);
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -88,9 +88,9 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
-            Log.e("checkRes", String.valueOf(responseCode));
+           // Log.e("checkRes", String.valueOf(responseCode));
             String reso = urlConnection.getResponseMessage();
-            Log.e("reponsemsage", reso);
+          //  Log.e("reponsemsage", reso);
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
@@ -99,7 +99,7 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                    Log.e("checkRes2", response);
+                 //   Log.e("checkRes2", response);
 
                 }
             }
@@ -123,7 +123,7 @@ public class Conn_service {
 
 
             URL url = new URL(endpot + endr);
-            Log.e("endpoint", endr);
+          //  Log.e("endpoint", endr);
 
             HttpURLConnection urlConn = null;
 
@@ -134,7 +134,7 @@ public class Conn_service {
             urlConn.setRequestProperty("authorization", "Bearer " + firbaseTokenn);
             urlConn.setDoInput(true);
             int responseCode = urlConn.getResponseCode();
-            Log.e("responseee1", String.valueOf(responseCode));
+         //  Log.e("responseee1", String.valueOf(responseCode));
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
                 String applist;
@@ -199,7 +199,7 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                    Log.e("responseee", response);
+                  //  Log.e("responseee", response);
 
                 }
             }

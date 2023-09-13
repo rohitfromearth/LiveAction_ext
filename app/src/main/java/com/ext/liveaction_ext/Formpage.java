@@ -243,7 +243,7 @@ public class Formpage extends AppCompatActivity {
                 if (selectedId != -1) {
 
                     selectedValue = radioButton.getText().toString();
-                    Log.e("hvyg", selectedValue);
+
                 } else {
                     selectedValue = "not_selected";
                 }
@@ -264,7 +264,7 @@ public class Formpage extends AppCompatActivity {
                 }
 
                 String selectedOptionsString = String.join(", ", selected_dur_Options);
-                Log.e("sttringdurables", selectedOptionsString);
+
 
                 //startActivity(new Intent(Formpage.this,Manage_screen.class));
             }
@@ -341,7 +341,7 @@ public class Formpage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
-                Log.e("Custom", selectedItem);
+
                 if (selected_dur_Options.contains(selectedItem)) {
                     selected_dur_Options.remove(selectedItem);
                 } else {
@@ -422,7 +422,7 @@ public class Formpage extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getItemAtPosition(position);
-                Log.e("Custom", selectedItem);
+
                 if (selectedProducts.contains(selectedItem)) {
                     selectedProducts.remove(selectedItem);
                 } else {
@@ -739,7 +739,7 @@ public class Formpage extends AppCompatActivity {
 
         if (tr && tr2 && tr3 && tr13 && tr4 && tr5 && tr6 && tr7 && tr8 && tr9 && tr10 && tr11 && tr12 && tr14 && tr15) {
 
-            Log.e("", "check");
+
             return true;
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -930,7 +930,7 @@ public class Formpage extends AppCompatActivity {
             myEdit.putInt("UID", uId);
             myEdit.putString("username", Name);
             myEdit.apply();
-            Log.e("userid", String.valueOf(uId));
+
 
             if (uId != 0) {
                 return true;
@@ -1015,8 +1015,7 @@ public class Formpage extends AppCompatActivity {
 
         if (!selectedOptions.isEmpty()) {
             // The selectedOptions ArrayList is not empty
-            // Your code here
-            Log.e("jgiohfo", "empty");
+
             return true;
 
         } else {
@@ -1077,8 +1076,7 @@ public class Formpage extends AppCompatActivity {
 
         if (!selectItem.isEmpty()) {
             // The selectedOptions ArrayList is not empty
-            // Your code here
-            Log.e("check", "empty");
+
             return true;
 
         } else {

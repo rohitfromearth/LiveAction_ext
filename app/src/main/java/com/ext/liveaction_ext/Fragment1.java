@@ -179,9 +179,7 @@ public class Fragment1 extends Fragment {
                     double minvalue = item.getDouble("usage_in_mins");
 
                     float fpi_Value = (float) pievalue;
-                    Log.e("random", String.valueOf(pievalue));
-                    ///pieModel = new PieModel();
-                    //pieChart.addPieSlice();
+
                     pieChart.addPieSlice(
                             new PieModel(
                                     categoryName,

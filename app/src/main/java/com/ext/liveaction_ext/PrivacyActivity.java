@@ -16,9 +16,6 @@ public class PrivacyActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Life Actions");
 
-       /* WebSettings webSetting = webView.getSettings();
-        webSetting.setBuiltInZoomControls(true);
-        webView.setWebViewClient(new WebViewClient());*/
         webView = findViewById(R.id.webView);
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl("file:///android_asset/privacypolicy.html");

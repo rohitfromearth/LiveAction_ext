@@ -89,6 +89,7 @@ public class Chart_page extends AppCompatActivity {
         set.addAll(pack);
         myEdit.putStringSet("APP_LIST", set);
         myEdit.apply();
+
         if (uid == 0) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

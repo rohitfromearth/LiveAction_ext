@@ -72,10 +72,8 @@ public class Login_verifcation extends AppCompatActivity {
     Dialog dialog, dialog1;
     private String verificationId;
     private FirebaseAuth mAuth;
-    double[] locat;
-    String lati, longit;
-    String latitude = "", longitude = "", cityName = "", city = "";
-    String stateName = "", state = "";
+    String latitude = "", longitude = "", city = "";
+    String  state = "";
     int PERMISSION_ID = 44;
     Context context;
     Location lGps, netPro, pasee;
@@ -94,27 +92,18 @@ public class Login_verifcation extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-        //add on 8 sep
-        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
-        firebaseAppCheck.installAppCheckProviderFactory(
-                SafetyNetAppCheckProviderFactory.getInstance());
-        //add on 8 sep
 
-
-        //locat= locationfinder();
         getSupportActionBar().setTitle("Life Actions");
         btn_verify = findViewById(R.id.verifybtn);
         sendotp = findViewById(R.id.sendotp);
         permission_usage = findViewById(R.id.permission_button);
-        //perm=findViewById(R.id.Permissions);
         edtOTP = findViewById(R.id.editTextOtp);
         edtPhone = findViewById(R.id.editTextPhone);
 
 
-        //showSettingsAlert();
         locationManager = (LocationManager) getSystemService(context.LOCATION_SERVICE);
         String data = getLocation();
-        Log.e("ghi", data);
+       // Log.e("ghi", data);
 
         SharedPreferences sh = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         end = sh.getString("endpt", "");
@@ -211,9 +200,9 @@ public class Login_verifcation extends AppCompatActivity {
                     } else {
                         // if the text field is not empty we are calling our
                         // send OTP method for getting OTP from Firebase.
-                        Log.e("new_string", "onClick: " + edtPhone.getText().toString());
+                      //  Log.e("new_string", "onClick: " + edtPhone.getText().toString());
                         phone = "+91" + edtPhone.getText().toString();
-                        Log.e("new_string", "onClick: " + phone);
+                      //  Log.e("new_string", "onClick: " + phone);
                         sendVerificationCode(phone);
                         SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                         SharedPreferences.Editor myEdit = sharedPreferences.edit();
@@ -330,8 +319,8 @@ public class Login_verifcation extends AppCompatActivity {
             // which we have already created.
             verificationId = s;
 
-            Log.e("onCodeSent", "in oncodesend method");
-            Log.e("tokenForm firebase", String.valueOf(forceResendingToken));
+          //  Log.e("onCodeSent", "in oncodesend method");
+           // Log.e("tokenForm firebase", String.valueOf(forceResendingToken));
         }
 
         // this method is called when user
@@ -429,11 +418,11 @@ public class Login_verifcation extends AppCompatActivity {
 
                                                     if (hasPermission) {
                                                         if (pageID) {
-                                                            Log.e("mauth", String.valueOf(mAuth));
+                                                         //   Log.e("mauth", String.valueOf(mAuth));
                                                             startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                         } else {
                                                             String data = getLocation();
-                                                            Log.e("ghi", data);
+                                                           // Log.e("ghi", data);
 
                                                             boolean is_val;
                                                             if (Objects.equals(city, "") && Objects.equals(state, "")) {
@@ -441,7 +430,7 @@ public class Login_verifcation extends AppCompatActivity {
                                                             } else {
                                                                 is_val = true;
                                                             }
-                                                            Log.e("datastrem", city + latitude);
+                                                            //Log.e("datastrem", city + latitude);
                                                             SharedPreferences sharedPref = getSharedPreferences("myKey", MODE_PRIVATE);
                                                             SharedPreferences.Editor editor = sharedPref.edit();
                                                             editor.putString("value", city);
@@ -452,23 +441,6 @@ public class Login_verifcation extends AppCompatActivity {
                                                             editor.apply();
                                                             startActivity(new Intent(Login_verifcation.this, Formpage.class));
 
-
-                                                          /* double log1=locat[0];
-                                                            double log2=locat[1];
-
-                                                            cityName = getCityName(getApplicationContext(), log1, log2);
-                                                            stateName = getStateName(getApplicationContext(), log1, log2);
-                                                            Log.e("name","recent==="+cityName);
-                                                            Log.e("name","recentstate==="+stateName);
-                                                            boolean is_val;
-                                                            if(Objects.equals(cityName, "") && Objects.equals(stateName, "")){
-                                                                is_val = false;
-                                                            }
-                                                            else{
-                                                                is_val = true;
-                                                            }
-                                                             startActivity(new Intent(Login_verifcation.this, Formpage.class));
-*/
                                                         }
                                                     } else {
 
@@ -518,7 +490,7 @@ public class Login_verifcation extends AppCompatActivity {
                             int mnth = c.get(Calendar.MONTH) + 1;
                             String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + task.getException();
                             Log.e("new_string---sign in", task.getException().toString());
-                            Log.e("new_exception", result_str);
+                          //  Log.e("new_exception", result_str);
                             Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             servic.crashLog(result_str, end);
 
@@ -567,12 +539,12 @@ public class Login_verifcation extends AppCompatActivity {
             boolean userExists = data.getBoolean("user_exists");
             if (userExists) {
                 int userId = data.getInt("user_id");
-                Log.e("datastream", String.valueOf(userId));
+             //   Log.e("datastream", String.valueOf(userId));
                 String userName = data.getString("user_name");
                 SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
-                Log.e("datastream", String.valueOf(firbastkn));
+              //  Log.e("datastream", String.valueOf(firbastkn));
                 myEdit.putInt("UID", userId);
 
                 myEdit.putString("mobile_number", mob_no);
@@ -597,12 +569,12 @@ public class Login_verifcation extends AppCompatActivity {
 
     //code start location
     private String getLocation() {
-        Log.e("ghegf", "ggyy");
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Login_verifcation.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
         } else {
-            Log.e("gh", "ggybhvy");
+
             lgps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             netpro_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             passive_enabled = locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
@@ -627,7 +599,7 @@ public class Login_verifcation extends AppCompatActivity {
                     addresses = geocoder.getFromLocation(lat,
                             longi, 1);
 
-                    String cityName = addresses.get(0).getAddressLine(0);
+                   // String cityName = addresses.get(0).getAddressLine(0);
                     city = addresses.get(0).getLocality();
                     state = addresses.get(0).getAdminArea();
                     Log.e("city", city);
@@ -651,7 +623,7 @@ public class Login_verifcation extends AppCompatActivity {
                     addresses = geocoder.getFromLocation(lat,
                             longi, 1);
 
-                    String cityName = addresses.get(0).getAddressLine(0);
+                    //String cityName = addresses.get(0).getAddressLine(0);
                     city = addresses.get(0).getLocality();
                     state = addresses.get(0).getAdminArea();
                     Log.e("city", city);
@@ -674,10 +646,10 @@ public class Login_verifcation extends AppCompatActivity {
                     addresses = geocoder.getFromLocation(lat,
                             longi, 1);
 
-                    String cityName = addresses.get(0).getAddressLine(0);
+                   // String cityName = addresses.get(0).getAddressLine(0);
                     city = addresses.get(0).getLocality();
                     state = addresses.get(0).getAdminArea();
-                    Log.e("city", city);
+                    //Log.e("city", city);
                 } catch (IOException e) {
 
                     e.printStackTrace();
@@ -690,28 +662,9 @@ public class Login_verifcation extends AppCompatActivity {
     }////////////end method
     //code end location
 
-
-
-   /* public void userChose(String choice){
-        Log.e("hi","inchice");
-        if(choice == "-1")
-            getLocation();
-        else if (choice == "-2")
-            //YOUR CODE FOR NO HERE
-            Log.e("hi","inchice2");
-            Toast.makeText(Login_verifcation.this, "YOU CHOSE cancel", Toast.LENGTH_LONG).show();
-
-    }*/
-
     @Override
     public void onBackPressed() {
-        // Disable going back to the previous activity (login page)
-        // You can show a toast message or perform any other desired action here
 
-        // Do nothing or show a message
-//        Toast.makeText(this, "Back button is disabled", Toast.LENGTH_SHORT).show();
-
-        // Uncomment the line below to exit the app instead of showing a message
         super.onBackPressed();
     }
 

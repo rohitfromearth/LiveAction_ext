@@ -76,7 +76,6 @@ public class CheckboxAdapter extends ArrayAdapter<Purchase> {
                 if (!isFromView) {
                     listState.get(position).setSelected(true);
 
-                    Log.e("checked---", "title : " + listState.get(position).getTitle());
                 }
             }
         });

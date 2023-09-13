@@ -46,14 +46,12 @@ public class Manage_screen extends Fragment {
     int uid = 0;
     String firebaseToken = "";
     boolean target_edi = false;
-    boolean edit = false;
     String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
     TextView tv_btn;
     CardView btn_sv;
     int valueInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
-
     private LinearLayout floatingViewContainer;
     private View floatingView;
     private TableLayout tableLayout;
@@ -75,9 +73,9 @@ public class Manage_screen extends Fragment {
         floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
-        Log.e("mAuth3", String.valueOf(mAuth));
+
         FirebaseUser use = mAuth.getCurrentUser();
-        Log.e("mAuth4", String.valueOf(use));
+
 
         if (use != null) {
             use.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -107,8 +105,9 @@ public class Manage_screen extends Fragment {
 
         // Add the floating view to the container
         floatingViewContainer.addView(floatingView);
-//
+
         String res = servic.pack_rule("/usageStats/getUsageData?duration=week&userId=" + uid, firebaseToken);
+
         boolean edit = onPostExecute(res);
         Log.e("stringh", String.valueOf(edit));
         if (edit) {
@@ -126,8 +125,6 @@ public class Manage_screen extends Fragment {
             throw new RuntimeException(e);
         }
 
-
-
         btn_sv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +141,6 @@ public class Manage_screen extends Fragment {
 
                         String editTextValuehr = editTextforhr.getText().toString();
 
-
                         if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
                             editTextValuehr = "0";
                         }
@@ -159,7 +155,7 @@ public class Manage_screen extends Fragment {
                             financeObj.put("userId", uid);
 
                             financeObj.put("category", usaage_id);
-                            Log.e("valuevaerificatioon ", value );
+                            Log.e("valuevaerificatioon ", value);
                             if (value.contains("_actual_hr")) {
                                 financeObj.put("targetInMins", editTextValuehr);
 
@@ -190,10 +186,10 @@ public class Manage_screen extends Fragment {
                         Fragment go_next = new Achieve();
                         FragmentManager fragmentManager = getParentFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+                        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
                         assert actionBar != null;
                         actionBar.setTitle("Achievements");
-                       // getActivity().getActionBar().setTitle("Achievements");
+                        // getActivity().getActionBar().setTitle("Achievements");
                     } else {
                         valuesList.clear();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -221,30 +217,48 @@ public class Manage_screen extends Fragment {
                     Fragment go_next = new Achieve();
                     FragmentManager fragmentManager = getParentFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                    ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+                    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
                     actionBar.setTitle("Achievements");
-                   // getActivity().getActionBar().setTitle("Achievements");
+                    // getActivity().getActionBar().setTitle("Achievements");
                 }
             }
         });
         return view;
     }
+
     private boolean onPostExecute(String result) {
         boolean editable = false;
+
         if (result != null) {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("result");
                 for (int i = 0; i < jsonArray.length(); i++) {
+                    String target_hr = " ";
+                    String target_per = "";
                     JSONObject item = jsonArray.getJSONObject(i);
                     String categoryName = item.getString("category");
                     int usage_id = item.getInt("usacm_id");
                     String lastWeek = item.getString("usage_in_mins");
                     String cumulative = item.getString("usage_percent");
+
+                    String targetinmin = item.getString("target_in_mins");
+                    String targetinper = item.getString("target_in_percent");
+
                     String pointslastweek = item.getString("target_variance");
-                    target_edi= item.getBoolean("target_editable");
-//                    target_edi = true;
-                    addTableRow(usage_id, categoryName, lastWeek, cumulative, pointslastweek, target_edi);
+
+                    if (targetinmin.equals("0") || targetinmin.equals("null")) {
+                        target_hr = " ";
+                        target_per = "%";
+
+                    } else {
+                        target_hr = targetinmin;
+                        target_per = targetinper + "%";
+                    }
+                    target_edi = item.getBoolean("target_editable");
+                    Log.e("per", "per=====" + target_per);
+
+                    addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi);
                     if (usage_id == 1) {
                         editable = target_edi;
                     }
@@ -264,7 +278,8 @@ public class Manage_screen extends Fragment {
         return sum <= 100;
     }
 
-    private void addTableRow(int usageid, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
+
+    private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
 
         Log.e("dataloop", String.valueOf(edit_view));
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
@@ -272,6 +287,10 @@ public class Manage_screen extends Fragment {
         TextView tvCategory = row.findViewById(R.id.tvCategor);
         EditText et_actual_hrr = row.findViewById(R.id.et_actual_hr);
         EditText et_actual_prr = row.findViewById(R.id.et_actual_per);
+
+        et_actual_hrr.setHint(target_hr);
+        et_actual_prr.setHint(target_per);
+
         if (!edit_view) {
             et_actual_hrr.setEnabled(edit_view);
             et_actual_prr.setEnabled(edit_view);
@@ -290,6 +309,8 @@ public class Manage_screen extends Fragment {
         tvLastWeek.setText(lastWeek);
         tvCumulative.setText(cumulative);
         tvpointsLastWeek.setText(pointslastWe);
+
+
         et_actual_hrr.setTag(usageid + "_actual_hr");
         et_actual_prr.setTag(usageid + "_actual_per");
         etList.add(et_actual_hrr);

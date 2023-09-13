@@ -12,11 +12,8 @@ public class TermsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.terms_activity);
-        //setContentView(R.layout.privacy_policy);
-
 
         getSupportActionBar().setTitle("Life Actions");
-
 
         webView = findViewById(R.id.webView1);
         webView.setWebViewClient(new WebViewClient());

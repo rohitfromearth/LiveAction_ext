@@ -5,7 +5,6 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -130,7 +129,7 @@ public class Achieve extends Fragment {
                     String pointscumm = String.valueOf(pointscumm_I);
 
                     if (categoryName.equals("Total")) {
-                        Log.e("datalegend", pointslastweek);
+
                         if (pointslastweekint > 0) {
                             congrats_tv.setVisibility(View.VISIBLE);
                             tv_red_points.setText(pointslastweekint);
