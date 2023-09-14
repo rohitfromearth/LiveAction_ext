@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -231,7 +232,7 @@ public class Reedeem extends Fragment {
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                    plus_count.setEnabled(false);
+                   // plus_count.setEnabled(false);
                 }
                 else {
 
@@ -307,8 +308,6 @@ public class Reedeem extends Fragment {
                 StrictMode.setThreadPolicy(policy);
 
                 try {
-
-
                     JSONObject jsonBody = new JSONObject();
 
                     jsonBody.put("userId", uid);
@@ -322,7 +321,7 @@ public class Reedeem extends Fragment {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                         builder.setTitle("Congratulations!!!");
-                        builder.setMessage("Successfully Redeemed");
+                        builder.setMessage("Successfully Redeemed with "+counter+" Voucher");
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -338,8 +337,6 @@ public class Reedeem extends Fragment {
                 }
             }
         });
-
-
         return view;
     }
 
@@ -376,23 +373,16 @@ public class Reedeem extends Fragment {
                     String value3 = item.getString("redemption_date");
                     int indexOfT = value3.indexOf('T');
 
-
                     String value3_s = value3.substring(0, indexOfT);
-
-
                     addTableRow(value1_s, value2_s, value3_s);
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     private void addTableRow(String vhr, String amnt, String Rdate) {
-//        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
 
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_reedem_hstry_item, null);
 
@@ -400,14 +390,12 @@ public class Reedeem extends Fragment {
         TextView tvLastWeek = row.findViewById(R.id.tvvouchr_amnt);
         TextView tvCumulative = row.findViewById(R.id.tvRedeem_date);
 
-
         tvCategory.setText(vhr);
         tvLastWeek.setText(amnt);
         tvCumulative.setText(Rdate);
 
         tableLayout.addView(row);
-
-
     }
+
 
 }

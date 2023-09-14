@@ -37,8 +37,6 @@ import java.util.Random;
 public class Fragment2 extends Fragment {
     PieChart pieChart;
     int uid_z;
-    //    private FirebaseAuth FirebaseAuh;
-    String firebaseToken = "";
     String firebaseToke = "";
     int uid = 0;
     Conn_service conn = new Conn_service();
@@ -56,9 +54,8 @@ public class Fragment2 extends Fragment {
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
         mAuth = FirebaseAuth.getInstance();
-        Log.e("mAuth3", String.valueOf(mAuth));
+
         FirebaseUser use = mAuth.getCurrentUser();
-        Log.e("mAuth4", String.valueOf(use));
 
         if (use != null) {
             use.getIdToken(true)
@@ -78,10 +75,7 @@ public class Fragment2 extends Fragment {
                         }
 
                     });
-
         }
-
-
         return view;
     }
 
@@ -107,7 +101,7 @@ public class Fragment2 extends Fragment {
 
                 String categoryName = item.getString("category");
                 if (!categoryName.equals("Total")) {
-//            String Pieval=     item.getString("usage_percent");
+
                     double pievalue = item.getDouble("usage_percent");
                     double minvalue = item.getDouble("usage_in_mins");
                     float fpi_Value = (float) pievalue;
@@ -128,22 +122,17 @@ public class Fragment2 extends Fragment {
 
         // To animate the pie chart
         pieChart.startAnimation();
-
-
         // Create the list of card items
         List<CardItem> cardItems = createCardItems(res);
-
         // Set up the RecyclerView
         cardAdapter = new CardAdapter(cardItems, requireContext());
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-
         recyclerView.setAdapter(cardAdapter);
 
     }
 
     private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
-
 
         try {
             JSONObject jsonObject = new JSONObject(res);
@@ -168,31 +157,24 @@ public class Fragment2 extends Fragment {
 
 
                 cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
-//                addTableRow(categoryName, lastWeek, cumulative,pointslastweek,pointscumm);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Execption", String.valueOf(e));
         }
-
-
         return cardItems;
     }
 
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
-//        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
 
         TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.legend_data, null);
 
         TextView tvCategory = row.findViewById(R.id.tv_legend_Category);
         TextView tvLastWeek = row.findViewById(R.id.tv_legend_per);
-
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
-        tvCategory.setText(categoryName);
-/*
-        double str1 = Double.parseDouble(lastWeek);
-        float hrs = (float) (str1/60);
-        String strHrs = String.format("%.2f",hrs);*/
+
+
         tvCategory.setText(categoryName);
         tvLastWeek.setText(lastWeek + "hr");
         tvLegendColor.setBackgroundColor(color_code);

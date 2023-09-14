@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ public class Chart_page extends AppCompatActivity {
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
     String mobile;
+    FragmentManager fragmentManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -329,7 +331,7 @@ public class Chart_page extends AppCompatActivity {
         }
 
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -339,8 +341,17 @@ public class Chart_page extends AppCompatActivity {
         mDrawer.closeDrawers();
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
-        // super.onBackPressed();
-    }
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        }
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        } else if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }*/
 }

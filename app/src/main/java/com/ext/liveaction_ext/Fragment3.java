@@ -12,31 +12,26 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Fragment3 extends Fragment {
     PieChart pieChart;
-    String firebaseToken = "";
     int uid_z;
     int uid = 0;
     Conn_service conn = new Conn_service();
@@ -55,9 +50,9 @@ public class Fragment3 extends Fragment {
         pieChart = view.findViewById(R.id.piechart_for_month);
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
         mAuth = FirebaseAuth.getInstance();
-        Log.e("mAuth3", String.valueOf(mAuth));
+
         FirebaseUser use = mAuth.getCurrentUser();
-        Log.e("mAuth4", String.valueOf(use));
+
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -89,7 +84,7 @@ public class Fragment3 extends Fragment {
 
         uid = sh.getInt("UID", uid_z);
         String res = conn.pack_rule("/usageStats/getUsageData?duration=month&userId=" + uid, firebaseToken);
-        //onPostExecute(res);
+
         try {
             JSONObject jsonObject = new JSONObject(res);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -110,7 +105,7 @@ public class Fragment3 extends Fragment {
                     double pievalue = item.getDouble("usage_percent");
                     double minvalue = item.getDouble("usage_in_mins");
                     float fpi_Value = (float) pievalue;
-                    Log.e("random", String.valueOf(pievalue));
+
                     pieChart.addPieSlice(
                             new PieModel(
                                     categoryName,
@@ -127,11 +122,8 @@ public class Fragment3 extends Fragment {
 
         // To animate the pie chart
         pieChart.startAnimation();
-
-
         // Create the list of card items
         List<CardItem> cardItems = createCardItems(res);
-
         // Set up the RecyclerView
         cardAdapter = new CardAdapter(cardItems, requireContext());
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
@@ -182,17 +174,10 @@ public class Fragment3 extends Fragment {
 
         TextView tvCategory = row.findViewById(R.id.tv_legend_Category);
         TextView tvLastWeek = row.findViewById(R.id.tv_legend_per);
-
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
         tvCategory.setText(categoryName);
-
-        /*double str1 = Double.parseDouble(lastWeek);
-        float hrs = (float) (str1/60);
-        String strHrs = String.format("%.2f",hrs);*/
-        tvCategory.setText(categoryName);
         tvLastWeek.setText(lastWeek + "hr");
-
         tvLegendColor.setBackgroundColor(color_code);
 
         tbklayout.addView(row);

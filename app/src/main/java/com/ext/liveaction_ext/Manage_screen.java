@@ -109,7 +109,6 @@ public class Manage_screen extends Fragment {
         String res = servic.pack_rule("/usageStats/getUsageData?duration=week&userId=" + uid, firebaseToken);
 
         boolean edit = onPostExecute(res);
-        Log.e("stringh", String.valueOf(edit));
         if (edit) {
             tv_btn.setText("Save Target");
         }
@@ -153,9 +152,8 @@ public class Manage_screen extends Fragment {
 
                             JSONObject financeObj = new JSONObject();
                             financeObj.put("userId", uid);
-
                             financeObj.put("category", usaage_id);
-                            Log.e("valuevaerificatioon ", value);
+
                             if (value.contains("_actual_hr")) {
                                 financeObj.put("targetInMins", editTextValuehr);
 
@@ -165,7 +163,6 @@ public class Manage_screen extends Fragment {
                                 valuesList.add(valueInt);
                             }
                             jsonAy.put(financeObj);
-
 
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
@@ -360,17 +357,4 @@ public class Manage_screen extends Fragment {
             }
         }
     }
-
-    /*public void onClick(final View v) { //check for what button is pressed
-        switch (v.getId()) {
-            case R.id.save_btn:
-                Fragment go_next = new Manage_screen();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                //getSupportActionBar().setTitle("Manage");
-                break;
-
-        }
-    }
-    */
 }

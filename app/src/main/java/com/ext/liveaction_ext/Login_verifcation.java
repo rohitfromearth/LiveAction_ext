@@ -539,14 +539,11 @@ public class Login_verifcation extends AppCompatActivity {
             boolean userExists = data.getBoolean("user_exists");
             if (userExists) {
                 int userId = data.getInt("user_id");
-             //   Log.e("datastream", String.valueOf(userId));
                 String userName = data.getString("user_name");
                 SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
-              //  Log.e("datastream", String.valueOf(firbastkn));
                 myEdit.putInt("UID", userId);
-
                 myEdit.putString("mobile_number", mob_no);
                 myEdit.putString("username", userName);
                 myEdit.apply();
@@ -661,10 +658,8 @@ public class Login_verifcation extends AppCompatActivity {
         return latitude;
     }////////////end method
     //code end location
-
     @Override
     public void onBackPressed() {
-
         super.onBackPressed();
     }
 

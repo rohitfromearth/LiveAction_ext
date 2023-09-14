@@ -50,17 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Life Actions");
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.POST_NOTIFICATIONS},4);
-//        SharedPreferences sh = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-//        endpot= sh.getString("endpt","");
-//
-//        ArrayList pack =  pc.pack_rule(endpot);
-//        Set<String> set = new HashSet<String>();
-//        set.addAll(pack);
+                new String[]{Manifest.permission.POST_NOTIFICATIONS}, 4);
 
-
-
-        if(!isLocationEnabled){
+        if (!isLocationEnabled) {
             showSettingsAlert();
         }
 
@@ -72,19 +64,17 @@ public class MainActivity extends AppCompatActivity {
         privacyCheckbox = findViewById(R.id.checkBox2); // Replace R.id.checkbox_privacy with your actual checkbox ID
         messageTextView = findViewById(R.id.validationmasg); // Replace R.id.message_textview with your actual TextView ID
 
-
-        //privacyText.setMovementMethod(LinkMovementMethod.getInstance());
         privacyText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("hiiiiiii","helooooo");
+                Log.e("hiiiiiii", "helooooo");
                 startActivity(new Intent(getApplicationContext(), PrivacyActivity.class));
             }
         });
         termsText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("hiiiiiii","helooooo");
+                Log.e("hiiiiiii", "helooooo");
                 startActivity(new Intent(getApplicationContext(), TermsActivity.class));
             }
         });
@@ -104,10 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 boolean privacyChecked = privacyCheckbox.isChecked();
 
                 if (termsChecked && privacyChecked) {
-                    // Perform the button action
-                    // Add your logic here
-                    // For example, start the Manage_screen activity
-
 
                     startActivity(new Intent(MainActivity.this, Login_verifcation.class));
                 } else {
@@ -125,14 +111,12 @@ public class MainActivity extends AppCompatActivity {
                 boolean termsChecked = termsCheckbox.isChecked();
                 boolean privacyChecked = privacyCheckbox.isChecked();
 
-//                Viewbtn.setEnabled(termsChecked && privacyChecked);
-
-                // Clear the message below the button
                 messageTextView.setText("");
             }
         });
 
     }
+
     public static boolean isLocationServicesEnabled(Context context) {
         int locationMode;
         try {
@@ -143,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return locationMode != Settings.Secure.LOCATION_MODE_OFF;
     }
+
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 MainActivity.this);
@@ -154,10 +139,6 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(
                                 Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         MainActivity.this.startActivity(intent);
-/*
-                        int valwhich = which;
-                        userChose(String.valueOf(valwhich));
-                        Log.e("positive","positive=="+which);*/
                     }
                 });
         alertDialog.setNegativeButton("Cancel",
@@ -165,15 +146,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
 
-                        /*String valwhich = String.valueOf(which);
-                        userChose(valwhich);
-                        Log.e("positive","positive=="+which);*/
                     }
                 });
         alertDialog.show();
     }
-
-
 
 
 }

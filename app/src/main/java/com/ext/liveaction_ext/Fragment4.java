@@ -13,34 +13,28 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Fragment4 extends Fragment {
     PieChart pieChart;
-    String firebaseToken = "";
     int uid_z;
     int uid = 0;
-
     Conn_service conn = new Conn_service();
     String firebaseToke = "";
     TableLayout tbklayout;
@@ -58,9 +52,9 @@ public class Fragment4 extends Fragment {
         pieChart = view.findViewById(R.id.piechart_for_year);
         recyclerView = view.findViewById(R.id.recyclerView_for_year);
         mAuth = FirebaseAuth.getInstance();
-        Log.e("mAuth3", String.valueOf(mAuth));
+
         FirebaseUser use = mAuth.getCurrentUser();
-        Log.e("mAuth4", String.valueOf(use));
+
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -74,21 +68,15 @@ public class Fragment4 extends Fragment {
                                 myEdit.apply();
                                 Data_show(firebaseToke);
                             }
-
-
                         }
 
                     });
-
         }
-
-
         return view;
     }
 
     private void Data_show(String firebaseToken) {
         SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
 
         uid = sh.getInt("UID", uid_z);
         String res = conn.pack_rule("/usageStats/getUsageData?duration=year&userId=" + uid, firebaseToken);
@@ -112,7 +100,7 @@ public class Fragment4 extends Fragment {
                     double pievalue = item.getDouble("usage_percent");
                     double minvalue = item.getDouble("usage_in_mins");
                     float fpi_Value = (float) pievalue;
-                    Log.e("random", String.valueOf(pievalue));
+
                     pieChart.addPieSlice(
                             new PieModel(
                                     categoryName,
@@ -129,11 +117,8 @@ public class Fragment4 extends Fragment {
 
         // To animate the pie chart
         pieChart.startAnimation();
-
-
         // Create the list of card items
         List<CardItem> cardItems = createCardItems(res);
-
         // Set up the RecyclerView
         cardAdapter = new CardAdapter(cardItems, requireContext());
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
@@ -143,8 +128,6 @@ public class Fragment4 extends Fragment {
 
     private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
-
-
         try {
             JSONObject jsonObject = new JSONObject(res);
             JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -178,23 +161,15 @@ public class Fragment4 extends Fragment {
     }
 
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
-//        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.table_row_item, tableLayout, false);
 
         TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.legend_data, null);
 
         TextView tvCategory = row.findViewById(R.id.tv_legend_Category);
         TextView tvLastWeek = row.findViewById(R.id.tv_legend_per);
-
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
         tvCategory.setText(categoryName);
-
-        /*double str1 = Double.parseDouble(lastWeek);
-        float hrs = (float) (str1/60);
-        String strHrs = String.format("%.2f",hrs);*/
-        tvCategory.setText(categoryName);
         tvLastWeek.setText(lastWeek + "hr");
-
         tvLegendColor.setBackgroundColor(color_code);
 
         tbklayout.addView(row);
@@ -228,7 +203,6 @@ public class Fragment4 extends Fragment {
                 return R.drawable.logo_others;
             case "Entertainment":
                 return R.drawable.logo_enter;
-
             case "Finance":
                 return R.drawable.logo_finance;
             default:
