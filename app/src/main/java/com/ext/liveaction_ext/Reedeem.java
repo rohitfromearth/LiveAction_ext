@@ -81,9 +81,9 @@ public class Reedeem extends Fragment {
         tableLayout = dialog.findViewById(R.id.tableLayout);
 
         mAuth = FirebaseAuth.getInstance();
-        Log.e("mAuth3", String.valueOf(mAuth));
+
         FirebaseUser use = mAuth.getCurrentUser();
-        Log.e("mAuth4", String.valueOf(use));
+
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -140,6 +140,7 @@ public class Reedeem extends Fragment {
             totalPoints = resultObject.getInt("total_points");
             int pointsRedeemed = resultObject.getInt("points_redeemed");
             pointsAvailable = resultObject.getInt("points_available");
+            //pointsAvailable = 32;
             total_pnt.setText(String.valueOf(totalPoints));
             achi_points.setText(String.valueOf(totalPoints));
             pnt_redmed.setText(String.valueOf(pointsRedeemed));
@@ -218,7 +219,7 @@ public class Reedeem extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(pointsAvailable < 30){
+                if (pointsAvailable < 30) {
 
                     reed_btn.setEnabled(false);
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -227,68 +228,25 @@ public class Reedeem extends Fragment {
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // Handle the click event (if needed)
+
                         }
                     });
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                   // plus_count.setEnabled(false);
-                }
-                else {
+
+                } else {
 
                     reed_btn.setEnabled(true);
-                    int pp = increaseCounter();
 
+                    int pp = increaseCounter();
                     int limit_point = pp * 30;
-                    if((pointsAvailable -limit_point) < 30){
-                        Log.e("tag---", "pointsAvailable==="+limit_point);
-                       /* AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("Incorrect Redemption:");
-                        builder.setMessage("Sorry you are not allowed for more vouchers");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Handle the click event (if needed)
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();*/
+
+                    if ((pointsAvailable - limit_point) < 30) {
                         plus_count.setEnabled(false);
-                        //count_txt.setText(pp-1);
+
                     }
 
                 }
-
-
-               /*if (totalPoints > 30) {
-                    Log.e("tag---", "match");
-                    reed_btn.setEnabled(true);
-                   int pp = increaseCounter();
-
-                }
-                else {
-                    reed_btn.setEnabled(false);
-                    reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                    // Set the title and message for the dialog
-                    builder.setTitle("Incorrect Redemtion:");
-                    builder.setMessage("sorry you are not allowed for more vouchers ");
-                    //builder.setMessage("Thank You");
-
-
-                    // Set a positive button and its click listener
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Handle the click event (if needed)
-                        }
-                    });
-
-                    // Create and show the alert dialog
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }*/
 
             }
         });
@@ -302,7 +260,7 @@ public class Reedeem extends Fragment {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                Log.e("tag--=", "inside btn reedeem"+counter);
+                Log.e("tag--=", "inside btn reedeem" + counter);
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                 StrictMode.setThreadPolicy(policy);
@@ -313,19 +271,56 @@ public class Reedeem extends Fragment {
                     jsonBody.put("userId", uid);
                     jsonBody.put("count", counter);
                     String uid = conn.datasender(jsonBody, "/usageStats/redemption", firebaseToken);
-                    Log.e("redeemclick","data==="+uid);
+                    Log.e("redeemclick", "data===" + uid);
+                    Log.e("redeemclick", "pointsAvailable===" + pointsAvailable);
+
 
                     if (uid.contains("false")) {
-                        Log.e("Response","success:false");
-                    }else{
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                        builder.setTitle("Congratulations!!!");
-                        builder.setMessage("Successfully Redeemed with "+counter+" Voucher");
+                        Log.e("Response", "success:false");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Incorrect Redemption:");
+                        builder.setMessage("Redeemable points is lower than requested");
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Handle the click event (if needed)
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else if (counter < 1 && pointsAvailable < 30) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Sorry");
+                        builder.setMessage("You can not redeem");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else if (pointsAvailable > 30 && counter < 1) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle("Note:");
+                        builder.setMessage("You can redeem points in multiple of 30");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                        builder.setTitle("Congratulations!!!");
+                        builder.setMessage("Successfully Redeemed with " + counter + " Voucher");
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
                             }
                         });
                         AlertDialog alertDialog = builder.create();

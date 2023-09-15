@@ -341,17 +341,16 @@ public class Chart_page extends AppCompatActivity {
         mDrawer.closeDrawers();
     }
 
-    /*@Override
+   /* @Override
     public void onBackPressed() {
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
-        }
-        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDrawer.closeDrawer(GravityCompat.START);
-        } else if (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
-        } else {
-            super.onBackPressed();
+
+      Fragment fragment = getSupportFragmentManager().findFragmentByTag("Fragment1");
+        if (fragment != null)
+            return;
+
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+
         }
     }*/
 }
