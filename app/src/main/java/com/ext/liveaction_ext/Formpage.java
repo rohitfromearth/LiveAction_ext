@@ -454,7 +454,7 @@ public class Formpage extends AppCompatActivity {
         stateAdapter = ArrayAdapter.createFromResource(this, R.array.array_indian_states, R.layout.spinner_layout);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(stateAdapter);
-        SharedPreferences sharedPreferences = getSharedPreferences("myKey", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         String value = sharedPreferences.getString("value", "");
         String valueState = sharedPreferences.getString("valueState", "");
         enabled = sharedPreferences.getBoolean("enabled", val);

@@ -105,7 +105,7 @@ public class Login_verifcation extends AppCompatActivity {
         String data = getLocation();
        // Log.e("ghi", data);
 
-        SharedPreferences sh = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
         end = sh.getString("endpt", "");
 
         dialog = new Dialog(Login_verifcation.this);
@@ -397,13 +397,8 @@ public class Login_verifcation extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // if the code is correct and the task is successful
-                            // we are sending our user to new activity.
-//                            Intent i = new Intent(MainActivity.this, Homepage.class);
-//                            startActivity(i);
-
 
                             FirebaseUser currentUser = mAuth.getCurrentUser();
-//                            senddata(edtPhone.getText().toString());
 
                             if (currentUser != null) {
                                 currentUser.getIdToken(true)
@@ -418,7 +413,7 @@ public class Login_verifcation extends AppCompatActivity {
 
                                                     if (hasPermission) {
                                                         if (pageID) {
-                                                         //   Log.e("mauth", String.valueOf(mAuth));
+                                                            //Log.e("mauth", String.valueOf(mAuth));
                                                             startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                         } else {
                                                             String data = getLocation();
@@ -431,7 +426,7 @@ public class Login_verifcation extends AppCompatActivity {
                                                                 is_val = true;
                                                             }
                                                             //Log.e("datastrem", city + latitude);
-                                                            SharedPreferences sharedPref = getSharedPreferences("myKey", MODE_PRIVATE);
+                                                            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", context.MODE_PRIVATE);
                                                             SharedPreferences.Editor editor = sharedPref.edit();
                                                             editor.putString("value", city);
                                                             editor.putString("valueState", state);
@@ -540,7 +535,7 @@ public class Login_verifcation extends AppCompatActivity {
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
-                SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
                 myEdit.putInt("UID", userId);
@@ -549,7 +544,7 @@ public class Login_verifcation extends AppCompatActivity {
                 myEdit.apply();
                 return true;
             } else {
-                SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
 

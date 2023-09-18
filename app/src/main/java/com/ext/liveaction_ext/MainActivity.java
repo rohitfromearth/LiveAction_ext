@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean privacyChecked = privacyCheckbox.isChecked();
 
                 if (termsChecked && privacyChecked) {
+
 
                     startActivity(new Intent(MainActivity.this, Login_verifcation.class));
                 } else {

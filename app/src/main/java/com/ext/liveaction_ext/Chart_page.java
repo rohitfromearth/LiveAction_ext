@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,7 +39,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
-import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
@@ -63,6 +63,8 @@ public class Chart_page extends AppCompatActivity {
     ImageButton close_dialog;
     String mobile;
     FragmentManager fragmentManager;
+    Context context;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +75,8 @@ public class Chart_page extends AppCompatActivity {
                 4);
         FirebaseApp.initializeApp(this);
 
-        SharedPreferences sh = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+
         uid = sh.getInt("UID", uid_z);
 
         username = sh.getString("username", "");
@@ -83,7 +86,7 @@ public class Chart_page extends AppCompatActivity {
 
         String dir = getObbDir().getPath();
         ArrayList pack = pc.pack_rule(endpot);
-        SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
@@ -91,6 +94,7 @@ public class Chart_page extends AppCompatActivity {
         set.addAll(pack);
         myEdit.putStringSet("APP_LIST", set);
         myEdit.apply();
+
 
         if (uid == 0) {
             Intent intent = new Intent(this, MainActivity.class);
@@ -279,11 +283,79 @@ public class Chart_page extends AppCompatActivity {
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
+
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment go_next = null;
+        Fragment go_next ;
 
         int itemId = menuItem.getItemId();
 
+        /*switch (itemId) {
+
+            case R.id.chart_page:
+
+                startActivity(new Intent(this, Chart_page.class));
+                getSupportActionBar().setTitle("Dashboard");
+                break;
+            case R.id.manage_page:
+
+                go_next = new Manage_screen();
+                getSupportActionBar().setTitle("Manage");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+
+                break;
+            case R.id.achieve_page:
+
+                go_next = new Achieve();
+                getSupportActionBar().setTitle("Achievements");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.redeem_page:
+
+                go_next = new Reedeem();
+                getSupportActionBar().setTitle("Redeem");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.contact_us:
+
+                go_next = new ContactUs();
+                getSupportActionBar().setTitle("Connect Us");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.faq:
+
+                go_next = new FaQ();
+                getSupportActionBar().setTitle("FAQ");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.perm_new:
+
+                Intent intent = new Intent(this, Chart_page.class);
+                intent.putExtra("show_permission_dialog", true);
+                startActivity(intent);
+                break;
+            case R.id.Logout:
+
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("firebaseToken", "");
+                myEdit.apply();
+                startActivity(new Intent(this, Login_verifcation.class));
+                getSupportActionBar().setTitle("Verification");
+                break;
+            default :
+                Log.e("Invalid", "Selection");
+
+        }*/
         if (itemId == R.id.chart_page) {
 
             startActivity(new Intent(this, Chart_page.class));
@@ -293,26 +365,41 @@ public class Chart_page extends AppCompatActivity {
 
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
+            fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
         } else if (itemId == R.id.achieve_page) {
 
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
+            fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
         } else if (itemId == R.id.redeem_page) {
 
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
+            fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
         } else if (itemId == R.id.contact_us) {
 
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Connect Us");
+            fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
         } else if (itemId == R.id.faq) {
 
             go_next = new FaQ();
             getSupportActionBar().setTitle("FAQ");
+            fragmentManager = getSupportFragmentManager();
+
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
         } else if (itemId == R.id.perm_new) {
 
@@ -322,7 +409,7 @@ public class Chart_page extends AppCompatActivity {
 
         } else if (itemId == R.id.Logout) {
 
-            SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
             myEdit.putString("firebaseToken", "");
             myEdit.apply();
@@ -331,8 +418,8 @@ public class Chart_page extends AppCompatActivity {
         }
 
         // Insert the fragment by replacing any existing fragment
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+
+
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
@@ -341,16 +428,8 @@ public class Chart_page extends AppCompatActivity {
         mDrawer.closeDrawers();
     }
 
-   /* @Override
+    @Override
     public void onBackPressed() {
 
-      Fragment fragment = getSupportFragmentManager().findFragmentByTag("Fragment1");
-        if (fragment != null)
-            return;
-
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
-            getSupportFragmentManager().popBackStack();
-
-        }
-    }*/
+    }
 }

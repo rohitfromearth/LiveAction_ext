@@ -46,6 +46,7 @@ public class Conn_service {
 
             String reso = urlConnection.getResponseMessage();
 
+            Log.e("reso","reso"+responseCode);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

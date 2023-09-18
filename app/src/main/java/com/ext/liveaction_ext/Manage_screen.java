@@ -73,7 +73,7 @@ public class Manage_screen extends Fragment {
         floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
-
+        Log.e("mAuthManage", "mAuthManage"+mAuth);
         FirebaseUser use = mAuth.getCurrentUser();
 
 
@@ -94,7 +94,7 @@ public class Manage_screen extends Fragment {
         SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
-
+        Log.e("firebaseToken", "firebaseToken"+firebaseToken);
 
         // Inflate the floating view layout
         inflater = LayoutInflater.from(getContext());
@@ -107,7 +107,7 @@ public class Manage_screen extends Fragment {
         floatingViewContainer.addView(floatingView);
 
         String res = servic.pack_rule("/usageStats/getUsageData?duration=week&userId=" + uid, firebaseToken);
-
+        Log.e("res", "res"+res);
         boolean edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");

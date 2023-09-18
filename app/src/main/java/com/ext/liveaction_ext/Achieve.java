@@ -2,9 +2,11 @@ package com.ext.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,6 +48,7 @@ public class Achieve extends Fragment {
     private int initialY;
     private float initialTouchX;
     private float initialTouchY;
+    Context context;
 
 
     @Override
@@ -67,7 +70,8 @@ public class Achieve extends Fragment {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
                                 firebaseToke = task.getResult().getToken();
-                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+                                Log.e("token_fa","gg"+firebaseToke);
+                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
@@ -78,7 +82,7 @@ public class Achieve extends Fragment {
 
         }
 
-        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
         firebaseToken = sh.getString("firebaseToken", "");
