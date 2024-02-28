@@ -35,8 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthSettings;
@@ -81,6 +80,8 @@ public class Login_verifcation extends AppCompatActivity {
     boolean netpro_enabled = false;
     boolean passive_enabled = false;
     private FirebaseAuthSettings firebaseAuthSettings;
+    private PhoneAuthHandler phoneAuthHandler;
+    private OTPVerificationHandler otpVerificationHandler;
 
     // callback method is called on Phone auth provider.
 
@@ -101,11 +102,13 @@ public class Login_verifcation extends AppCompatActivity {
         edtPhone = findViewById(R.id.editTextPhone);
 
 
-        locationManager = (LocationManager) getSystemService(context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         String data = getLocation();
+        phoneAuthHandler = new PhoneAuthHandler();
+        otpVerificationHandler = new OTPVerificationHandler();
        // Log.e("ghi", data);
 
-        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         end = sh.getString("endpt", "");
 
         dialog = new Dialog(Login_verifcation.this);
@@ -116,8 +119,9 @@ public class Login_verifcation extends AppCompatActivity {
         dialog.show();
 
         mAuth = FirebaseAuth.getInstance();
+//        mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
         firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
-
+//        firebaseAuthSettings.setAppVerificationDisabledForTesting(true);
         usaegstat = dialog.findViewById(R.id.usaegstat_perm);
         Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
         close = dialog.findViewById(R.id.close_permission);
@@ -203,7 +207,37 @@ public class Login_verifcation extends AppCompatActivity {
                       //  Log.e("new_string", "onClick: " + edtPhone.getText().toString());
                         phone = "+91" + edtPhone.getText().toString();
                       //  Log.e("new_string", "onClick: " + phone);
-                        sendVerificationCode(phone);
+//                        sendVerificationCode(phone);
+
+
+
+
+
+
+
+
+                        phoneAuthHandler.sendVerificationCode(Login_verifcation.this, phone, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                            @Override
+                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                                // Auto-retrieval or instant verification completed, you can also use this credential for signing in
+                                Log.e("multiandgliu", "onVerificationCompleted");
+                            }
+
+                            @Override
+                            public void onVerificationFailed(@NonNull FirebaseException e) {
+                                // Verification failed
+                                Toast.makeText(Login_verifcation.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                                super.onCodeSent(s, forceResendingToken);
+                                // OTP sent successfully, save verification ID
+                                verificationId = s;
+                                Toast.makeText(Login_verifcation.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                         SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                         SharedPreferences.Editor myEdit = sharedPreferences.edit();
                         myEdit.putString("mobile_no", phone);
@@ -253,7 +287,9 @@ public class Login_verifcation extends AppCompatActivity {
                     // if OTP field is not empty calling
                     // method to verify the OTP.
 
-                    verifyCode(edtOTP.getText().toString());
+                 verifyOTP(verificationId, edtOTP.getText().toString());
+
+//                    verifyCode(edtOTP.getText().toString());
                 }
             }
         });
@@ -296,76 +332,68 @@ public class Login_verifcation extends AppCompatActivity {
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             }
         });
-
-
     }
 
-    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
+//    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
             // initializing our callbacks for on
             // verification callback method.
-            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-
-        // below method is used when
-        // OTP is sent from Firebase
-
-        @Override
-        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            super.onCodeSent(s, forceResendingToken);
-            // when we receive the OTP it
-            // contains a unique id which
-            // we are storing in our string
-            // which we have already created.
-            verificationId = s;
-
-          //  Log.e("onCodeSent", "in oncodesend method");
-           // Log.e("tokenForm firebase", String.valueOf(forceResendingToken));
-        }
-
-        // this method is called when user
-        // receive OTP from Firebase.
-        @Override
-        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-            // below line is used for getting OTP code
-            // which is sent in phone auth credentials.
-            final String code = phoneAuthCredential.getSmsCode();
-
-            // checking if the code
-            // is null or not.
-            if (code != null) {
-                // if the code is not null then
-                // we are setting that code to
-                // our OTP edittext field.
-                edtOTP.setText(code);
-
-                // after setting this code
-                // to OTP edittext field we
-                // are calling our verifycode method.
-                verifyCode(code);
-
-            }
-        }
-
-        // this method is called when firebase doesn't
-        // sends our OTP code due to any error or issue.
-        @Override
-        public void onVerificationFailed(FirebaseException e) {
-            // displaying error message with firebase exception.
-            Log.e("new_string", e.getMessage());
-            Toast.makeText(Login_verifcation.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            c = Calendar.getInstance();
-            int min = c.get(Calendar.MINUTE);
-            int hr = c.get(Calendar.HOUR_OF_DAY);
-            int sec = c.get(Calendar.SECOND);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            int year = c.get(Calendar.YEAR);
-            int mnth = c.get(Calendar.MONTH) + 1;
-            String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + e.getMessage();
-            Log.e("new_exception", result_str);
-            servic.crashLog(result_str, end);
-        }
-    };
+//            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//        // below method is used when
+//        // OTP is sent from Firebase
+//        @Override
+//        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+//            super.onCodeSent(s, forceResendingToken);
+//            // when we receive the OTP it
+//            // contains a unique id which
+//            // we are storing in our string
+//            // which we have already created.
+//            verificationId = s;
+//
+//
+//        }
+//        // this method is called when user
+//        // receive OTP from Firebase.
+//        @Override
+//        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+//            // below line is used for getting OTP code
+//            // which is sent in phone auth credentials.
+//            final String code = phoneAuthCredential.getSmsCode();
+//
+//            // checking if the code
+//            // is null or not.
+//            if (code != null) {
+//                // if the code is not null then
+//                // we are setting that code to
+//                // our OTP edittext field.
+//                edtOTP.setText(code);
+//
+//                // after setting this code
+//                // to OTP edittext field we
+//                // are calling our verifycode method.
+//                verifyCode(code);
+//
+//            }
+//        }
+//        // this method is called when firebase doesn't
+//        // sends our OTP code due to any error or issue.
+//        @Override
+//        public void onVerificationFailed(FirebaseException e) {
+//            // displaying error message with firebase exception.
+//            Log.e("new_string", e.getMessage());
+//            Toast.makeText(Login_verifcation.this, e.getMessage(), Toast.LENGTH_LONG).show();
+//            c = Calendar.getInstance();
+//            int min = c.get(Calendar.MINUTE);
+//            int hr = c.get(Calendar.HOUR_OF_DAY);
+//            int sec = c.get(Calendar.SECOND);
+//            int day = c.get(Calendar.DAY_OF_MONTH);
+//            int year = c.get(Calendar.YEAR);
+//            int mnth = c.get(Calendar.MONTH) + 1;
+//            String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + e.getMessage();
+//            Log.e("new_exception", result_str);
+//            servic.crashLog(result_str, end);
+//        }
+//    };
 
     public boolean isValidMobileNumber(String number) {
         // Regular expression pattern for mobile number validation
@@ -387,155 +415,155 @@ public class Login_verifcation extends AppCompatActivity {
         }
     }
 
-    private void signInWithCredential(PhoneAuthCredential credential) {
-        // inside this method we are checking if
-        // the code entered is correct or not.
-
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // if the code is correct and the task is successful
-
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
-
-                            if (currentUser != null) {
-                                currentUser.getIdToken(true)
-                                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                                if (task.isSuccessful()) {
-                                                    String firebaseToken = task.getResult().getToken();
-
-                                                    boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
-                                                    boolean hasPermission = hasUsageAccessPermission();
-
-                                                    if (hasPermission) {
-                                                        if (pageID) {
-                                                            //Log.e("mauth", String.valueOf(mAuth));
-                                                            startActivity(new Intent(Login_verifcation.this, Chart_page.class));
-                                                        } else {
-                                                            String data = getLocation();
-                                                           // Log.e("ghi", data);
-
-                                                            boolean is_val;
-                                                            if (Objects.equals(city, "") && Objects.equals(state, "")) {
-                                                                is_val = false;
-                                                            } else {
-                                                                is_val = true;
-                                                            }
-                                                            //Log.e("datastrem", city + latitude);
-                                                            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", context.MODE_PRIVATE);
-                                                            SharedPreferences.Editor editor = sharedPref.edit();
-                                                            editor.putString("value", city);
-                                                            editor.putString("valueState", state);
-                                                            editor.putString("longitude", longitude);
-                                                            editor.putString("latitude", latitude);
-                                                            editor.putBoolean("enabled", is_val);
-                                                            editor.apply();
-                                                            startActivity(new Intent(Login_verifcation.this, Formpage.class));
-
-                                                        }
-                                                    } else {
-
-                                                        btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
-                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
-
-                                                        // Set the title and message for the dialog
-                                                        builder.setTitle("Permission Requirement:");
-                                                        builder.setMessage("Give Usage Stat Permission");
-                                                        //builder.setMessage("Thank You");
-
-
-                                                        // Set a positive button and its click listener
-                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                // Handle the click event (if needed)
-                                                            }
-                                                        });
-
-                                                        // Create and show the alert dialog
-                                                        AlertDialog alertDialog = builder.create();
-                                                        alertDialog.show();
-                                                    }
-
-
-                                                    // Pass the firebaseToken to your backend developer through the API
-                                                    // You can make an API call and include the token in the request headers or body
-                                                }  // Handle error getting the token
-
-
-                                            }
-                                        });
-                            }
-
-
-                        } else {
-                            // if the code is not correct then we are
-                            // displaying an error message to the user.
-
-                            c = Calendar.getInstance();
-                            int min = c.get(Calendar.MINUTE);
-                            int hr = c.get(Calendar.HOUR_OF_DAY);
-                            int sec = c.get(Calendar.SECOND);
-                            int day = c.get(Calendar.DAY_OF_MONTH);
-                            int year = c.get(Calendar.YEAR);
-                            int mnth = c.get(Calendar.MONTH) + 1;
-                            String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + task.getException();
-                            Log.e("new_string---sign in", task.getException().toString());
-                          //  Log.e("new_exception", result_str);
-                            Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            servic.crashLog(result_str, end);
-
-                        }
-
-                    }
-                });
-    }
+//    private void signInWithCredential(PhoneAuthCredential credential) {
+//        // inside this method we are checking if
+//        // the code entered is correct or not.
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // if the code is correct and the task is successful
+//
+//                            FirebaseUser currentUser = mAuth.getCurrentUser();
+//
+//                            if (currentUser != null) {
+//                                currentUser.getIdToken(true)
+//                                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+//                                                if (task.isSuccessful()) {
+//
+//                                                    try{
+//                                                    String firebaseToken = task.getResult().getToken();
+//
+//                                                    boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
+//                                                    boolean hasPermission = hasUsageAccessPermission();
+//
+//                                                    if (hasPermission) {
+//                                                        if (pageID) {
+//                                                            //Log.e("mauth", String.valueOf(mAuth));
+//                                                            startActivity(new Intent(Login_verifcation.this, Chart_page.class));
+//                                                        } else {
+//                                                            String data = getLocation();
+//                                                           // Log.e("ghi", data);
+//
+//                                                            boolean is_val;
+//                                                            if (Objects.equals(city, "") && Objects.equals(state, "")) {
+//                                                                is_val = false;
+//                                                            } else {
+//                                                                is_val = true;
+//                                                            }
+//                                                            //Log.e("datastrem", city + latitude);
+//                                                            SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", context.MODE_PRIVATE);
+//                                                            SharedPreferences.Editor editor = sharedPref.edit();
+//                                                            editor.putString("value", city);
+//                                                            editor.putString("valueState", state);
+//                                                            editor.putString("longitude", longitude);
+//                                                            editor.putString("latitude", latitude);
+//                                                            editor.putBoolean("enabled", is_val);
+//                                                            editor.apply();
+//                                                            startActivity(new Intent(Login_verifcation.this, Formpage.class));
+//
+//                                                        }
+//                                                    } else {
+//
+//                                                        btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
+//                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
+//
+//                                                        // Set the title and message for the dialog
+//                                                        builder.setTitle("Permission Requirement:");
+//                                                        builder.setMessage("Give Usage Stat Permission");
+//                                                        //builder.setMessage("Thank You");
+//
+//
+//                                                        // Set a positive button and its click listener
+//                                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                                            @Override
+//                                                            public void onClick(DialogInterface dialog, int which) {
+//                                                                // Handle the click event (if needed)
+//                                                            }
+//                                                        });
+//
+//                                                        // Create and show the alert dialog
+//                                                        AlertDialog alertDialog = builder.create();
+//                                                        alertDialog.show();
+//                                                    }
+//
+//                                                } catch (Exception e) {
+//                                                    Log.e("crashtext", e.getMessage());
+//                                                }
+//                                                    // Pass the firebaseToken to your backend developer through the API
+//                                                    // You can make an API call and include the token in the request headers or body
+//                                                }  // Handle error getting the token
+//
+//
+//                                            }
+//                                        });
+//                            }
+//
+//
+//                        } else {
+//                            // if the code is not correct then we are
+//                            // displaying an error message to the user.
+//
+//                            c = Calendar.getInstance();
+//                            int min = c.get(Calendar.MINUTE);
+//                            int hr = c.get(Calendar.HOUR_OF_DAY);
+//                            int sec = c.get(Calendar.SECOND);
+//                            int day = c.get(Calendar.DAY_OF_MONTH);
+//                            int year = c.get(Calendar.YEAR);
+//                            int mnth = c.get(Calendar.MONTH) + 1;
+//                            String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + task.getException();
+//                            Log.e("new_string---sign in", task.getException().toString());
+//                          //  Log.e("new_exception", result_str);
+//                            Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+//                            servic.crashLog(result_str, end);
+//
+//                        }
+//
+//                    }
+//                });
+//    }
 
     private void sendVerificationCode(String number) {
         // this method is used for getting
         // OTP on user phone number.
-
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(number)            // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(this)                 // Activity (for callback binding)
-                        .setCallbacks(mCallBack)           // OnVerificationStateChangedCallbacks
+//                        .setCallbacks(mCallBack)           // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
     // below method is use to verify code from Firebase.
-    private void verifyCode(String code) {
-        // below line is used for getting
-        // credentials from our verification id and code.
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-
-        // after getting credential we are
-        // calling sign in method.
-        signInWithCredential(credential);
-
-    }
+//    private void verifyCode(String code) {
+//        // below line is used for getting
+//        // credentials from our verification id and code.
+////        Log.e("testing", verificationId);
+//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+//
+//        // after getting credential we are
+//        // calling sign in method.
+//        signInWithCredential(credential);
+//
+//    }
 
     public boolean senddata(String mob_no, String firbastkn) {
-
         try {
             JSONObject requestBody = new JSONObject();
             requestBody.put("mobile_no", mob_no);
             String uiddd = servic.formdatasend(requestBody, "/user/login");
-
-
             JSONObject jsonResponse = new JSONObject(uiddd);
             JSONObject data = jsonResponse.getJSONObject("data");
             boolean userExists = data.getBoolean("user_exists");
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
                 myEdit.putInt("UID", userId);
@@ -544,7 +572,7 @@ public class Login_verifcation extends AppCompatActivity {
                 myEdit.apply();
                 return true;
             } else {
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
 
@@ -656,6 +684,119 @@ public class Login_verifcation extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+    public void verifyOTP(String verificationId, String otp) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
+        signInWithPhoneAuthCredential(credential);
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // if the code is correct and the task is successful
+
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                            if (currentUser != null) {
+                                currentUser.getIdToken(true)
+                                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                                if (task.isSuccessful()) {
+
+                                                    try{
+                                                        String firebaseToken = task.getResult().getToken();
+
+                                                        boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
+                                                        boolean hasPermission = hasUsageAccessPermission();
+
+                                                        if (hasPermission) {
+                                                            if (pageID) {
+                                                                //Log.e("mauth", String.valueOf(mAuth));
+                                                                startActivity(new Intent(Login_verifcation.this, Chart_page.class));
+                                                            } else {
+                                                                String data = getLocation();
+                                                                // Log.e("ghi", data);
+
+                                                                boolean is_val;
+                                                                if (Objects.equals(city, "") && Objects.equals(state, "")) {
+                                                                    is_val = false;
+                                                                } else {
+                                                                    is_val = true;
+                                                                }
+                                                                //Log.e("datastrem", city + latitude);
+                                                                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", context.MODE_PRIVATE);
+                                                                SharedPreferences.Editor editor = sharedPref.edit();
+                                                                editor.putString("value", city);
+                                                                editor.putString("valueState", state);
+                                                                editor.putString("longitude", longitude);
+                                                                editor.putString("latitude", latitude);
+                                                                editor.putBoolean("enabled", is_val);
+                                                                editor.apply();
+                                                                startActivity(new Intent(Login_verifcation.this, Formpage.class));
+
+                                                            }
+                                                        } else {
+
+                                                            btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
+
+                                                            // Set the title and message for the dialog
+                                                            builder.setTitle("Permission Requirement:");
+                                                            builder.setMessage("Give Usage Stat Permission");
+                                                            //builder.setMessage("Thank You");
+
+
+                                                            // Set a positive button and its click listener
+                                                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    // Handle the click event (if needed)
+                                                                }
+                                                            });
+
+                                                            // Create and show the alert dialog
+                                                            AlertDialog alertDialog = builder.create();
+                                                            alertDialog.show();
+                                                        }
+
+                                                    } catch (Exception e) {
+                                                        Log.e("crashtext", e.getMessage());
+                                                    }
+                                                    // Pass the firebaseToken to your backend developer through the API
+                                                    // You can make an API call and include the token in the request headers or body
+                                                }  // Handle error getting the token
+
+
+                                            }
+                                        });
+                            }
+
+
+                        } else {
+                            // if the code is not correct then we are
+                            // displaying an error message to the user.
+
+                            c = Calendar.getInstance();
+                            int min = c.get(Calendar.MINUTE);
+                            int hr = c.get(Calendar.HOUR_OF_DAY);
+                            int sec = c.get(Calendar.SECOND);
+                            int day = c.get(Calendar.DAY_OF_MONTH);
+                            int year = c.get(Calendar.YEAR);
+                            int mnth = c.get(Calendar.MONTH) + 1;
+                            String result_str = "Time:" + day + "/" + mnth + "/" + year + ":" + hr + ":" + min + ":" + sec + "Mobile_number:" + phone + "Error:" + task.getException();
+                            Log.e("new_string---sign in", task.getException().toString());
+                            //  Log.e("new_exception", result_str);
+                            Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            servic.crashLog(result_str, end);
+
+                        }
+
+                    }
+                });
     }
 
 }

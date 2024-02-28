@@ -1,5 +1,6 @@
 package com.ext.liveaction_ext;
 
+import static android.content.Context.MODE_PRIVATE;
 import static java.security.AccessController.getContext;
 
 import android.app.AlertDialog;
@@ -805,6 +806,7 @@ public class Formpage extends AppCompatActivity {
         arry_ott.put(app4);
         arry_ott.put(app5);
         arry_ott.put(app6);
+        arry_ott.put(app7);
 
 
         return arry_ott;
@@ -864,8 +866,6 @@ public class Formpage extends AppCompatActivity {
         SharedPreferences sh = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         longi = sh.getString("longitude", "");
         lati = sh.getString("latitude", "");
-
-
         String mobile = sh.getString("mobile_number", "");
         String Name = Et_name.getText().toString().trim();
 
@@ -880,10 +880,7 @@ public class Formpage extends AppCompatActivity {
         String prdo = String.join(", ", selectedProducts);
 
 
-        JSONArray jsonAry = new JSONArray();
-        jsonAry.put("value1");
-        jsonAry.put("value2");
-        jsonAry.put("value3");
+
         JSONArray ottdta = OttData();
         JSONArray musicdata = MusictData();
 

@@ -54,6 +54,7 @@
                 android:id="@+id/sendotp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:layout_marginHorizontal="5dp"
                 android:paddingVertical="20dp"
                 app:cardBackgroundColor="#fe7e34"
