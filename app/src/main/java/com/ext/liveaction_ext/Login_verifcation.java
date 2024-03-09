@@ -36,6 +36,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthSettings;
@@ -92,7 +94,9 @@ public class Login_verifcation extends AppCompatActivity {
         setContentView(R.layout.activity_login_verifcation);
 
         FirebaseApp.initializeApp(this);
-
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance());
 
         getSupportActionBar().setTitle("Life Actions");
         btn_verify = findViewById(R.id.verifybtn);
@@ -688,9 +692,13 @@ public class Login_verifcation extends AppCompatActivity {
     public void verifyOTP(String verificationId, String otp) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
         signInWithPhoneAuthCredential(credential);
+
+
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -706,17 +714,18 @@ public class Login_verifcation extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<GetTokenResult> task) {
                                                 if (task.isSuccessful()) {
-
+Log.e("firebasesuccess","success");
                                                     try{
                                                         String firebaseToken = task.getResult().getToken();
-
+                                                        Log.e("firebaseToken","Ftoken:"+firebaseToken+"User"+currentUser);
                                                         boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
                                                         boolean hasPermission = hasUsageAccessPermission();
-
+                                                        Log.e("pageID","pageID:"+pageID+"hasPermission"+hasPermission);
                                                         if (hasPermission) {
                                                             if (pageID) {
                                                                 //Log.e("mauth", String.valueOf(mAuth));
-                                                                startActivity(new Intent(Login_verifcation.this, Chart_page.class));
+                                                                Log.d("citylocation",city+" and "+state);
+                                                                startActivity(new Intent(Login_verifcation.this, Formpage.class));
                                                             } else {
                                                                 String data = getLocation();
                                                                 // Log.e("ghi", data);
@@ -736,6 +745,7 @@ public class Login_verifcation extends AppCompatActivity {
                                                                 editor.putString("latitude", latitude);
                                                                 editor.putBoolean("enabled", is_val);
                                                                 editor.apply();
+                                                                Log.d("location",city+" and "+state);
                                                                 startActivity(new Intent(Login_verifcation.this, Formpage.class));
 
                                                             }
@@ -766,6 +776,7 @@ public class Login_verifcation extends AppCompatActivity {
                                                     } catch (Exception e) {
                                                         Log.e("crashtext", e.getMessage());
                                                     }
+
                                                     // Pass the firebaseToken to your backend developer through the API
                                                     // You can make an API call and include the token in the request headers or body
                                                 }  // Handle error getting the token

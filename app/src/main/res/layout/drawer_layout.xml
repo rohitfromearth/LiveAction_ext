@@ -90,7 +90,6 @@ Set your targets for a better life and get rewarded."
                     android:textStyle="italic" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/Sliderl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"

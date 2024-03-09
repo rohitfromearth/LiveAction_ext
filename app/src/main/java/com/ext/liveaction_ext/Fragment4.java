@@ -77,8 +77,8 @@ public class Fragment4 extends Fragment {
 
     private void Data_show(String firebaseToken) {
         SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
         uid = sh.getInt("UID", uid_z);
+
         String res = conn.pack_rule("/usageStats/getUsageData?duration=year&userId=" + uid, firebaseToken);
 
         try {

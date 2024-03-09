@@ -447,7 +447,6 @@
             android:orientation="vertical">
 
             <RadioButton
-                android:id="@+id/radioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="Yesterday"
@@ -455,7 +454,6 @@
                 android:textSize="15sp" />
 
             <RadioButton
-                android:id="@+id/radioButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="In last 1 week"
@@ -464,7 +462,6 @@
 
 
             <RadioButton
-                android:id="@+id/radioButton4"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="In last 1 month"
@@ -472,7 +469,6 @@
                 android:textSize="15sp" />
 
             <RadioButton
-                android:id="@+id/radioButton5"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="In last 3 months"
@@ -480,7 +476,6 @@
                 android:textSize="15sp" />
 
             <RadioButton
-                android:id="@+id/radioButton6"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="More than 3 months ago"
@@ -489,7 +484,6 @@
 
 
             <RadioButton
-                android:id="@+id/radioButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="Never done/ Not sure"
@@ -507,7 +501,6 @@
             android:textSize="15sp" />
 
         <TableLayout
-            android:id="@+id/simpleLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -520,7 +513,6 @@
                 android:layout_gravity="center">
                 <!-- first element of the row-->
                 <TextView
-                    android:id="@+id/platform"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -532,7 +524,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/install"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -544,7 +535,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/watched"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -557,10 +547,9 @@
             </TableRow>
 
             <!-- second row-->
-            <TableRow android:id="@+id/heading2">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/netflix"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -592,10 +581,9 @@
             </TableRow>
 
             <!-- Third row-->
-            <TableRow android:id="@+id/heading3">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/prime"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -626,10 +614,9 @@
             </TableRow>
 
             <!-- fifth row-->
-            <TableRow android:id="@+id/heading4">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/disney"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -659,10 +646,9 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow android:id="@+id/heading5">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/zee"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -692,10 +678,9 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow android:id="@+id/heading7">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/youtube"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -725,10 +710,9 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow android:id="@+id/heading6">
+            <TableRow>
 
                 <EditText
-                    android:id="@+id/otherSpecify"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -759,10 +743,9 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow android:id="@+id/nonerow">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/none_ottText"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -804,7 +787,6 @@
             tools:ignore="HardcodedText" />
 
         <TableLayout
-            android:id="@+id/simpleTableLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -818,7 +800,6 @@
                 android:layout_gravity="center">
                 <!-- first element of the row-->
                 <TextView
-                    android:id="@+id/platformHeading"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -830,7 +811,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/installed"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -842,7 +822,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/listen"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -855,10 +834,9 @@
             </TableRow>
 
             <!-- second row-->
-            <TableRow android:id="@+id/jioHeading">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/jioSavan"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -889,10 +867,9 @@
 
             </TableRow>
 
-            <TableRow android:id="@+id/ganaHeading">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/ganaText"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -922,10 +899,9 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow android:id="@+id/spotifyHeading">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/spotify"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -955,10 +931,9 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow android:id="@+id/zeeHeading">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/zee5"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -989,13 +964,11 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/youtubeHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/table_border">
 
                 <TextView
-                    android:id="@+id/youTube"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -1025,10 +998,9 @@
                     android:textStyle="bold" />
             </TableRow>
 
-            <TableRow android:id="@+id/otherheading">
+            <TableRow>
 
                 <EditText
-                    android:id="@+id/others"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
@@ -1059,13 +1031,11 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/none"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/table_border">
 
                 <TextView
-                    android:id="@+id/noneText"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"

@@ -1,5 +1,7 @@
 package com.ext.liveaction_ext;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -20,13 +22,6 @@ public class OTPVerificationHandler {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-
-
-
-
-
-
-
 
 
                         // Verification successful, handle the logged in user

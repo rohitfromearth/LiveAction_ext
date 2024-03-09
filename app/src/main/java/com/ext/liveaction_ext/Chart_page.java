@@ -76,13 +76,13 @@ public class Chart_page extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
 
         SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
-
         uid = sh.getInt("UID", uid_z);
-
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-        String endpot = "https://lifeactions.online";
+        String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
+
+        //String endpot =  "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
         String dir = getObbDir().getPath();
         ArrayList pack = pc.pack_rule(endpot);

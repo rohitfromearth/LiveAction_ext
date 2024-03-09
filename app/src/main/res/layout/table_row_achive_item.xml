@@ -14,48 +14,53 @@
 
         <TextView
             android:id="@+id/tvCategory"
+            android:layout_weight="1.7"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/category_cell"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="7dp"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLastWeek"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/middle_cell"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="3dp"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tvCumulative"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/middle_cell"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="3dp"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_pnt_last_week"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/middle_cell"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="3dp"
             android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_pnt_cumu"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/middle_cell"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="3dp"
             android:textColor="@android:color/black" />
 
     </TableRow>

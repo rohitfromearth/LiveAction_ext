@@ -9,12 +9,13 @@
         android:id="@+id/tv_legend_color"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.3"
         android:gravity="center"
         android:padding="2dp"
         android:text=" "
         android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:background="@color/gray"/>
 
     <TextView
         android:id="@+id/tv_legend_Category"
@@ -25,16 +26,18 @@
         android:padding="2dp"
         android:text="categary name text"
         android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:background="@color/appTheme_color"/>
 
     <TextView
         android:id="@+id/tv_legend_per"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
         android:gravity="center"
         android:padding="2dp"
         android:text="last week value"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:background="@color/purple_500"/>
 
 </TableRow>

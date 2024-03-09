@@ -16,8 +16,9 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Conn_service {
     String UserID = "";
-    String endpot = "https://lifeactions.online";
+    String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms"; //"https://zr0prhz1-8080.inc1.devtunnels.ms";
 
+    //String endpot =  "https://h17tl5kg-8080.inc1.devtunnels.ms";
     public String datasender(JSONObject jsonBody, String end, String firbaseTokenn) {
         try {
             String response = "";
@@ -75,16 +76,20 @@ public class Conn_service {
             Log.e("checkjson", String.valueOf(jsonBody));
             Log.e("checkRes21",urlString);
             URL url = new URL(urlString);
+            Log.e("url",url.getPath());
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            Log.e("urlConnection",urlConnection.toString());
             urlConnection.setRequestMethod("POST");
 
             urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             urlConnection.setRequestProperty("Accept", "application/json");
 
+
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
-
+            Log.e("after","after");
             DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
+            Log.e("DataOutputStream", urlConnection.getOutputStream().toString());
             o.writeBytes(jsonBody.toString());
             o.flush();
             o.close();

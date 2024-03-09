@@ -13,9 +13,6 @@ Please switch on the button or LifeActions app.</string>
 
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
-    <string name="dialog_option_yes">yes</string>
-    <string name="dialog_msg">msg</string>
-    <string name="dialog_option_no">no</string>
 
     <string-array name="Gender">
         <item>Gender</item>
@@ -35,24 +32,6 @@ Please switch on the button or LifeActions app.</string>
         <item>Graduate/ Post Graduate - Professional: MBBS, MBA, BE/ME, Law, Architecture, etc</item>
     </string-array>
 
-    <string-array name="Durables">
-        <item>Two Wheeler</item>
-        <item>4 wheeler  </item>
-        <item>Colour TV</item>
-        <item>Refrigerator</item>
-        <item>Washing Machine</item>
-        <item>PC and/or Laptop</item>
-        <item>Air Conditioner</item>
-        <item>  Agricultural Land (Checkbox)</item>
-    </string-array>
-    <string-array name="productslist">
-        <item>product</item>
-        <item>Grocery (staples, packaged food, snacks, beverages, dairy items, etc)</item>
-        <item>Beauty &amp; Personal Care (soaps, shampoo, skin creams, makeup, etc)</item>
-        <item>Mobile &amp; Mobile accessories</item>
-        <item>Clothing &amp; Footwear</item>
-        <item>Children toys &amp; games</item>
-    </string-array>
     <string-array name="Ocupation">
         <item>Ocupation</item>
         <item>Student</item>
