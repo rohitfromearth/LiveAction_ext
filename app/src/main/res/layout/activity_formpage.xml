@@ -309,7 +309,7 @@
                 <TextView
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
-                    android:text=" Durables you own or your household has, and are in working condition"
+                    android:text="Durables you own or your household has, and are in working condition"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -712,17 +712,17 @@
 
             <TableRow>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:background="@drawable/category_cell"
                     android:gravity="center"
-                    android:hint="Others(Specify)"
                     android:padding="5dp"
+                    android:text="Others(Specify)"
                     android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    />
 
                 <Switch
                     android:id="@+id/other_switch1"
@@ -1000,13 +1000,13 @@
 
             <TableRow>
 
-                <EditText
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:background="@drawable/category_cell"
                     android:gravity="center"
-                    android:hint="Others"
+                    android:text="Others"
                     android:padding="5dp"
                     android:textColor="@android:color/black"
                     android:textStyle="bold" />

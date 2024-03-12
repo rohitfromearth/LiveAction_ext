@@ -108,6 +108,7 @@ public class Login_verifcation extends AppCompatActivity {
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         String data = getLocation();
+
         phoneAuthHandler = new PhoneAuthHandler();
         otpVerificationHandler = new OTPVerificationHandler();
        // Log.e("ghi", data);
@@ -725,7 +726,7 @@ Log.e("firebasesuccess","success");
                                                             if (pageID) {
                                                                 //Log.e("mauth", String.valueOf(mAuth));
                                                                 Log.d("citylocation",city+" and "+state);
-                                                                startActivity(new Intent(Login_verifcation.this, Formpage.class));
+                                                                startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                             } else {
                                                                 String data = getLocation();
                                                                 // Log.e("ghi", data);

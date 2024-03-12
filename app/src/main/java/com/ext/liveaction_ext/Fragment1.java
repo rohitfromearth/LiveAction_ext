@@ -47,6 +47,7 @@ public class Fragment1 extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment1, container, false);
+
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -124,6 +125,7 @@ public class Fragment1 extends Fragment {
                 JSONObject item = jsonArray.getJSONObject(i);
 
                 String categoryName = item.getString("category");
+                Log.d("categoryName",categoryName);
                 int logoResId = getLogoResIdForCategory(categoryName);
                 int tsthisday = item.getInt("usage_in_mins");
                 int average = item.getInt("last_7_day_usage_in_mins");

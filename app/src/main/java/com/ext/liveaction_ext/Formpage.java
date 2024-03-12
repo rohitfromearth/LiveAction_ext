@@ -338,6 +338,7 @@ public class Formpage extends AppCompatActivity {
         items.add("Air Conditioner");
         items.add("Agricultural Land");
         durabllist.addAll(items);
+
         Durable_spinn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
