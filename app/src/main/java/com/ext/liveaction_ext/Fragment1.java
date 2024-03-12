@@ -66,6 +66,7 @@ public class Fragment1 extends Fragment {
                                 SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                 myEdit.putString("firebaseToken", firebaseToke);
+
                                 myEdit.apply();
                                 Data_Show(firebaseToke);
                             }
@@ -84,6 +85,7 @@ public class Fragment1 extends Fragment {
             uid = sh.getInt("UID", uid_z);
 
             String res = conn.pack_rule("/usageStats/getUsageData?duration=day&userId=" + uid, firebaseToken);
+            Log.d("result",res);
             String resultdummy = dumdta.Data_for_dash();
             JSONObject jsonncheck = new JSONObject(res);
             boolean showDummy = jsonncheck.getBoolean("showDummy");
@@ -107,8 +109,6 @@ public class Fragment1 extends Fragment {
                 recyclerView.setAdapter(cardAdapter);
             }
         } catch (JSONException e) {
-
-
             throw new RuntimeException(e);
         }
     }

@@ -69,6 +69,7 @@ public class Fragment2 extends Fragment {
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
                                 Data_show(firebaseToke);
+
                             }
 
 

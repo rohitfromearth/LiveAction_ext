@@ -15,7 +15,7 @@
         android:text=" "
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:background="@color/gray"/>
+     />
 
     <TextView
         android:id="@+id/tv_legend_Category"
@@ -26,8 +26,7 @@
         android:padding="2dp"
         android:text="categary name text"
         android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:background="@color/appTheme_color"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_legend_per"
@@ -38,6 +37,6 @@
         android:padding="2dp"
         android:text="last week value"
         android:textColor="@android:color/black"
-        android:background="@color/purple_500"/>
+        />
 
 </TableRow>

@@ -85,6 +85,7 @@ public class Fragment3 extends Fragment {
         uid = sh.getInt("UID", uid_z);
         String res = conn.pack_rule("/usageStats/getUsageData?duration=month&userId=" + uid, firebaseToken);
 
+        Log.d("res month","--"+res);
         try {
             JSONObject jsonObject = new JSONObject(res);
             JSONArray jsonArray = jsonObject.getJSONArray("result");

@@ -137,11 +137,8 @@ public class Achieve extends Fragment {
                         if (pointslastweekint > 0) {
                             congrats_tv.setVisibility(View.VISIBLE);
                             tv_red_points.setText(pointslastweekint);
-
                         }
-
                     }
-
                     addTableRow(categoryName, lastWeek, cumulative, pointslastweek, pointscumm);
 
                 }

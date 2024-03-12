@@ -42,6 +42,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'androidx.browser:browser:1.0.0'
+
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.github.blackfizz:eazegraph:1.2.5l@aar'
     implementation 'com.nineoldandroids:library:2.4.0'
