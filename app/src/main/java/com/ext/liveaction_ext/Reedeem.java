@@ -2,6 +2,7 @@ package com.ext.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -52,6 +53,7 @@ public class Reedeem extends Fragment {
     private TableLayout tableLayout;
     private FirebaseAuth mAuth;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -61,8 +63,22 @@ public class Reedeem extends Fragment {
         pnt_redmed = view.findViewById(R.id.tv_pnt_redmed);
         pnt_avalble = view.findViewById(R.id.tv_pont_avalbl);
         count_txt = view.findViewById(R.id.tv_count);
-        dash_bt = view.findViewById(R.id.dashbord_btn);
-        achiv_bt = view.findViewById(R.id.achev_btn);
+        dash_bt = view.findViewById(R.id.dashboard_btn);
+
+        dash_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
+                startActivity(new Intent(getContext(), Chart_page.class));
+            }
+        });
+       // achiv_bt = view.findViewById(R.id.achev_btn);
         minus_count = view.findViewById(R.id.tv_minus_count);
         plus_count = view.findViewById(R.id.tv_plus_count);
         achi_points = view.findViewById(R.id.achi_points);
@@ -105,19 +121,7 @@ public class Reedeem extends Fragment {
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
 
-        dash_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                startActivity(new Intent(getContext(), Chart_page.class));
-            }
-        });
 
         achiv_bt.setOnClickListener(new View.OnClickListener() {
             @Override

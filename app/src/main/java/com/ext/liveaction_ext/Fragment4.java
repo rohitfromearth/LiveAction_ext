@@ -184,7 +184,7 @@ public class Fragment4 extends Fragment {
             case "e-Meetings":
                 return R.drawable.logo_meetings;
             case "Music":
-                return R.drawable.logo_music;
+                return R.drawable.music1;
             case "OTT/Video":
                 return R.drawable.logo_video;
             case "Social":
