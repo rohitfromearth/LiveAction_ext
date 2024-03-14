@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -41,6 +42,8 @@ public class Fragment1 extends Fragment {
     private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
+    private ProgressBar loadingProgress;
+    boolean isProgressVisible = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class Fragment1 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
+
+        loadingProgress = view.findViewById(R.id.loading);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -81,6 +86,7 @@ public class Fragment1 extends Fragment {
     private void Data_Show(String firebaseToken) {
         try {
 
+            loadingProgress.setVisibility(View.VISIBLE);
             SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
             uid = sh.getInt("UID", uid_z);
 
@@ -108,6 +114,7 @@ public class Fragment1 extends Fragment {
 
                 recyclerView.setAdapter(cardAdapter);
             }
+            loadingProgress.setVisibility(View.GONE);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

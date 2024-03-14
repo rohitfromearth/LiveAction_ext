@@ -123,7 +123,7 @@ public class Reedeem extends Fragment {
 
 
 
-        achiv_bt.setOnClickListener(new View.OnClickListener() {
+       /* achiv_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
@@ -134,7 +134,7 @@ public class Reedeem extends Fragment {
                 }).start();
                 startActivity(new Intent(getContext(), Achieve.class));
             }
-        });
+        });*/
         String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken);
 
         try {
