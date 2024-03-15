@@ -63,6 +63,7 @@ public class Formpage extends AppCompatActivity {
     int month = 0;
     Boolean chek;
     int dayOfMonth = 0;
+    String userSelectedDay,userSelectedMonth,userSelectedYear;
     CheckBox checkBo;
     private EditText dateEditText;
     Dialog dialog;
@@ -254,11 +255,13 @@ public class Formpage extends AppCompatActivity {
                     boolean valid = validat();
                     if (valid) {
                         boolean storesuccess = StoreData();
-                        if (storesuccess) {
+                        Log.d("valueott", String.valueOf(sw7.isChecked()));
+                        Log.d("hiiii", String.valueOf(storesuccess));
+                     /*   if (storesuccess) {
                             startActivity(new Intent(Formpage.this, Chart_page.class));
                         } else {
                             Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -365,6 +368,12 @@ public class Formpage extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
                 String selectedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth);
+
+                userSelectedDay = String.valueOf(dayOfMonth);
+                userSelectedMonth = String.valueOf(month);
+                userSelectedYear = String.valueOf(year);
+                Log.e("selectedDate",userSelectedDay+userSelectedMonth+userSelectedYear);
+                Log.e("selectedDate", String.valueOf(dayOfMonth)+" day and "+year+" year and "+month+" month");
                 dateEditText.setText(selectedDate);
             }
         };
@@ -460,6 +469,7 @@ public class Formpage extends AppCompatActivity {
         String value = sharedPreferences.getString("value", "");
         String valueState = sharedPreferences.getString("valueState", "");
         enabled = sharedPreferences.getBoolean("enabled", val);
+
         if (enabled) {
             stateSpinner.setVisibility(View.GONE);
             districtSpinner.setVisibility(View.GONE);
@@ -774,44 +784,47 @@ public class Formpage extends AppCompatActivity {
         app1.put("app_name", "Netflix");
         app1.put("installed", sw1.isChecked());
         app1.put("watched_in_last_year", sw2.isChecked());
+        arry_ott.put(app1);
 
         JSONObject app2 = new JSONObject();
         app2.put("app_name", "Prime Video");
         app2.put("installed", sw3.isChecked());
         app2.put("watched_in_last_year", sw4.isChecked());
+        arry_ott.put(app2);
+
         JSONObject app3 = new JSONObject();
-        app2.put("app_name", "Disney+Hotstar");
-        app2.put("installed", sw5.isChecked());
-        app2.put("watched_in_last_year", sw6.isChecked());
+        app3.put("app_name", "Disney+Hotstar");
+        app3.put("installed", sw5.isChecked());
+        app3.put("watched_in_last_year", sw6.isChecked());
+        arry_ott.put(app3);
+
         JSONObject app4 = new JSONObject();
-        app2.put("app_name", "Zee5");
-        app2.put("installed", sw7.isChecked());
-        app2.put("watched_in_last_year", sw8.isChecked());
+        app4.put("app_name", "Zee5");
+        app4.put("installed", sw7.isChecked());
+        app4.put("watched_in_last_year", sw8.isChecked());
+        arry_ott.put(app4);
+
         JSONObject app5 = new JSONObject();
-        app2.put("app_name", "Youtube");
-        app2.put("installed", sw9.isChecked());
-        app2.put("watched_in_last_year", sw10.isChecked());
+        app5.put("app_name", "Youtube");
+        app5.put("installed", sw9.isChecked());
+        app5.put("watched_in_last_year", sw10.isChecked());
+        arry_ott.put(app5);
+
         JSONObject app6 = new JSONObject();
-        app2.put("app_name", Otherapp);
-        app2.put("installed", sw11.isChecked());
-        app2.put("watched_in_last_year", sw12.isChecked());
+        app6.put("app_name", Otherapp);
+        app6.put("installed", sw11.isChecked());
+        app6.put("watched_in_last_year", sw12.isChecked());
+        arry_ott.put(app6);
 
         JSONObject app7 = new JSONObject();
-        app2.put("app_name", "None");
-        app2.put("installed", sw13.isChecked());
-        app2.put("watched_in_last_year", sw14.isChecked());
-
-        arry_ott.put(app1);
-        arry_ott.put(app2);
-        arry_ott.put(app3);
-        arry_ott.put(app4);
-        arry_ott.put(app5);
-        arry_ott.put(app6);
+        app7.put("app_name", "None");
+        app7.put("installed", sw13.isChecked());
+        app7.put("watched_in_last_year", sw14.isChecked());
         arry_ott.put(app7);
-
 
         return arry_ott;
     }
+
 
     private JSONArray MusictData() throws JSONException {
         JSONArray arry_music = new JSONArray();
@@ -820,46 +833,57 @@ public class Formpage extends AppCompatActivity {
         app1.put("app_name", "Jio savan");
         app1.put("installed", sw_1.isChecked());
         app1.put("watched_in_last_year", sw_2.isChecked());
+        arry_music.put(app1);
 
         JSONObject app2 = new JSONObject();
         app2.put("app_name", "Gana");
         app2.put("installed", sw_3.isChecked());
         app2.put("watched_in_last_year", sw_4.isChecked());
+        arry_music.put(app2);
+
         JSONObject app3 = new JSONObject();
         app2.put("app_name", "Spotify");
         app2.put("installed", sw_5.isChecked());
         app2.put("watched_in_last_year", sw_6.isChecked());
+        arry_music.put(app3);
+
         JSONObject app4 = new JSONObject();
         app2.put("app_name", "Zee5");
         app2.put("installed", sw_7.isChecked());
         app2.put("watched_in_last_year", sw_8.isChecked());
+        arry_music.put(app4);
+
         JSONObject app5 = new JSONObject();
         app2.put("app_name", "Youtube");
         app2.put("installed", sw_9.isChecked());
         app2.put("watched_in_last_year", sw_10.isChecked());
+        arry_music.put(app5);
+
         JSONObject app6 = new JSONObject();
         app2.put("app_name", Otherapp_music);
         app2.put("installed", sw_11.isChecked());
         app2.put("watched_in_last_year", sw_12.isChecked());
+        arry_music.put(app6);
 
         JSONObject app7 = new JSONObject();
         app2.put("app_name", "None");
         app2.put("installed", sw_13.isChecked());
         app2.put("watched_in_last_year", sw_14.isChecked());
+        arry_music.put(app7);
 
 
-        arry_music.put(app1);
+        /*arry_music.put(app1);
         arry_music.put(app2);
         arry_music.put(app3);
         arry_music.put(app4);
         arry_music.put(app5);
-        arry_music.put(app6);
+        arry_music.put(app6);*/
 
 
         return arry_music;
     }
-
     private boolean StoreData() throws JSONException {
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         String longi = "";
@@ -870,7 +894,6 @@ public class Formpage extends AppCompatActivity {
         String mobile = sh.getString("mobile_number", "");
         String Name = Et_name.getText().toString().trim();
 
-
         String Email = Et_email.getText().toString().trim();
         String genders = (String) gender.getSelectedItem();
         String Education_ = (String) Education.getSelectedItem();
@@ -880,17 +903,19 @@ public class Formpage extends AppCompatActivity {
         String choice = String.join(", ", selectedOFeedback);
         String prdo = String.join(", ", selectedProducts);
 
-
-
         JSONArray ottdta = OttData();
+        Log.d("OttData", String.valueOf(ottdta));
         JSONArray musicdata = MusictData();
+        Log.d("musicdata", String.valueOf(musicdata));
 
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("mobile_no", mobile);
         jsonBody.put("name", Name);
-        jsonBody.put("birthDate", dayOfMonth);
-        jsonBody.put("birthMonth", month);
-        jsonBody.put("birthYear", year);
+        jsonBody.put("birthDate", userSelectedDay);
+
+        jsonBody.put("birthMonth", userSelectedMonth);
+        jsonBody.put("birthYear", userSelectedYear);
+        Log.d("calendardate", String.valueOf(dayOfMonth)+month+year);
         if (enabled) {
             String cityTextvalue = city_text.getText().toString();
             String stateTextvalue = state_text.getText().toString();
@@ -970,6 +995,7 @@ public class Formpage extends AppCompatActivity {
     }
 
     private void showDatePickerDialog() {
+        Log.d("in calendar","calendar");
         // Get the current date
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
