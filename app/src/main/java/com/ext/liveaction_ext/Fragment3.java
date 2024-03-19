@@ -2,6 +2,9 @@ package com.ext.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.ext.liveaction_ext.R.id.loadingFragmentThree;
+
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -40,7 +44,9 @@ public class Fragment3 extends Fragment {
     private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
+    private ProgressBar loadingProgress;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -49,6 +55,7 @@ public class Fragment3 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_month);
         pieChart = view.findViewById(R.id.piechart_for_month);
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
+        loadingProgress = view.findViewById(loadingFragmentThree);
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
@@ -66,18 +73,15 @@ public class Fragment3 extends Fragment {
                                 myEdit.apply();
                                 Data_Show(firebaseToke);
                             }
-
-
                         }
-
                     });
-
         }
 
         return view;
     }
 
     private void Data_Show(String firebaseToken) {
+        loadingProgress.setVisibility(View.VISIBLE);
         SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
         firebaseToken = sh.getString("firebaseToken", "");
@@ -116,6 +120,7 @@ public class Fragment3 extends Fragment {
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
             }
+            loadingProgress.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));

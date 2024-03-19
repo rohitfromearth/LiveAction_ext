@@ -2,6 +2,8 @@ package com.ext.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.ext.liveaction_ext.R.id.loadingFragmentThree;
+
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -41,7 +44,7 @@ public class Fragment4 extends Fragment {
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
     private FirebaseAuth mAuth;
-
+    private ProgressBar loadingProgress;
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class Fragment4 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_year);
         pieChart = view.findViewById(R.id.piechart_for_year);
         recyclerView = view.findViewById(R.id.recyclerView_for_year);
+        loadingProgress = view.findViewById(R.id.loadingFragmentFour);
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
@@ -76,6 +80,7 @@ public class Fragment4 extends Fragment {
     }
 
     private void Data_show(String firebaseToken) {
+        loadingProgress.setVisibility(View.VISIBLE);
         SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
@@ -110,6 +115,7 @@ public class Fragment4 extends Fragment {
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
             }
+            loadingProgress.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));

@@ -257,11 +257,11 @@ public class Formpage extends AppCompatActivity {
                         boolean storesuccess = StoreData();
                         Log.d("valueott", String.valueOf(sw7.isChecked()));
                         Log.d("hiiii", String.valueOf(storesuccess));
-                     /*   if (storesuccess) {
+                       if (storesuccess) {
                             startActivity(new Intent(Formpage.this, Chart_page.class));
                         } else {
                             Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
-                        }*/
+                        }
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -296,7 +296,7 @@ public class Formpage extends AppCompatActivity {
 
 
         ////////durables code
-        ArrayAdapter<String> durabllist = new ArrayAdapter<String>(this, R.layout.item_dropdown_for_durables) {
+      /*  ArrayAdapter<String> durabllist = new ArrayAdapter<String>(this, R.layout.item_dropdown_for_durables) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 return createItemView(position, convertView, parent);
@@ -341,10 +341,85 @@ public class Formpage extends AppCompatActivity {
         items.add("Air Conditioner");
         items.add("Agricultural Land");
         durabllist.addAll(items);
+         Durable_spinn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = (String) parent.getItemAtPosition(position);
+
+
+                if (selected_dur_Options.contains(selectedItem)) {
+                    selected_dur_Options.remove(selectedItem);
+                } else {
+                    selected_dur_Options.add(selectedItem);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });*/
+
+        ArrayAdapter<String> durabllist = new ArrayAdapter<String>(this, R.layout.item_dropdown_for_durables) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
+
+            private View createItemView(int position, View convertView, ViewGroup parent) {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown_for_durables, parent, false);
+                TextView textView = view.findViewById(R.id.textviewq);
+
+                String item = getItem(position);
+
+                if (position == 0) { // Check if it's the heading
+                    textView.setText(item);
+                } else {
+                    CheckBox checkbox = view.findViewById(R.id.checkboxq);
+                    textView.setText(item);
+                    checkbox.setChecked(selected_dur_Options.contains(item));
+
+                    checkbox.setOnClickListener(v -> {
+                        if (checkbox.isChecked()) {
+                            selected_dur_Options.add(item);
+                        } else {
+                            selected_dur_Options.remove(item);
+                        }
+                    });
+                }
+
+                return view;
+            }
+        };
+
+        Durable_spinn.setAdapter(durabllist);
+
+        List<String> items = new ArrayList<>();
+// Add heading
+        items.add("Select Durables");
+// Add other items
+        items.add("Two-Wheeler");
+        items.add("4-wheeler (Car/Jeep/Van/Tractor)");
+        items.add("Colour TV");
+        items.add("Refrigerator");
+        items.add("Washing Machine");
+        items.add("PC and/or Laptop");
+        items.add("Air Conditioner");
+        items.add("Agricultural Land");
+        durabllist.addAll(items);
 
         Durable_spinn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Ensure "Select Durables" is not processed
+                if (position == 0) {
+                    return;
+                }
                 String selectedItem = (String) parent.getItemAtPosition(position);
 
                 if (selected_dur_Options.contains(selectedItem)) {
@@ -360,9 +435,8 @@ public class Formpage extends AppCompatActivity {
             }
         });
 
+
         dateEditText = findViewById(R.id.dateEditText);
-
-
         dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -377,8 +451,6 @@ public class Formpage extends AppCompatActivity {
                 dateEditText.setText(selectedDate);
             }
         };
-
-
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -388,6 +460,69 @@ public class Formpage extends AppCompatActivity {
 
         //////cust ui change
         ArrayAdapter<String> productList = new ArrayAdapter<String>(this, R.layout.item_dropdown) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return createItemView(position, convertView, parent);
+            }
+
+            private View createItemView(int position, View convertView, ViewGroup parent) {
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown, parent, false);
+                TextView textView = view.findViewById(R.id.textviewq);
+
+                String item = getItem(position);
+
+                // Check if it's the heading
+                if (position == 0) {
+                    textView.setText(item);
+                } else {
+                    textView.setText(item);
+                }
+
+                return view;
+            }
+        };
+        product_spinner.setAdapter(productList);
+
+        List<String> itemse = new ArrayList<>();
+// Add heading
+        itemse.add("Purchased product");
+// Add other items
+        itemse.add("Clothing & Footwear");
+        itemse.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
+        itemse.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
+        itemse.add("Mobile & Mobile accessories");
+        itemse.add("Children toys & games");
+        productList.addAll(itemse);
+
+        product_spinner.setPadding(0, 0, 0, 15);
+        product_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Ensure "Select Product Type" is not processed
+                if (position == 0) {
+                    return;
+                }
+                String selectedItem = (String) parent.getItemAtPosition(position);
+
+                if (selectedProducts.contains(selectedItem)) {
+                    selectedProducts.remove(selectedItem);
+                } else {
+                    selectedProducts.add(selectedItem);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+
+      /*  ArrayAdapter<String> productList = new ArrayAdapter<String>(this, R.layout.item_dropdown) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 return createItemView(position, convertView, parent);
@@ -425,9 +560,9 @@ public class Formpage extends AppCompatActivity {
         itemse.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
         itemse.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
         itemse.add("Mobile & Mobile accessories");
-
         itemse.add("Children toys & games");
         productList.addAll(itemse);
+
         product_spinner.setPadding(0, 0, 0, 15);
         product_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -445,7 +580,7 @@ public class Formpage extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
                 // Do nothing
             }
-        });
+        });*/
         //////////////////////////cust ui change
         gender = findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> gendersip = ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_item);
@@ -811,7 +946,7 @@ public class Formpage extends AppCompatActivity {
         arry_ott.put(app5);
 
         JSONObject app6 = new JSONObject();
-        app6.put("app_name", Otherapp);
+        app6.put("app_name", "Others(Specify)");
         app6.put("installed", sw11.isChecked());
         app6.put("watched_in_last_year", sw12.isChecked());
         arry_ott.put(app6);
@@ -826,7 +961,7 @@ public class Formpage extends AppCompatActivity {
     }
 
 
-    private JSONArray MusictData() throws JSONException {
+    private JSONArray MusicData() throws JSONException {
         JSONArray arry_music = new JSONArray();
 
         JSONObject app1 = new JSONObject();
@@ -842,46 +977,38 @@ public class Formpage extends AppCompatActivity {
         arry_music.put(app2);
 
         JSONObject app3 = new JSONObject();
-        app2.put("app_name", "Spotify");
-        app2.put("installed", sw_5.isChecked());
-        app2.put("watched_in_last_year", sw_6.isChecked());
+        app3.put("app_name", "Spotify");
+        app3.put("installed", sw_5.isChecked());
+        app3.put("watched_in_last_year", sw_6.isChecked());
         arry_music.put(app3);
 
         JSONObject app4 = new JSONObject();
-        app2.put("app_name", "Zee5");
-        app2.put("installed", sw_7.isChecked());
-        app2.put("watched_in_last_year", sw_8.isChecked());
+        app4.put("app_name", "Zee5");
+        app4.put("installed", sw_7.isChecked());
+        app4.put("watched_in_last_year", sw_8.isChecked());
         arry_music.put(app4);
 
         JSONObject app5 = new JSONObject();
-        app2.put("app_name", "Youtube");
-        app2.put("installed", sw_9.isChecked());
-        app2.put("watched_in_last_year", sw_10.isChecked());
+        app5.put("app_name", "Youtube");
+        app5.put("installed", sw_9.isChecked());
+        app5.put("watched_in_last_year", sw_10.isChecked());
         arry_music.put(app5);
 
         JSONObject app6 = new JSONObject();
-        app2.put("app_name", Otherapp_music);
-        app2.put("installed", sw_11.isChecked());
-        app2.put("watched_in_last_year", sw_12.isChecked());
+        app6.put("app_name", "Others");
+        app6.put("installed", sw_11.isChecked());
+        app6.put("watched_in_last_year", sw_12.isChecked());
         arry_music.put(app6);
 
         JSONObject app7 = new JSONObject();
-        app2.put("app_name", "None");
-        app2.put("installed", sw_13.isChecked());
-        app2.put("watched_in_last_year", sw_14.isChecked());
+        app7.put("app_name", "None");
+        app7.put("installed", sw_13.isChecked());
+        app7.put("watched_in_last_year", sw_14.isChecked());
         arry_music.put(app7);
-
-
-        /*arry_music.put(app1);
-        arry_music.put(app2);
-        arry_music.put(app3);
-        arry_music.put(app4);
-        arry_music.put(app5);
-        arry_music.put(app6);*/
-
 
         return arry_music;
     }
+
     private boolean StoreData() throws JSONException {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -905,7 +1032,7 @@ public class Formpage extends AppCompatActivity {
 
         JSONArray ottdta = OttData();
         Log.d("OttData", String.valueOf(ottdta));
-        JSONArray musicdata = MusictData();
+        JSONArray musicdata = MusicData();
         Log.d("musicdata", String.valueOf(musicdata));
 
         JSONObject jsonBody = new JSONObject();
@@ -967,7 +1094,7 @@ public class Formpage extends AppCompatActivity {
 
     }
 
-    private static class DropdownItem {
+   /* private static class DropdownItem {
         private String text;
         private boolean checked;
 
@@ -992,7 +1119,7 @@ public class Formpage extends AppCompatActivity {
         public String toString() {
             return text;
         }
-    }
+    }*/
 
     private void showDatePickerDialog() {
         Log.d("in calendar","calendar");

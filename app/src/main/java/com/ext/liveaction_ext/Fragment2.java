@@ -74,10 +74,7 @@ public class Fragment2 extends Fragment {
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
                                 Data_show(firebaseToke);
-
                             }
-
-
                         }
 
                     });
@@ -123,7 +120,9 @@ public class Fragment2 extends Fragment {
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
             }
+
             loadingProgress.setVisibility(View.GONE);
+
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));
@@ -164,7 +163,6 @@ public class Fragment2 extends Fragment {
                 String averages = " " + average;
                 String variences = String.valueOf(variance);
 
-
                 cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
 
             }
@@ -183,11 +181,9 @@ public class Fragment2 extends Fragment {
         TextView tvLastWeek = row.findViewById(R.id.tv_legend_per);
         TextView tvLegendColor = row.findViewById(R.id.tv_legend_color);
 
-
         tvCategory.setText(categoryName);
         tvLastWeek.setText(lastWeek + "hr");
         tvLegendColor.setBackgroundColor(color_code);
-
 
         tbklayout.addView(row);
     }
@@ -220,7 +216,6 @@ public class Fragment2 extends Fragment {
                 return R.drawable.logo_others;
             case "Entertainment":
                 return R.drawable.logo_enter;
-
             case "Finance":
                 return R.drawable.logo_finance;
             default:

@@ -108,6 +108,7 @@ public class Login_verifcation extends AppCompatActivity {
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         String data = getLocation();
+        Log.d("datalocation",data);
 
         phoneAuthHandler = new PhoneAuthHandler();
         otpVerificationHandler = new OTPVerificationHandler();
@@ -627,7 +628,7 @@ public class Login_verifcation extends AppCompatActivity {
                    // String cityName = addresses.get(0).getAddressLine(0);
                     city = addresses.get(0).getLocality();
                     state = addresses.get(0).getAdminArea();
-                    Log.e("city", city);
+                    Log.e("city", city+" and "+state);
                 } catch (IOException e) {
 
                     e.printStackTrace();
@@ -651,7 +652,7 @@ public class Login_verifcation extends AppCompatActivity {
                     //String cityName = addresses.get(0).getAddressLine(0);
                     city = addresses.get(0).getLocality();
                     state = addresses.get(0).getAdminArea();
-                    Log.e("city", city);
+                    Log.e("city", city+" and "+state);
                 } catch (IOException e) {
 
                     e.printStackTrace();
@@ -674,7 +675,7 @@ public class Login_verifcation extends AppCompatActivity {
                    // String cityName = addresses.get(0).getAddressLine(0);
                     city = addresses.get(0).getLocality();
                     state = addresses.get(0).getAdminArea();
-                    //Log.e("city", city);
+                    Log.e("city", city+" and "+state);
                 } catch (IOException e) {
 
                     e.printStackTrace();
@@ -729,7 +730,7 @@ Log.e("firebasesuccess","success");
                                                                 startActivity(new Intent(Login_verifcation.this, Chart_page.class));
                                                             } else {
                                                                 String data = getLocation();
-                                                                // Log.e("ghi", data);
+                                                                // Log.e("gettingloaction", data);
 
                                                                 boolean is_val;
                                                                 if (Objects.equals(city, "") && Objects.equals(state, "")) {
@@ -738,7 +739,7 @@ Log.e("firebasesuccess","success");
                                                                     is_val = true;
                                                                 }
                                                                 //Log.e("datastrem", city + latitude);
-                                                                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("myKey", context.MODE_PRIVATE);
+                                                                SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
                                                                 SharedPreferences.Editor editor = sharedPref.edit();
                                                                 editor.putString("value", city);
                                                                 editor.putString("valueState", state);
@@ -746,7 +747,7 @@ Log.e("firebasesuccess","success");
                                                                 editor.putString("latitude", latitude);
                                                                 editor.putBoolean("enabled", is_val);
                                                                 editor.apply();
-                                                                Log.d("location",city+" and "+state);
+                                                                //Log.d("location",city+" and "+state);
                                                                 startActivity(new Intent(Login_verifcation.this, Formpage.class));
 
                                                             }
