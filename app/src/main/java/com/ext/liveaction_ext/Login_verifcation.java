@@ -105,7 +105,7 @@ public class Login_verifcation extends AppCompatActivity {
         edtOTP = findViewById(R.id.editTextOtp);
         edtPhone = findViewById(R.id.editTextPhone);
 
-
+        btn_verify.setEnabled(false);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         String data = getLocation();
         Log.d("datalocation",data);
@@ -123,7 +123,6 @@ public class Login_verifcation extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
-
         mAuth = FirebaseAuth.getInstance();
 //        mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
         firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
@@ -134,14 +133,12 @@ public class Login_verifcation extends AppCompatActivity {
         permission_usage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Dialog dialog1 = new Dialog(Login_verifcation.this);
                 dialog1.setContentView(R.layout.dialog_for_perrmisson);
                 dialog1.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog1.setCancelable(false);
                 dialog1.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 dialog1.show();
-
                 usaegstat1 = dialog1.findViewById(R.id.usaegstat_perm);
                 Accessibilty1 = dialog1.findViewById(R.id.accessibilty_perm);
                 close1 = dialog1.findViewById(R.id.close_permission);
@@ -200,6 +197,7 @@ public class Login_verifcation extends AppCompatActivity {
                     }
                 }).start();
                 if (isValidMobileNumber(edtPhone.getText().toString())) {
+                    Log.e("herewego","damn i am here stuck");
                     // below line is for checking whether the user
                     // has entered his mobile number or not.
                     if (TextUtils.isEmpty(edtPhone.getText().toString())) {
@@ -212,15 +210,9 @@ public class Login_verifcation extends AppCompatActivity {
                         // send OTP method for getting OTP from Firebase.
                       //  Log.e("new_string", "onClick: " + edtPhone.getText().toString());
                         phone = "+91" + edtPhone.getText().toString();
+
                       //  Log.e("new_string", "onClick: " + phone);
 //                        sendVerificationCode(phone);
-
-
-
-
-
-
-
 
                         phoneAuthHandler.sendVerificationCode(Login_verifcation.this, phone, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                             @Override
@@ -241,6 +233,7 @@ public class Login_verifcation extends AppCompatActivity {
                                 // OTP sent successfully, save verification ID
                                 verificationId = s;
                                 Toast.makeText(Login_verifcation.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
+                                btn_verify.setEnabled(true);
                             }
                         });
 
@@ -565,7 +558,8 @@ public class Login_verifcation extends AppCompatActivity {
             String uiddd = servic.formdatasend(requestBody, "/user/login");
             JSONObject jsonResponse = new JSONObject(uiddd);
             JSONObject data = jsonResponse.getJSONObject("data");
-            boolean userExists = data.getBoolean("user_exists");
+//            boolean userExists = data.getBoolean("user_exists");
+            boolean userExists=false;
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
@@ -581,7 +575,6 @@ public class Login_verifcation extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
-
                 myEdit.putString("mobile_number", mob_no);
                 myEdit.apply();
                 return false;
@@ -589,13 +582,9 @@ public class Login_verifcation extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
     }
-
-
     //code start location
     private String getLocation() {
-
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Login_verifcation.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);

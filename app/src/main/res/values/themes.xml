@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/actionbar_color</item>
     </style>
 
-
-    <style name="Theme.LiveAction" parent="Base.Theme.LiveAction" />
+    <style name="ThemeOverlay.LiveAction_ext.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
+    </style>
 </resources>

@@ -17,9 +17,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class Conn_service {
     String UserID = "";
     //String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
-    String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";//"https://zr0prhz1-8080.inc1.devtunnels.ms";
+    String endpot = "https://fc10m5q8-8080.inc1.devtunnels.ms";
 
-    //String endpot =  "https://h17tl5kg-8080.inc1.devtunnels.ms";
     public String datasender(JSONObject jsonBody, String end, String firbaseTokenn) {
         try {
             String response = "";
@@ -28,6 +27,8 @@ public class Conn_service {
 
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
+            Log.e("checkjson", String.valueOf(jsonBody));
+            Log.e("Url",urlString );
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -48,7 +49,7 @@ public class Conn_service {
 
             String reso = urlConnection.getResponseMessage();
 
-            Log.e("reso","reso"+responseCode);
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -56,7 +57,7 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                 //   Log.e("responseee", response);
+
                 }
             }
             urlConnection.disconnect();
@@ -75,7 +76,7 @@ public class Conn_service {
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
             Log.e("checkjson", String.valueOf(jsonBody));
-            Log.e("checkRes21",urlString);
+            Log.e("url",urlString);
             URL url = new URL(urlString);
             Log.e("url",url.getPath());
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -88,7 +89,7 @@ public class Conn_service {
 
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
-            Log.e("after","after");
+
             DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
             Log.e("DataOutputStream", urlConnection.getOutputStream().toString());
             o.writeBytes(jsonBody.toString());
@@ -96,9 +97,9 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
-            Log.e("checkRescode", String.valueOf(responseCode));
+
             String reso = urlConnection.getResponseMessage();
-            Log.e("reponsemsage", reso);
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
@@ -131,7 +132,9 @@ public class Conn_service {
 
 
             URL url = new URL(endpot + endr);
-          //  Log.e("endpoint", endr);
+            String urlString=endpot+endr;
+
+            Log.e("url",urlString);
 
             HttpURLConnection urlConn = null;
 
@@ -142,7 +145,8 @@ public class Conn_service {
             urlConn.setRequestProperty("authorization", "Bearer " + firbaseTokenn);
             urlConn.setDoInput(true);
             int responseCode = urlConn.getResponseCode();
-         //  Log.e("responseee1", String.valueOf(responseCode));
+            String reso = urlConn.getResponseMessage();
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
                 String applist;
@@ -150,7 +154,7 @@ public class Conn_service {
 
                 while ((applist = br.readLine()) != null) {
                     response += applist;
-                    Log.e("responseee", response);
+
                 }
 
             }
@@ -179,7 +183,10 @@ public class Conn_service {
             StrictMode.setThreadPolicy(policy);
 
             String urlString = endpot + "/appException";
+            Log.e("checkjson", String.valueOf(str1));
+            Log.e("url",urlString);
             URL url = new URL(urlString);
+
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
 
@@ -196,9 +203,10 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
-            Log.e("Resposes", String.valueOf(responseCode));
+
             String reso = urlConnection.getResponseMessage();
-            Log.e("reponsemsage", reso);
+
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;

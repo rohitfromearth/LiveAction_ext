@@ -1,6 +1,7 @@
 package com.ext.liveaction_ext;
 
 import android.os.StrictMode;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +28,9 @@ public class Pack_api {
         try {
             String response = "";
             URL url = new URL(About + "/apps/list");
+            String urlString=About + "/apps/list";
+
+            Log.e("url",urlString);
 //            URL url = new URL("https://lifeactions.online/apps/list");
             HttpURLConnection urlConn = null;
 
@@ -36,6 +40,9 @@ public class Pack_api {
             urlConn.setRequestProperty("Accept", "application/json");
             urlConn.setDoInput(true);
             int responseCode = urlConn.getResponseCode();
+
+            String reso = urlConn.getResponseMessage();
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
                 String applist;
@@ -62,10 +69,8 @@ public class Pack_api {
 
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (IOException | JSONException e) {
+            Log.e("Exep", e.getMessage());
         }
 
         return appl;

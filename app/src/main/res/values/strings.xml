@@ -973,4 +973,7 @@ Please switch on the button or LifeActions app.</string>
         <item>Puducherry</item>
         <item>Yanam</item>
     </string-array>
+    <string name="title_activity_splashsscreen">Splashsscreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

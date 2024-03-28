@@ -75,19 +75,18 @@ public class Chart_page extends AppCompatActivity {
                 4);
         FirebaseApp.initializeApp(this);
 
-        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-        //String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
-        String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms/";
 
-        //String endpot =  "https://h17tl5kg-8080.inc1.devtunnels.ms";
+        String endpot = "https://fc10m5q8-8080.inc1.devtunnels.ms";
+
 
         String dir = getObbDir().getPath();
         ArrayList pack = pc.pack_rule(endpot);
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
@@ -410,7 +409,7 @@ public class Chart_page extends AppCompatActivity {
 
         } else if (itemId == R.id.Logout) {
 
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
             myEdit.putString("firebaseToken", "");
             myEdit.apply();
