@@ -1,36 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:orientation="vertical"
-    android:background="#F6F0E8">
-
-
-    <!-- Your existing activity content -->
-
-
-
-
+    android:background="#F6F0E8"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="50pt"
         android:layout_marginBottom="30dp"
-        android:layout_gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="10dp"
-        >
+        android:paddingHorizontal="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-
             android:layout_marginRight="10dp"
             android:text="Welcome to"
             android:textColor="@color/black"
@@ -42,95 +31,137 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginLeft="10dp"
-            android:text="LifeActions"
+            android:text="Life Actions"
             android:textColor="#fe7e34"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="10dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:layout_gravity="left"
             android:layout_margin="10dp"
             android:text="Thank you for agreeing to join our panel"
-            />
+            android:textColor="@color/black" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:layout_gravity="left"
             android:layout_margin="10dp"
             android:text="To onboard you, we would require you to authorize access
-to Notifications, Accessibility Service &amp;  Usage State."/>
+to Notifications, Accessibility Service &amp;  Usage State."
+            android:textColor="@color/black" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:layout_gravity="left"
             android:layout_margin="10dp"
             android:text="Your Individual data that we collect will be only for our
 internal research purpose and will never be shared, sold,
 marketed or traded at an individual level All data will be
-anonymized to maintain your privacy and confidentiality."/>
+anonymized to maintain your privacy and confidentiality."
+            android:textColor="@color/black" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="30dp"
-            android:paddingHorizontal="50dp"
+            android:layout_marginRight="0dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="40dp"
             tools:ignore="ExtraText">
 
             <CheckBox
                 android:id="@+id/checkBox"
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I have read the Privacy Policy &amp;
-Terms  &amp; Conditions of participating
-in this panel" />
+                android:textColor="@color/black" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical"
+                tools:ignore="ExtraText">
 
+                <TextView
+                    android:id="@+id/privacyId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="0dp"
+                    android:text="@string/privacy_policy"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/termsId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="0dp"
+                    android:text="@string/terms_condition"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="40dp"
+                tools:ignore="ExtraText">
             <CheckBox
                 android:id="@+id/checkBox2"
-                android:layout_width="match_parent"
-                android:textColor="@color/black"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I hereby accept the same" />
+                android:textColor="@color/black" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_margin="10dp"
+                android:text="I hereby accept the same"
+                android:textColor="@color/black" />
+            </LinearLayout>
         </LinearLayout>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/disclaimerCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
             android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="30dp"
+            android:paddingVertical="20dp"
             app:cardBackgroundColor="#fe7e34"
             app:cardCornerRadius="20dp"
-            android:paddingVertical="20dp"
-            app:cardElevation="20dp" >
+            app:cardElevation="20dp">
+
             <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="10dp"
                 android:text="Accept"
                 android:textColor="@color/white"
-                android:layout_marginVertical="10dp"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
+
         <TextView
-            android:textStyle="italic"
             android:id="@+id/validationmasg"
-            android:layout_gravity="center"
-            android:textColor="@color/black"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_gravity="center"
+            android:textColor="#fe7e34"
+            android:textStyle="italic" />
+
     </LinearLayout>
-
-
-</LinearLayout>

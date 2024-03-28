@@ -1,156 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F6F0E8">
+    android:background="#F6F0E8"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50pt"
         android:layout_gravity="center"
-
-        android:text="Verification"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
+        android:text="Verification"
         android:textColor="#fe7e34"
         android:textSize="40sp"
         android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingHorizontal="10dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"        android:textColor="@color/black"
-        android:text="May i know your mobile number"
-    />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="May i know your mobile number"
+            android:textColor="@color/black" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp">
-        <EditText
-            android:id="@+id/editTextPhone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#4C4B4B"
-            android:hint="mobile number"
-            android:textColor="@color/gray"
-            android:ems="10"
-            android:inputType="phone"
-            android:shadowColor="@color/black" />
+
+            <EditText
+                android:id="@+id/editTextPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#4C4B4B"
+                android:ems="10"
+                android:hint="mobile number"
+                android:inputType="phone"
+                android:shadowColor="@color/black"
+                android:textColor="@color/gray" />
+
             <androidx.cardview.widget.CardView
-        android:id="@+id/sendotp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-android:layout_marginHorizontal="5dp"
-        app:cardBackgroundColor="#fe7e34"
-        app:cardCornerRadius="20dp"
-        android:paddingVertical="20dp"
-        app:cardElevation="20dp" >
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Check"
-android:layout_marginHorizontal="10dp"
-            android:paddingHorizontal="5dp"
-            android:textColor="@color/white"
-            android:layout_marginVertical="10dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
-    </androidx.cardview.widget.CardView>
+                android:id="@+id/sendotp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginHorizontal="5dp"
+                android:paddingVertical="20dp"
+                app:cardBackgroundColor="#fe7e34"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="10dp"
+                    android:paddingHorizontal="5dp"
+                    android:text="Check"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-        <LinearLayout android:layout_height="wrap_content"
+
+        <LinearLayout
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="We have sent an OTP to this mobile number.. Please
+verify your number using the OTP
+ sent
+OTP is valid for "
+                android:textColor="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sec"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter OTP : "
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/editTextOtp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints="sms_otp"
+                android:backgroundTint="#4C4B4B"
+                android:ems="4"
+                android:hint="OTP"
+                android:importantForAutofill="yes"
+                android:inputType="phone"
+                android:shadowColor="@color/black"
+                android:textColor="@color/gray" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Instructions:"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textColor="@color/black"
-            android:text="We have sent an OTP to this mobile number.. Please
-verify your number using the OTP
- sent
-OTP is valid for "
-            />
-            <TextView android:id="@+id/textSec"
-                 android:layout_height="wrap_content"
-                android:text=""
-                android:layout_width="wrap_content"/>
-            <TextView android:layout_height="wrap_content"
-                 android:layout_width="wrap_content"
-                android:textColor="@color/black"
-                android:text="Sec"/>
-    </LinearLayout>
-        <LinearLayout android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            >
-            <TextView  android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textColor="@color/black"
-                android:text="Enter OTP : " />
-        <EditText
-            android:id="@+id/editTextOtp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#4C4B4B"
-android:hint="OTP"
-            android:textColor="@color/gray"
-            android:ems="4"
-            android:inputType="phone"
-            android:shadowColor="@color/black" />
-        </LinearLayout>
+            android:text="@string/instruction_one"
+            android:textColor="@color/black" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/Permissions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
-            android:layout_marginHorizontal="40dp"
-            app:cardBackgroundColor="#fe7e34"
-            app:cardCornerRadius="20dp"
-            android:paddingVertical="20dp"
-            app:cardElevation="20dp" >
         <TextView
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Permission"
-            android:textColor="@color/white"
-            android:layout_marginVertical="10dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/instruction_two"
+            android:textColor="@color/black" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/verifybtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp"
             android:layout_marginHorizontal="40dp"
-
+            android:layout_marginTop="30dp"
+            android:paddingVertical="20dp"
             app:cardBackgroundColor="#fe7e34"
             app:cardCornerRadius="20dp"
-            android:paddingVertical="20dp"
-            app:cardElevation="20dp" >
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Verify"
+            app:cardElevation="20dp">
 
-                android:textColor="@color/white"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginVertical="10dp"
+                android:text="Verify"
+                android:textColor="@color/white"
                 android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/permission_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="10dp"
+            android:paddingVertical="20dp"
+            app:cardBackgroundColor="#fe7e34"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="10dp"
+                android:text="Usage Stat Permissions"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
 

@@ -2,59 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="#F6F0E8"
     android:id="@+id/floatingViewContainer"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F6F0E8"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
     tools:context=".Manage_screen">
-    <LinearLayout    android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="20dp"
-
+        android:gravity="center"
         android:orientation="horizontal">
+
         <TextView
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:text="Manage"
             android:textColor="#fe7e34"
-            android:text="Manage"/>
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
         <TextView
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
+            android:text=" your Life Actions"
             android:textColor="#676767"
-            android:text=" your LifeActions"/>
+            android:textSize="25sp"
+            android:textStyle="bold" />
     </LinearLayout>
+
     <TextView
-        android:textStyle="italic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="#676767"
         android:layout_gravity="center"
-        android:text="and get reminders"/>
+        android:text="and get reminders"
+        android:textColor="#676767"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
     <TextView
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="#676767"
         android:layout_marginTop="15dp"
         android:text="Set your targets. After your first week your actuals will become your targets.
 You can change your target at the beginning of the week(Sunday and Monday).
-Target can be changed with a deviation of 10% from your actuals."/>
+Target can be changed with a deviation of 10% from your actuals."
+        android:textColor="#676767"
+        android:textSize="15sp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TableLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="match_parent"
@@ -63,139 +71,136 @@ Target can be changed with a deviation of 10% from your actuals."/>
 
                 <!-- Headers -->
                 <TableRow>
+
                     <TextView
                         android:layout_width="0dp"
-
                         android:layout_height="match_parent"
-                        android:padding="5dp"
-
-                        android:gravity="center"
-                        android:textColor="@color/black"
                         android:background="@drawable/tablehead"
-                        android:text="LiveActions"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Live Actions"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
-
                         />
+
                     <TextView
                         android:layout_width="0dp"
-
                         android:layout_height="match_parent"
-                        android:padding="5dp"
-
-                        android:gravity="center"
-                        android:textColor="@color/black"
                         android:background="@drawable/tablehead"
-
-                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:padding="5dp"
                         android:text="Set\nTarget\n(Hours)"
-                        />
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
-
                         android:layout_height="match_parent"
-                        android:padding="5dp"
-
-                        android:gravity="center"
-                        android:textColor="@color/black"
                         android:background="@drawable/tablehead"
-
+                        android:gravity="center"
+                        android:padding="5dp"
                         android:text="Set\nTarget\n(%)"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="0dp"
-
                         android:layout_height="match_parent"
-                        android:padding="5dp"
-
-                        android:gravity="center"
-                        android:textColor="@color/black"
                         android:background="@drawable/tablehead"
-
+                        android:gravity="center"
+                        android:padding="5dp"
                         android:text="Actual\n(Hours)"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="0dp"
-
                         android:layout_height="match_parent"
-                        android:padding="5dp"
-
-                        android:gravity="center"
-                        android:textColor="@color/black"
                         android:background="@drawable/tablehead"
-
+                        android:gravity="center"
+                        android:padding="5dp"
                         android:text="Actual\n(%)"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="0dp"
-
                         android:layout_height="match_parent"
-                        android:padding="5dp"
-
-                        android:gravity="center"
-                        android:textColor="@color/black"
                         android:background="@drawable/tablehead"
-
+                        android:gravity="center"
+                        android:padding="5dp"
                         android:text="Variance"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
                 </TableRow>
+
             </TableLayout>
-            <TextView       android:layout_height="wrap_content"
+
+            <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:padding="9dp"
+                android:text="Life Action Comments"
                 android:textColor="#676767"
                 android:textSize="20dp"
-                android:textStyle="bold"
+                android:textStyle="bold" />
 
-                android:text="Life Action Comments"/>
             <androidx.cardview.widget.CardView
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="30dp"
                 android:layout_marginHorizontal="40dp"
-android:paddingHorizontal="15dp"
-
-                app:cardCornerRadius="20dp"
+                android:layout_marginVertical="0dp"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="15dp"
                 android:paddingVertical="20dp"
-                app:cardElevation="20dp" >
+                app:cardCornerRadius="20dp"
+                app:cardElevation="20dp">
+
                 <TextView
                     android:id="@+id/comment_live_act"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="Save Targets"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="10dp"
-                    android:textColor="@color/black"
                     android:layout_marginVertical="10dp"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
                     android:gravity="center"
-                    android:layout_gravity="center"/>
+                    android:text="Save Targets"
+                    android:textColor="@color/black"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
             </androidx.cardview.widget.CardView>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/save_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="30dp"
                 android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="30dp"
+                android:paddingVertical="20dp"
                 app:cardBackgroundColor="#fe7e34"
                 app:cardCornerRadius="20dp"
-                android:paddingVertical="20dp"
-                app:cardElevation="20dp" >
+                app:cardElevation="20dp">
+
                 <TextView
                     android:id="@+id/savetargt"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="10dp"
                     android:text="Pat Yourself "
                     android:textColor="@color/white"
-                    android:layout_marginVertical="10dp"
                     android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:textStyle="bold" />
+
             </androidx.cardview.widget.CardView>
+
         </LinearLayout>
+
     </ScrollView>
 
 

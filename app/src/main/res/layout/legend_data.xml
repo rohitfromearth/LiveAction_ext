@@ -4,37 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center">
+
     <TextView
         android:id="@+id/tv_legend_color"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:padding="2dp"
-        android:textStyle="bold"
+        android:layout_weight="0.3"
         android:gravity="center"
+        android:padding="2dp"
         android:text=" "
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+     />
+
     <TextView
         android:id="@+id/tv_legend_Category"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:padding="2dp"
-        android:textStyle="bold"
+        android:layout_weight="1"
         android:gravity="center"
+        android:padding="2dp"
         android:text="categary name text"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_legend_per"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
+        android:layout_weight="0.6"
+        android:gravity="center"
         android:padding="2dp"
         android:text="last week value"
-        android:gravity="center"
-        android:textColor="@android:color/black"/>
-
-
+        android:textColor="@android:color/black"
+        />
 
 </TableRow>

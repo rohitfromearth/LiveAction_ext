@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical">
+    <ProgressBar
+        android:id="@+id/loadingFragmentThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:visibility="visible" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,40 +27,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <org.eazegraph.lib.charts.PieChart
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-   android:id="@+id/piechart_for_month"
-                        android:layout_weight="1"
-                        app:egLegendTextSize="20dp"
+
+                    <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/piechart_for_month"
                         android:layout_width="0dp"
                         android:layout_height="200dp"
-                        android:padding="3dp"
-
                         android:layout_marginTop="5dp"
-
                         android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:padding="3dp"
+                        app:egLegendTextSize="20dp" />
 
-                        />
                     <androidx.cardview.widget.CardView
                         android:id="@+id/disclaimerCardView"
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="2dp"
                         android:layout_marginHorizontal="15dp"
+                        android:layout_marginVertical="2dp"
+                        android:layout_weight="1"
+                        android:paddingVertical="3dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="12dp"
-                        android:paddingVertical="3dp"
-                        app:cardElevation="12dp" >
+                        app:cardElevation="12dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-
                             android:orientation="horizontal"
                             android:padding="0dp">
 
@@ -72,30 +71,31 @@
                                 <!-- Headers -->
 
                             </TableLayout>
+
                         </LinearLayout>
+
                     </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
 
             </ScrollView>
-
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_formonth"
-
                     android:layout_width="match_parent"
-                    android:layout_marginHorizontal="5dp"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="5dp" />
+
             </LinearLayout>
 
-
-
         </LinearLayout>
-    </ScrollView>
 
+    </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+</RelativeLayout>
