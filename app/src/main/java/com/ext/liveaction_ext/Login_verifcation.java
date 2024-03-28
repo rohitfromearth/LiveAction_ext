@@ -565,7 +565,8 @@ public class Login_verifcation extends AppCompatActivity {
             String uiddd = servic.formdatasend(requestBody, "/user/login");
             JSONObject jsonResponse = new JSONObject(uiddd);
             JSONObject data = jsonResponse.getJSONObject("data");
-            boolean userExists = data.getBoolean("user_exists");
+         //   boolean userExists = data.getBoolean("user_exists");
+            boolean userExists = false; // for dev
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
@@ -727,7 +728,7 @@ Log.e("firebasesuccess","success");
                                                             if (pageID) {
                                                                 //Log.e("mauth", String.valueOf(mAuth));
                                                                 Log.d("citylocation",city+" and "+state);
-                                                                startActivity(new Intent(Login_verifcation.this, Chart_page.class));
+                                                                startActivity(new Intent(Login_verifcation.this, Formpage.class));
                                                             } else {
                                                                 String data = getLocation();
                                                                 // Log.e("gettingloaction", data);

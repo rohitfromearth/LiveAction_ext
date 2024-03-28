@@ -218,8 +218,6 @@ public class Formpage extends AppCompatActivity {
                         if (!selectedOFeedback.contains(checkboxText)) {
 
                             selectedOFeedback.add(checkboxText);
-
-
                         }
                     } else {
                         selectedOFeedback.remove(checkboxText);
@@ -250,7 +248,6 @@ public class Formpage extends AppCompatActivity {
                     selectedValue = "not_selected";
                 }
 
-
                 try {
                     boolean valid = validat();
                     if (valid) {
@@ -268,8 +265,6 @@ public class Formpage extends AppCompatActivity {
                 }
 
                 String selectedOptionsString = String.join(", ", selected_dur_Options);
-
-
                 //startActivity(new Intent(Formpage.this,Manage_screen.class));
             }
         });
@@ -401,7 +396,7 @@ public class Formpage extends AppCompatActivity {
 
         List<String> items = new ArrayList<>();
 // Add heading
-        items.add("Select Durables");
+        items.add("Durables");
 // Add other items
         items.add("Two-Wheeler");
         items.add("4-wheeler (Car/Jeep/Van/Tractor)");
@@ -472,16 +467,20 @@ public class Formpage extends AppCompatActivity {
 
             private View createItemView(int position, View convertView, ViewGroup parent) {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown, parent, false);
+                CheckBox checkbox = view.findViewById(R.id.checkboxq);
                 TextView textView = view.findViewById(R.id.textviewq);
 
                 String item = getItem(position);
+                textView.setText(item);
+                checkbox.setChecked(selectedProducts.contains(item));
 
-                // Check if it's the heading
-                if (position == 0) {
-                    textView.setText(item);
-                } else {
-                    textView.setText(item);
-                }
+                checkbox.setOnClickListener(v -> {
+                    if (checkbox.isChecked()) {
+                        selectedProducts.add(item);
+                    } else {
+                        selectedProducts.remove(item);
+                    }
+                });
 
                 return view;
             }
@@ -1028,6 +1027,7 @@ public class Formpage extends AppCompatActivity {
 
         String selectedOptionsString = String.join(", ", selected_dur_Options);
         String choice = String.join(", ", selectedOFeedback);
+
         String prdo = String.join(", ", selectedProducts);
 
         JSONArray ottdta = OttData();
@@ -1062,6 +1062,7 @@ public class Formpage extends AppCompatActivity {
 
         jsonBody.put("durablesUsed", selectedOptionsString);
         jsonBody.put("shoppedOnline", chek);
+        Log.d("prdo",prdo+"prdo");
         jsonBody.put("productsPurchasedOnline", prdo);
         jsonBody.put("lastOnlineWatch", selectedValue);
         jsonBody.put("ottWatchLastYear", ottdta);

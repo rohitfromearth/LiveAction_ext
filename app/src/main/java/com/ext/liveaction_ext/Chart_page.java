@@ -81,7 +81,7 @@ public class Chart_page extends AppCompatActivity {
         mobile = sh.getString("mobile_number", "");
 
         //String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
-        String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms/";
+        String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
 
         //String endpot =  "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
