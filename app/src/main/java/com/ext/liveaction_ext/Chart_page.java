@@ -43,8 +43,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Chart_page extends AppCompatActivity {
@@ -64,7 +69,9 @@ public class Chart_page extends AppCompatActivity {
     String mobile;
     FragmentManager fragmentManager;
     Context context;
-
+    Conn_service conn = new Conn_service();
+    ArrayList<String> dayList = new ArrayList<String>();
+    ArrayList<String> weekList = new ArrayList<String>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,20 +87,54 @@ public class Chart_page extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
+        String fToken = sh.getString("firebaseToken", "");//april
+
+        Log.d("ssss", "s : ====" + fToken);
+
+
         //String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
         String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
-
         //String endpot =  "https://h17tl5kg-8080.inc1.devtunnels.ms";
-
         String dir = getObbDir().getPath();
+
         ArrayList pack = pc.pack_rule(endpot);
+
+
+        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, fToken);
+
+
+        ArrayList dayList = dataDayList(res);
+        ArrayList weekList = dataWeekList(res);
+        ArrayList monthList = dataMonthList(res);
+        ArrayList yearList = dataYearList(res);
+
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
         Set<String> set = new HashSet<String>();
         set.addAll(pack);
+
+        Set<String> dayset = new HashSet<String>();
+        dayset.addAll(dayList);
+
+        Set<String> weekset = new HashSet<String>();
+        weekset.addAll(weekList);
+
+        Set<String> monthset = new HashSet<String>();
+        monthset.addAll(monthList);
+
+        Set<String> yearset = new HashSet<String>();
+        yearset.addAll(yearList);
+
         myEdit.putStringSet("APP_LIST", set);
+        myEdit.putStringSet("DAY_LIST", dayset);
+        myEdit.putStringSet("WEEK_LIST", weekset);
+        myEdit.putStringSet("MONTH_LIST", weekset);
+        myEdit.putStringSet("YEAR_LIST", weekset);
+
+        myEdit.putString("key_usage_data", res);
+
         myEdit.apply();
 
 
@@ -263,6 +304,95 @@ public class Chart_page extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    public ArrayList dataDayList(String ss) {
+        //april
+       // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
+        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
+
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            JSONArray jsonArray = jsonObject.getJSONArray("day");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                dayList.add(jsonArray.getString(i));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        for (String day : dayList) {
+            //Log.d("DayList", "Day: " + day);
+        }
+
+        return dayList;
+
+        //april
+    }
+    public ArrayList dataWeekList(String ss) {
+        //april
+       // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
+        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
+
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            JSONArray jsonArray = jsonObject.getJSONArray("week");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                weekList.add(jsonArray.getString(i));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        for (String week : weekList) {
+           // Log.d("week list", "week: " + week);
+        }
+
+        return weekList;
+
+        //april
+    }
+
+    public ArrayList dataMonthList(String ss) {
+        //april
+        // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
+        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
+
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            JSONArray jsonArray = jsonObject.getJSONArray("week");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                weekList.add(jsonArray.getString(i));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        for (String week : weekList) {
+            // Log.d("week list", "week: " + week);
+        }
+
+        return weekList;
+
+        //april
+    }
+    public ArrayList dataYearList(String ss) {
+        //april
+        // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
+        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
+
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            JSONArray jsonArray = jsonObject.getJSONArray("week");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                weekList.add(jsonArray.getString(i));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        for (String week : weekList) {
+            // Log.d("week list", "week: " + week);
+        }
+
+        return weekList;
+
+        //april
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -286,7 +416,7 @@ public class Chart_page extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
 
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment go_next ;
+        Fragment go_next;
 
         int itemId = menuItem.getItemId();
 

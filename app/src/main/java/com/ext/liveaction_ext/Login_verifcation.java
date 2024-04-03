@@ -571,7 +571,8 @@ public class Login_verifcation extends AppCompatActivity {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                SharedPreferences.Editor myEdit =
+                        sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
                 myEdit.putInt("UID", userId);
                 myEdit.putString("mobile_number", mob_no);

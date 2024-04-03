@@ -2,7 +2,7 @@ package com.ext.liveaction_ext;
 
 import android.util.Log;
 
-public class CardItem {
+public class CardItem  {
     private final int logoResId;
     private final String title;
     private final String ts_text;
@@ -18,7 +18,7 @@ public class CardItem {
 
         this.ts_text = ts_text;
         this.average_text = average_text;
-        Log.d("average text",average_text);
+       // Log.d("average text",average_text);
         this.variance_text = variance_text;
 
         this.ts_value = ts_value;

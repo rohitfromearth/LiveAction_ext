@@ -3,6 +3,7 @@ package com.ext.liveaction_ext;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,20 +34,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Fragment2 extends Fragment {
     PieChart pieChart;
     int uid_z;
     String firebaseToke = "";
     int uid = 0;
+    String categoryName;
     Conn_service conn = new Conn_service();
     TableLayout tbklayout;
     private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
     private ProgressBar loadingProgress;
+    Context context;
+    SharedPreferences sh;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -61,7 +67,37 @@ public class Fragment2 extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
+        Log.d("hiiiiii","helooo : ");
+        //1 april
 
+
+     /*   Bundle args = getArguments();
+        if (args != null) {
+            String name = args.getString("categoryName");
+            Log.d("name","name"+name);
+
+        }else{ Log.d("name","name");}*/
+        //String name= getArguments().getString("categoryName");
+
+      /* try {
+            assert getArguments() != null;
+            String dayObject=getArguments().getString("dayObject");
+            assert dayObject != null;
+            JSONObject jsonObject=new JSONObject(dayObject);
+
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                String categoryName = item.getString("category");
+                Log.d("categoryName","categoryName : "+categoryName);
+            }
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }*/
+        //1 april
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -85,14 +121,20 @@ public class Fragment2 extends Fragment {
     private void Data_show(String firebaseToken) {
         loadingProgress.setVisibility(View.VISIBLE);
 
-        SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
-        String res = conn.pack_rule("/usageStats/getUsageData?screen=dashboard&duration=week&userId=" + uid, firebaseToken);
+        Set<String> weekSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
+
+        for (String day : weekSet) {
+            Log.d("weekset", "weekset: " + day);
+        }
+
+        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, firebaseToken);
 
         try {
             JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONArray jsonArray = jsonObject.getJSONArray("week");
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
@@ -107,8 +149,8 @@ public class Fragment2 extends Fragment {
                 String categoryName = item.getString("category");
                 if (!categoryName.equals("Total")) {
 
-                    double pievalue = item.getDouble("usage_percent");
-                    double minvalue = item.getDouble("usage_in_mins");
+                    double pievalue = item.getDouble("usage_percent_week");
+                    double minvalue = item.getDouble("usage_in_mins_week");
                     float fpi_Value = (float) pievalue;
                     Log.e("random", String.valueOf(pievalue));
                     pieChart.addPieSlice(
@@ -120,6 +162,11 @@ public class Fragment2 extends Fragment {
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
             }
+            List<CardItem> cardItems = createCardItemsss();
+            // Set up the RecyclerView
+            cardAdapter = new CardAdapter(cardItems, requireContext());
+            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+            recyclerView.setAdapter(cardAdapter);
 
             loadingProgress.setVisibility(View.GONE);
 
@@ -131,39 +178,68 @@ public class Fragment2 extends Fragment {
         // To animate the pie chart
         pieChart.startAnimation();
         // Create the list of card items
-        List<CardItem> cardItems = createCardItems(res);
-        // Set up the RecyclerView
-        cardAdapter = new CardAdapter(cardItems, requireContext());
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        recyclerView.setAdapter(cardAdapter);
+
 
     }
+    private List<CardItem> createCardItemsss() {
+        List<CardItem> cardItems = new ArrayList<>();
+        Set<String> daySet = sh.getStringSet("WEEK_LIST", new HashSet<>());
+        for (String jsonString : daySet) {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                // String categoryName = item.getString("category");
+                String categoryName = jsonObject.optString("category");
 
-    private List<CardItem> createCardItems(String res) {
+                if (!categoryName.equalsIgnoreCase("Total")) {
+                    int logoResId = getLogoResIdForCategory(categoryName);
+                    int tsthisday = jsonObject.optInt("usage_in_mins_week");
+                    int average = jsonObject.optInt("last_4_week_usage_in_mins");
+                    int variance = jsonObject.optInt("variance_week");
+
+                    Log.d("catee", "cccccName: " + categoryName);
+
+                    String tsText = " TS this week";
+                    String averageText = " Average\n(last 4 weeks)";
+                    String varianceText = " Variance";
+
+                    String tsthisdays = " " + tsthisday;
+                    String averages = " " + average;
+                    String variences = String.valueOf(variance);
+
+                    cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return cardItems;
+    }
+  /*  private List<CardItem> createCardItems(String res) {
+        Log.d("inside","createCardItems");
         List<CardItem> cardItems = new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONArray jsonArray = jsonObject.getJSONArray("week");
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
 
                 String categoryName = item.getString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
-                int tsthisday = item.getInt("usage_in_mins");
+                int tsthisday = item.getInt("usage_in_mins_week");
                 int average = item.getInt("last_4_week_usage_in_mins");
-                int variance = item.getInt("variance");
+                int variance = item.getInt("variance_week");
 
-                String tsText = " TS this week";
-                String averageText = " Average\n(last 4 weeks)";
+                String tsText = " TS this month";
+                String averageText = " Average\n(last month)";
                 String varianceText = " Variance";
 
                 String tsthisdays = " " + tsthisday;
                 String averages = " " + average;
                 String variences = String.valueOf(variance);
 
-                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
+                cardItems.add(new CardItem(logoResId, categoryName,  tsText, averageText, varianceText, tsthisdays, averages, variences));
 
             }
         } catch (JSONException e) {
@@ -172,7 +248,7 @@ public class Fragment2 extends Fragment {
         }
         return cardItems;
     }
-
+*/
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
 
         TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.legend_data, null);
