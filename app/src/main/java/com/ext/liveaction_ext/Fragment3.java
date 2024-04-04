@@ -87,12 +87,12 @@ public class Fragment3 extends Fragment {
         firebaseToken = sh.getString("firebaseToken", "");
 
         uid = sh.getInt("UID", uid_z);
-        String res = conn.pack_rule("/usageStats/getUsageData?duration=month&userId=" + uid, firebaseToken);
+        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, firebaseToken);
 
         Log.d("res month","--"+res);
         try {
             JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONArray jsonArray = jsonObject.getJSONArray("day");
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
@@ -107,8 +107,8 @@ public class Fragment3 extends Fragment {
                 String categoryName = item.getString("category");
                 if (!categoryName.equals("Total")) {
 
-                    double pievalue = item.getDouble("usage_percent");
-                    double minvalue = item.getDouble("usage_in_mins");
+                    double pievalue = item.getDouble("usage_percent_day");
+                    double minvalue = item.getDouble("usage_in_mins_day");
                     float fpi_Value = (float) pievalue;
 
                     pieChart.addPieSlice(
@@ -143,16 +143,16 @@ public class Fragment3 extends Fragment {
 
         try {
             JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONArray jsonArray = jsonObject.getJSONArray("day");
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
 
                 String categoryName = item.getString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
-                int tsthisday = item.getInt("usage_in_mins");
-                int average = item.getInt("last_month_in_mins");
-                int variance = item.getInt("variance");
+                int tsthisday = item.getInt("usage_in_mins_day");
+                int average = item.getInt("last_7_day_usage_in_mins");
+                int variance = item.getInt("variance_day");
 
                 String tsText = " TS this month";
                 String averageText = " Average\n(last month)";

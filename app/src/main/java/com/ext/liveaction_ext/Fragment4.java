@@ -84,11 +84,11 @@ public class Fragment4 extends Fragment {
         SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
-        String res = conn.pack_rule("/usageStats/getUsageData?duration=year&userId=" + uid, firebaseToken);
+        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, firebaseToken);
 
         try {
             JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONArray jsonArray = jsonObject.getJSONArray("day");
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
@@ -102,8 +102,8 @@ public class Fragment4 extends Fragment {
 
                 String categoryName = item.getString("category");
                 if (!categoryName.equals("Total")) {
-                    double pievalue = item.getDouble("usage_percent");
-                    double minvalue = item.getDouble("usage_in_mins");
+                    double pievalue = item.getDouble("usage_percent_day");
+                    double minvalue = item.getDouble("usage_in_mins_day");
                     float fpi_Value = (float) pievalue;
 
                     pieChart.addPieSlice(

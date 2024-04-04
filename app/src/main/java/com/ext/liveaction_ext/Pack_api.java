@@ -51,7 +51,7 @@ public class Pack_api {
                 while ((applist = br.readLine()) != null) {
                     response += applist;
                     final JSONObject app = new JSONObject(response);
-//                     appslist
+
 
 
                     JSONArray appsList = app.getJSONArray("data");
