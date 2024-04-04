@@ -47,11 +47,13 @@ public class Fragment1 extends Fragment {
     private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
-    private ProgressBar loadingProgress;
+
     boolean isProgressVisible = false;
     String categoryName;
     Context context;
     SharedPreferences sh;
+    ProgressBar loadingProgressBar;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,9 +64,8 @@ public class Fragment1 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
-        loadingProgress = view.findViewById(R.id.loading);
-
         mAuth = FirebaseAuth.getInstance();
+        loadingProgressBar = view.findViewById(R.id.loading);
 
         FirebaseUser use = mAuth.getCurrentUser();
 
@@ -86,26 +87,11 @@ public class Fragment1 extends Fragment {
 
     private void Data_Show(String firebaseToken) {
         try {
-
-            loadingProgress.setVisibility(View.VISIBLE);
+            loadingProgressBar.setVisibility(View.VISIBLE);
              sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
             uid = sh.getInt("UID", uid_z);
 
             //april
-          Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
-
-          /* for (String day : daySet) {
-               //Log.d("DaySet", "fragment1 day: " + day);
-           }
-            Set<String> daSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
-
-            for (String day : daSet) {
-               // Log.d("DaySet", "fragment1 week: " + day);
-            }*/
-            //april
-
-            //String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, firebaseToken);
-
             String usageData = sh.getString("key_usage_data", ""); // Provide default value if key not found
 
             String resultdummy = dumdta.Data_for_dash();
@@ -121,14 +107,13 @@ public class Fragment1 extends Fragment {
                 recyclerView.setAdapter(cardAdapter);
 
             } else {
-                piecreate(usageData);
+                piecreate();
                 List<CardItem> cardItems = createCardItemsss();
                 cardAdapter = new CardAdapter(cardItems, requireContext());
                 recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
                 recyclerView.setAdapter(cardAdapter);
             }
-            loadingProgress.setVisibility(View.GONE);
-
+            loadingProgressBar.setVisibility(View.GONE);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -139,15 +124,14 @@ public class Fragment1 extends Fragment {
         for (String jsonString : daySet) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
-                // String categoryName = item.getString("category");
                 String categoryName = jsonObject.optString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
-                // int tsthisday = item.getInt("usage_in_mins_day");
                 int tsthisday = jsonObject.optInt("usage_in_mins_day");
-                // int average = item.getInt("last_7_day_usage_in_mins");
                 int average = jsonObject.optInt("last_7_day_usage_in_mins");
-                //int variance = item.getInt("variance_day");
                 int variance = jsonObject.getInt("variance_day");
+
+
+
                 Log.d("catee", "cName: " + categoryName);
                 String tsText = " TS this day";
                 String averageText = " Average\n(last 7 days)";
@@ -278,6 +262,7 @@ public class Fragment1 extends Fragment {
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
                 String categoryName = item.getString("category");
+                Log.d("usageData", "fragment1 categoryName: " + categoryName);
                 if (!categoryName.equals("Total")) {
 
                     double pievalue = item.getDouble("usage_percent_day");
@@ -296,7 +281,6 @@ public class Fragment1 extends Fragment {
 
                 }
             }
-            loadingProgress.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));
