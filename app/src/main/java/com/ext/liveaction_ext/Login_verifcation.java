@@ -706,10 +706,10 @@ public class Login_verifcation extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<GetTokenResult> task) {
                                                 if (task.isSuccessful()) {
-Log.e("firebasesuccess","success");
+
                                                     try{
                                                         String firebaseToken = task.getResult().getToken();
-                                                        Log.e("firebaseToken","Ftoken:"+firebaseToken+"User"+currentUser);
+                                                        Log.e("firebaseToken","==mob=="+edtPhone.getText().toString()+"Ftoken :"+firebaseToken+"==User=="+currentUser);
                                                         boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
                                                         boolean hasPermission = hasUsageAccessPermission();
                                                         Log.e("pageID","pageID:"+pageID+"hasPermission"+hasPermission);

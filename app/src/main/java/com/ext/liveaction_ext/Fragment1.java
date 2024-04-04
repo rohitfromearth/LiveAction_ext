@@ -59,8 +59,6 @@ public class Fragment1 extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment1, container, false);
 
-
-
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -121,20 +119,20 @@ public class Fragment1 extends Fragment {
             if (showDummy) {
 
                 piecreate(resultdummy);
+                List<CardItem> cardItems = createCardItems(usageData);
+                cardAdapter = new CardAdapter(cardItems, requireContext());
+                recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+                recyclerView.setAdapter(cardAdapter);
 
+            } else {
+                piecreate(usageData);
                 List<CardItem> cardItems = createCardItemsss();
                 cardAdapter = new CardAdapter(cardItems, requireContext());
                 recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
                 recyclerView.setAdapter(cardAdapter);
-            } else {
-                piecreate(usageData);
-                List<CardItem> cardItems = createCardItems(usageData);
-                cardAdapter = new CardAdapter(cardItems, requireContext());
-                recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-
-                recyclerView.setAdapter(cardAdapter);
             }
             loadingProgress.setVisibility(View.GONE);
+
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -175,8 +173,6 @@ public class Fragment1 extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
 
-
-
                 Random random = new Random();
                 int red = random.nextInt(256);
                 int green = random.nextInt(256);
@@ -209,13 +205,6 @@ public class Fragment1 extends Fragment {
            // To animate the pie chart
         pieChart.startAnimation();
     }
-
-
-
-
-
-
-
 
     private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
