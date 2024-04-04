@@ -31,8 +31,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Fragment3 extends Fragment {
     PieChart pieChart;
@@ -45,6 +47,7 @@ public class Fragment3 extends Fragment {
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
     private ProgressBar loadingProgress;
+    SharedPreferences sh;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -82,11 +85,16 @@ public class Fragment3 extends Fragment {
 
     private void Data_Show(String firebaseToken) {
         loadingProgress.setVisibility(View.VISIBLE);
-        SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
         firebaseToken = sh.getString("firebaseToken", "");
 
         uid = sh.getInt("UID", uid_z);
+        Set<String> weekSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
+
+        for (String day : weekSet) {
+            Log.d("weekset", "weekset: " + day);
+        }
         String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, firebaseToken);
 
         Log.d("res month","--"+res);
@@ -104,11 +112,12 @@ public class Fragment3 extends Fragment {
                 // Format the RGB values into a hexadecimal color code
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
-                String categoryName = item.getString("category");
+                String categoryName = item.getString("cat" +
+                        "egory");
                 if (!categoryName.equals("Total")) {
 
-                    double pievalue = item.getDouble("usage_percent_day");
-                    double minvalue = item.getDouble("usage_in_mins_day");
+                    double pievalue = item.getDouble("usage_percent_month");
+                    double minvalue = item.getDouble("usage_in_mins_month");
                     float fpi_Value = (float) pievalue;
 
                     pieChart.addPieSlice(
@@ -120,6 +129,11 @@ public class Fragment3 extends Fragment {
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
             }
+            List<CardItem> cardItems = createCardItemsss();
+            cardAdapter = new CardAdapter(cardItems, requireContext());
+            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+            recyclerView.setAdapter(cardAdapter);
+
             loadingProgress.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -128,17 +142,44 @@ public class Fragment3 extends Fragment {
 
         // To animate the pie chart
         pieChart.startAnimation();
-        // Create the list of card items
-        List<CardItem> cardItems = createCardItems(res);
-        // Set up the RecyclerView
-        cardAdapter = new CardAdapter(cardItems, requireContext());
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        recyclerView.setAdapter(cardAdapter);
+
 
 
     }
+    private List<CardItem> createCardItemsss() {
+        List<CardItem> cardItems = new ArrayList<>();
+        Set<String> daySet = sh.getStringSet("MONTH_LIST", new HashSet<>());
+        for (String jsonString : daySet) {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+                // String categoryName = item.getString("category");
+                String categoryName = jsonObject.optString("category");
 
-    private List<CardItem> createCardItems(String res) {
+                if (!categoryName.equalsIgnoreCase("Total")) {
+                    int logoResId = getLogoResIdForCategory(categoryName);
+                    int tsthisday = jsonObject.optInt("usage_in_mins");
+                    int average = jsonObject.optInt("last_month_in_mins");
+                    int variance = jsonObject.optInt("variance_month");
+
+                    Log.d("catee", "cccccName: " + categoryName);
+
+                    String tsText = " TS this month";
+                    String averageText = " Average\n(last month)";
+                    String varianceText = " Variance";
+
+                    String tsthisdays = " " + tsthisday;
+                    String averages = " " + average;
+                    String variences = String.valueOf(variance);
+
+                    cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return cardItems;
+    }
+   /* private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
 
         try {
@@ -172,7 +213,7 @@ public class Fragment3 extends Fragment {
 
 
         return cardItems;
-    }
+    }*/
 
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
 

@@ -72,7 +72,9 @@ public class Chart_page extends AppCompatActivity {
     Conn_service conn = new Conn_service();
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
-
+    ArrayList<String> monthList = new ArrayList<String>();
+    ArrayList<String> yearList = new ArrayList<String>();
+    SharedPreferences sh;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,61 +84,15 @@ public class Chart_page extends AppCompatActivity {
                 4);
         FirebaseApp.initializeApp(this);
 
-        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-        String fToken = sh.getString("firebaseToken", "");//april
 
-        Log.d("ssss", "s : ====" + fToken);
+        String endpot = "https://sondersort.online";
 
-
-        //String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
-        String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
-        //String endpot =  "https://h17tl5kg-8080.inc1.devtunnels.ms";
         String dir = getObbDir().getPath();
-
-        ArrayList pack = pc.pack_rule(endpot);
-
-
-        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, fToken);
-
-
-        ArrayList dayList = dataDayList(res);
-        ArrayList weekList = dataWeekList(res);
-        ArrayList monthList = dataMonthList(res);
-        ArrayList yearList = dataYearList(res);
-
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-        myEdit.putString("endpt", endpot);
-        myEdit.putString("dir", dir);
-        Set<String> set = new HashSet<String>();
-        set.addAll(pack);
-
-        Set<String> dayset = new HashSet<String>();
-        dayset.addAll(dayList);
-
-        Set<String> weekset = new HashSet<String>();
-        weekset.addAll(weekList);
-
-        Set<String> monthset = new HashSet<String>();
-        monthset.addAll(monthList);
-
-        Set<String> yearset = new HashSet<String>();
-        yearset.addAll(yearList);
-
-        myEdit.putStringSet("APP_LIST", set);
-        myEdit.putStringSet("DAY_LIST", dayset);
-        myEdit.putStringSet("WEEK_LIST", weekset);
-        myEdit.putStringSet("MONTH_LIST", weekset);
-        myEdit.putStringSet("YEAR_LIST", weekset);
-
-        myEdit.putString("key_usage_data", res);
-
-        myEdit.apply();
-
 
         if (uid == 0) {
             Intent intent = new Intent(this, MainActivity.class);
@@ -203,6 +159,50 @@ public class Chart_page extends AppCompatActivity {
             }
         }
 
+        ArrayList pack = pc.pack_rule(endpot);
+
+        String fToken = sh.getString("firebaseToken", "");//april
+
+        Log.d("fToken", "fToken : ====" + fToken);
+        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, fToken);
+
+
+        dayList = dataDayList(res);
+        weekList = dataWeekList(res);
+        monthList = dataMonthList(res);
+        yearList = dataYearList(res);
+
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sh.edit();
+        myEdit.putString("endpt", endpot);
+        myEdit.putString("dir", dir);
+        Set<String> set = new HashSet<String>();
+        set.addAll(pack);
+
+        Set<String> dayset = new HashSet<String>();
+        dayset.addAll(dayList);
+
+        Set<String> weekset = new HashSet<String>();
+        weekset.addAll(weekList);
+
+        Set<String> monthset = new HashSet<String>();
+        monthset.addAll(monthList);
+
+        Set<String> yearset = new HashSet<String>();
+        yearset.addAll(yearList);
+
+        myEdit.putStringSet("APP_LIST", set);
+        myEdit.putStringSet("DAY_LIST", dayset);
+        myEdit.putStringSet("WEEK_LIST", weekset);
+        myEdit.putStringSet("MONTH_LIST", weekset);
+        myEdit.putStringSet("YEAR_LIST", weekset);
+
+        myEdit.putString("key_usage_data", res);
+
+        myEdit.apply();
+
+
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         manag_btn = findViewById(R.id.mange_btn);
@@ -210,11 +210,8 @@ public class Chart_page extends AppCompatActivity {
         connect_btn = findViewById(R.id.connectbtn);
         faq_btn = findViewById(R.id.FAQ_btn);
 
-
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
-
         mDrawer.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
@@ -306,9 +303,6 @@ public class Chart_page extends AppCompatActivity {
 
     public ArrayList dataDayList(String ss) {
         //april
-       // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
-        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
-
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("day");
@@ -328,8 +322,6 @@ public class Chart_page extends AppCompatActivity {
     }
     public ArrayList dataWeekList(String ss) {
         //april
-       // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
-        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
 
         try {
             JSONObject jsonObject = new JSONObject(ss);
@@ -351,45 +343,31 @@ public class Chart_page extends AppCompatActivity {
 
     public ArrayList dataMonthList(String ss) {
         //april
-        // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
-        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
-
         try {
             JSONObject jsonObject = new JSONObject(ss);
-            JSONArray jsonArray = jsonObject.getJSONArray("week");
+            JSONArray jsonArray = jsonObject.getJSONArray("month");
             for (int i = 0; i < jsonArray.length(); i++) {
-                weekList.add(jsonArray.getString(i));
+                monthList.add(jsonArray.getString(i));
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        for (String week : weekList) {
-            // Log.d("week list", "week: " + week);
-        }
-
-        return weekList;
+        return monthList;
 
         //april
     }
     public ArrayList dataYearList(String ss) {
         //april
-        // String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, ss);
-        //Log.d("resultinchartpage", "resultinchartpage :  -- " + res);
-
         try {
             JSONObject jsonObject = new JSONObject(ss);
-            JSONArray jsonArray = jsonObject.getJSONArray("week");
+            JSONArray jsonArray = jsonObject.getJSONArray("year");
             for (int i = 0; i < jsonArray.length(); i++) {
-                weekList.add(jsonArray.getString(i));
+                yearList.add(jsonArray.getString(i));
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        for (String week : weekList) {
-            // Log.d("week list", "week: " + week);
-        }
-
-        return weekList;
+        return yearList;
 
         //april
     }
