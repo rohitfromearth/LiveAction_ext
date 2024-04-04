@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,7 @@ public class Chart_page extends AppCompatActivity {
     ImageButton close_dialog;
     String mobile;
     FragmentManager fragmentManager;
+    private ProgressBar loadingProgress;
     Context context;
 
 
@@ -70,9 +72,9 @@ public class Chart_page extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                4);
+//        ActivityCompat.requestPermissions(this,
+//                new String[]{Manifest.permission.POST_NOTIFICATIONS},
+//                4);
         FirebaseApp.initializeApp(this);
 
         SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
@@ -81,27 +83,29 @@ public class Chart_page extends AppCompatActivity {
         mobile = sh.getString("mobile_number", "");
 
 
-        String endpot = "https://fc10m5q8-8080.inc1.devtunnels.ms";
+//        String endpot = "https://sondersort.online";
+        String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
 
         String dir = getObbDir().getPath();
-        ArrayList pack = pc.pack_rule(endpot);
+//        ArrayList pack = pc.pack_rule(endpot);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
-        Set<String> set = new HashSet<String>();
-        set.addAll(pack);
-        myEdit.putStringSet("APP_LIST", set);
+//        Set<String> set = new HashSet<String>();
+//        set.addAll(pack);
+//        myEdit.putStringSet("APP_LIST", set);
         myEdit.apply();
 
 
-        if (uid == 0) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        } else {
+//        if (uid == 0) {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+
+//            return;
+//        } else {
 
             setContentView(R.layout.drawer_layout);
 
@@ -159,7 +163,7 @@ public class Chart_page extends AppCompatActivity {
                 });
 
             }
-        }
+//        }
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -187,70 +191,58 @@ public class Chart_page extends AppCompatActivity {
         phone.setText(mobile);
         setupDrawerContent(navigationView);
 
-        manag_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                //startActivity(new Intent(Chart_page.this, Manage_screen.class));
-                Fragment go_next = new Manage_screen();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("Manage");
-            }
+        manag_btn.setOnClickListener(view -> {
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    view.animate().alpha(1f).setDuration(200);
+                }
+            }).start();
+            //startActivity(new Intent(Chart_page.this, Manage_screen.class));
+            Fragment go_next = new Manage_screen();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("Manage");
         });
-        achieve_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
+        achieve_btn.setOnClickListener(view -> {
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    view.animate().alpha(1f).setDuration(200);
+                }
+            }).start();
 
-                Fragment go_next = new Achieve();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("Achievements");
-            }
+            Fragment go_next = new Achieve();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("Achievements");
         });
-        faq_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        faq_btn.setOnClickListener(view -> {
 
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                //startActivity(new Intent(Chart_page.this, FaQ.class));
-                Fragment go_next = new FaQ();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("FAQ");
-            }
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    view.animate().alpha(1f).setDuration(200);
+                }
+            }).start();
+            //startActivity(new Intent(Chart_page.this, FaQ.class));
+            Fragment go_next = new FaQ();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("FAQ");
         });
-        connect_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                Fragment go_next = new ContactUs();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("Connect Us");
-            }
+        connect_btn.setOnClickListener(view -> {
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+            Fragment go_next = new ContactUs();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("Connect Us");
         });
+
+
+
+
+
         tvP_usernme = findViewById(R.id.usrname);
 
         tvP_usernme.setText(username);

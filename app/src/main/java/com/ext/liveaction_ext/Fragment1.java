@@ -91,7 +91,7 @@ public class Fragment1 extends Fragment {
             uid = sh.getInt("UID", uid_z);
 
             String res = conn.pack_rule("/usageStats/getUsageData?duration=day&userId=" + uid, firebaseToken);
-            Log.d("result",res);
+            Log.e("result",res);
             String resultdummy = dumdta.Data_for_dash();
             JSONObject jsonncheck = new JSONObject(res);
             boolean showDummy = jsonncheck.getBoolean("showDummy");

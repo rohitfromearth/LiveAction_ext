@@ -224,6 +224,7 @@ public class Login_verifcation extends AppCompatActivity {
                             @Override
                             public void onVerificationFailed(@NonNull FirebaseException e) {
                                 // Verification failed
+                                Log.e("nonchalant", e.getMessage());
                                 Toast.makeText(Login_verifcation.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
@@ -558,8 +559,8 @@ public class Login_verifcation extends AppCompatActivity {
             String uiddd = servic.formdatasend(requestBody, "/user/login");
             JSONObject jsonResponse = new JSONObject(uiddd);
             JSONObject data = jsonResponse.getJSONObject("data");
-//            boolean userExists = data.getBoolean("user_exists");
-            boolean userExists=false;
+            boolean userExists = data.getBoolean("user_exists");
+//            boolean userExists=false;
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
