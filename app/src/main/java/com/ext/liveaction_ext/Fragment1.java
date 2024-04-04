@@ -70,19 +70,15 @@ public class Fragment1 extends Fragment {
 
         if (use != null) {
             use.getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                firebaseToke = task.getResult().getToken();
-                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                myEdit.putString("firebaseToken", firebaseToke);
-                                myEdit.apply();
-                                Data_Show(firebaseToke);
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            firebaseToke = task.getResult().getToken();
+                            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                            myEdit.putString("firebaseToken", firebaseToke);
+                            myEdit.apply();
+                            Data_Show(firebaseToke);
                         }
-
                     });
         }
         return view;

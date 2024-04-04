@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList pack = pc.pack_rule(endpot);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
-        myEdit.putString("endpt", endpot);
+//        myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
         Set<String> set = new HashSet<String>();
         set.addAll(pack);

@@ -50,8 +50,8 @@ public class Splashsscreen extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-        String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
-//        String endpot = "https://sondersort.online";
+//        String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
+        String endpot = "https://sondersort.online";
 
 
         String dir = getObbDir().getPath();
@@ -67,12 +67,12 @@ public class Splashsscreen extends AppCompatActivity {
 
 
         if (uid == 0) {
-            Log.e("thandihawa","kabhiu na kabhi ");
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         } else {
-            Log.e("thandihawa","kabhiu na kabhi tohj");
+
 
             Intent intent = new Intent(this, Chart_page.class);
         startActivity(intent);

@@ -50,6 +50,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class Chart_page extends AppCompatActivity {
@@ -93,13 +94,13 @@ public class Chart_page extends AppCompatActivity {
         String endpot = "https://sondersort.online";
 
         String dir = getObbDir().getPath();
-
-        if (uid == 0) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        } else {
+//
+//        if (uid == 0) {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//            return;
+//        } else {
 
             setContentView(R.layout.drawer_layout);
 
@@ -157,7 +158,7 @@ public class Chart_page extends AppCompatActivity {
                 });
 
             }
-        }
+//        }
 
         ArrayList pack = pc.pack_rule(endpot);
 
@@ -468,7 +469,7 @@ public class Chart_page extends AppCompatActivity {
         if (itemId == R.id.chart_page) {
 
             startActivity(new Intent(this, Chart_page.class));
-            getSupportActionBar().setTitle("Dashboard");
+            Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
         } else if (itemId == R.id.manage_page) {
 
@@ -518,9 +519,10 @@ public class Chart_page extends AppCompatActivity {
 
         } else if (itemId == R.id.Logout) {
 
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
-            myEdit.putString("firebaseToken", "");
+//            myEdit.putString("firebaseToken", "");
+            myEdit.clear();
             myEdit.apply();
             startActivity(new Intent(this, Login_verifcation.class));
             getSupportActionBar().setTitle("Verification");
