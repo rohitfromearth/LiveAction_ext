@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "910123143133",
+    "project_id": "sonder-sort",
+    "storage_bucket": "sonder-sort.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910123143133:android:c97154584807d7f8353034",
+        "android_client_info": {
+          "package_name": "com.ext.liveaction_ext"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeA15TFxiev_DFDqmZsAnMD7GmLzcnl_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
