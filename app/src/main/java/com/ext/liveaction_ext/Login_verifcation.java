@@ -565,8 +565,8 @@ public class Login_verifcation extends AppCompatActivity {
             String uiddd = servic.formdatasend(requestBody, "/user/login");
             JSONObject jsonResponse = new JSONObject(uiddd);
             JSONObject data = jsonResponse.getJSONObject("data");
-         //   boolean userExists = data.getBoolean("user_exists");
-            boolean userExists = false; // for dev
+           boolean userExists = data.getBoolean("user_exists");
+            //boolean userExists = false; // for dev
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
@@ -579,6 +579,7 @@ public class Login_verifcation extends AppCompatActivity {
                 myEdit.putString("username", userName);
                 myEdit.apply();
                 return true;
+
             } else {
                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();

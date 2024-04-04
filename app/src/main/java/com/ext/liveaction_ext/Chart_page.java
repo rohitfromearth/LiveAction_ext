@@ -70,11 +70,12 @@ public class Chart_page extends AppCompatActivity {
     FragmentManager fragmentManager;
     Context context;
     Conn_service conn = new Conn_service();
-    ArrayList<String> dayList = new ArrayList<String>();
+    //ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
     ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
+    ArrayList dayList;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,9 +165,9 @@ public class Chart_page extends AppCompatActivity {
         String fToken = sh.getString("firebaseToken", "");//april
 
         Log.d("fToken", "fToken : ====" + fToken);
-        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, fToken);
+        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
-
+        Log.d("result", "result: "+res);
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
@@ -198,10 +199,7 @@ public class Chart_page extends AppCompatActivity {
         myEdit.putStringSet("YEAR_LIST", weekset);
 
         myEdit.putString("key_usage_data", res);
-
         myEdit.apply();
-
-
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -312,9 +310,7 @@ public class Chart_page extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        for (String day : dayList) {
-            //Log.d("DayList", "Day: " + day);
-        }
+
 
         return dayList;
 
