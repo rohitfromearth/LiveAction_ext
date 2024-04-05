@@ -52,7 +52,6 @@ public class Fragment2 extends Fragment {
 
     SharedPreferences sh;
 
-    ProgressBar loadingProgressBar;
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +61,7 @@ public class Fragment2 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_forweek);
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
-        loadingProgressBar = view.findViewById(R.id.loading);
+
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
