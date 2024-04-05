@@ -712,16 +712,20 @@
 
             <TableRow>
 
-                <TextView
+                <EditText
+                    android:id="@+id/ott_other_edt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:background="@drawable/category_cell"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Others(Specify)"
+                    android:text=""
+                    android:hint="Others"
+                    android:textStyle="italic"
+
                     android:textColor="@android:color/black"
-                    android:textStyle="bold"
+
                     />
 
                 <Switch
@@ -1000,16 +1004,21 @@
 
             <TableRow>
 
-                <TextView
+                <EditText
+                    android:id="@+id/m_other_edt"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:background="@drawable/category_cell"
                     android:gravity="center"
                     android:padding="5dp"
-                    android:text="Others"
+android:text=""
+                    android:hint="Others"
+                    android:textStyle="italic"
+
                     android:textColor="@android:color/black"
-                    android:textStyle="bold" />
+
+                    />
 
                 <Switch
                     android:id="@+id/others_m_switch1"

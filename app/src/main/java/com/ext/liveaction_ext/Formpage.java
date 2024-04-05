@@ -82,7 +82,7 @@ public class Formpage extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
 
-    EditText Et_name, Et_email;
+    EditText Et_name, Et_email,ott_other,music_other;
 
     private String selectedDistrict, selectedState;                 //vars to hold the values of selected State and District
     //declaring TextView to show the errors
@@ -126,7 +126,8 @@ public class Formpage extends AppCompatActivity {
         Ocupation = findViewById(R.id.ocupationSpinner);
         productcrd = findViewById(R.id.productcard);
         Durable_spinn = findViewById(R.id.Durables_spinner);
-
+ott_other=findViewById(R.id.ott_other_edt);
+        music_other=findViewById(R.id.m_other_edt);
         radioGroup = findViewById(R.id.radiogrpp);
 
         sw1 = findViewById(R.id.netflix_switch1);
@@ -821,6 +822,8 @@ public class Formpage extends AppCompatActivity {
         String Education_ = (String) Education.getSelectedItem();
         String Ocupation_ = (String) Ocupation.getSelectedItem();
 
+       Otherapp = ott_other.getText().toString().trim();
+    Otherapp_music =music_other.getText().toString().trim();
         boolean tr = isValidName(Name);
         boolean tr2 = isValidEmail(Email);
         boolean tr3 = isvalidcheck(selected_dur_Options);
@@ -945,7 +948,7 @@ public class Formpage extends AppCompatActivity {
         arry_ott.put(app5);
 
         JSONObject app6 = new JSONObject();
-        app6.put("app_name", "Others(Specify)");
+        app6.put("app_name",Otherapp );
         app6.put("installed", sw11.isChecked());
         app6.put("watched_in_last_year", sw12.isChecked());
         arry_ott.put(app6);
@@ -994,7 +997,7 @@ public class Formpage extends AppCompatActivity {
         arry_music.put(app5);
 
         JSONObject app6 = new JSONObject();
-        app6.put("app_name", "Others");
+        app6.put("app_name", Otherapp_music);
         app6.put("installed", sw_11.isChecked());
         app6.put("watched_in_last_year", sw_12.isChecked());
         arry_music.put(app6);
