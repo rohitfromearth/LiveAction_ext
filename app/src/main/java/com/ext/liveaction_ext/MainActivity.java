@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         privacyCheckbox = findViewById(R.id.checkBox2); // Replace R.id.checkbox_privacy with your actual checkbox ID
         messageTextView = findViewById(R.id.validationmasg); // Replace R.id.message_textview with your actual TextView ID
 
-        String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms"; //"https://sondersort.online";
+        String endpot = "https://sondersort.online"; //"https://g503wpzp-8080.inc1.devtunnels.ms";
 
         String dir = getObbDir().getPath();
         ArrayList pack = pc.pack_rule(endpot);

@@ -52,7 +52,7 @@ public class Fragment1 extends Fragment {
     String categoryName;
     Context context;
     SharedPreferences sh;
-    ProgressBar loadingProgressBar;
+
 
 
     @Override
@@ -65,7 +65,7 @@ public class Fragment1 extends Fragment {
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
         mAuth = FirebaseAuth.getInstance();
-        loadingProgressBar = view.findViewById(R.id.loading);
+
 
         FirebaseUser use = mAuth.getCurrentUser();
 
@@ -91,7 +91,7 @@ public class Fragment1 extends Fragment {
 
     private void Data_Show(String firebaseToken) {
         try {
-            loadingProgressBar.setVisibility(View.VISIBLE);
+
              sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
             uid = sh.getInt("UID", uid_z);
 
@@ -117,7 +117,7 @@ public class Fragment1 extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
                 recyclerView.setAdapter(cardAdapter);
             }
-            loadingProgressBar.setVisibility(View.GONE);
+
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

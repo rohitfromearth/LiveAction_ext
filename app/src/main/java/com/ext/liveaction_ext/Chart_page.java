@@ -89,8 +89,8 @@ public class Chart_page extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-
-        String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";//"https://sondersort.online";
+Log.d("chartpage","chart page: "+username);
+        String endpot = "https://sondersort.online"; //"https://g503wpzp-8080.inc1.devtunnels.ms";
 
         String dir = getObbDir().getPath();
 
