@@ -280,9 +280,7 @@ public class Chart_page extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        for (String week : weekList) {
 
-        }
 
         return weekList;
 
