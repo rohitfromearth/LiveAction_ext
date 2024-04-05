@@ -2,7 +2,7 @@ package com.ext.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import static com.ext.liveaction_ext.R.id.loadingFragmentThree;
+
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
@@ -31,8 +31,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Fragment4 extends Fragment {
     PieChart pieChart;
@@ -44,7 +46,8 @@ public class Fragment4 extends Fragment {
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
     private FirebaseAuth mAuth;
-    private ProgressBar loadingProgress;
+    SharedPreferences sh;
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class Fragment4 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_year);
         pieChart = view.findViewById(R.id.piechart_for_year);
         recyclerView = view.findViewById(R.id.recyclerView_for_year);
-        loadingProgress = view.findViewById(R.id.loadingFragmentFour);
+
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
@@ -70,7 +73,7 @@ public class Fragment4 extends Fragment {
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
-                                Data_show(firebaseToke);
+                                Data_show();
                             }
                         }
 
@@ -79,8 +82,104 @@ public class Fragment4 extends Fragment {
         return view;
     }
 
-    private void Data_show(String firebaseToken) {
-        loadingProgress.setVisibility(View.VISIBLE);
+
+
+    private void Data_show() {
+
+
+        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        uid = sh.getInt("UID", uid_z);
+
+        Set<String> yearset = sh.getStringSet("YEAR_LIST", new HashSet<>());
+        for (String jsonString : yearset) {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+
+                Random random = new Random();
+                int red = random.nextInt(256);
+                int green = random.nextInt(256);
+                int blue = random.nextInt(256);
+
+                // Format the RGB values into a hexadecimal color code
+                String colorCode = String.format("#%02x%02x%02x", red, green, blue);
+                String categoryName = jsonObject.optString("category");
+                if (!categoryName.equals("Total")) {
+
+                    double pievalue = jsonObject.getDouble("usage_percent_year");
+                    double minvalue = jsonObject.getDouble("usage_in_mins_year");
+
+                    float fpi_Value = (float) pievalue;
+
+                    pieChart.addPieSlice(
+                            new PieModel(
+                                    categoryName,
+                                    fpi_Value,
+                                    Color.parseColor(colorCode)));
+
+                    addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        pieChart.startAnimation();
+        // Create the list of card items
+        List<CardItem> cardItems = createCardItemsss(); //createCardItems(res);
+        // Set up the RecyclerView
+        cardAdapter = new CardAdapter(cardItems, requireContext());
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        recyclerView.setAdapter(cardAdapter);
+
+    }
+    private List<CardItem> createCardItemsss() {
+        List<CardItem> cardItems = new ArrayList<>();
+        Set<String> yearset = sh.getStringSet("YEAR_LIST", new HashSet<>());
+        for (String jsonString : yearset) {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
+
+                String categoryName = jsonObject.optString("category");
+                if (!categoryName.equalsIgnoreCase("Total")) {
+                    int logoResId = getLogoResIdForCategory(categoryName);
+                    int tsthisday = jsonObject.optInt("usage_in_mins");
+                    int average = jsonObject.optInt("last_year_usage_in_mins");
+                    int variance = jsonObject.optInt("variance_year");
+
+                    Log.d("yearset", "fragment4 : " + categoryName);
+
+                    String tsText = " TS this year";
+                    String averageText = " Average\n(last year) ";
+                    String varianceText = " Variance";
+
+                    String tsthisdays = " " + tsthisday;
+                    String averages = " " + average;
+                    String variences = String.valueOf(variance);
+
+                    cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return cardItems;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*  private void Data_show(String firebaseToken) {
+
         SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
@@ -115,7 +214,6 @@ public class Fragment4 extends Fragment {
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
             }
-            loadingProgress.setVisibility(View.GONE);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e("Exception", String.valueOf(e));
@@ -164,7 +262,7 @@ public class Fragment4 extends Fragment {
         }
 
         return cardItems;
-    }
+    }*/
 
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
 

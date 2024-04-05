@@ -70,12 +70,11 @@ public class Chart_page extends AppCompatActivity {
     FragmentManager fragmentManager;
     Context context;
     Conn_service conn = new Conn_service();
-    //ArrayList<String> dayList = new ArrayList<String>();
+    ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
     ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
-    ArrayList dayList;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +90,7 @@ public class Chart_page extends AppCompatActivity {
         mobile = sh.getString("mobile_number", "");
 
 
-        String endpot = "https://sondersort.online";
+        String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";//"https://sondersort.online";
 
         String dir = getObbDir().getPath();
 
@@ -195,8 +194,8 @@ public class Chart_page extends AppCompatActivity {
         myEdit.putStringSet("APP_LIST", set);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
-        myEdit.putStringSet("MONTH_LIST", weekset);
-        myEdit.putStringSet("YEAR_LIST", weekset);
+        myEdit.putStringSet("MONTH_LIST", monthset);
+        myEdit.putStringSet("YEAR_LIST", yearset);
 
         myEdit.putString("key_usage_data", res);
         myEdit.apply();

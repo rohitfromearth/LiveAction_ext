@@ -1,9 +1,6 @@
 package com.ext.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
-
-import static com.ext.liveaction_ext.R.id.loadingFragmentThree;
-
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -46,7 +43,7 @@ public class Fragment3 extends Fragment {
     private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
-    private ProgressBar loadingProgress;
+
     SharedPreferences sh;
 
     @SuppressLint("MissingInflatedId")
@@ -58,7 +55,7 @@ public class Fragment3 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_month);
         pieChart = view.findViewById(R.id.piechart_for_month);
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
-        loadingProgress = view.findViewById(loadingFragmentThree);
+
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
@@ -74,7 +71,7 @@ public class Fragment3 extends Fragment {
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                 myEdit.putString("firebaseToken", firebaseToke);
                                 myEdit.apply();
-                                Data_Show(firebaseToke);
+                                Data_show();
                             }
                         }
                     });
@@ -83,27 +80,17 @@ public class Fragment3 extends Fragment {
         return view;
     }
 
-    private void Data_Show(String firebaseToken) {
-        loadingProgress.setVisibility(View.VISIBLE);
+    private void Data_show( ) {
+
+
         sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
-        firebaseToken = sh.getString("firebaseToken", "");
-
         uid = sh.getInt("UID", uid_z);
-        Set<String> weekSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
 
-        for (String day : weekSet) {
-            Log.d("weekset", "weekset: " + day);
-        }
-        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, firebaseToken);
+        Set<String> monthset = sh.getStringSet("MONTH_LIST", new HashSet<>());
+        for (String jsonString : monthset) {
+            try {
+                JSONObject jsonObject = new JSONObject(jsonString);
 
-        Log.d("res month","--"+res);
-        try {
-            JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("day");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
                 Random random = new Random();
                 int red = random.nextInt(256);
                 int green = random.nextInt(256);
@@ -111,13 +98,12 @@ public class Fragment3 extends Fragment {
 
                 // Format the RGB values into a hexadecimal color code
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
-
-                String categoryName = item.getString("cat" +
-                        "egory");
+                String categoryName = jsonObject.optString("category");
                 if (!categoryName.equals("Total")) {
 
-                    double pievalue = item.getDouble("usage_percent_month");
-                    double minvalue = item.getDouble("usage_in_mins_month");
+                    double pievalue = jsonObject.getDouble("usage_percent_month");
+                    double minvalue = jsonObject.getDouble("usage_in_mins_month");
+
                     float fpi_Value = (float) pievalue;
 
                     pieChart.addPieSlice(
@@ -128,31 +114,27 @@ public class Fragment3 extends Fragment {
 
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            List<CardItem> cardItems = createCardItemsss();
-            cardAdapter = new CardAdapter(cardItems, requireContext());
-            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-            recyclerView.setAdapter(cardAdapter);
-
-            loadingProgress.setVisibility(View.GONE);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("Exception", String.valueOf(e));
         }
 
-        // To animate the pie chart
         pieChart.startAnimation();
-
-
+        // Create the list of card items
+        List<CardItem> cardItems = createCardItemsss(); //createCardItems(res);
+        // Set up the RecyclerView
+        cardAdapter = new CardAdapter(cardItems, requireContext());
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        recyclerView.setAdapter(cardAdapter);
 
     }
     private List<CardItem> createCardItemsss() {
         List<CardItem> cardItems = new ArrayList<>();
-        Set<String> daySet = sh.getStringSet("MONTH_LIST", new HashSet<>());
-        for (String jsonString : daySet) {
+        Set<String> monthset = sh.getStringSet("MONTH_LIST", new HashSet<>());
+        for (String jsonString : monthset) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
-                // String categoryName = item.getString("category");
+
                 String categoryName = jsonObject.optString("category");
 
                 if (!categoryName.equalsIgnoreCase("Total")) {
@@ -161,7 +143,7 @@ public class Fragment3 extends Fragment {
                     int average = jsonObject.optInt("last_month_in_mins");
                     int variance = jsonObject.optInt("variance_month");
 
-                    Log.d("catee", "cccccName: " + categoryName);
+                    Log.d("fragment3", "fragment3: " + categoryName);
 
                     String tsText = " TS this month";
                     String averageText = " Average\n(last month)";
