@@ -564,6 +564,7 @@ public class Login_verifcation extends AppCompatActivity {
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
+                Log.d("chartpage","send data login page: "+userName);
                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("firebaseToken", firbastkn);
@@ -711,6 +712,13 @@ public class Login_verifcation extends AppCompatActivity {
                                                         String firebaseToken = task.getResult().getToken();
                                                         Log.e("firebaseToken","==mob=="+edtPhone.getText().toString()+"Ftoken :"+firebaseToken+"==User=="+currentUser);
                                                         boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
+
+
+                                                        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+
+                                                        String username = sh.getString("username", "");
+                                                        Log.d("login","send from login to chart : "+username);
+
                                                         boolean hasPermission = hasUsageAccessPermission();
                                                         Log.e("pageID","pageID:"+pageID+"hasPermission"+hasPermission);
                                                         if (hasPermission) {
