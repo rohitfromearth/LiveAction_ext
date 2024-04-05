@@ -133,7 +133,8 @@ Set your targets for a better life and get rewarded."
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="50dp"
                         android:orientation="horizontal"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+                    </androidx.viewpager.widget.ViewPager>
 
                     <LinearLayout
                         android:id="@+id/bottom_layout"

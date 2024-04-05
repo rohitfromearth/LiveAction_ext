@@ -2,6 +2,7 @@ package com.ext.liveaction_ext;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -54,7 +55,7 @@ public class Fragment1 extends Fragment {
     SharedPreferences sh;
 
 
-
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -64,6 +65,7 @@ public class Fragment1 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
+
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -134,12 +136,16 @@ public class Fragment1 extends Fragment {
 
                 Log.d("catee", "cName: " + categoryName);
                 String tsText = " TS this day";
-                String averageText = " Average\n(last 7 days)";
+                String averageText = " Average";
                 String varianceText = " Variance";
+
+
                 String tsthisdays = " "+ tsthisday;
                 String averages = " " + average;
                 String variences = String.valueOf(variance);
-                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsthisdays, averages, variences));
+
+                //String averageDefaultText = "kjhjkhjj";
+                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText ,varianceText,tsthisdays, averages, variences));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -208,6 +214,7 @@ public class Fragment1 extends Fragment {
                 String tsthisdays = " "+ tsthisday;
                 String averages = " " + average;
                 String variences = String.valueOf(variance);
+
                 cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsthisdays, averages, variences));
             } catch (JSONException e) {
                 e.printStackTrace();
