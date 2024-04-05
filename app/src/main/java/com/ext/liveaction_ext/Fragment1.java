@@ -6,33 +6,29 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -132,7 +128,7 @@ public class Fragment1 extends Fragment {
 
 
 
-                Log.d("catee", "cName: " + categoryName);
+
                 String tsText = " TS this day";
                 String averageText = " Average\n(last 7 days)";
                 String varianceText = " Variance";
@@ -201,7 +197,7 @@ public class Fragment1 extends Fragment {
                 int average = jsonObject.optInt("last_7_day_usage_in_mins");
                 //int variance = item.getInt("variance_day");
                 int variance = jsonObject.getInt("variance_day");
-                Log.d("catee", "cName: " + categoryName);
+
                 String tsText = "TS this day";
                 String averageText = "Average\n(last 7 days)";
                 String varianceText = "Variance";
@@ -214,36 +210,7 @@ public class Fragment1 extends Fragment {
             }
         }
 
-      /*  try {
-            JSONObject jsonObject = new JSONObject(res);
 
-            JSONArray jsonArray = jsonObject.getJSONArray("day");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-
-                String categoryName = item.getString("category");
-
-                Log.d("using res",categoryName);
-                int logoResId = getLogoResIdForCategory(categoryName);
-                int tsthisday = item.getInt("usage_in_mins_day");
-                int average = item.getInt("last_7_day_usage_in_mins");
-                int variance = item.getInt("variance_day");
-
-                String tsText = " TS this day";
-                String averageText = " Average\n(last 7 days)";
-                String varianceText = " Variance";
-
-                String tsthisdays = " "+ tsthisday;
-                String averages = " " + average;
-                String variences = String.valueOf(variance);
-
-                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsthisdays, averages, variences));
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("Execption", String.valueOf(e));
-        }*/
 
         return cardItems;
     }
@@ -262,7 +229,7 @@ public class Fragment1 extends Fragment {
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
                 String categoryName = item.getString("category");
-                Log.d("usageData", "fragment1 categoryName: " + categoryName);
+
                 if (!categoryName.equals("Total")) {
 
                     double pievalue = item.getDouble("usage_percent_day");
@@ -283,7 +250,7 @@ public class Fragment1 extends Fragment {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e("Exception", String.valueOf(e));
+
         }
 
         // To animate the pie chart

@@ -149,7 +149,7 @@ public class Fragment2 extends Fragment {
                     int average = jsonObject.optInt("last_4_week_usage_in_mins");
                     int variance = jsonObject.optInt("variance_week");
 
-                    Log.d("catee", "cccccName: " + categoryName);
+
 
                     String tsText = "TS this week";
                     String averageText = "Average\n(last 4 weeks)";

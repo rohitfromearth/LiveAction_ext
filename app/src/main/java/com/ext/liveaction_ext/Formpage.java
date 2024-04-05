@@ -1,20 +1,14 @@
 package com.ext.liveaction_ext;
 
-import static android.content.Context.MODE_PRIVATE;
-import static java.security.AccessController.getContext;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +18,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -78,7 +71,6 @@ public class Formpage extends AppCompatActivity {
 
 
     private CheckBox[] checkboxe_fdbk;
-    String message = " ";
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
 
@@ -211,150 +203,71 @@ ott_other=findViewById(R.id.ott_other_edt);
 
         for (int i = 0; i < checkboxe_fdbk.length; i++) {
             final int index = i;
-            checkboxe_fdbk[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String checkboxText = checkboxe_fdbk[index].getText().toString();
-                    if (isChecked) {
-                        if (!selectedOFeedback.contains(checkboxText)) {
+            checkboxe_fdbk[i].setOnCheckedChangeListener((buttonView, isChecked) -> {
+                String checkboxText = checkboxe_fdbk[index].getText().toString();
+                if (isChecked) {
+                    if (!selectedOFeedback.contains(checkboxText)) {
 
-                            selectedOFeedback.add(checkboxText);
-                        }
-                    } else {
-                        selectedOFeedback.remove(checkboxText);
+                        selectedOFeedback.add(checkboxText);
                     }
+                } else {
+                    selectedOFeedback.remove(checkboxText);
                 }
             });
         }
         nextActivity_btn = findViewById(R.id.piechart_btn);
 
-        nextActivity_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
+        nextActivity_btn.setOnClickListener(view -> {
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
 
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                RadioButton radioButton = findViewById(selectedId);
-                if (selectedId != -1) {
+            int selectedId = radioGroup.getCheckedRadioButtonId();
+            RadioButton radioButton = findViewById(selectedId);
+            if (selectedId != -1) {
 
-                    selectedValue = radioButton.getText().toString();
+                selectedValue = radioButton.getText().toString();
 
-                } else {
-                    selectedValue = "not_selected";
-                }
-
-                try {
-                    boolean valid = validat();
-                    if (valid) {
-                        boolean storesuccess = StoreData();
-                        Log.d("valueott", String.valueOf(sw7.isChecked()));
-                        Log.d("hiiii", String.valueOf(storesuccess));
-                       if (storesuccess) {
-                            startActivity(new Intent(Formpage.this, Chart_page.class));
-                        } else {
-                            Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-
-                String selectedOptionsString = String.join(", ", selected_dur_Options);
-                //startActivity(new Intent(Formpage.this,Manage_screen.class));
+            } else {
+                selectedValue = "not_selected";
             }
+
+            try {
+                boolean valid = validat();
+                if (valid) {
+                    boolean storesuccess = StoreData();
+
+                   if (storesuccess) {
+                        startActivity(new Intent(Formpage.this, Chart_page.class));
+                    } else {
+                        Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+
+
         });
 
         product_spinner = findViewById(R.id.onlineshoppingSpinner);
         productcrd.setVisibility(View.GONE);
-        onlyn_used_swtch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Perform actions based on the switch state
-                if (isChecked) {
-                    // Switch is ON
-                    chek = isChecked;
-                    productcrd.setVisibility(View.VISIBLE);
+        onlyn_used_swtch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Perform actions based on the switch state
+            if (isChecked) {
+                // Switch is ON
+                chek = isChecked;
+                productcrd.setVisibility(View.VISIBLE);
 
-                    // Perform desired actions when the switch is toggled ON
-                } else {
-                    productcrd.setVisibility(View.GONE);
-                    // Switch is OFF
-                    // Perform desired actions when the switch is toggled OFF
-                }
+
+            } else {
+                productcrd.setVisibility(View.GONE);
+
             }
         });
 
 
-        ////////durables code
-      /*  ArrayAdapter<String> durabllist = new ArrayAdapter<String>(this, R.layout.item_dropdown_for_durables) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return createItemView(position, convertView, parent);
-            }
 
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                return createItemView(position, convertView, parent);
-            }
-
-            private View createItemView(int position, View convertView, ViewGroup parent) {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown_for_durables, parent, false);
-                CheckBox checkbox = view.findViewById(R.id.checkboxq);
-                TextView textView = view.findViewById(R.id.textviewq);
-
-                String item = getItem(position);
-                textView.setText(item);
-                checkbox.setChecked(selected_dur_Options.contains(item));
-
-                checkbox.setOnClickListener(v -> {
-                    if (checkbox.isChecked()) {
-                        selected_dur_Options.add(item);
-                    } else {
-                        selected_dur_Options.remove(item);
-                    }
-                });
-
-                return view;
-            }
-        };
-
-        Durable_spinn.setAdapter(durabllist);
-
-        List<String> items = new ArrayList<>();
-
-        items.add("Two-Wheeler");
-        items.add("4-wheeler (Car/Jeep/Van/Tractor)");
-        items.add("Colour TV");
-        items.add("Refrigerator");
-        items.add("Washing Machine");
-        items.add("PC and/or Laptop");
-        items.add("Air Conditioner");
-        items.add("Agricultural Land");
-        durabllist.addAll(items);
-         Durable_spinn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
-
-
-                if (selected_dur_Options.contains(selectedItem)) {
-                    selected_dur_Options.remove(selectedItem);
-                } else {
-                    selected_dur_Options.add(selectedItem);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
-        });*/
 
         ArrayAdapter<String> durabllist = new ArrayAdapter<String>(this, R.layout.item_dropdown_for_durables) {
             @Override
@@ -433,26 +346,17 @@ ott_other=findViewById(R.id.ott_other_edt);
 
 
         dateEditText = findViewById(R.id.dateEditText);
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        dateSetListener = (view, year, month, dayOfMonth) -> {
 
-                String selectedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth);
+            String selectedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth);
 
-                userSelectedDay = String.valueOf(dayOfMonth);
-                userSelectedMonth = String.valueOf(month);
-                userSelectedYear = String.valueOf(year);
-                Log.e("selectedDate",userSelectedDay+userSelectedMonth+userSelectedYear);
-                Log.e("selectedDate", String.valueOf(dayOfMonth)+" day and "+year+" year and "+month+" month");
-                dateEditText.setText(selectedDate);
-            }
+            userSelectedDay = String.valueOf(dayOfMonth);
+            userSelectedMonth = String.valueOf(month);
+            userSelectedYear = String.valueOf(year);
+
+            dateEditText.setText(selectedDate);
         };
-        dateEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
+        dateEditText.setOnClickListener(v -> showDatePickerDialog());
 
         //////cust ui change
         ArrayAdapter<String> productList = new ArrayAdapter<String>(this, R.layout.item_dropdown) {
@@ -898,11 +802,8 @@ ott_other=findViewById(R.id.ott_other_edt);
             builder.setMessage(validationmsg);
 
             // Set a positive button and its click listener
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Handle the click event (if needed)
-                }
+            builder.setPositiveButton("OK", (dialog, which) -> {
+                // Handle the click event (if needed)
             });
 
             // Create and show the alert dialog
@@ -973,7 +874,7 @@ ott_other=findViewById(R.id.ott_other_edt);
         arry_music.put(app1);
 
         JSONObject app2 = new JSONObject();
-        app2.put("app_name", "Gana");
+        app2.put("app_name", "Ganna");
         app2.put("installed", sw_3.isChecked());
         app2.put("watched_in_last_year", sw_4.isChecked());
         arry_music.put(app2);
@@ -1034,9 +935,9 @@ ott_other=findViewById(R.id.ott_other_edt);
         String prdo = String.join(", ", selectedProducts);
 
         JSONArray ottdta = OttData();
-        Log.d("OttData", String.valueOf(ottdta));
+
         JSONArray musicdata = MusicData();
-        Log.d("musicdata", String.valueOf(musicdata));
+
 
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("mobile_no", mobile);
@@ -1045,7 +946,7 @@ ott_other=findViewById(R.id.ott_other_edt);
 
         jsonBody.put("birthMonth", userSelectedMonth);
         jsonBody.put("birthYear", userSelectedYear);
-        Log.d("calendardate", String.valueOf(dayOfMonth)+month+year);
+
         if (enabled) {
             String cityTextvalue = city_text.getText().toString();
             String stateTextvalue = state_text.getText().toString();
@@ -1065,7 +966,7 @@ ott_other=findViewById(R.id.ott_other_edt);
 
         jsonBody.put("durablesUsed", selectedOptionsString);
         jsonBody.put("shoppedOnline", chek);
-        Log.d("prdo",prdo+"prdo");
+
         jsonBody.put("productsPurchasedOnline", prdo);
         jsonBody.put("lastOnlineWatch", selectedValue);
         jsonBody.put("ottWatchLastYear", ottdta);
@@ -1098,35 +999,10 @@ ott_other=findViewById(R.id.ott_other_edt);
 
     }
 
-   /* private static class DropdownItem {
-        private String text;
-        private boolean checked;
 
-        public DropdownItem(String text, boolean checked) {
-            this.text = text;
-            this.checked = checked;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public boolean isChecked() {
-            return checked;
-        }
-
-        public void setChecked(boolean checked) {
-            this.checked = checked;
-        }
-
-        @Override
-        public String toString() {
-            return text;
-        }
-    }*/
 
     private void showDatePickerDialog() {
-        Log.d("in calendar","calendar");
+
         // Get the current date
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -1225,20 +1101,6 @@ ott_other=findViewById(R.id.ott_other_edt);
 
         // Name is valid
         return true;
-    }
-
-    public static boolean isCheckItem(ArrayList<String> selectItem) {
-
-        if (!selectItem.isEmpty()) {
-            // The selectedOptions ArrayList is not empty
-
-            return true;
-
-        } else {
-            // The selectedOptions ArrayList is empty
-            // Your code here
-            return false;
-        }
     }
 
     public static boolean isValidocupation(String ocupton) {

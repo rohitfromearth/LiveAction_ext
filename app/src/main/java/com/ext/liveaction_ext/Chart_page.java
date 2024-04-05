@@ -92,17 +92,11 @@ public class Chart_page extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-Log.d("chartpage","chart page: "+username);
-        String endpot = "https://sondersort.online"; //"https://g503wpzp-8080.inc1.devtunnels.ms";
+
+        String endpot = "https://sondersort.online";
 
         String dir = getObbDir().getPath();
-//
-//        if (uid == 0) {
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//            return;
-//        } else {
+
 
             setContentView(R.layout.drawer_layout);
         loader =findViewById(R.id.loading);
@@ -119,57 +113,37 @@ Log.d("chartpage","chart page: "+username);
                 accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
                 close_dialog = dd.findViewById(R.id.close_permission1);
 
-                close_dialog.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.animate().alpha(1f).setDuration(200);
-                            }
-                        }).start();
-                        dd.dismiss();
-                    }
+                close_dialog.setOnClickListener(view -> {
+                    view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                    dd.dismiss();
                 });
-                usage_stat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.animate().alpha(1f).setDuration(200);
-                            }
-                        }).start();
-                        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+                usage_stat.setOnClickListener(view -> {
+                    view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                    startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
-                        // Disable button2
-                        accessibility_permission.setEnabled(usage_stat.isEnabled());  // Enable button2
-                    }
+                    // Disable button2
+                    accessibility_permission.setEnabled(usage_stat.isEnabled());  // Enable button2
                 });
-                accessibility_permission.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.animate().alpha(1f).setDuration(200);
-                            }
-                        }).start();
-                        startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-                    }
+                accessibility_permission.setOnClickListener(view -> {
+                    view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.animate().alpha(1f).setDuration(200);
+                        }
+                    }).start();
+                    startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
                 });
 
             }
-//        }
         loader.setVisibility(View.VISIBLE);
         ArrayList pack = pc.pack_rule(endpot);
 
         String fToken = sh.getString("firebaseToken", "");//april
 
-        Log.d("fToken", "fToken : ====" + fToken);
+
         String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
-        Log.d("result", "result: "+res);
+
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
@@ -242,53 +216,29 @@ Log.d("chartpage","chart page: "+username);
                 getSupportActionBar().setTitle("Manage");
             }
         });
-        achieve_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
+        achieve_btn.setOnClickListener(view -> {
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
 
-                Fragment go_next = new Achieve();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("Achievements");
-            }
+            Fragment go_next = new Achieve();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("Achievements");
         });
-        faq_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        faq_btn.setOnClickListener(view -> {
 
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                //startActivity(new Intent(Chart_page.this, FaQ.class));
-                Fragment go_next = new FaQ();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("FAQ");
-            }
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+            //startActivity(new Intent(Chart_page.this, FaQ.class));
+            Fragment go_next = new FaQ();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("FAQ");
         });
-        connect_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                Fragment go_next = new ContactUs();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("Connect Us");
-            }
+        connect_btn.setOnClickListener(view -> {
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+            Fragment go_next = new ContactUs();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("Connect Us");
         });
         tvP_usernme = findViewById(R.id.usrname);
 
@@ -331,7 +281,7 @@ Log.d("chartpage","chart page: "+username);
             throw new RuntimeException(e);
         }
         for (String week : weekList) {
-           // Log.d("week list", "week: " + week);
+
         }
 
         return weekList;
@@ -380,12 +330,9 @@ Log.d("chartpage","chart page: "+username);
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
+                menuItem -> {
+                    selectDrawerItem(menuItem);
+                    return true;
                 });
     }
 
@@ -396,73 +343,7 @@ Log.d("chartpage","chart page: "+username);
 
         int itemId = menuItem.getItemId();
 
-        /*switch (itemId) {
 
-            case R.id.chart_page:
-
-                startActivity(new Intent(this, Chart_page.class));
-                getSupportActionBar().setTitle("Dashboard");
-                break;
-            case R.id.manage_page:
-
-                go_next = new Manage_screen();
-                getSupportActionBar().setTitle("Manage");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-
-                break;
-            case R.id.achieve_page:
-
-                go_next = new Achieve();
-                getSupportActionBar().setTitle("Achievements");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.redeem_page:
-
-                go_next = new Reedeem();
-                getSupportActionBar().setTitle("Redeem");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.contact_us:
-
-                go_next = new ContactUs();
-                getSupportActionBar().setTitle("Connect Us");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.faq:
-
-                go_next = new FaQ();
-                getSupportActionBar().setTitle("FAQ");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.perm_new:
-
-                Intent intent = new Intent(this, Chart_page.class);
-                intent.putExtra("show_permission_dialog", true);
-                startActivity(intent);
-                break;
-            case R.id.Logout:
-
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("firebaseToken", "");
-                myEdit.apply();
-                startActivity(new Intent(this, Login_verifcation.class));
-                getSupportActionBar().setTitle("Verification");
-                break;
-            default :
-                Log.e("Invalid", "Selection");
-
-        }*/
         if (itemId == R.id.chart_page) {
 
             startActivity(new Intent(this, Chart_page.class));
@@ -518,7 +399,7 @@ Log.d("chartpage","chart page: "+username);
 
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
-//            myEdit.putString("firebaseToken", "");
+
             myEdit.clear();
             myEdit.apply();
             startActivity(new Intent(this, Login_verifcation.class));
