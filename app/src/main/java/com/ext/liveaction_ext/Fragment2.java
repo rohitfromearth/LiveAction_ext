@@ -151,14 +151,14 @@ public class Fragment2 extends Fragment {
 
                     Log.d("catee", "cccccName: " + categoryName);
 
-                    String tsText = " TS this week";
-                    String averageText = " Average\n(last 4 weeks)";
-                    String varianceText = " Variance";
+                    String tsText = "TS this week";
+                    String averageText = "Average\n(last 4 weeks)";
+                    String varianceText = "Variance";
 
                     String tsthisdays = " " + tsthisday;
                     String averages = " " + average;
                     String variences = String.valueOf(variance);
-
+Log.e(String.valueOf(getActivity()),tsText+averageText+varianceText+tsthisdays+averages+variences );
                     cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
                 }
             } catch (JSONException e) {

@@ -106,7 +106,7 @@ public class Manage_screen extends Fragment {
         // Add the floating view to the container
         floatingViewContainer.addView(floatingView);
 
-        String res = servic.pack_rule("/usageStats/getUsageData?duration=week&userId=" + uid, firebaseToken);
+        String res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
         Log.e("res", "res"+res);
         boolean edit = onPostExecute(res);
         if (edit) {

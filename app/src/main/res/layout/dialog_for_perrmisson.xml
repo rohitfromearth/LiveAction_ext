@@ -5,14 +5,15 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:paddingVertical="20dp"
+    app:cardCornerRadius="25dp"
     app:cardBackgroundColor="#9DB2BF"
-    app:cardElevation="10dp">
+>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:cardBackgroundColor="#9DB2BF">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        app:cardBackgroundColor="#9DB2BF">-->
 
         <ImageButton
             android:id="@+id/close_permission"
@@ -22,7 +23,7 @@
             android:background="@drawable/close_bg"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             app:cardCornerRadius="20dp" />
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"

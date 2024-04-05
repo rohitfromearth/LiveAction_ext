@@ -17,8 +17,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class Conn_service {
     String UserID = "";
 
-//    String endpot = "https://sondersort.online";
-    String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
+    String endpot = "https://sondersort.online";
+//    String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
     public String datasender(JSONObject jsonBody, String end, String firbaseTokenn) {
         try {

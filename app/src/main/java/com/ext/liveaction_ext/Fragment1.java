@@ -202,9 +202,9 @@ public class Fragment1 extends Fragment {
                 //int variance = item.getInt("variance_day");
                 int variance = jsonObject.getInt("variance_day");
                 Log.d("catee", "cName: " + categoryName);
-                String tsText = " TS this day";
-                String averageText = " Average\n(last 7 days)";
-                String varianceText = " Variance";
+                String tsText = "TS this day";
+                String averageText = "Average\n(last 7 days)";
+                String varianceText = "Variance";
                 String tsthisdays = " "+ tsthisday;
                 String averages = " " + average;
                 String variences = String.valueOf(variance);

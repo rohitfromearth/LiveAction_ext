@@ -145,8 +145,8 @@ public class Fragment3 extends Fragment {
 
                     Log.d("fragment3", "fragment3: " + categoryName);
 
-                    String tsText = " TS this month";
-                    String averageText = " Average\n(last month)";
+                    String tsText = "TS this month";
+                    String averageText = "Average\n(last month)";
                     String varianceText = " Variance";
 
                     String tsthisdays = " " + tsthisday;

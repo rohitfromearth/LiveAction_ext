@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ import java.util.Set;
 public class Chart_page extends AppCompatActivity {
     Pack_api pc = new Pack_api();
     TextView tvP_usernme;
+    ProgressBar loader;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -85,7 +87,7 @@ public class Chart_page extends AppCompatActivity {
                 4);
         FirebaseApp.initializeApp(this);
 
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
@@ -103,7 +105,7 @@ Log.d("chartpage","chart page: "+username);
 //        } else {
 
             setContentView(R.layout.drawer_layout);
-
+        loader =findViewById(R.id.loading);
             if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
                 Dialog dd = new Dialog(Chart_page.this);
@@ -159,7 +161,7 @@ Log.d("chartpage","chart page: "+username);
 
             }
 //        }
-
+        loader.setVisibility(View.VISIBLE);
         ArrayList pack = pc.pack_rule(endpot);
 
         String fToken = sh.getString("firebaseToken", "");//april
@@ -173,7 +175,7 @@ Log.d("chartpage","chart page: "+username);
         monthList = dataMonthList(res);
         yearList = dataYearList(res);
 
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
@@ -310,7 +312,7 @@ Log.d("chartpage","chart page: "+username);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
+        loader.setVisibility(View.GONE);
 
         return dayList;
 

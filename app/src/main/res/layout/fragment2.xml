@@ -29,7 +29,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <org.eazegraph.lib.charts.PieChart
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/piechart_for_week"
                         android:layout_width="0dp"
                         android:layout_height="200dp"

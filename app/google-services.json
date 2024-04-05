@@ -1,26 +1,37 @@
 {
   "project_info": {
-    "project_number": "910123143133",
-    "project_id": "sonder-sort",
-    "storage_bucket": "sonder-sort.appspot.com"
+    "project_number": "456788082297",
+    "firebase_url": "https://liveaction-19782-default-rtdb.firebaseio.com",
+    "project_id": "liveaction-19782",
+    "storage_bucket": "liveaction-19782.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:910123143133:android:c97154584807d7f8353034",
+        "mobilesdk_app_id": "1:456788082297:android:686180a1a34e3e044b1ea8",
         "android_client_info": {
           "package_name": "com.ext.liveaction_ext"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "456788082297-7srin8u515gefcgb8dti6vqetqntu2sl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCeA15TFxiev_DFDqmZsAnMD7GmLzcnl_4"
+          "current_key": "AIzaSyBK9mv0RQE4dtgxYECSGO1M4qREqmmFaUU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456788082297-7srin8u515gefcgb8dti6vqetqntu2sl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
