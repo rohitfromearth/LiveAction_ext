@@ -11,6 +11,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Set the splash screen background, animated icon, and animation
         duration. -->
+        <item name="colorPrimary">@color/actionbar_color</item>>
         <item name="windowSplashScreenBackground">@color/black</item>
 
         <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated

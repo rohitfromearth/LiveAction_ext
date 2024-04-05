@@ -8,9 +8,10 @@
         android:id="@+id/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-android:layout_marginHorizontal="100dp"
-        android:layout_marginVertical="200dp"
-        android:visibility="visible" />
+        android:layout_centerInParent="true"
+        android:layout_margin="150dp"
+        android:visibility="visible"
+        android:elevation="10dp"/>
     <!-- This LinearLayout represents the contents of the screen  -->
     <LinearLayout
         android:layout_width="match_parent"
