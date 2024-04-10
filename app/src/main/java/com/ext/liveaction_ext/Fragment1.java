@@ -43,6 +43,9 @@ public class Fragment1 extends Fragment {
     int uid_z;
     String firebaseToke = "";
     int uid = 0;
+    boolean showDummyVal;
+    boolean dummyVal=false;
+
     Conn_service conn = new Conn_service();
     TableLayout tbklayout;
     private FirebaseAuth mAuth;
@@ -66,8 +69,7 @@ public class Fragment1 extends Fragment {
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-
-                            Data_Show();
+        Data_Show();
 
         return view;
     }
@@ -91,8 +93,9 @@ public class Fragment1 extends Fragment {
             JSONObject jsonncheck = new JSONObject(resultdummy);
 
            // boolean showDummy = jsonncheck.getBoolean("showDummy");
-            boolean showDummy = sh.getBoolean("showDummy",true);
-            if (showDummy) {
+            showDummyVal = sh.getBoolean("showDummy",dummyVal);
+            System.out.println("boolean value="+showDummyVal);
+            if (showDummyVal) {
 
                 piecreate(dummyList);
                 List<CardItem> cardItems = createCardItems(dummyList);
@@ -181,7 +184,32 @@ public class Fragment1 extends Fragment {
 
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
-                JSONArray jsonArray = jsonObject.getJSONArray("day");
+                Random random = new Random();
+                int red = random.nextInt(256);
+                int green = random.nextInt(256);
+                int blue = random.nextInt(256);
+
+                // Format the RGB values into a hexadecimal color code
+                String colorCode = String.format("#%02x%02x%02x", red, green, blue);
+
+                String categoryName = jsonObject.getString("category");
+                Log.d("usageData", "fragment1 categoryName: " + categoryName);
+                if (!categoryName.equals("Total")) {
+
+                    double pievalue = jsonObject.getDouble("usage_percent_day");
+                    double minvalue = jsonObject.getDouble("usage_in_mins_day");
+
+                    float fpi_Value = (float) pievalue;
+
+                    pieChart.addPieSlice(
+                            new PieModel(
+                                    categoryName,
+                                    fpi_Value,
+                                    Color.parseColor(colorCode)));
+
+                    addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
+                }
+                /*JSONArray jsonArray = jsonObject.getJSONArray("day");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
                     Random random = new Random();
@@ -211,7 +239,7 @@ public class Fragment1 extends Fragment {
 
 
                     }
-                }
+                }*/
             } catch (JSONException e) {
                 e.printStackTrace();
                 Log.e("Exception", String.valueOf(e));
