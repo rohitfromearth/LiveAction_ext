@@ -7,17 +7,21 @@ public class CardItem  {
     private final String title;
     private final String ts_text;
     private final String average_text;
+   // private final String averageText;
     private final String variance_text;
     private final String ts_value;
     private final String average_value;
     private final String variance_value;
 
-    public CardItem(int logoResId, String title, String ts_text, String average_text, String variance_text, String ts_value, String average_value, String variance_value) {
+
+
+    public CardItem(int logoResId, String title, String ts_text, String average_text , String variance_text, String ts_value, String average_value, String variance_value) {
         this.logoResId = logoResId;
         this.title = title;
 
         this.ts_text = ts_text;
         this.average_text = average_text;
+       // this.averageText = averageText;
        // Log.d("average text",average_text);
         this.variance_text = variance_text;
 
@@ -25,7 +29,9 @@ public class CardItem  {
         this.average_value = average_value;
         this.variance_value = variance_value;
     }
-
+   /* public String getAverageText() {
+        return averageText;
+    }*/
     public int getLogoResId() {
         return logoResId;
     }

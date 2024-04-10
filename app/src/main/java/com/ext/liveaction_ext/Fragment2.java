@@ -118,6 +118,7 @@ public class Fragment2 extends Fragment {
         recyclerView.setAdapter(cardAdapter);
 
     }
+
     private List<CardItem> createCardItemsss() {
         List<CardItem> cardItems = new ArrayList<>();
         Set<String> daySet = sh.getStringSet("WEEK_LIST", new HashSet<>());
@@ -141,7 +142,8 @@ public class Fragment2 extends Fragment {
                     String tsthisdays = " " + tsthisday;
                     String averages = " " + average;
                     String variences = String.valueOf(variance);
-Log.e(String.valueOf(getActivity()),tsText+averageText+varianceText+tsthisdays+averages+variences );
+                    Log.e(String.valueOf(getActivity()), tsText + averageText + varianceText + tsthisdays + averages + variences);
+
                     cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
                 }
             } catch (JSONException e) {
@@ -150,6 +152,7 @@ Log.e(String.valueOf(getActivity()),tsText+averageText+varianceText+tsthisdays+a
         }
         return cardItems;
     }
+
     private List<CardItem> createCardItems(String res) {
         List<CardItem> cardItems = new ArrayList<>();
 
@@ -174,6 +177,7 @@ Log.e(String.valueOf(getActivity()),tsText+averageText+varianceText+tsthisdays+a
                 String averages = " " + average;
                 String variences = String.valueOf(variance);
 
+                // String averageDefaultText = "kjhjkhjj";
                 cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
 
             }

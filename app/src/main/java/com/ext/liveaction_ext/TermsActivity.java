@@ -13,7 +13,7 @@ public class TermsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.terms_activity);
 
-        getSupportActionBar().setTitle("Life Actions");
+        getSupportActionBar().setTitle("Sondersort");
 
         webView = findViewById(R.id.webView1);
         webView.setWebViewClient(new WebViewClient());

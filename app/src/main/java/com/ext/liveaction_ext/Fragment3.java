@@ -153,7 +153,8 @@ public class Fragment3 extends Fragment {
                     String averages = " " + average;
                     String variences = String.valueOf(variance);
 
-                    cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsthisdays, averages, variences));
+                   // String averageDefaultText = "kjhjkhjj";
+                    cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText,varianceText, tsthisdays, averages, variences));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean isLocationEnabled = isLocationServicesEnabled(getApplicationContext());
 
-        getSupportActionBar().setTitle("Life Actions");
+        getSupportActionBar().setTitle("Sondersort");
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS}, 4);
 

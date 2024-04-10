@@ -14,7 +14,7 @@ public class PrivacyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.privacy_activity);
 
-        getSupportActionBar().setTitle("Life Actions");
+        getSupportActionBar().setTitle("Sondersort");
 
         webView = findViewById(R.id.webView);
         webView.setWebViewClient(new WebViewClient());
