@@ -5,16 +5,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.splashscreen.SplashScreen;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.google.firebase.FirebaseApp;
 
@@ -25,10 +18,11 @@ import java.util.Set;
 public class Splashsscreen extends AppCompatActivity {
     private boolean keep = true;
     private final int DELAY = 1250;
-    Pack_api pc = new Pack_api();
+
 //    ImageView load_img;
 
     int uid_z;
+    Conn_service conn = new Conn_service();
     String mobile, username;
     int uid = 0;
     @Override
@@ -55,7 +49,7 @@ public class Splashsscreen extends AppCompatActivity {
 
 
         String dir = getObbDir().getPath();
-        ArrayList pack = pc.pack_rule(endpot);
+        ArrayList pack = conn.App_list(endpot);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putString("endpt", endpot);

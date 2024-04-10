@@ -183,7 +183,7 @@ public class Fragment4 extends Fragment {
         SharedPreferences sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
 
-        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + 21, firebaseToken);
+        String res = conn.App_list("/usageStats/getUsageData?userId=" + 21, firebaseToken);
 
         try {
             JSONObject jsonObject = new JSONObject(res);

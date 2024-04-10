@@ -58,7 +58,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Direction : The button will redirect to usage stat permission,find Liveaction_ext turn switch on "
+            android:text="Direction : The button will redirect to usage stat permission,find Liveaction turn switch on "
             android:textColor="@color/white"
             android:textSize="15dp"
             android:textStyle="italic" />
@@ -118,7 +118,7 @@
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginVertical="5dp"
                 android:gravity="center"
-                android:text="Accessibity Permission "
+                android:text="Accessibility Permission "
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:textStyle="bold" />

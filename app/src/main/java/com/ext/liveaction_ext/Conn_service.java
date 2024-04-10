@@ -3,6 +3,8 @@ package com.ext.liveaction_ext;
 import android.os.StrictMode;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -11,15 +13,72 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class Conn_service {
     String UserID = "";
+    ArrayList<String> appl = new ArrayList<String>();
 
     String endpot = "https://sondersort.online";
 
+    public ArrayList App_list(String About) {
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+        String[] appslist = new String[]{};
+        try {
+            String response = "";
+            URL url = new URL(About + "/apps/list");
+            String urlString=About + "/apps/list";
+
+            Log.e("url",urlString);
+
+            HttpURLConnection urlConn = null;
+
+            urlConn = (HttpURLConnection) url.openConnection();
+            urlConn.setRequestMethod("GET");
+            urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            urlConn.setRequestProperty("Accept", "application/json");
+            urlConn.setDoInput(true);
+            int responseCode = urlConn.getResponseCode();
+
+            String reso = urlConn.getResponseMessage();
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                String applist;
+                BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+
+                while ((applist = br.readLine()) != null) {
+                    response += applist;
+                    final JSONObject app = new JSONObject(response);
+
+
+
+                    JSONArray appsList = app.getJSONArray("data");
+                    for (int i = 0; i < appsList.length(); i++) {
+//                         String fg = app.get("data").getString(i);
+//                         appslist[i]= appsList.getString(i);
+                        appl.add(appsList.getString(i));
+
+                    }
+
+//                    appslist= appl.toArray(appslist);
+//                    appslist
+
+                }
+
+            }
+
+        } catch (IOException | JSONException e) {
+            Log.e("Exep", e.getMessage());
+        }
+
+        return appl;
+    }
     public String datasender(JSONObject jsonBody, String end, String firbaseTokenn) {
         try {
             String response = "";
@@ -28,8 +87,8 @@ public class Conn_service {
 
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
-//            Log.e("checkjson", String.valueOf(jsonBody));
-//            Log.e("Url",urlString );
+            Log.e("checkjson", String.valueOf(jsonBody));
+            Log.e("Url",urlString );
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -48,9 +107,9 @@ public class Conn_service {
 
             int responseCode = urlConnection.getResponseCode();
 
-//            String reso = urlConnection.getResponseMessage();
+            String reso = urlConnection.getResponseMessage();
 
-//            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -58,13 +117,13 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-
+                    Log.e("checkRes2", response);
                 }
             }
             urlConnection.disconnect();
 
         } catch (Exception e) {
-//            Log.e("Exect", String.valueOf(e));
+            Log.e("Exect", String.valueOf(e));
         }
         return UserID;
     }
@@ -76,12 +135,12 @@ public class Conn_service {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
-//            Log.e("checkjson", String.valueOf(jsonBody));
-//            Log.e("url",urlString);
+            Log.e("checkjson", String.valueOf(jsonBody));
+            Log.e("url",urlString);
             URL url = new URL(urlString);
-//            Log.e("url",url.getPath());
+            Log.e("url",url.getPath());
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-//            Log.e("urlConnection",urlConnection.toString());
+            Log.e("urlConnection",urlConnection.toString());
             urlConnection.setRequestMethod("POST");
 
             urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -92,7 +151,7 @@ public class Conn_service {
             urlConnection.setDoInput(true);
 
             DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
-//            Log.e("DataOutputStream", urlConnection.getOutputStream().toString());
+            Log.e("DataOutputStream", urlConnection.getOutputStream().toString());
             o.writeBytes(jsonBody.toString());
             o.flush();
             o.close();
@@ -100,7 +159,7 @@ public class Conn_service {
             int responseCode = urlConnection.getResponseCode();
 
             String reso = urlConnection.getResponseMessage();
-//            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
@@ -109,7 +168,7 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-//                    Log.e("checkRes2", response);
+                    Log.e("checkRes2", response);
 
                 }
             }
@@ -117,7 +176,7 @@ public class Conn_service {
             urlConnection.disconnect();
 
         } catch (Exception e) {
-//            Log.e("checkRes3", String.valueOf(e));
+            Log.e("checkRes3", String.valueOf(e));
         }
         return UserID;
     }
@@ -135,9 +194,9 @@ public class Conn_service {
             URL url = new URL(endpot + endr);
             String urlString=endpot+endr;
 
-//            Log.e("url",urlString);
+            Log.e("url",urlString);
 
-            HttpURLConnection urlConn = null;
+            HttpURLConnection urlConn;
 
             urlConn = (HttpURLConnection) url.openConnection();
             urlConn.setRequestMethod("GET");
@@ -147,7 +206,7 @@ public class Conn_service {
             urlConn.setDoInput(true);
             int responseCode = urlConn.getResponseCode();
             String reso = urlConn.getResponseMessage();
-//            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
                 String applist;
@@ -157,7 +216,7 @@ public class Conn_service {
                     response += applist;
 
                 }
-
+                Log.e("checkRes2", response);
             }
 
         } catch (IOException e) {
@@ -184,8 +243,8 @@ public class Conn_service {
             StrictMode.setThreadPolicy(policy);
 
             String urlString = endpot + "/appException";
-//            Log.e("checkjson", String.valueOf(str1));
-//            Log.e("url",urlString);
+            Log.e("checkjson", String.valueOf(str1));
+            Log.e("url",urlString);
             URL url = new URL(urlString);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -207,7 +266,7 @@ public class Conn_service {
 
             String reso = urlConnection.getResponseMessage();
 
-//            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
+            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
@@ -216,7 +275,7 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                  //  Log.e("responseee", response);
+                    Log.e("responseee", response);
 
                 }
             }

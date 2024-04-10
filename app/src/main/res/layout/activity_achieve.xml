@@ -58,6 +58,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/tablehead"
                         android:gravity="center"
+
                         android:padding="3dp"
                         android:text="Live Actions"
                         android:textColor="@color/black"

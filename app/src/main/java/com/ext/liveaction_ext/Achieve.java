@@ -1,6 +1,7 @@
 package com.ext.liveaction_ext;
 
-import android.content.Context;
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,18 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,12 +42,13 @@ public class Achieve extends Fragment {
     private int initialY;
     private float initialTouchX;
     private float initialTouchY;
-    Context context;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sh.edit();
         View view = inflater.inflate(R.layout.activity_achieve, container, false);
 
         rede = view.findViewById(R.id.reddem_btn);
@@ -62,24 +60,18 @@ public class Achieve extends Fragment {
 
         if (use != null) {
             use.getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                firebaseToke = task.getResult().getToken();
-                                Log.e("token_fa","gg"+firebaseToke);
-                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
-                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                myEdit.putString("firebaseToken", firebaseToke);
-                                myEdit.apply();
-                            }
-                        }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            firebaseToke = task.getResult().getToken();
 
+                            myEdit.putString("firebaseToken", firebaseToke);
+                            myEdit.apply();
+                        }
                     });
 
         }
 
-        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+
         uid = sh.getInt("UID", uid_z);
 
         firebaseToken = sh.getString("firebaseToken", "");
@@ -97,16 +89,13 @@ public class Achieve extends Fragment {
         floatingViewContainer.addView(floatingView);
 
 
-        rede.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        rede.setOnClickListener(view1 -> {
 
-                Fragment go_next = new Reedeem();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                actionBar.setTitle("Redeem");
-            }
+            Fragment go_next = new Reedeem();
+            FragmentManager fragmentManager = getParentFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            actionBar.setTitle("Redeem");
         });
 
         return view;

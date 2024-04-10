@@ -36,17 +36,14 @@ public class Fragment1 extends Fragment {
     PieChart pieChart;
     DummyData dumdta = new DummyData();
     int uid_z;
-    String firebaseToke = "";
+
     int uid = 0;
-    Conn_service conn = new Conn_service();
+
     TableLayout tbklayout;
-    private FirebaseAuth mAuth;
+
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
 
-    boolean isProgressVisible = false;
-    String categoryName;
-    Context context;
     SharedPreferences sh;
 
 
@@ -60,28 +57,13 @@ public class Fragment1 extends Fragment {
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
-        mAuth = FirebaseAuth.getInstance();
 
+                            Data_Show();
 
-        FirebaseUser use = mAuth.getCurrentUser();
-
-        if (use != null) {
-            use.getIdToken(true)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            firebaseToke = task.getResult().getToken();
-                            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                            myEdit.putString("firebaseToken", firebaseToke);
-                            myEdit.apply();
-                            Data_Show(firebaseToke);
-                        }
-                    });
-        }
         return view;
     }
 
-    private void Data_Show(String firebaseToken) {
+    private void Data_Show() {
         try {
 
              sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
@@ -125,10 +107,6 @@ public class Fragment1 extends Fragment {
                 int tsthisday = jsonObject.optInt("usage_in_mins_day");
                 int average = jsonObject.optInt("last_7_day_usage_in_mins");
                 int variance = jsonObject.getInt("variance_day");
-
-
-
-
                 String tsText = " TS this day";
                 String averageText = " Average\n(last 7 days)";
                 String varianceText = " Variance";

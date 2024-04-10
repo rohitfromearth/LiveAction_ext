@@ -6,49 +6,31 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.provider.Settings;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-//    Pack_api pc = new Pack_api();
-    Conn_service servic = new Conn_service();
-//    LocationManager locationManager;
-//    String latitude, longitude, lati, longit;
+
+    Conn_service conn = new Conn_service();
+
     CardView Viewbtn;
-    Pack_api pc = new Pack_api();
+
     Context context;
-//    String endpot;
+
     CheckBox termsCheckbox, privacyCheckbox;
     TextView messageTextView, privacyText, termsText;
 
@@ -81,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         String dir = getObbDir().getPath();
-        ArrayList pack = pc.pack_rule(endpot);
+        ArrayList pack = conn.App_list(endpot);
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
 //        myEdit.putString("endpt", endpot);

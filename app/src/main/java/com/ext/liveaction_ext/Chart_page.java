@@ -1,43 +1,30 @@
 package com.ext.liveaction_ext;
 
 import static android.app.PendingIntent.getActivity;
-import static android.content.Context.MODE_PRIVATE;
 
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
@@ -50,12 +37,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 public class Chart_page extends AppCompatActivity {
-    Pack_api pc = new Pack_api();
+
     TextView tvP_usernme;
     ProgressBar loader;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
@@ -136,7 +122,7 @@ public class Chart_page extends AppCompatActivity {
 
             }
         loader.setVisibility(View.VISIBLE);
-        ArrayList pack = pc.pack_rule(endpot);
+
 
         String fToken = sh.getString("firebaseToken", "");//april
 
@@ -153,8 +139,7 @@ public class Chart_page extends AppCompatActivity {
         SharedPreferences.Editor myEdit = sh.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
-        Set<String> set = new HashSet<String>();
-        set.addAll(pack);
+
 
         Set<String> dayset = new HashSet<String>();
         dayset.addAll(dayList);
@@ -168,7 +153,6 @@ public class Chart_page extends AppCompatActivity {
         Set<String> yearset = new HashSet<String>();
         yearset.addAll(yearList);
 
-        myEdit.putStringSet("APP_LIST", set);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
