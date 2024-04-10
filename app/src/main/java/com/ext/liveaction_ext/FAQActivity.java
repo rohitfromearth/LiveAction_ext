@@ -15,7 +15,7 @@ public class FAQActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.faq_activity);
 
-        getSupportActionBar().setTitle("Sondersort");
+        getSupportActionBar().setTitle(R.string.app_name);
 
         webView = findViewById(R.id.webView);
         webView.setWebViewClient(new WebViewClient());
