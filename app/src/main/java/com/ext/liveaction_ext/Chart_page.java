@@ -57,7 +57,7 @@ import java.util.Set;
 public class Chart_page extends AppCompatActivity {
     Pack_api pc = new Pack_api();
     TextView tvP_usernme;
-    ProgressBar loader;
+   // ProgressBar loader;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -69,15 +69,18 @@ public class Chart_page extends AppCompatActivity {
     NavigationView navigationView;
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
+    DummyData dumdta = new DummyData();
     String mobile;
     FragmentManager fragmentManager;
     Context context;
     Conn_service conn = new Conn_service();
+    ArrayList<String> dummyList = new ArrayList<String>();
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
     ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
+    boolean showDummy;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +108,7 @@ Log.d("chartpage","chart page: "+username);
 //        } else {
 
             setContentView(R.layout.drawer_layout);
-        loader =findViewById(R.id.loading);
+      //  loader =findViewById(R.id.loading);
             if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
                 Dialog dd = new Dialog(Chart_page.this);
@@ -161,15 +164,26 @@ Log.d("chartpage","chart page: "+username);
 
             }
 //        }
-        loader.setVisibility(View.VISIBLE);
+      //  loader.setVisibility(View.VISIBLE);
         ArrayList pack = pc.pack_rule(endpot);
 
         String fToken = sh.getString("firebaseToken", "");//april
 
         Log.d("fToken", "fToken : ====" + fToken);
+        String resultdummy = dumdta.Data_for_dash();
         String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
+
+        try {
+            JSONObject jsonObject = new JSONObject(res);
+            showDummy = jsonObject.getBoolean("showDummy");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("showDummy value: " + showDummy);
+
         Log.d("result", "result: "+res);
+        dummyList = dummyDayList(resultdummy);
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
@@ -179,8 +193,13 @@ Log.d("chartpage","chart page: "+username);
         SharedPreferences.Editor myEdit = sh.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
+        myEdit.putBoolean("showDummy", showDummy);
+
         Set<String> set = new HashSet<String>();
         set.addAll(pack);
+
+        Set<String> dummyset = new HashSet<String>();
+        dummyset.addAll(dummyList);
 
         Set<String> dayset = new HashSet<String>();
         dayset.addAll(dayList);
@@ -195,12 +214,13 @@ Log.d("chartpage","chart page: "+username);
         yearset.addAll(yearList);
 
         myEdit.putStringSet("APP_LIST", set);
+        myEdit.putStringSet("DUMMY_LIST", dummyset);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
         myEdit.putStringSet("YEAR_LIST", yearset);
 
-        myEdit.putString("key_usage_data", res);
+        myEdit.putString("key_live_data", res);
         myEdit.apply();
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -216,7 +236,7 @@ Log.d("chartpage","chart page: "+username);
         drawerToggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Life Actions");
+        getSupportActionBar().setTitle("Sondersort");
 
         navigationView = (NavigationView) findViewById(R.id.nvView);
         View header = navigationView.getHeaderView(0);
@@ -300,7 +320,23 @@ Log.d("chartpage","chart page: "+username);
         // Link the TabLayout with the ViewPager
         tabLayout.setupWithViewPager(viewPager);
     }
+      public ArrayList dummyDayList(String ss) {
+        //april
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            JSONArray jsonArray = jsonObject.getJSONArray("day");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                dummyList.add(jsonArray.getString(i));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+       // loader.setVisibility(View.GONE);
 
+        return dummyList;
+
+        //april
+    }
     public ArrayList dataDayList(String ss) {
         //april
         try {
@@ -312,7 +348,7 @@ Log.d("chartpage","chart page: "+username);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        loader.setVisibility(View.GONE);
+        //loader.setVisibility(View.GONE);
 
         return dayList;
 
