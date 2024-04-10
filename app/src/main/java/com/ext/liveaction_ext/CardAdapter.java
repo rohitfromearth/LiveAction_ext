@@ -37,7 +37,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
         holder.ts_text.setText(cardItem.getTs_text());
         holder.average_text.setText(cardItem.getAverage_text());
-        //holder.averageText.setText(cardItem.getAverageText());
         holder.variance_text.setText(cardItem.getVariance_text());
 
         holder.ts_value.setText(cardItem.getTs_value());
@@ -54,7 +53,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         public ImageView logoImageView;
         public TextView titleTextView;
         public TextView ts_text;
-        public TextView average_text, averageText;
+        public TextView average_text;
         public TextView variance_text;
         public TextView ts_value;
         public TextView average_value;
@@ -67,7 +66,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
 
             ts_text = itemView.findViewById(R.id.ts_text);
             average_text = itemView.findViewById(R.id.average_text);
-           // averageText = itemView.findViewById(R.id.averageText);
             variance_text = itemView.findViewById(R.id.variance_text);
 
             ts_value = itemView.findViewById(R.id.ts_value);

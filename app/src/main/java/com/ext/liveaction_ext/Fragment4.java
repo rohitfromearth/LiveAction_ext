@@ -58,31 +58,9 @@ public class Fragment4 extends Fragment {
         pieChart = view.findViewById(R.id.piechart_for_year);
         recyclerView = view.findViewById(R.id.recyclerView_for_year);
 
-        mAuth = FirebaseAuth.getInstance();
-
-        FirebaseUser use = mAuth.getCurrentUser();
-
-        if (use != null) {
-            use.getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                firebaseToke = task.getResult().getToken();
-                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                myEdit.putString("firebaseToken", firebaseToke);
-                                myEdit.apply();
-                                Data_show();
-                            }
-                        }
-
-                    });
-        }
+        Data_show();
         return view;
     }
-
-
 
     private void Data_show() {
 
@@ -156,7 +134,6 @@ public class Fragment4 extends Fragment {
                     String averages = " " + average;
                     String variences = String.valueOf(variance);
 
-                   // String averageDefaultText = "kjhjkhjj";
                     cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText,varianceText, tsthisdays, averages, variences));
                 }
             } catch (JSONException e) {

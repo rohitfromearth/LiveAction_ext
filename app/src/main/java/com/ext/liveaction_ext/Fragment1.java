@@ -88,7 +88,20 @@ public class Fragment1 extends Fragment {
            // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
 
             String resultdummy = dumdta.Data_for_dash();
+            try {
+                JSONObject jsonObject = new JSONObject(resultdummy);
+                JSONArray dayArray = jsonObject.getJSONArray("day");
 
+                // Print dayArray
+                System.out.println("dayArray:");
+                for (int i = 0; i < dayArray.length(); i++) {
+                    JSONObject dayObject = dayArray.getJSONObject(i);
+                    System.out.println("dayArray"+dayObject.toString());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             JSONObject jsonncheck = new JSONObject(resultdummy);
 
@@ -128,6 +141,7 @@ public class Fragment1 extends Fragment {
                 String categoryName = jsonObject.optString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
                 int tsthisday = jsonObject.optInt("usage_in_mins_day");
+
                 int average = jsonObject.optInt("last_7_day_usage_in_mins");
                 int variance = jsonObject.getInt("variance_day");
 
