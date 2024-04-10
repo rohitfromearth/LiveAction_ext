@@ -1,4 +1,4 @@
-package com.ext.liveaction_ext;
+package com.ext.liveaction_ext.Screens;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
+import com.ext.liveaction_ext.FAQActivity;
+import com.ext.liveaction_ext.R;
 
 public class FaQ extends Fragment {
     CardView btn_dash;
@@ -36,7 +38,7 @@ public class FaQ extends Fragment {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(getContext(), Chart_page.class));
+                startActivity(new Intent(getContext(), Dashboard.class));
             }
         });
 

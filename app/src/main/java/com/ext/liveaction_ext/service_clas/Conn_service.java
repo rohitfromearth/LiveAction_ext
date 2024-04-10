@@ -1,4 +1,4 @@
-package com.ext.liveaction_ext;
+package com.ext.liveaction_ext.service_clas;
 
 import android.os.StrictMode;
 import android.util.Log;
@@ -23,7 +23,7 @@ public class Conn_service {
 
     String endpot = "https://sondersort.online";
 
-    public ArrayList App_list(String About) {
+    public ArrayList App_list() {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
@@ -31,8 +31,8 @@ public class Conn_service {
         String[] appslist = new String[]{};
         try {
             String response = "";
-            URL url = new URL(About + "/apps/list");
-            String urlString=About + "/apps/list";
+            URL url = new URL(endpot + "/apps/list");
+            String urlString=endpot + "/apps/list";
 
             Log.e("url",urlString);
 

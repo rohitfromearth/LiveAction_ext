@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.ext.liveaction_ext.Screens.Dashboard;
+import com.ext.liveaction_ext.Screens.MainActivity;
+import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.google.firebase.FirebaseApp;
 
 import java.util.ArrayList;
@@ -49,7 +52,7 @@ public class Splashsscreen extends AppCompatActivity {
 
 
         String dir = getObbDir().getPath();
-        ArrayList pack = conn.App_list(endpot);
+        ArrayList pack = conn.App_list();
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
         myEdit.putString("endpt", endpot);
@@ -68,7 +71,7 @@ public class Splashsscreen extends AppCompatActivity {
         } else {
 
 
-            Intent intent = new Intent(this, Chart_page.class);
+            Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
         finish();
 

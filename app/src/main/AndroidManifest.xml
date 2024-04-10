@@ -39,25 +39,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Chart_page"
+            android:name=".Screens.Dashboard"
             android:exported="true"/>
         <activity
-            android:name=".Formpage"
+            android:name=".Screens.Formpage"
             android:exported="false" />
         <activity
-            android:name=".PrivacyActivity"
+            android:name=".Screens.PrivacyActivity"
             android:exported="false" />
         <activity
-            android:name=".TermsActivity"
+            android:name=".Screens.TermsActivity"
             android:exported="false" />
         <activity
             android:name=".FAQActivity"
             android:exported="false" />
         <activity
-            android:name=".Login_verifcation"
+            android:name=".Screens.Login_verifcation"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Screens.MainActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"

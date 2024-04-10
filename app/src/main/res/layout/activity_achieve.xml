@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6F0E8"
-    tools:context=".Achieve">
+    tools:context=".Screens.Achieve">
 
     <LinearLayout
         android:id="@+id/floatingViewContainer"

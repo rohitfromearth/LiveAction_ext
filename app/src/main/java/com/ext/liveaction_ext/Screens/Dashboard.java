@@ -1,4 +1,4 @@
-package com.ext.liveaction_ext;
+package com.ext.liveaction_ext.Screens;
 
 import static android.app.PendingIntent.getActivity;
 
@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ext.liveaction_ext.DummyData;
+import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
+import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
@@ -40,10 +45,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Chart_page extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity {
 
     TextView tvP_usernme;
-    ProgressBar loader;
+     ProgressBar loader;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -55,15 +60,18 @@ public class Chart_page extends AppCompatActivity {
     NavigationView navigationView;
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
+    DummyData dumdta = new DummyData();
     String mobile;
     FragmentManager fragmentManager;
     Context context;
     Conn_service conn = new Conn_service();
+    ArrayList<String> dummyList = new ArrayList<String>();
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
     ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
+    boolean showDummy;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,58 +86,64 @@ public class Chart_page extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-
         String endpot = "https://sondersort.online";
 
         String dir = getObbDir().getPath();
 
+        setContentView(R.layout.drawer_layout);
 
-            setContentView(R.layout.drawer_layout);
-        loader =findViewById(R.id.loading);
-            if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
+        if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
-                Dialog dd = new Dialog(Chart_page.this);
+            Dialog dd = new Dialog(Dashboard.this);
 
-                dd.setContentView(R.layout.navigation_permission_dialog);
-                dd.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dd.setCancelable(false);
-                dd.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                dd.show();
-                usage_stat = dd.findViewById(R.id.usaegstat_perm1);
-                accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
-                close_dialog = dd.findViewById(R.id.close_permission1);
+            dd.setContentView(R.layout.navigation_permission_dialog);
+            dd.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dd.setCancelable(false);
+            dd.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            dd.show();
+            usage_stat = dd.findViewById(R.id.usaegstat_perm1);
+            accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
+            close_dialog = dd.findViewById(R.id.close_permission1);
 
-                close_dialog.setOnClickListener(view -> {
-                    view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-                    dd.dismiss();
-                });
-                usage_stat.setOnClickListener(view -> {
-                    view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-                    startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+            close_dialog.setOnClickListener(view -> {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                dd.dismiss();
+            });
+            usage_stat.setOnClickListener(view -> {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
-                    // Disable button2
-                    accessibility_permission.setEnabled(usage_stat.isEnabled());  // Enable button2
-                });
-                accessibility_permission.setOnClickListener(view -> {
-                    view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.animate().alpha(1f).setDuration(200);
-                        }
-                    }).start();
-                    startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-                });
+                // Disable button2
+                accessibility_permission.setEnabled(usage_stat.isEnabled());  // Enable button2
+            });
+            accessibility_permission.setOnClickListener(view -> {
 
-            }
-        loader.setVisibility(View.VISIBLE);
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+            });
 
+        }
+//        }
+          loader.setVisibility(View.VISIBLE);
+        ArrayList pack = conn.App_list();
 
         String fToken = sh.getString("firebaseToken", "");//april
 
 
+        String resultdummy = dumdta.Data_for_dash();
         String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
 
+        try {
+            JSONObject jsonObject = new JSONObject(res);
+            showDummy = jsonObject.getBoolean("showDummy");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("showDummy value: " + showDummy);
+
+
+        dummyList = dummyDayList(resultdummy);
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
@@ -139,7 +153,13 @@ public class Chart_page extends AppCompatActivity {
         SharedPreferences.Editor myEdit = sh.edit();
         myEdit.putString("endpt", endpot);
         myEdit.putString("dir", dir);
+        myEdit.putBoolean("showDummy", showDummy);
 
+        Set<String> set = new HashSet<String>();
+        set.addAll(pack);
+
+        Set<String> dummyset = new HashSet<String>();
+        dummyset.addAll(dummyList);
 
         Set<String> dayset = new HashSet<String>();
         dayset.addAll(dayList);
@@ -153,12 +173,14 @@ public class Chart_page extends AppCompatActivity {
         Set<String> yearset = new HashSet<String>();
         yearset.addAll(yearList);
 
+        myEdit.putStringSet("APP_LIST", set);
+        myEdit.putStringSet("DUMMY_LIST", dummyset);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
         myEdit.putStringSet("YEAR_LIST", yearset);
 
-        myEdit.putString("key_usage_data", res);
+        myEdit.putString("key_live_data", res);
         myEdit.apply();
 
         tabLayout = findViewById(R.id.tabLayout);
@@ -174,7 +196,7 @@ public class Chart_page extends AppCompatActivity {
         drawerToggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Life Actions");
+        getSupportActionBar().setTitle(R.string.app_name);
 
         navigationView = (NavigationView) findViewById(R.id.nvView);
         View header = navigationView.getHeaderView(0);
@@ -184,21 +206,13 @@ public class Chart_page extends AppCompatActivity {
         phone.setText(mobile);
         setupDrawerContent(navigationView);
 
-        manag_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                //startActivity(new Intent(Chart_page.this, Manage_screen.class));
-                Fragment go_next = new Manage_screen();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                getSupportActionBar().setTitle("Manage");
-            }
+        manag_btn.setOnClickListener(view -> {
+            view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+            //startActivity(new Intent(Dashboard.this, Manage_screen.class));
+            Fragment go_next = new Manage_screen();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+            getSupportActionBar().setTitle("Manage");
         });
         achieve_btn.setOnClickListener(view -> {
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
@@ -211,7 +225,7 @@ public class Chart_page extends AppCompatActivity {
         faq_btn.setOnClickListener(view -> {
 
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-            //startActivity(new Intent(Chart_page.this, FaQ.class));
+            //startActivity(new Intent(Dashboard.this, FaQ.class));
             Fragment go_next = new FaQ();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
@@ -233,7 +247,22 @@ public class Chart_page extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
     }
+    public ArrayList dummyDayList(String ss) {
+        //april
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            JSONArray jsonArray = jsonObject.getJSONArray("day");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                dummyList.add(jsonArray.getString(i));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        // loader.setVisibility(View.GONE);
+        return dummyList;
 
+        //april
+    }
     public ArrayList dataDayList(String ss) {
         //april
         try {
@@ -245,7 +274,7 @@ public class Chart_page extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        loader.setVisibility(View.GONE);
+        //loader.setVisibility(View.GONE);
 
         return dayList;
 
@@ -263,7 +292,9 @@ public class Chart_page extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
+        for (String week : weekList) {
+            // Log.d("week list", "week: " + week);
+        }
 
         return weekList;
 
@@ -311,9 +342,12 @@ public class Chart_page extends AppCompatActivity {
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                menuItem -> {
-                    selectDrawerItem(menuItem);
-                    return true;
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
                 });
     }
 
@@ -324,10 +358,76 @@ public class Chart_page extends AppCompatActivity {
 
         int itemId = menuItem.getItemId();
 
+        /*switch (itemId) {
 
+            case R.id.chart_page:
+
+                startActivity(new Intent(this, Chart_page.class));
+                getSupportActionBar().setTitle("Dashboard");
+                break;
+            case R.id.manage_page:
+
+                go_next = new Manage_screen();
+                getSupportActionBar().setTitle("Manage");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+
+                break;
+            case R.id.achieve_page:
+
+                go_next = new Achieve();
+                getSupportActionBar().setTitle("Achievements");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.redeem_page:
+
+                go_next = new Reedeem();
+                getSupportActionBar().setTitle("Redeem");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.contact_us:
+
+                go_next = new ContactUs();
+                getSupportActionBar().setTitle("Connect Us");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.faq:
+
+                go_next = new FaQ();
+                getSupportActionBar().setTitle("FAQ");
+                fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                break;
+            case R.id.perm_new:
+
+                Intent intent = new Intent(this, Chart_page.class);
+                intent.putExtra("show_permission_dialog", true);
+                startActivity(intent);
+                break;
+            case R.id.Logout:
+
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                myEdit.putString("firebaseToken", "");
+                myEdit.apply();
+                startActivity(new Intent(this, Login_verifcation.class));
+                getSupportActionBar().setTitle("Verification");
+                break;
+            default :
+                Log.e("Invalid", "Selection");
+
+        }*/
         if (itemId == R.id.chart_page) {
 
-            startActivity(new Intent(this, Chart_page.class));
+            startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
         } else if (itemId == R.id.manage_page) {
@@ -372,7 +472,7 @@ public class Chart_page extends AppCompatActivity {
 
         } else if (itemId == R.id.perm_new) {
 
-            Intent intent = new Intent(this, Chart_page.class);
+            Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
@@ -380,7 +480,7 @@ public class Chart_page extends AppCompatActivity {
 
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
-
+//            myEdit.putString("firebaseToken", "");
             myEdit.clear();
             myEdit.apply();
             startActivity(new Intent(this, Login_verifcation.class));

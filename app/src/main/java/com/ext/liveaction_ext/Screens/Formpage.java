@@ -1,22 +1,18 @@
-package com.ext.liveaction_ext;
+package com.ext.liveaction_ext.Screens;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,6 +23,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.service_clas.Conn_service;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -237,7 +236,7 @@ ott_other=findViewById(R.id.ott_other_edt);
                     boolean storesuccess = StoreData();
 
                    if (storesuccess) {
-                        startActivity(new Intent(Formpage.this, Chart_page.class));
+                        startActivity(new Intent(Formpage.this, Dashboard.class));
                     } else {
                         Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
                     }

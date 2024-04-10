@@ -1,4 +1,4 @@
-package com.ext.liveaction_ext;
+package com.ext.liveaction_ext.Screens;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -17,6 +17,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+
+import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.service_clas.Conn_service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         String endpot = "https://sondersort.online";
 
         String dir = getObbDir().getPath();
-        ArrayList pack = conn.App_list(endpot);
+        ArrayList pack = conn.App_list();
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
 //        myEdit.putString("endpt", endpot);

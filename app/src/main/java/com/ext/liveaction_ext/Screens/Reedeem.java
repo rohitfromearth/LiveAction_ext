@@ -1,4 +1,4 @@
-package com.ext.liveaction_ext;
+package com.ext.liveaction_ext.Screens;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -19,12 +18,12 @@ import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,7 +74,7 @@ public class Reedeem extends Fragment {
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                startActivity(new Intent(getContext(), Chart_page.class));
+                startActivity(new Intent(getContext(), Dashboard.class));
             }
         });
        // achiv_bt = view.findViewById(R.id.achev_btn);
