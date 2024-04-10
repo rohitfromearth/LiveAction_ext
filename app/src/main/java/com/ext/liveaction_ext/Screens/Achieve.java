@@ -40,6 +40,7 @@ public class Achieve extends Fragment {
     private View floatingView;
     private FirebaseAuth mAuth;
     private int initialX;
+    SharedPreferences sh;
     private int initialY;
     private float initialTouchX;
     private float initialTouchY;
@@ -48,7 +49,7 @@ public class Achieve extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+ sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();
         View view = inflater.inflate(R.layout.activity_achieve, container, false);
 

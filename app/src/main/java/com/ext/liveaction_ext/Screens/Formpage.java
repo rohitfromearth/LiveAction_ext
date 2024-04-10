@@ -97,7 +97,7 @@ public class Formpage extends AppCompatActivity {
 
         //textView = findViewById(R.id.change_text);
 
-        getSupportActionBar().setTitle("Life Actions");
+        getSupportActionBar().setTitle(R.string.app_name);
         state_text = findViewById(R.id.states_text);
         state_text.setVisibility(View.GONE);
 

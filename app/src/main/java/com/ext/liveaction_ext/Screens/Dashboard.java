@@ -48,7 +48,7 @@ import java.util.Set;
 public class Dashboard extends AppCompatActivity {
 
     TextView tvP_usernme;
-     ProgressBar loader;
+
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -124,7 +124,7 @@ public class Dashboard extends AppCompatActivity {
 
         }
 //        }
-          loader.setVisibility(View.VISIBLE);
+
         ArrayList pack = conn.App_list();
 
         String fToken = sh.getString("firebaseToken", "");//april
@@ -258,7 +258,7 @@ public class Dashboard extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        // loader.setVisibility(View.GONE);
+
         return dummyList;
 
         //april
@@ -274,7 +274,7 @@ public class Dashboard extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        //loader.setVisibility(View.GONE);
+
 
         return dayList;
 

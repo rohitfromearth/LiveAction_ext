@@ -40,10 +40,10 @@ public class month_Fragment extends Fragment {
     PieChart pieChart;
     int uid_z;
     int uid = 0;
-    Conn_service conn = new Conn_service();
-    String firebaseToke = "";
+
+
     TableLayout tbklayout;
-    private FirebaseAuth mAuth;
+
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
 
@@ -126,7 +126,7 @@ public class month_Fragment extends Fragment {
                     int average = jsonObject.optInt("last_month_in_mins");
                     int variance = jsonObject.optInt("variance_month");
 
-                    Log.d("fragment3", "fragment3: " + categoryName);
+
 
                     String tsText = "TS this month";
                     String averageText = "Average\n(last month)";
@@ -145,41 +145,6 @@ public class month_Fragment extends Fragment {
         }
         return cardItems;
     }
-   /* private List<CardItem> createCardItems(String res) {
-        List<CardItem> cardItems = new ArrayList<>();
-
-        try {
-            JSONObject jsonObject = new JSONObject(res);
-            JSONArray jsonArray = jsonObject.getJSONArray("day");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-
-                String categoryName = item.getString("category");
-                int logoResId = getLogoResIdForCategory(categoryName);
-                int tsthisday = item.getInt("usage_in_mins_day");
-                int average = item.getInt("last_7_day_usage_in_mins");
-                int variance = item.getInt("variance_day");
-
-                String tsText = " TS this month";
-                String averageText = " Average\n(last month)";
-                String varianceText = " Variance";
-
-                String tsthisdays = " " + tsthisday;
-                String averages = " " + average;
-                String variences = String.valueOf(variance);
-
-                cardItems.add(new CardItem(logoResId, categoryName,  tsText, averageText, varianceText, tsthisdays, averages, variences));
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("Execption", String.valueOf(e));
-        }
-
-
-        return cardItems;
-    }*/
 
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
 

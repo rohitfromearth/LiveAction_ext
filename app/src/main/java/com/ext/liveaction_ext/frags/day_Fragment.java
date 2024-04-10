@@ -105,7 +105,7 @@ public class day_Fragment extends Fragment {
 
             JSONObject jsonncheck = new JSONObject(resultdummy);
 
-           // boolean showDummy = jsonncheck.getBoolean("showDummy");
+
             showDummyVal = sh.getBoolean("showDummy",dummyVal);
             System.out.println("boolean value="+showDummyVal);
             if (showDummyVal) {
@@ -145,7 +145,7 @@ public class day_Fragment extends Fragment {
                 int average = jsonObject.optInt("last_7_day_usage_in_mins");
                 int variance = jsonObject.getInt("variance_day");
 
-                Log.d("catee", "cName: " + categoryName);
+
                 String tsText = "TS this day";
                 String averageText = "Average\n(last 7 days)";
                 String varianceText = "Variance";
@@ -160,36 +160,7 @@ public class day_Fragment extends Fragment {
             }
         }
 
-      /*  try {
-            JSONObject jsonObject = new JSONObject(res);
 
-            JSONArray jsonArray = jsonObject.getJSONArray("day");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject item = jsonArray.getJSONObject(i);
-
-                String categoryName = item.getString("category");
-
-                Log.d("using res",categoryName);
-                int logoResId = getLogoResIdForCategory(categoryName);
-                int tsthisday = item.getInt("usage_in_mins_day");
-                int average = item.getInt("last_7_day_usage_in_mins");
-                int variance = item.getInt("variance_day");
-
-                String tsText = " TS this day";
-                String averageText = " Average\n(last 7 days)";
-                String varianceText = " Variance";
-
-                String tsthisdays = " "+ tsthisday;
-                String averages = " " + average;
-                String variences = String.valueOf(variance);
-
-                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsthisdays, averages, variences));
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("Execption", String.valueOf(e));
-        }*/
 
         return cardItems;
     }
@@ -223,37 +194,7 @@ public class day_Fragment extends Fragment {
 
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
-                /*JSONArray jsonArray = jsonObject.getJSONArray("day");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item = jsonArray.getJSONObject(i);
-                    Random random = new Random();
-                    int red = random.nextInt(256);
-                    int green = random.nextInt(256);
-                    int blue = random.nextInt(256);
 
-                    // Format the RGB values into a hexadecimal color code
-                    String colorCode = String.format("#%02x%02x%02x", red, green, blue);
-
-                    String categoryName = item.getString("category");
-                    Log.d("usageData", "fragment1 categoryName: " + categoryName);
-                    if (!categoryName.equals("Total")) {
-
-                        double pievalue = item.getDouble("usage_percent_day");
-                        double minvalue = item.getDouble("usage_in_mins_day");
-
-                        float fpi_Value = (float) pievalue;
-
-                        pieChart.addPieSlice(
-                                new PieModel(
-                                        categoryName,
-                                        fpi_Value,
-                                        Color.parseColor(colorCode)));
-
-                        addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
-
-
-                    }
-                }*/
             } catch (JSONException e) {
                 e.printStackTrace();
                 Log.e("Exception", String.valueOf(e));
