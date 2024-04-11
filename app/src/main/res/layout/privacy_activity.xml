@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <WebView xmlns:android="http://schemas.android.com/apk/res/android"
+    <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

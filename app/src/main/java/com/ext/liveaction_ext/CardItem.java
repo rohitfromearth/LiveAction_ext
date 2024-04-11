@@ -7,7 +7,6 @@ public class CardItem  {
     private final String title;
     private final String ts_text;
     private final String average_text;
-   // private final String averageText;
     private final String variance_text;
     private final String ts_value;
     private final String average_value;
@@ -21,17 +20,12 @@ public class CardItem  {
 
         this.ts_text = ts_text;
         this.average_text = average_text;
-       // this.averageText = averageText;
-       // Log.d("average text",average_text);
         this.variance_text = variance_text;
 
         this.ts_value = ts_value;
         this.average_value = average_value;
         this.variance_value = variance_value;
     }
-   /* public String getAverageText() {
-        return averageText;
-    }*/
     public int getLogoResId() {
         return logoResId;
     }

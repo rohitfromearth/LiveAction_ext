@@ -313,11 +313,10 @@ Log.d("chartpage","chart page: "+username);
         tvP_usernme = findViewById(R.id.usrname);
 
         tvP_usernme.setText(username);
-        // Create and set the adapter for the ViewPager
+
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
-        // Link the TabLayout with the ViewPager
         tabLayout.setupWithViewPager(viewPager);
     }
       public ArrayList dummyDayList(String ss) {

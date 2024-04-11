@@ -62,27 +62,8 @@ public class Fragment2 extends Fragment {
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
 
-        mAuth = FirebaseAuth.getInstance();
+        Data_show();
 
-        FirebaseUser use = mAuth.getCurrentUser();
-
-        if (use != null) {
-            use.getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                firebaseToke = task.getResult().getToken();
-                                SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                myEdit.putString("firebaseToken", firebaseToke);
-                                myEdit.apply();
-                                Data_show();
-                            }
-                        }
-
-                    });
-        }
         return view;
     }
 

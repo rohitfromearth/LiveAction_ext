@@ -62,7 +62,6 @@ public class Achieve extends Fragment {
 
         FirebaseUser use = mAuth.getCurrentUser();
 
-
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -70,7 +69,6 @@ public class Achieve extends Fragment {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
                                 firebaseToke = task.getResult().getToken();
-                                Log.e("token_fa","gg"+firebaseToke);
                                 SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
                                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                                 myEdit.putString("firebaseToken", firebaseToke);
