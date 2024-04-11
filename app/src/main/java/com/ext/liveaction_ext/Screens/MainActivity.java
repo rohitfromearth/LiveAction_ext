@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        //String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
+
         String dir = getObbDir().getPath();
         ArrayList pack = conn.App_list();
 
