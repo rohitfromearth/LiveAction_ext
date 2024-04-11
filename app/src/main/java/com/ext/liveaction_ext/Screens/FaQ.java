@@ -1,6 +1,5 @@
 package com.ext.liveaction_ext.Screens;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ public class FaQ extends Fragment {
     CardView btn_dash;
     TextView clickFaq, privacy, terms;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -29,40 +28,21 @@ public class FaQ extends Fragment {
         privacy = view.findViewById(R.id.privacyPolicy);
         terms = view.findViewById(R.id.termsConditions);
 
-        btn_dash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_dash.setOnClickListener(view1 -> {
+            view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
+            startActivity(new Intent(getContext(), Dashboard.class));
+        });
+        clickFaq.setOnClickListener(view12 -> {
 
+            startActivity(new Intent(getContext(), FAQActivity.class));
+        });
+        privacy.setOnClickListener(view13 -> {
+            // startYourActivity();
+            startActivity(new Intent(getContext(), PrivacyActivity.class));
+        });
+        terms.setOnClickListener(view14 -> {
 
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                startActivity(new Intent(getContext(), Dashboard.class));
-            }
-        });
-        clickFaq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // startYourActivity();
-                startActivity(new Intent(getContext(), FAQActivity.class));
-            }
-        });
-        privacy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // startYourActivity();
-                startActivity(new Intent(getContext(), PrivacyActivity.class));
-            }
-        });
-        terms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // startYourActivity();
-                startActivity(new Intent(getContext(), TermsActivity.class));
-            }
+            startActivity(new Intent(getContext(), TermsActivity.class));
         });
         return view;
     }
