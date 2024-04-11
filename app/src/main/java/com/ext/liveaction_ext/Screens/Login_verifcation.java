@@ -68,17 +68,15 @@ public class Login_verifcation extends AppCompatActivity {
     String phone;
     ImageButton close, close1;
     Calendar c;
-    String end = "";
-    Date currentTime;
+
     private static final int REQUEST_LOCATION = 1;
     EditText edtPhone, edtOTP;
     Conn_service servic = new Conn_service();
-    Dialog dialog, dialog1;
+    Dialog dialog;
     private String verificationId;
     private FirebaseAuth mAuth;
     String latitude = "", longitude = "", city = "";
     String  state = "";
-    int PERMISSION_ID = 44;
     Context context;
     Location lGps, netPro, pasee;
     boolean lgps_enabled = false;
@@ -118,7 +116,7 @@ public class Login_verifcation extends AppCompatActivity {
         otpVerificationHandler = new OTPVerificationHandler();
 
  sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        end = sh.getString("endpt", "");
+
 
         dialog = new Dialog(Login_verifcation.this);
         dialog.setContentView(R.layout.dialog_for_perrmisson);
@@ -577,7 +575,7 @@ public class Login_verifcation extends AppCompatActivity {
                         Log.e("new_string---sign in", task.getException().toString());
                         //  Log.e("new_exception", result_str);
                         Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        servic.crashLog(result_str, end);
+                        servic.crashLog(result_str );
 
                     }
 

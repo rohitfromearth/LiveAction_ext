@@ -1,6 +1,5 @@
 package com.ext.liveaction_ext.Screens;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ public class FaQ extends Fragment {
     CardView btn_dash;
     TextView clickFaq;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -27,27 +26,16 @@ public class FaQ extends Fragment {
         btn_dash = view.findViewById(R.id.mange_btn);
         clickFaq = view.findViewById(R.id.clickFaq);
 
-        btn_dash.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_dash.setOnClickListener(view12 -> {
 
 
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                startActivity(new Intent(getContext(), Dashboard.class));
-            }
+            view12.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view12.animate().alpha(1f).setDuration(200)).start();
+            startActivity(new Intent(getContext(), Dashboard.class));
         });
 
-        clickFaq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // startYourActivity();
-                startActivity(new Intent(getContext(), FAQActivity.class));
-            }
+        clickFaq.setOnClickListener(view1 -> {
+           // startYourActivity();
+            startActivity(new Intent(getContext(), FAQActivity.class));
         });
 
 

@@ -56,9 +56,9 @@ public class Formpage extends AppCompatActivity {
     Boolean chek;
     int dayOfMonth = 0;
     String userSelectedDay,userSelectedMonth,userSelectedYear;
-    CheckBox checkBo;
+
     private EditText dateEditText;
-    Dialog dialog;
+
     Switch[] switches_froott_in = new Switch[7];
 
     Switch[] switches_froott_wt = new Switch[7];

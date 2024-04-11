@@ -1,7 +1,5 @@
 package com.ext.liveaction_ext.Screens;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
@@ -9,12 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,8 +24,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
+import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.google.android.material.navigation.NavigationView;
@@ -86,7 +82,7 @@ public class Dashboard extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-        String endpot = "https://sondersort.online";
+
 
         String dir = getObbDir().getPath();
 
@@ -151,7 +147,7 @@ public class Dashboard extends AppCompatActivity {
 
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();
-        myEdit.putString("endpt", endpot);
+
         myEdit.putString("dir", dir);
         myEdit.putBoolean("showDummy", showDummy);
 
@@ -208,7 +204,7 @@ public class Dashboard extends AppCompatActivity {
 
         manag_btn.setOnClickListener(view -> {
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-            //startActivity(new Intent(Dashboard.this, Manage_screen.class));
+
             Fragment go_next = new Manage_screen();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
@@ -292,9 +288,7 @@ public class Dashboard extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        for (String week : weekList) {
-            // Log.d("week list", "week: " + week);
-        }
+
 
         return weekList;
 
@@ -342,12 +336,9 @@ public class Dashboard extends AppCompatActivity {
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
+                menuItem -> {
+                    selectDrawerItem(menuItem);
+                    return true;
                 });
     }
 
@@ -358,73 +349,7 @@ public class Dashboard extends AppCompatActivity {
 
         int itemId = menuItem.getItemId();
 
-        /*switch (itemId) {
 
-            case R.id.chart_page:
-
-                startActivity(new Intent(this, Chart_page.class));
-                getSupportActionBar().setTitle("Dashboard");
-                break;
-            case R.id.manage_page:
-
-                go_next = new Manage_screen();
-                getSupportActionBar().setTitle("Manage");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-
-                break;
-            case R.id.achieve_page:
-
-                go_next = new Achieve();
-                getSupportActionBar().setTitle("Achievements");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.redeem_page:
-
-                go_next = new Reedeem();
-                getSupportActionBar().setTitle("Redeem");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.contact_us:
-
-                go_next = new ContactUs();
-                getSupportActionBar().setTitle("Connect Us");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.faq:
-
-                go_next = new FaQ();
-                getSupportActionBar().setTitle("FAQ");
-                fragmentManager = getSupportFragmentManager();
-
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                break;
-            case R.id.perm_new:
-
-                Intent intent = new Intent(this, Chart_page.class);
-                intent.putExtra("show_permission_dialog", true);
-                startActivity(intent);
-                break;
-            case R.id.Logout:
-
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("firebaseToken", "");
-                myEdit.apply();
-                startActivity(new Intent(this, Login_verifcation.class));
-                getSupportActionBar().setTitle("Verification");
-                break;
-            default :
-                Log.e("Invalid", "Selection");
-
-        }*/
         if (itemId == R.id.chart_page) {
 
             startActivity(new Intent(this, Dashboard.class));

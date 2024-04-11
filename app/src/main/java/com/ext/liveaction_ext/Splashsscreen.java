@@ -47,15 +47,14 @@ public class Splashsscreen extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
-//        String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
-        String endpot = "https://sondersort.online";
+
 
 
         String dir = getObbDir().getPath();
         ArrayList pack = conn.App_list();
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sharedPreferences.edit();
-        myEdit.putString("endpt", endpot);
+
         myEdit.putString("dir", dir);
         Set<String> set = new HashSet<String>();
         set.addAll(pack);

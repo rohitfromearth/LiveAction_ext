@@ -41,20 +41,16 @@ public class day_Fragment extends Fragment {
     PieChart pieChart;
     DummyData dumdta = new DummyData();
     int uid_z;
-    String firebaseToke = "";
     int uid = 0;
     boolean showDummyVal;
     boolean dummyVal=false;
 
-    Conn_service conn = new Conn_service();
     TableLayout tbklayout;
-    private FirebaseAuth mAuth;
+
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
 
-    boolean isProgressVisible = false;
-    String categoryName;
-    Context context;
+
     SharedPreferences sh;
 
 
@@ -75,59 +71,53 @@ public class day_Fragment extends Fragment {
     }
 
     private void Data_Show() {
+
+        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        uid = sh.getInt("UID", uid_z);
+
+        //april
+        Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
+
+        Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
+
+        // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
+
+        String resultdummy = dumdta.Data_for_dash();
         try {
+            JSONObject jsonObject = new JSONObject(resultdummy);
+            JSONArray dayArray = jsonObject.getJSONArray("day");
 
-             sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-            uid = sh.getInt("UID", uid_z);
-
-            //april
-            Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
-
-            Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
-
-           // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
-
-            String resultdummy = dumdta.Data_for_dash();
-            try {
-                JSONObject jsonObject = new JSONObject(resultdummy);
-                JSONArray dayArray = jsonObject.getJSONArray("day");
-
-                // Print dayArray
-                System.out.println("dayArray:");
-                for (int i = 0; i < dayArray.length(); i++) {
-                    JSONObject dayObject = dayArray.getJSONObject(i);
-                    System.out.println("dayArray"+dayObject.toString());
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            JSONObject jsonncheck = new JSONObject(resultdummy);
-
-
-            showDummyVal = sh.getBoolean("showDummy",dummyVal);
-            System.out.println("boolean value="+showDummyVal);
-            if (showDummyVal) {
-
-                piecreate(dummyList);
-                List<CardItem> cardItems = createCardItems(dummyList);
-                cardAdapter = new CardAdapter(cardItems, requireContext());
-                recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-                recyclerView.setAdapter(cardAdapter);
-
-            } else {
-
-                piecreate( daySet);
-                List<CardItem> cardItems = createCardItems(daySet);
-                cardAdapter = new CardAdapter(cardItems, requireContext());
-                recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-                recyclerView.setAdapter(cardAdapter);
+            // Print dayArray
+            System.out.println("dayArray:");
+            for (int i = 0; i < dayArray.length(); i++) {
+                JSONObject dayObject = dayArray.getJSONObject(i);
+                System.out.println("dayArray"+dayObject.toString());
             }
 
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+
+
+        showDummyVal = sh.getBoolean("showDummy",dummyVal);
+        System.out.println("boolean value="+showDummyVal);
+        if (showDummyVal) {
+
+            piecreate(dummyList);
+            List<CardItem> cardItems = createCardItems(dummyList);
+            cardAdapter = new CardAdapter(cardItems, requireContext());
+            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+            recyclerView.setAdapter(cardAdapter);
+
+        } else {
+
+            piecreate( daySet);
+            List<CardItem> cardItems = createCardItems(daySet);
+            cardAdapter = new CardAdapter(cardItems, requireContext());
+            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+            recyclerView.setAdapter(cardAdapter);
+        }
+
     }
 
 

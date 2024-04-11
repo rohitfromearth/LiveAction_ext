@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.Addaptors.CardAdapter;
 import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.R;
-import com.ext.liveaction_ext.service_clas.Conn_service;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,17 +39,17 @@ public class week_Fragment extends Fragment {
     int uid = 0;
 
     TableLayout tbklayout;
-    private FirebaseAuth mAuth;
+
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
 
     SharedPreferences sh;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         View view = inflater.inflate(R.layout.fragment2, container, false);
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_forweek);
         pieChart = view.findViewById(R.id.piechart_for_week);
@@ -68,7 +64,7 @@ public class week_Fragment extends Fragment {
 
     private void Data_show() {
 
-        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+
         uid = sh.getInt("UID", uid_z);
 
         Set<String> daySet = sh.getStringSet("WEEK_LIST", new HashSet<>());
@@ -152,8 +148,7 @@ public class week_Fragment extends Fragment {
 
 
     private void addTableRow(String categoryName, String lastWeek, int color_code) {
-
-        TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.legend_data, null);
+ TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.legend_data, null);
 
         TextView tvCategory = row.findViewById(R.id.tv_legend_Category);
         TextView tvLastWeek = row.findViewById(R.id.tv_legend_per);

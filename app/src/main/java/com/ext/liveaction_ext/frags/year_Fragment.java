@@ -2,9 +2,6 @@ package com.ext.liveaction_ext.frags;
 
 import static android.content.Context.MODE_PRIVATE;
 
-
-
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,16 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.Addaptors.CardAdapter;
 import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.R;
-import com.ext.liveaction_ext.service_clas.Conn_service;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,19 +36,18 @@ public class year_Fragment extends Fragment {
     PieChart pieChart;
     int uid_z;
     int uid = 0;
-    Conn_service conn = new Conn_service();
-    String firebaseToke = "";
+
     TableLayout tbklayout;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
-    private FirebaseAuth mAuth;
+
     SharedPreferences sh;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         View view = inflater.inflate(R.layout.fragment4, container, false);
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_year);
         pieChart = view.findViewById(R.id.piechart_for_year);
@@ -68,7 +60,7 @@ public class year_Fragment extends Fragment {
     private void Data_show() {
 
 
-        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+
         uid = sh.getInt("UID", uid_z);
 
         Set<String> yearset = sh.getStringSet("YEAR_LIST", new HashSet<>());

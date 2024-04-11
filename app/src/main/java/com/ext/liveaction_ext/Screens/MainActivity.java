@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Conn_service conn = new Conn_service();
 
     CardView Viewbtn;
-
+    SharedPreferences sh;
     Context context;
 
     CheckBox termsCheckbox, privacyCheckbox;
@@ -41,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        sh= getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
 
         boolean isLocationEnabled = isLocationServicesEnabled(getApplicationContext());
 
-        getSupportActionBar().setTitle("Sondersort");
+        getSupportActionBar().setTitle(R.string.app_name);
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS}, 4);
 
@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
         privacyCheckbox = findViewById(R.id.checkBox2); // Replace R.id.checkbox_privacy with your actual checkbox ID
         messageTextView = findViewById(R.id.validationmasg); // Replace R.id.message_textview with your actual TextView ID
 
-        String endpot = "https://sondersort.online";
+
 
         String dir = getObbDir().getPath();
         ArrayList pack = conn.App_list();
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-//        myEdit.putString("endpt", endpot);
+
+        SharedPreferences.Editor myEdit = sh.edit();
+
         myEdit.putString("dir", dir);
         Set<String> set = new HashSet<String>();
         set.addAll(pack);

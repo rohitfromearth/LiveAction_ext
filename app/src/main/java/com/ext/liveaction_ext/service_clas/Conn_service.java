@@ -21,7 +21,7 @@ public class Conn_service {
     String UserID = "";
     ArrayList<String> appl = new ArrayList<String>();
 
-    String endpot = "https://sondersort.online";
+    String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
 
     public ArrayList App_list() {
 
@@ -229,7 +229,7 @@ public class Conn_service {
     ///////////////////////////////////////
 
 
-    public String crashLog(String str1, String str2) {
+    public String crashLog(String str1) {
 
         try {
             String response = "";
