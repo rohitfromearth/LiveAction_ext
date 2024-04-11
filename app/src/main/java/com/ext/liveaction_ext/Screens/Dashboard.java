@@ -87,7 +87,7 @@ public class Dashboard extends AppCompatActivity {
         mobile = sh.getString("mobile_number", "");
 
         String endpot = "https://sondersort.online";
-
+        //String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
         String dir = getObbDir().getPath();
 
         setContentView(R.layout.drawer_layout);

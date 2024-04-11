@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -31,11 +30,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-
         android:textAppearance="?android:textAppearanceSmall"
         android:textColor="#424140"
         android:textStyle="bold" />
-
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -49,10 +46,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
-            android:textFontWeight="1"
             android:gravity="left"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textFontWeight="1" />
 
         <TextView
             android:id="@+id/ts_value"
@@ -61,11 +58,10 @@
             android:layout_marginTop="4dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:textFontWeight="1"
             android:gravity="right"
-
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textFontWeight="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,25 +75,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textFontWeight="1"
             android:layout_weight="1"
             android:gravity="left"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textFontWeight="1" />
 
         <TextView
             android:id="@+id/average_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="2dp"
             android:layout_weight="1"
-            android:textFontWeight="1"
             android:gravity="right"
-
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textFontWeight="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -112,11 +107,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginTop="4dp"
-            android:textFontWeight="1"
             android:layout_weight="1"
             android:gravity="left"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textFontWeight="1" />
 
         <TextView
             android:id="@+id/variance_value"
@@ -125,12 +120,9 @@
             android:layout_marginTop="4dp"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            android:textFontWeight="1"
-
             android:gravity="right"
-
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/darker_gray"
+            android:textFontWeight="1" />
     </LinearLayout>
-
 </LinearLayout>

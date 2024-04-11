@@ -22,6 +22,7 @@ public class Conn_service {
     ArrayList<String> appl = new ArrayList<String>();
 
     String endpot = "https://sondersort.online";
+    //String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
 
     public ArrayList App_list() {
 

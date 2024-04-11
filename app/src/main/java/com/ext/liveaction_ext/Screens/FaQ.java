@@ -16,7 +16,7 @@ import com.ext.liveaction_ext.R;
 
 public class FaQ extends Fragment {
     CardView btn_dash;
-    TextView clickFaq;
+    TextView clickFaq, privacy, terms;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -26,6 +26,8 @@ public class FaQ extends Fragment {
         View view = inflater.inflate(R.layout.activity_fa_q, container, false);
         btn_dash = view.findViewById(R.id.mange_btn);
         clickFaq = view.findViewById(R.id.clickFaq);
+        privacy = view.findViewById(R.id.privacyPolicy);
+        terms = view.findViewById(R.id.termsConditions);
 
         btn_dash.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +43,6 @@ public class FaQ extends Fragment {
                 startActivity(new Intent(getContext(), Dashboard.class));
             }
         });
-
         clickFaq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,8 +50,20 @@ public class FaQ extends Fragment {
                 startActivity(new Intent(getContext(), FAQActivity.class));
             }
         });
-
-
+        privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // startYourActivity();
+                startActivity(new Intent(getContext(), PrivacyActivity.class));
+            }
+        });
+        terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // startYourActivity();
+                startActivity(new Intent(getContext(), TermsActivity.class));
+            }
+        });
         return view;
     }
     // Method to start YourActivity
