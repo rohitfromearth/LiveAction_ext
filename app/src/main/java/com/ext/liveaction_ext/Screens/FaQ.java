@@ -23,7 +23,7 @@ public class FaQ extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.activity_fa_q, container, false);
-        btn_dash = view.findViewById(R.id.mange_btn);
+        btn_dash = view.findViewById(R.id.dashboard_btn_faq);
         clickFaq = view.findViewById(R.id.clickFaq);
         privacy = view.findViewById(R.id.privacyPolicy);
         terms = view.findViewById(R.id.termsConditions);

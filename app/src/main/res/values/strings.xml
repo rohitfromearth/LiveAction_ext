@@ -5,6 +5,8 @@
     <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> of participating in this panel</string>
 
 
+    <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy and </a>  </string>
+    <string name="terms"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
     <string name="hyperlink_gmail"><a href="sondersorttrack@gmail.com">sondersorttrack@gmail.com</a></string>
 
     <string name="instruction_one">After verifying your mobile number, the Usage Data Access page will open.

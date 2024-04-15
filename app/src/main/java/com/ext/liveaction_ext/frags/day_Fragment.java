@@ -85,9 +85,7 @@ public class day_Fragment extends Fragment {
         String resultdummy = dumdta.Data_for_dash();
         try {
             JSONObject jsonObject = new JSONObject(resultdummy);
-            JSONArray dayArray = jsonObject.getJSONArray("day");
 
-            // Print dayArray
 
 
 
