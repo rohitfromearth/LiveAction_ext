@@ -74,7 +74,7 @@ public class Manage_screen extends Fragment {
         floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
-        Log.e("mAuthManage", "mAuthManage"+mAuth);
+
         FirebaseUser use = mAuth.getCurrentUser();
 
 
@@ -95,7 +95,7 @@ public class Manage_screen extends Fragment {
         SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
-        Log.e("firebaseToken", "firebaseToken"+firebaseToken);
+
 
         // Inflate the floating view layout
         inflater = LayoutInflater.from(getContext());
@@ -108,7 +108,7 @@ public class Manage_screen extends Fragment {
         floatingViewContainer.addView(floatingView);
 
         String res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
-        Log.e("res", "res"+res);
+
         boolean edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");
@@ -176,7 +176,7 @@ public class Manage_screen extends Fragment {
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-                    Log.e("jsonbody", String.valueOf(jsonBody));
+
                     boolean validate = validationonper(valuesList);
                     if (validate) {
                         addData(jsonBody);
@@ -254,7 +254,7 @@ public class Manage_screen extends Fragment {
                         target_per = targetinper + "%";
                     }
                     target_edi = item.getBoolean("target_editable");
-                    Log.e("per", "per=====" + target_per);
+
 
                     addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi);
                     if (usage_id == 1) {
@@ -279,7 +279,7 @@ public class Manage_screen extends Fragment {
 
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
 
-        Log.e("dataloop", String.valueOf(edit_view));
+
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
 
         TextView tvCategory = row.findViewById(R.id.tvCategor);
@@ -322,7 +322,7 @@ public class Manage_screen extends Fragment {
     public void addData(JSONObject jsonbdy) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        Log.e("stron", firebaseToken);
+
 
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
 

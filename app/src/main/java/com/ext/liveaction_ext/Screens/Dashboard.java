@@ -121,7 +121,7 @@ public class Dashboard extends AppCompatActivity {
         }
 //        }
 
-        ArrayList pack = conn.App_list();
+
 
         String fToken = sh.getString("firebaseToken", "");//april
 
@@ -136,7 +136,7 @@ public class Dashboard extends AppCompatActivity {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("showDummy value: " + showDummy);
+
 
 
         dummyList = dummyDayList(resultdummy);
@@ -151,8 +151,7 @@ public class Dashboard extends AppCompatActivity {
         myEdit.putString("dir", dir);
         myEdit.putBoolean("showDummy", showDummy);
 
-        Set<String> set = new HashSet<String>();
-        set.addAll(pack);
+
 
         Set<String> dummyset = new HashSet<String>();
         dummyset.addAll(dummyList);
@@ -169,14 +168,14 @@ public class Dashboard extends AppCompatActivity {
         Set<String> yearset = new HashSet<String>();
         yearset.addAll(yearList);
 
-        myEdit.putStringSet("APP_LIST", set);
+
         myEdit.putStringSet("DUMMY_LIST", dummyset);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
         myEdit.putStringSet("YEAR_LIST", yearset);
 
-        myEdit.putString("key_live_data", res);
+
         myEdit.apply();
 
         tabLayout = findViewById(R.id.tabLayout);

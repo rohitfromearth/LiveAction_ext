@@ -5,9 +5,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.splashscreen.SplashScreen;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.ext.liveaction_ext.Screens.Dashboard;
 import com.ext.liveaction_ext.Screens.MainActivity;
@@ -23,8 +26,9 @@ public class Splashsscreen extends AppCompatActivity {
     private final int DELAY = 1250;
 
 //    ImageView load_img;
-
+String Dir= "";
     int uid_z;
+    String TAG = String.valueOf(getClass());
     Conn_service conn = new Conn_service();
     String mobile, username;
     int uid = 0;
@@ -35,7 +39,7 @@ public class Splashsscreen extends AppCompatActivity {
 
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         splashScreen.setKeepOnScreenCondition(() -> true);
-
+        Dir = getObbDir().getPath();
 //load_img=findViewById(R.id.Loading_image);
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
@@ -50,12 +54,14 @@ public class Splashsscreen extends AppCompatActivity {
 
 
 
-        String dir = getObbDir().getPath();
-        ArrayList pack = conn.App_list();
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sharedPreferences.edit();
 
-        myEdit.putString("dir", dir);
+        ArrayList pack = conn.App_list(getApplicationContext());
+Log.e(TAG, String.valueOf(pack));
+        SharedPreferences.Editor myEdit = sh.edit();
+
+
+        myEdit.putString("dir", Dir);
+        Log.e(TAG, Dir);
         Set<String> set = new HashSet<String>();
         set.addAll(pack);
         myEdit.putStringSet("APP_LIST", set);

@@ -131,60 +131,49 @@ public class Login_verifcation extends AppCompatActivity {
         usaegstat = dialog.findViewById(R.id.usaegstat_perm);
         Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
         close = dialog.findViewById(R.id.close_permission);
-        permission_usage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Dialog dialog1 = new Dialog(Login_verifcation.this);
-                dialog1.setContentView(R.layout.dialog_for_perrmisson);
-                dialog1.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                dialog1.setCancelable(false);
-                dialog1.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-                dialog1.show();
-                usaegstat1 = dialog1.findViewById(R.id.usaegstat_perm);
-                Accessibilty1 = dialog1.findViewById(R.id.accessibilty_perm);
-                close1 = dialog1.findViewById(R.id.close_permission);
+        permission_usage.setOnClickListener(v -> {
+            Dialog dialog1 = new Dialog(Login_verifcation.this);
+            dialog1.setContentView(R.layout.dialog_for_perrmisson);
+            dialog1.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog1.setCancelable(false);
+            dialog1.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            dialog1.show();
+            usaegstat1 = dialog1.findViewById(R.id.usaegstat_perm);
+            Accessibilty1 = dialog1.findViewById(R.id.accessibilty_perm);
+            close1 = dialog1.findViewById(R.id.close_permission);
 
-                close1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.animate().alpha(1f).setDuration(200);
-                            }
-                        }).start();
-                        dialog1.dismiss();
-                    }
-                });
-                usaegstat1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.animate().alpha(1f).setDuration(200);
-                            }
-                        }).start();
-                        startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+            close1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.animate().alpha(1f).setDuration(200);
+                        }
+                    }).start();
+                    dialog1.dismiss();
+                }
+            });
+            usaegstat1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.animate().alpha(1f).setDuration(200);
+                        }
+                    }).start();
+                    startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
-                        // Disable button2
-                        Accessibilty1.setEnabled(usaegstat1.isEnabled());  // Enable button2
-                    }
-                });
-                Accessibilty1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                view.animate().alpha(1f).setDuration(200);
-                            }
-                        }).start();
-                        startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-                    }
-                });
+                    // Disable button2
+                    Accessibilty1.setEnabled(usaegstat1.isEnabled());  // Enable button2
+                }
+            });
+            Accessibilty1.setOnClickListener(view -> {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+            });
 
-            }
         });
 
 

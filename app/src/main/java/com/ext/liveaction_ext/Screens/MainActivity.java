@@ -28,11 +28,11 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
 
-    Conn_service conn = new Conn_service();
+
 
     CardView Viewbtn;
-    SharedPreferences sh;
-    Context context;
+
+
 
     CheckBox termsCheckbox, privacyCheckbox;
     TextView messageTextView, privacyText, termsText;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sh= getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+
 
         boolean isLocationEnabled = isLocationServicesEnabled(getApplicationContext());
 
@@ -63,18 +63,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
 
-        String dir = getObbDir().getPath();
-        ArrayList pack = conn.App_list();
 
-        SharedPreferences.Editor myEdit = sh.edit();
 
-        myEdit.putString("dir", dir);
-        Set<String> set = new HashSet<String>();
-        set.addAll(pack);
-        myEdit.putStringSet("APP_LIST", set);
-        myEdit.apply();
+
+
+
+
+
+
+
 
         privacyText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,52 +80,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), PrivacyActivity.class));
             }
         });
-        termsText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), TermsActivity.class));
-            }
-        });
+        termsText.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TermsActivity.class)));
 
 
         Viewbtn = findViewById(R.id.disclaimerCardView);
-        Viewbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        v.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                boolean termsChecked = termsCheckbox.isChecked();
-                boolean privacyChecked = privacyCheckbox.isChecked();
+        Viewbtn.setOnClickListener(v -> {
+            v.animate().alpha(0.5f).setDuration(200).withEndAction(() -> v.animate().alpha(1f).setDuration(200)).start();
+            boolean termsChecked = termsCheckbox.isChecked();
+            boolean privacyChecked = privacyCheckbox.isChecked();
 
-                if (termsChecked && privacyChecked) {
+            if (termsChecked && privacyChecked) {
 
 //                    try {
 ////                        StoreData();
 //                    } catch (JSONException e) {
 //                        throw new RuntimeException(e);
 //                    }
-                    startActivity(new Intent(MainActivity.this, Login_verifcation.class));
-                } else {
-                    // Display a message below the button
-                    messageTextView.setText("*Please check both checkboxes.");
-                }
-
-
+                startActivity(new Intent(MainActivity.this, Login_verifcation.class));
+            } else {
+                // Display a message below the button
+                messageTextView.setText("*Please check both checkboxes.");
             }
+
+
         });
-        privacyCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Enable or disable the button based on the checkboxes' states
-                boolean termsChecked = termsCheckbox.isChecked();
-                boolean privacyChecked = privacyCheckbox.isChecked();
+        privacyCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Enable or disable the button based on the checkboxes' states
+            boolean termsChecked = termsCheckbox.isChecked();
+            boolean privacyChecked = privacyCheckbox.isChecked();
 
-                messageTextView.setText("");
-            }
+            messageTextView.setText("");
         });
 
     }
@@ -233,20 +215,13 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setTitle("SETTINGS");
         alertDialog.setMessage("Enable Location Provider! Go to settings menu?");
         alertDialog.setPositiveButton("Settings",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(
-                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        MainActivity.this.startActivity(intent);
-                    }
+                (dialog, which) -> {
+                    Intent intent = new Intent(
+                            Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    MainActivity.this.startActivity(intent);
                 });
         alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-
-                    }
-                });
+                (dialog, which) -> dialog.cancel());
         alertDialog.show();
     }
 

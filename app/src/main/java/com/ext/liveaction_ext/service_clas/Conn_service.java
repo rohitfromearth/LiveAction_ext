@@ -1,5 +1,9 @@
 package com.ext.liveaction_ext.service_clas;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -19,15 +23,20 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Conn_service {
     String UserID = "";
+    SharedPreferences sh;
     ArrayList<String> appl = new ArrayList<String>();
 
-    String endpot = "https://g503wpzp-8080.inc1.devtunnels.ms";
+    String endpot = "https://sondersort.online";
 
-    public ArrayList App_list() {
+    public ArrayList App_list(Context context) {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
+ sh = context.getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sh.edit();
+        myEdit.putString("endpt",endpot);
+        myEdit.apply();
         String[] appslist = new String[]{};
         try {
             String response = "";
@@ -283,7 +292,7 @@ public class Conn_service {
             urlConnection.disconnect();
 
         } catch (Exception e) {
-//            Log.e("Exect", String.valueOf(e));
+            Log.e("Exect", String.valueOf(e));
         }
 
         return str1;

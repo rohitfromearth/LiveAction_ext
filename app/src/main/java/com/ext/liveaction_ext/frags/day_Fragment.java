@@ -88,11 +88,8 @@ public class day_Fragment extends Fragment {
             JSONArray dayArray = jsonObject.getJSONArray("day");
 
             // Print dayArray
-            System.out.println("dayArray:");
-            for (int i = 0; i < dayArray.length(); i++) {
-                JSONObject dayObject = dayArray.getJSONObject(i);
-                System.out.println("dayArray"+dayObject.toString());
-            }
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -168,7 +165,7 @@ public class day_Fragment extends Fragment {
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
 
                 String categoryName = jsonObject.getString("category");
-                Log.d("usageData", "fragment1 categoryName: " + categoryName);
+
                 if (!categoryName.equals("Total")) {
 
                     double pievalue = jsonObject.getDouble("usage_percent_day");

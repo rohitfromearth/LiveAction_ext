@@ -119,7 +119,7 @@ public class year_Fragment extends Fragment {
                     int average = jsonObject.optInt("last_year_usage_in_mins");
                     int variance = jsonObject.optInt("variance_year");
 
-                    Log.d("yearset", "fragment4 : " + categoryName);
+
 
                     String tsText = " TS this year";
                     String averageText = " Average\n(last year) ";
