@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sonders Sort</string>
+    <string name="app_name">Life Actions</string>
 
     <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
     <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> of participating in this panel</string>
