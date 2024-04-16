@@ -54,7 +54,6 @@ public class day_Fragment extends Fragment {
     SharedPreferences sh;
 
 
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
