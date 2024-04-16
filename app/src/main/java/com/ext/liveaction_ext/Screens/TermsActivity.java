@@ -15,7 +15,7 @@ public class TermsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.terms_activity);
 
-        getSupportActionBar().setTitle("Sondersort");
+        getSupportActionBar().setTitle(R.string.app_name);
 
         webView = findViewById(R.id.webView1);
         webView.setWebViewClient(new WebViewClient());

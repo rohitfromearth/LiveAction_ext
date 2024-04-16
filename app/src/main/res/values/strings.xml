@@ -2,21 +2,24 @@
     <string name="app_name">Life Actions</string>
 
     <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
-    <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> of participating in this panel</string>
+    <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
 
 
     <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy and </a>  </string>
     <string name="terms"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
-    <string name="hyperlink_gmail"><a href="sondersorttrack@gmail.com">sondersorttrack@gmail.com</a></string>
+    <string name="hyperlink_gmail"><a href="lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>
 
     <string name="instruction_one">After verifying your mobile number, the Usage Data Access page will open.
-Please switch on the button or Sonder Sort app.</string>
+Please switch on the button or Life Action app.</string>
     <string name="instruction_two">After that please click on Usage Stat Permission button below.</string>
 
     <string name="about_us_data">Welcome to Club LA! This is an exclusive, by invitation only group. Our members/ panellists, use our app which tracks the use of their phones and reports back on how they use their time. By using their own personal phone usage behaviour, our members get a view of how their time is currently being spent. They use their own personal behaviour to set goals for improvement, changing and optimizing their phone usage behaviour
 Club LA members can continue to see their own performance on a weekly basis and modify, reset and track their goals.
 </string>
+    <string name="Member_ben">As a member of the Club LA, we also incentivise you. For every week that you are a part of the Club LA, we credit an incentive of Rs 10 to your own personal incentive account.
 
+For successful achievement of any goals that you have set, we celebrate your achievement by crediting an additional incentive. And all your incentives and how you have earned them are clearly visible to you on your personal dashboard in-built in the app.
+</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
 

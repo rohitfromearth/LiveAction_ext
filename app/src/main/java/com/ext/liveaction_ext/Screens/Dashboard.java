@@ -231,7 +231,7 @@ public class Dashboard extends AppCompatActivity {
             Fragment go_next = new ContactUs();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-            getSupportActionBar().setTitle("Connect Us");
+            getSupportActionBar().setTitle("Contact us");
         });
         tvP_usernme = findViewById(R.id.usrname);
 
@@ -381,7 +381,7 @@ public class Dashboard extends AppCompatActivity {
         } else if (itemId == R.id.contact_us) {
 
             go_next = new ContactUs();
-            getSupportActionBar().setTitle("Connect Us");
+            getSupportActionBar().setTitle("Contact us");
             fragmentManager = getSupportFragmentManager();
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();

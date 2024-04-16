@@ -100,7 +100,7 @@ public class Login_verifcation extends AppCompatActivity {
         firebaseAppCheck.installAppCheckProviderFactory(
                 PlayIntegrityAppCheckProviderFactory.getInstance());
 
-        getSupportActionBar().setTitle("Sondersort");
+        getSupportActionBar().setTitle(R.string.app_name);
         btn_verify = findViewById(R.id.verifybtn);
         sendotp = findViewById(R.id.sendotp);
         permission_usage = findViewById(R.id.permission_button);

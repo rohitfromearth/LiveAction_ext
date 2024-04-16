@@ -178,6 +178,7 @@ OTP is valid for "
             android:layout_marginHorizontal="40dp"
             android:layout_marginVertical="10dp"
             android:paddingVertical="20dp"
+            android:paddingHorizontal="4dp"
             app:cardBackgroundColor="#fe7e34"
             app:cardCornerRadius="20dp"
             app:cardElevation="20dp">

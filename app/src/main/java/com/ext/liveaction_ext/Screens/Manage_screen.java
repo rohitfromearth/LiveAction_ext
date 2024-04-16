@@ -245,7 +245,7 @@ public class Manage_screen extends Fragment {
 
                     String pointslastweek = item.getString("target_variance");
 
-                    if (targetinmin.equals("0") || targetinmin.equals("null")) {
+                    if (targetinmin.equals("0") || targetinmin == null) {
                         target_hr = " ";
                         target_per = "%";
 

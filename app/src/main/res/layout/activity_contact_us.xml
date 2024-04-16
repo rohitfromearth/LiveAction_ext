@@ -22,7 +22,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Connect"
+                android:text="Contact us"
                 android:textColor="#fe7e34"
                 android:textSize="30sp"
                 android:textStyle="bold" />
@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:text="connect with us on this email id:"
+                    android:text="Contact us on this email id:"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -95,7 +95,8 @@
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -103,14 +104,32 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+
                     android:orientation="vertical">
 
                     <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginVertical="10dp"
+                    android:text="@string/about_us_data"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                       
+
                         android:layout_marginVertical="10dp"
-                        android:text="@string/about_us_data"
+                        android:textStyle="bold"
+                        android:text="Membership Benefits"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginVertical="10dp"
+                        android:text="@string/Member_ben"
                         android:textColor="@color/black"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -125,7 +144,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="20dp"
             android:gravity="bottom|center"
             android:orientation="horizontal">
 
@@ -133,6 +152,7 @@
                 android:id="@+id/dashboard_connect"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:layout_marginVertical="5dp"
                 android:layout_weight="1"
                 app:cardBackgroundColor="#fe7e34"
                 app:cardCornerRadius="20dp"
