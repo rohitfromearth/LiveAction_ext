@@ -89,13 +89,15 @@ public class Login_verifcation extends AppCompatActivity {
 
     // callback method is called on Phone auth provider.
 
+    boolean isLoggedIn = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_verifcation);
 
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
         firebaseAppCheck.installAppCheckProviderFactory(
                 PlayIntegrityAppCheckProviderFactory.getInstance());
@@ -115,8 +117,9 @@ public class Login_verifcation extends AppCompatActivity {
         phoneAuthHandler = new PhoneAuthHandler();
         otpVerificationHandler = new OTPVerificationHandler();
 
- sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
+        isLoggedIn = sh.getBoolean("isLoggedIn",isLoggedIn);
 
         dialog = new Dialog(Login_verifcation.this);
         dialog.setContentView(R.layout.dialog_for_perrmisson);
@@ -450,10 +453,7 @@ public class Login_verifcation extends AppCompatActivity {
         return latitude;
     }////////////end method
     //code end location
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+
     public void verifyOTP(String verificationId, String otp) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
         signInWithPhoneAuthCredential(credential);
@@ -570,5 +570,16 @@ public class Login_verifcation extends AppCompatActivity {
 
                 });
     }
-
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        if (!isLoggedIn) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish(); // Finish the current activity
+        } else {
+            // User is logged in, perform default back press action
+            super.onBackPressed();
+        }
+    }
 }
