@@ -90,6 +90,7 @@ public class Login_verifcation extends AppCompatActivity {
     // callback method is called on Phone auth provider.
 
     boolean isLoggedIn = true;
+    boolean isFirstPage = false;
 
 
     @Override
@@ -119,7 +120,6 @@ public class Login_verifcation extends AppCompatActivity {
 
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
-        isLoggedIn = sh.getBoolean("isLoggedIn",isLoggedIn);
 
         dialog = new Dialog(Login_verifcation.this);
         dialog.setContentView(R.layout.dialog_for_perrmisson);
@@ -134,6 +134,8 @@ public class Login_verifcation extends AppCompatActivity {
         usaegstat = dialog.findViewById(R.id.usaegstat_perm);
         Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
         close = dialog.findViewById(R.id.close_permission);
+
+
         permission_usage.setOnClickListener(v -> {
             Dialog dialog1 = new Dialog(Login_verifcation.this);
             dialog1.setContentView(R.layout.dialog_for_perrmisson);
