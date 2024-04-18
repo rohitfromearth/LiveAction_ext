@@ -574,14 +574,25 @@ public class Login_verifcation extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        if (!isLoggedIn) {
+        super.onBackPressed();
+        Log.d("onBackPressed","back from login");
+
+        /*if (!isLoggedIn) {
+           // super.onBackPressed();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-            finish(); // Finish the current activity
+            //finish(); // Finish the current activity
+            Log.d("onBack","back to main1");
         } else {
             // User is logged in, perform default back press action
             super.onBackPressed();
-        }
+            Log.d("onBack","back to main2");
+        }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("destroyed","login destroyed");
     }
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -438,6 +439,19 @@ public class Dashboard extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //super.onBackPressed();
+        Log.d("destroyed","dashboard back");
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("destroyed","dashboard destroyed");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("stop","dashboard stop");
     }
 }

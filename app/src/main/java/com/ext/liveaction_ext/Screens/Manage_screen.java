@@ -244,12 +244,20 @@ public class Manage_screen extends Fragment {
                     String targetinper = item.getString("target_in_percent");
 
                     String pointslastweek = item.getString("target_variance");
-                    if (targetinmin.equals("0")) {
-                        target_hr = targetinper + "%";
-                    }
-                    // Check if target_in_percent is 0, then display target_in_mins
-                    else if (targetinper.equals("0")) {
+
+                    if (targetinmin.equals("0") && targetinper.equals("0")) {
+
+                        target_hr = "";
+                        target_per = " " ;
+                    } else if (targetinmin.equals("0") && !targetinper.equals("0")) {
+                        target_hr = "";
+                        target_per = targetinper + "%";
+                    }   else if (!targetinmin.equals("0")  && targetinper.equals("0")) {
                         target_hr = targetinmin;
+                        target_per = " " ;
+                    }else{
+                        target_hr = targetinmin;
+                        target_per = targetinper + "%";
                     }
                     target_edi = item.getBoolean("target_editable");
 
