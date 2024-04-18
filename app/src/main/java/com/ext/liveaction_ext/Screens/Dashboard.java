@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,16 +69,19 @@ public class Dashboard extends AppCompatActivity {
     ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
     boolean showDummy;
+    private boolean isLoggedIn = false;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
 
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+        isLoggedIn = sh.getBoolean("isLoggedIn", false);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
@@ -401,14 +405,25 @@ public class Dashboard extends AppCompatActivity {
             startActivity(intent);
 
         } else if (itemId == R.id.Logout) {
-
+            isLoggedIn = false;
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
 //            myEdit.putString("firebaseToken", "");
             myEdit.clear();
             myEdit.apply();
-            startActivity(new Intent(this, Login_verifcation.class));
+            //startActivity(new Intent(this, Login_verifcation.class));
+
+
+
+            // Clear the activity stack and start a new activity
+            Intent intent = new Intent(this, Login_verifcation.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish(); // Finish the current activity
             getSupportActionBar().setTitle("Verification");
+
+            myEdit.putBoolean("isLoggedIn", false);
+            myEdit.apply();
         }
 
         // Insert the fragment by replacing any existing fragment
@@ -424,6 +439,19 @@ public class Dashboard extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //super.onBackPressed();
+        Log.d("destroyed","dashboard back");
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("destroyed","dashboard destroyed");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("stop","dashboard stop");
     }
 }

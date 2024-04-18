@@ -247,11 +247,17 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
                     String pointslastweek = item.getString("target_variance");
 
-                    if (targetinmin.equals("0") || targetinmin == null) {
-                        target_hr = " ";
-                        target_per = "%";
+                    if (targetinmin.equals("0") && targetinper.equals("0")) {
 
-                    } else {
+                        target_hr = "";
+                        target_per = " " ;
+                    } else if (targetinmin.equals("0") && !targetinper.equals("0")) {
+                        target_hr = "";
+                        target_per = targetinper + "%";
+                    }   else if (!targetinmin.equals("0")  && targetinper.equals("0")) {
+                        target_hr = targetinmin;
+                        target_per = " " ;
+                    }else{
                         target_hr = targetinmin;
                         target_per = targetinper + "%";
                     }

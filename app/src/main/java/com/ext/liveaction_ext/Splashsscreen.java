@@ -44,7 +44,7 @@ String Dir= "";
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
-        FirebaseApp.initializeApp(this);
+       // FirebaseApp.initializeApp(this);
 
         SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);

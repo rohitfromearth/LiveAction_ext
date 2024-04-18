@@ -30,18 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private boolean isFirstPage = true;
     CardView Viewbtn;
 
 
 
     CheckBox termsCheckbox, privacyCheckbox;
     TextView messageTextView, privacyText, termsText;
+    //SharedPreferences sh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        isFirstPage = true;
+        //sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
         boolean isLocationEnabled = isLocationServicesEnabled(getApplicationContext());
 
@@ -60,17 +63,6 @@ public class MainActivity extends AppCompatActivity {
         termsCheckbox = findViewById(R.id.checkBox); // Replace R.id.checkbox_terms with your actual checkbox ID
         privacyCheckbox = findViewById(R.id.checkBox2); // Replace R.id.checkbox_privacy with your actual checkbox ID
         messageTextView = findViewById(R.id.validationmasg); // Replace R.id.message_textview with your actual TextView ID
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -225,6 +217,11 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d("onBack","main back");
+    }
 
 }
 
