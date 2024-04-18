@@ -2,6 +2,7 @@ package com.ext.liveaction_ext.Screens;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Achieve extends Fragment {
-    CardView rede, congrats_tv;
+    CardView rede, congrats_tv,btn_dsh;
     Conn_service servic = new Conn_service();
     int uid_z;
     int uid = 0;
@@ -80,6 +81,7 @@ public class Achieve extends Fragment {
 
         congrats_tv = view.findViewById(R.id.congrats_tv);
         tv_red_points = view.findViewById(R.id.earn_number);
+        btn_dsh=view.findViewById(R.id.dash_btn_ach);
         String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
         congrats_tv.setVisibility(View.GONE);
         onPostExecute(res);
@@ -99,7 +101,7 @@ public class Achieve extends Fragment {
             ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             actionBar.setTitle("Redeem");
         });
-
+        btn_dsh.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
 

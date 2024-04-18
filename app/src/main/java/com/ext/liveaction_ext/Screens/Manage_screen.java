@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -50,7 +51,7 @@ public class Manage_screen extends Fragment {
     String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
     TextView tv_btn;
-    CardView btn_sv;
+    CardView btn_sv,btn_dash;
     int valueInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
     private LinearLayout floatingViewContainer;
@@ -74,7 +75,7 @@ public class Manage_screen extends Fragment {
         floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
-
+btn_dash= view.findViewById(R.id.dashboard_btn_mng);
         FirebaseUser use = mAuth.getCurrentUser();
 
 
@@ -221,6 +222,7 @@ public class Manage_screen extends Fragment {
                 }
             }
         });
+        btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
 

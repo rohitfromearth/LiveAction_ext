@@ -64,18 +64,10 @@ public class Reedeem extends Fragment {
         count_txt = view.findViewById(R.id.tv_count);
         dash_bt = view.findViewById(R.id.dashboard_btn);
 
-        dash_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        dash_bt.setOnClickListener(view1 -> {
 
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
-                    }
-                }).start();
-                startActivity(new Intent(getContext(), Dashboard.class));
-            }
+            view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
+            startActivity(new Intent(getContext(), Dashboard.class));
         });
        // achiv_bt = view.findViewById(R.id.achev_btn);
         minus_count = view.findViewById(R.id.tv_minus_count);
@@ -101,17 +93,14 @@ public class Reedeem extends Fragment {
 
         if (use != null) {
             use.getIdToken(true)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                firebaseToke = task.getResult().getToken();
-                                SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            firebaseToke = task.getResult().getToken();
+                            SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
-                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                myEdit.putString("firebaseToken", firebaseToke);
-                                myEdit.apply();
-                            }
+                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                            myEdit.putString("firebaseToken", firebaseToke);
+                            myEdit.apply();
                         }
                     });
 
