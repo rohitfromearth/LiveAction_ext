@@ -66,12 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        privacyText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PrivacyActivity.class));
-            }
-        });
+        privacyText.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PrivacyActivity.class)));
         termsText.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TermsActivity.class)));
 
 

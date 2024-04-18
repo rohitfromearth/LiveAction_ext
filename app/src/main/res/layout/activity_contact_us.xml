@@ -54,16 +54,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
-                    android:text="Contact us on this email id:"
+                    android:gravity="center_horizontal"
+                    android:text="Contact us on this E-mail id:"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+              />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:text="@string/hyperlink_gmail"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                  />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -108,30 +110,32 @@
                     android:orientation="vertical">
 
                     <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:text="@string/about_us_data"
+                        android:gravity="center_horizontal"
 
-                    android:layout_marginVertical="10dp"
-                    android:text="@string/about_us_data"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+
+                        android:textColor="@color/black" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
+                        android:gravity="center_horizontal"
                         android:layout_marginVertical="10dp"
                         android:textStyle="bold"
                         android:text="Membership Benefits"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+
+                        />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
+                        android:gravity="center_horizontal"
                         android:layout_marginVertical="10dp"
                         android:text="@string/Member_ben"
                         android:textColor="@color/black"
-                        android:textSize="18sp" />
+        />
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>

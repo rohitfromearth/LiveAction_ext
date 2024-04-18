@@ -124,21 +124,30 @@ Set your targets for a better life and get rewarded."
                         android:id="@+id/viewPager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="50dp"
+                        android:layout_marginBottom="70dp"
                         android:orientation="horizontal"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
-                    </androidx.viewpager.widget.ViewPager>
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+<!--                    </androidx.viewpager.widget.ViewPager>-->
+                    <LinearLayout android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginHorizontal="2dp"
+                        android:layout_marginTop="5dp"
+                        android:padding="2dp"
+                        android:layout_marginBottom="25dp"
+                        android:gravity="bottom|center"
+                        android:orientation="vertical">
+
+                        <TextView
+                             android:layout_height="wrap_content" android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:layout_marginVertical="2dp"
+                            android:text="gihhjghjhgujkhbf"/>
 
                     <LinearLayout
                         android:id="@+id/bottom_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginBottom="25dp"
-                        android:gravity="bottom|center"
                         android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
@@ -155,7 +164,7 @@ Set your targets for a better life and get rewarded."
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_margin="4dp"
+                                android:layout_margin="10dp"
                                 android:text="Manage"
                                 android:textColor="@color/white"
                                 android:textStyle="bold" />
@@ -175,9 +184,10 @@ Set your targets for a better life and get rewarded."
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_margin="4dp"
+                                android:layout_margin="10dp"
                                 android:text="Achievements"
                                 android:textColor="@color/white"
+
                                 android:textStyle="bold" />
                         </androidx.cardview.widget.CardView>
 
@@ -195,7 +205,7 @@ Set your targets for a better life and get rewarded."
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_margin="4dp"
+                                android:layout_margin="10dp"
                                 android:text="Contact us"
                                 android:textColor="@color/white"
                                 android:textStyle="bold" />
@@ -215,11 +225,12 @@ Set your targets for a better life and get rewarded."
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_margin="4dp"
+                                android:layout_margin="10dp"
                                 android:text="FAQ"
                                 android:textColor="@color/white"
                                 android:textStyle="bold" />
                         </androidx.cardview.widget.CardView>
+                    </LinearLayout>
                     </LinearLayout>
 
                 </RelativeLayout>

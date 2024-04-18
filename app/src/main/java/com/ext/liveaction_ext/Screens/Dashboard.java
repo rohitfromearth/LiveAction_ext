@@ -114,7 +114,7 @@ public class Dashboard extends AppCompatActivity {
                 startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
                 // Disable button2
-                accessibility_permission.setEnabled(usage_stat.isEnabled());  // Enable button2
+                accessibility_permission.setEnabled(usage_stat.isEnabled());
             });
             accessibility_permission.setOnClickListener(view -> {
 
@@ -127,7 +127,7 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-        String fToken = sh.getString("firebaseToken", "");//april
+        String fToken = sh.getString("firebaseToken", "");
 
 
         String resultdummy = dumdta.Data_for_dash();
