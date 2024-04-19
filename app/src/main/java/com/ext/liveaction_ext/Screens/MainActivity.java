@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 //                    } catch (JSONException e) {
 //                        throw new RuntimeException(e);
 //                    }
-                startActivity(new Intent(MainActivity.this, Login_verifcation.class));
+                startActivity(new Intent(MainActivity.this, ProminentActivity.class));
             } else {
                 // Display a message below the button
                 messageTextView.setText("*Please check both checkboxes.");

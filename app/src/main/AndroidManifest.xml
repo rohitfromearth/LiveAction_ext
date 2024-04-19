@@ -51,6 +51,9 @@
             android:name=".Screens.TermsActivity"
             android:exported="false" />
         <activity
+            android:name=".Screens.ProminentActivity"
+            android:exported="false" />
+        <activity
             android:name=".FAQActivity"
             android:exported="false" />
         <activity
