@@ -3,8 +3,8 @@
 
     <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
     <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
-
-
+    <string name="privacy_polcy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
+    <string name="Disclosure"> Life Actions collects data through Accessibility Service to enhance your experience and provide personalized features based on your daily behavior. This includes but is not limited to:\n\n1.Usage patterns within the app.\n\n2.Interaction with system-level features.\n\n3.Content accessed and actions taken within the app.\n\nWe are committed to protecting your privacy and ensuring the security of your data. Your information is used solely for improving our services and is not shared with third parties without your consent.By continuing to use Life Actions, you agree to our Privacy Policy and acknowledge the collection of data through Accessibility Service. You can review and manage your data preferences in the app\'s settings.</string>
     <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy and </a>  </string>
     <string name="terms"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
     <string name="hyperlink_gmail"><a href="lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>

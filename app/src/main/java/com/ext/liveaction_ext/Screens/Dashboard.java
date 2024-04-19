@@ -44,8 +44,7 @@ import java.util.Set;
 
 public class Dashboard extends AppCompatActivity {
 
-    TextView tvP_usernme;
-
+    TextView tvP_usernme,privacyTet,termsTet;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -188,7 +187,8 @@ public class Dashboard extends AppCompatActivity {
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
         faq_btn = findViewById(R.id.FAQ_btn);
-
+        termsTet= findViewById(R.id.termsd);
+        privacyTet= findViewById(R.id.privacyd);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
         mDrawer.addDrawerListener(drawerToggle);
@@ -237,6 +237,8 @@ public class Dashboard extends AppCompatActivity {
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
             getSupportActionBar().setTitle("Contact us");
         });
+        privacyTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PrivacyActivity.class)));
+        termsTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TermsActivity.class)));
         tvP_usernme = findViewById(R.id.usrname);
 
         tvP_usernme.setText(username);
