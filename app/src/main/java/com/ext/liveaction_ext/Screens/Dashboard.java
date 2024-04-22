@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -47,6 +48,7 @@ public class Dashboard extends AppCompatActivity {
     TextView tvP_usernme,privacyTet,termsTet;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
+
     int uid_z;
     int uid = 0;
     private TabLayout tabLayout;
@@ -130,7 +132,32 @@ public class Dashboard extends AppCompatActivity {
 
 
         String resultdummy = dumdta.Data_for_dash();
-        String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+
+
+
+
+        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means the task has never been performed
+
+        Calendar today = Calendar.getInstance();
+        Calendar lastTaskCalendar = Calendar.getInstance();
+        lastTaskCalendar.setTimeInMillis(lastTaskDate);
+
+        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+            // Task has already been performed today
+
+        } else {
+            // Task has not been performed today
+
+
+   String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+    Log.d("G", "getUsageData");
+
+
+
+
+
+
 
 
         try {
@@ -148,7 +175,7 @@ public class Dashboard extends AppCompatActivity {
         monthList = dataMonthList(res);
         yearList = dataYearList(res);
 
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+
         SharedPreferences.Editor myEdit = sh.edit();
 
         myEdit.putString("dir", dir);
@@ -180,6 +207,11 @@ public class Dashboard extends AppCompatActivity {
 
 
         myEdit.apply();
+            SharedPreferences.Editor editor = sh.edit();
+            editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
+            editor.apply();
+
+        }
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
