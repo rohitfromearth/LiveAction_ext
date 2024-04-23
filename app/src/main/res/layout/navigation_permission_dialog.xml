@@ -37,7 +37,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Direction : The button will redirect to usage stat permission,find Liveaction_ext turn switch on "
+            android:text="Direction : The button will redirect to usage stat permission,find Live Actions turn switch on "
             android:textColor="@color/white"
             android:textSize="15dp"
             android:textStyle="italic" />
@@ -73,7 +73,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text=" Direction : the button will redirect to the Accessibility service's settings, click on 'Installed apps', find LiveAction and turn switch on "
+            android:text=" Direction : The button will redirect to the Accessibility service's settings, click on 'Installed apps', find Live Action and turn switch on "
             android:textColor="@color/white"
             android:textSize="15dp"
             android:textStyle="italic" />

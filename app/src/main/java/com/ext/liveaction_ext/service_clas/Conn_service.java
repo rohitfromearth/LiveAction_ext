@@ -33,7 +33,7 @@ public class Conn_service {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
- sh = context.getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        sh = context.getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();
         myEdit.putString("endpt",endpot);
         myEdit.apply();

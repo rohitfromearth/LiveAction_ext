@@ -19,10 +19,10 @@ CardView btn_sbmt;
 
         getSupportActionBar().setTitle(R.string.app_name);
 
-btn_sbmt= findViewById(R.id.btn_submit_Disclosure);
+        btn_sbmt= findViewById(R.id.btn_submit_Disclosure);
 
 
-btn_sbmt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Login_verifcation.class)));
+        btn_sbmt.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Login_verifcation.class)));
 
     }
 }

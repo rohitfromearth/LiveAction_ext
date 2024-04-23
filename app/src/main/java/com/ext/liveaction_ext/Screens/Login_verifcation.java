@@ -337,7 +337,7 @@ public class Login_verifcation extends AppCompatActivity {
             JSONObject jsonResponse = new JSONObject(uiddd);
             JSONObject data = jsonResponse.getJSONObject("data");
             boolean userExists = data.getBoolean("user_exists");
-//            boolean userExists=false;
+           //boolean userExists=false;
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");

@@ -333,6 +333,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
 
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
+        Log.d("setWeeklyTarget",uid);
 
 
     }
