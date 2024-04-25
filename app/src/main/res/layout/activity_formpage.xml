@@ -339,7 +339,22 @@
         </LinearLayout>
         ////
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/displayList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/display_form_input"
+                android:padding="7dp"
+                android:text="Selected options:"
+                android:textColorHint="@color/black"
+                android:textSize="15sp" />
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -384,7 +399,11 @@
             android:background="@color/white"
             android:padding="5dp"
             app:cardCornerRadius="3dp">
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -425,7 +444,27 @@
                         android:background="@drawable/spinner_background" />
                 </LinearLayout>
             </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/displayProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/display_form_input"
+                        android:padding="7dp"
+                        android:text="Selected options:"
+                        android:textColorHint="@color/black"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </LinearLayout>
             ///
+
+            ////
         </androidx.cardview.widget.CardView>
         ///
 

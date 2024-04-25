@@ -3,6 +3,7 @@ package com.ext.liveaction_ext.Screens;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,6 +63,7 @@ public class Manage_screen extends Fragment {
     private float initialTouchX;
     private FirebaseAuth mAuth;
     private float initialTouchY;
+    Context context;
 
 
     @Override
@@ -85,7 +87,8 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         firebaseToke = task.getResult().getToken();
-                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+
                         SharedPreferences.Editor myEdit = sharedPreferences.edit();
                         myEdit.putString("firebaseToken", firebaseToke);
                         myEdit.apply();

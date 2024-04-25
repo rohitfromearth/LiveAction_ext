@@ -1,5 +1,6 @@
 package com.ext.liveaction_ext.Screens;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ import java.util.regex.Pattern;
 
 public class Formpage extends AppCompatActivity {
     CardView nextActivity_btn, productcrd;
+    TextView displayList,displayProduct;
 
     RadioGroup radioGroup;
 
@@ -90,6 +93,7 @@ public class Formpage extends AppCompatActivity {
     TextView city_text;
     boolean val, enabled;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +102,9 @@ public class Formpage extends AppCompatActivity {
         //textView = findViewById(R.id.change_text);
 
         getSupportActionBar().setTitle(R.string.app_name);
+        displayList = findViewById(R.id.displayList);
+        displayProduct = findViewById(R.id.displayProduct);
+
         state_text = findViewById(R.id.states_text);
         state_text.setVisibility(View.GONE);
 
@@ -293,11 +300,26 @@ ott_other=findViewById(R.id.ott_other_edt);
                     checkbox.setChecked(selected_dur_Options.contains(item));
 
                     checkbox.setOnClickListener(v -> {
+                        StringBuilder stringBuilder = new StringBuilder();
                         if (checkbox.isChecked()) {
                             selected_dur_Options.add(item);
+
+                            stringBuilder.append("Selected options:\n");
+                            for (String option : selected_dur_Options) {
+                                Log.d("selectedadded",option);
+                                stringBuilder.append(option).append("\n");
+                            }
+                            displayList.setText(stringBuilder.toString());
                         } else {
                             selected_dur_Options.remove(item);
+                            stringBuilder.append("Selected options:\n");
+                            for (String option : selected_dur_Options) {
+                                Log.d("selected_removed",option);
+                                stringBuilder.append(option).append("\n");
+                            }
+                            displayList.setText(stringBuilder.toString());
                         }
+
                     });
                 }
 
@@ -335,6 +357,10 @@ ott_other=findViewById(R.id.ott_other_edt);
                 } else {
                     selected_dur_Options.add(selectedItem);
                 }
+                for (String option : selected_dur_Options) {
+                    Log.d("selected_dur_Options",option);
+                }
+                durabllist.notifyDataSetChanged();
             }
 
             @Override
@@ -342,6 +368,9 @@ ott_other=findViewById(R.id.ott_other_edt);
                 // Do nothing
             }
         });
+
+
+
 
 
         dateEditText = findViewById(R.id.dateEditText);
@@ -379,11 +408,36 @@ ott_other=findViewById(R.id.ott_other_edt);
                 checkbox.setChecked(selectedProducts.contains(item));
 
                 checkbox.setOnClickListener(v -> {
-                    if (checkbox.isChecked()) {
+                 /*   if (checkbox.isChecked()) {
                         selectedProducts.add(item);
                     } else {
                         selectedProducts.remove(item);
+                    }*/
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    if (checkbox.isChecked()) {
+                        selectedProducts.add(item);
+
+                        stringBuilder.append("Selected options:\n");
+                        for (String option : selectedProducts) {
+                            Log.d("selectedProducts added",option);
+                            stringBuilder.append(option).append("\n");
+                        }
+                        displayProduct.setText(stringBuilder.toString());
+                    } else {
+                        selectedProducts.remove(item);
+                        stringBuilder.append("Selected options:\n");
+                        for (String option : selectedProducts) {
+                            Log.d("selectedRemoved",option);
+                            stringBuilder.append(option).append("\n");
+                        }
+                        displayProduct.setText(stringBuilder.toString());
                     }
+
+
+
+
+
                 });
 
                 return view;
