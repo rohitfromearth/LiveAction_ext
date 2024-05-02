@@ -178,10 +178,7 @@ public class Login_verifcation extends AppCompatActivity {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             });
-
         });
-
-
         sendotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -326,9 +323,6 @@ public class Login_verifcation extends AppCompatActivity {
         }
     }
 
-
-
-
     public boolean senddata(String mob_no, String firbastkn) {
         try {
             JSONObject requestBody = new JSONObject();
@@ -336,13 +330,11 @@ public class Login_verifcation extends AppCompatActivity {
             String uiddd = servic.formdatasend(requestBody, "/user/login");
             JSONObject jsonResponse = new JSONObject(uiddd);
             JSONObject data = jsonResponse.getJSONObject("data");
-            //boolean userExists = data.getBoolean("user_exists");
+//            boolean userExists = data.getBoolean("user_exists");
            boolean userExists=false;
             if (userExists) {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
-
-
                 SharedPreferences.Editor myEdit = sh.edit();
                 myEdit.putString("firebaseToken", firbastkn);
                 myEdit.putInt("UID", userId);

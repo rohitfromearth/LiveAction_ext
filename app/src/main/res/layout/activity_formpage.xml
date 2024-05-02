@@ -29,19 +29,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+
+
+            >
 
             <EditText
                 android:id="@+id/et_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/dropdown_background"
+
                 android:hint="Name"
                 android:padding="7dp"
+                android:background="@drawable/rounded_edittext_background"
                 android:textColorHint="@color/black"
                 android:textSize="15sp" />
 
         </LinearLayout>
+
 
 
         <LinearLayout
@@ -81,7 +86,7 @@
                 android:textColorHint="@color/black"
                 android:textSize="15dp" />
         </LinearLayout>
-        ////
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -396,7 +401,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@color/white"
+        app:cardBackgroundColor="#F6F0E8"
             android:padding="5dp"
             app:cardCornerRadius="3dp">
             <LinearLayout
@@ -462,9 +467,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-            ///
-
-            ////
         </androidx.cardview.widget.CardView>
         ///
 
