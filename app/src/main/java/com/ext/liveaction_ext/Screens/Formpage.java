@@ -400,45 +400,48 @@ ott_other=findViewById(R.id.ott_other_edt);
 
             private View createItemView(int position, View convertView, ViewGroup parent) {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown, parent, false);
-                CheckBox checkbox = view.findViewById(R.id.checkboxq);
                 TextView textView = view.findViewById(R.id.textviewq);
-
                 String item = getItem(position);
-                textView.setText(item);
-                checkbox.setChecked(selectedProducts.contains(item));
 
-                checkbox.setOnClickListener(v -> {
+                if (position == 0) { // Check if it's the heading
+                    textView.setText(item);
+                }else {
+
+                    CheckBox checkbox = view.findViewById(R.id.checkboxq);
+
+                    textView.setText(item);
+                    checkbox.setChecked(selectedProducts.contains(item));
+
+                    checkbox.setOnClickListener(v -> {
                  /*   if (checkbox.isChecked()) {
                         selectedProducts.add(item);
                     } else {
                         selectedProducts.remove(item);
                     }*/
 
-                    StringBuilder stringBuilder = new StringBuilder();
-                    if (checkbox.isChecked()) {
-                        selectedProducts.add(item);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        if (checkbox.isChecked()) {
+                            selectedProducts.add(item);
 
-                        stringBuilder.append("Selected options:\n");
-                        for (String option : selectedProducts) {
-                            Log.d("selectedProducts added",option);
-                            stringBuilder.append(option).append("\n");
+                            stringBuilder.append("Selected options:\n");
+                            for (String option : selectedProducts) {
+                                Log.d("selectedProducts added", option);
+                                stringBuilder.append(option).append("\n");
+                            }
+                            displayProduct.setText(stringBuilder.toString());
+                        } else {
+                            selectedProducts.remove(item);
+                            stringBuilder.append("Selected options:\n");
+                            for (String option : selectedProducts) {
+                                Log.d("selectedRemoved", option);
+                                stringBuilder.append(option).append("\n");
+                            }
+                            displayProduct.setText(stringBuilder.toString());
                         }
-                        displayProduct.setText(stringBuilder.toString());
-                    } else {
-                        selectedProducts.remove(item);
-                        stringBuilder.append("Selected options:\n");
-                        for (String option : selectedProducts) {
-                            Log.d("selectedRemoved",option);
-                            stringBuilder.append(option).append("\n");
-                        }
-                        displayProduct.setText(stringBuilder.toString());
-                    }
 
 
-
-
-
-                });
+                    });
+                }
 
                 return view;
             }
@@ -471,6 +474,7 @@ ott_other=findViewById(R.id.ott_other_edt);
                 } else {
                     selectedProducts.add(selectedItem);
                 }
+                productList.notifyDataSetChanged();
             }
 
             @Override
