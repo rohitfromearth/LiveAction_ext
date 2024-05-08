@@ -113,6 +113,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
         String res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
+        Log.e("res",res);
         boolean edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");

@@ -342,7 +342,6 @@ public class Login_verifcation extends AppCompatActivity {
                 int userId = data.getInt("user_id");
                 String userName = data.getString("user_name");
 
-
                 SharedPreferences.Editor myEdit = sh.edit();
                 myEdit.putString("firebaseToken", firbastkn);
                 myEdit.putInt("UID", userId);

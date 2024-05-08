@@ -302,6 +302,7 @@ public class Dashboard extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("day");
             for (int i = 0; i < jsonArray.length(); i++) {
+                System.out.println("Day " + (i+1) + ": " + jsonArray); // Printing each day
                 dayList.add(jsonArray.getString(i));
             }
         } catch (JSONException e) {
@@ -442,9 +443,21 @@ public class Dashboard extends AppCompatActivity {
             isLoggedIn = false;
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            Set<String> appListSet = sh.getStringSet("APP_LIST", null);
+         /*   if (appListSet != null) {
+                for (String app : appListSet) {
+                    System.out.println(app);
+                }
+            } else {
+                System.out.println("APP_LIST is null");
+            }*/
 //            myEdit.putString("firebaseToken", "");
             myEdit.clear();
-            myEdit.apply();
+           // myEdit.apply();
+
+
+            myEdit.putStringSet("APP_LIST", appListSet);
+           //myEdit.apply();
             //startActivity(new Intent(this, Login_verifcation.class));
 
 
@@ -458,6 +471,7 @@ public class Dashboard extends AppCompatActivity {
 
             myEdit.putBoolean("isLoggedIn", false);
             myEdit.apply();
+
         }
 
         // Insert the fragment by replacing any existing fragment

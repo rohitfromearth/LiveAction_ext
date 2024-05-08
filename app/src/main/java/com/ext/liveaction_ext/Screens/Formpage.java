@@ -674,7 +674,7 @@ ott_other=findViewById(R.id.ott_other_edt);
                             districtAdapter = ArrayAdapter.createFromResource(parent.getContext(),
                                     R.array.array_odisha_districts, R.layout.spinner_layout);
                             break;
-                        case "Punjab":
+                        case "Punjab       ":
                             districtAdapter = ArrayAdapter.createFromResource(parent.getContext(),
                                     R.array.array_punjab_districts, R.layout.spinner_layout);
                             break;
