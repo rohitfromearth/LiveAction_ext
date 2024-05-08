@@ -4,7 +4,21 @@
     <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
     <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
     <string name="privacy_polcy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
-    <string name="Disclosure"> Life Actions collects data through Accessibility Service to enhance your experience and provide personalized features based on your daily behavior. This includes but is not limited to:\n\n1.Usage patterns within the app.\n\n2.Interaction with system-level features.\n\n3.Content accessed and actions taken within the app.\n\nWe are committed to protecting your privacy and ensuring the security of your data. Your information is used solely for improving our services and is not shared with third parties without your consent.By continuing to use Life Actions, you agree to our Privacy Policy and acknowledge the collection of data through Accessibility Service. You can review and manage your data preferences in the app\'s settings.</string>
+    <string name="Disclosure">
+        <b>Explanation of Why Accessibility Services API is Used:</b>\n\n
+        <p>Life Actions utilizes the Accessibility Services API to gather anonymized data from the screen interactions within specific apps. This data is then analysed to derive statistical insights relevant to market trends and user behaviour. The use of Accessibility Services helps us improve our app\'s functionality and user experience.</p>\n\n
+
+        <b>Assurances Regarding Data Privacy and Security:</b>\n\n
+        <p>We prioritize data privacy and security. All data collected through Accessibility Services is anonymized and aggregated to ensure user privacy. We do not collect or share any personal or sensitive data using the Accessibility capabilities.</p>\n\n
+
+        <b>No Personal or Sensitive Data Collected or Shared:</b>\n\n
+<p>It\'s important to note that Life Actions does not collect or share any personal or sensitive data using the Accessibility capabilities. The data collected is strictly limited to screen interactions for market research analysis.</p>\n\n
+
+        <b>Instructions on How Users Can Consent:</b>\n\n
+<p>To grant Life Actions accessibility permission, simply tap the "Accept" button when prompted. By providing consent, you allow us to utilize Accessibility Services API for market research purposes as described above.</p>\n\n
+
+        <b>Additional Information:</b>\n\n
+<p>If you have any questions or concerns regarding the use of Accessibility Services in our app, please contact our support team at lifeactionstrack@gmail.com We are committed to transparency and ensuring a positive user experience.</p>\n\n</string>
     <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy and </a>  </string>
     <string name="terms"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
     <string name="hyperlink_gmail"><a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>
@@ -981,4 +995,6 @@ Please switch on the button or Life Action app.</string>
     <string name="title_activity_splashsscreen">Splashsscreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="prominent_disclosure">Prominent Disclosure</string>
+    <string name="i_agree">I agree....</string>
 </resources>
