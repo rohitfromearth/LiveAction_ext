@@ -29,6 +29,7 @@ import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
 import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
+import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
@@ -46,6 +47,8 @@ import java.util.Set;
 public class Dashboard extends AppCompatActivity {
 
     TextView tvP_usernme,privacyTet,termsTet;
+
+    Access_new a = new Access_new();
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
 
@@ -92,6 +95,8 @@ public class Dashboard extends AppCompatActivity {
         String dir = getObbDir().getPath();
 
         setContentView(R.layout.drawer_layout);
+
+
 
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
@@ -441,6 +446,8 @@ public class Dashboard extends AppCompatActivity {
 
         } else if (itemId == R.id.Logout) {
             isLoggedIn = false;
+            a.onInterrupt();
+
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
             Set<String> appListSet = sh.getStringSet("APP_LIST", null);
@@ -463,13 +470,13 @@ public class Dashboard extends AppCompatActivity {
 
 
             // Clear the activity stack and start a new activity
-            Intent intent = new Intent(this, Login_verifcation.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            //Intent intent = new Intent(this, Login_verifcation.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(new Intent(this, Login_verifcation.class));
             finish(); // Finish the current activity
             getSupportActionBar().setTitle("Verification");
+            //myEdit.putBoolean("isLoggedIn", false);
 
-            myEdit.putBoolean("isLoggedIn", false);
             myEdit.apply();
 
         }
@@ -488,18 +495,8 @@ public class Dashboard extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Log.d("destroyed","dashboard back");
+        //Log.d("destroyed","dashboard back");
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("destroyed","dashboard destroyed");
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("stop","dashboard stop");
-    }
 }
