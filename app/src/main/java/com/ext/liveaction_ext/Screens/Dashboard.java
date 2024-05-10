@@ -29,6 +29,7 @@ import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
 import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
+import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
@@ -59,10 +60,13 @@ public class Dashboard extends AppCompatActivity {
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
     DummyData dumdta = new DummyData();
+
+    Access_new a = new Access_new();
     String mobile;
     FragmentManager fragmentManager;
     Context context;
     Conn_service conn = new Conn_service();
+    ArrayList<String> appl = new ArrayList<String>();
     ArrayList<String> dummyList = new ArrayList<String>();
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
@@ -86,7 +90,9 @@ public class Dashboard extends AppCompatActivity {
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
-
+        Set<String> set = sh.getStringSet("APP_LIST", null);
+        Log.e("APPList", String.valueOf(set));
+        appl.addAll(set);
 
 
         String dir = getObbDir().getPath();
@@ -151,7 +157,7 @@ public class Dashboard extends AppCompatActivity {
 
 
    String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-    Log.d("G", "getUsageData");
+
 
 
 
@@ -302,7 +308,6 @@ public class Dashboard extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("day");
             for (int i = 0; i < jsonArray.length(); i++) {
-                System.out.println("Day " + (i+1) + ": " + jsonArray); // Printing each day
                 dayList.add(jsonArray.getString(i));
             }
         } catch (JSONException e) {
@@ -434,6 +439,7 @@ public class Dashboard extends AppCompatActivity {
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
         } else if (itemId == R.id.perm_new) {
+      Log.e("data unknown", String.valueOf(itemId));
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
@@ -441,28 +447,18 @@ public class Dashboard extends AppCompatActivity {
 
         } else if (itemId == R.id.Logout) {
             isLoggedIn = false;
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            String Dir= "";
+          Dir = getObbDir().getPath();
+
+            SharedPreferences.Editor myEdit = sh.edit();
             Set<String> appListSet = sh.getStringSet("APP_LIST", null);
-         /*   if (appListSet != null) {
-                for (String app : appListSet) {
-                    System.out.println(app);
-                }
-            } else {
-                System.out.println("APP_LIST is null");
-            }*/
-//            myEdit.putString("firebaseToken", "");
+
             myEdit.clear();
-           // myEdit.apply();
 
 
+            myEdit.putString("dir", Dir);
             myEdit.putStringSet("APP_LIST", appListSet);
-           //myEdit.apply();
-            //startActivity(new Intent(this, Login_verifcation.class));
 
-
-
-            // Clear the activity stack and start a new activity
             Intent intent = new Intent(this, Login_verifcation.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

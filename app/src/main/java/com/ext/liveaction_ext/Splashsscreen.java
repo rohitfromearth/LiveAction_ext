@@ -61,7 +61,7 @@ Log.e(TAG, String.valueOf(pack));
 
 
         myEdit.putString("dir", Dir);
-        Log.e(TAG, Dir);
+
         Set<String> set = new HashSet<String>();
         set.addAll(pack);
         myEdit.putStringSet("APP_LIST", set);

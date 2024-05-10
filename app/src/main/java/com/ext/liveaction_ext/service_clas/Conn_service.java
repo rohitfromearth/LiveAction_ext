@@ -204,7 +204,7 @@ public class Conn_service {
             String urlString=endpot+endr;
 
             Log.e("url",urlString);
-
+Log.e("ftkn",firbaseTokenn);
             HttpURLConnection urlConn;
 
             urlConn = (HttpURLConnection) url.openConnection();
