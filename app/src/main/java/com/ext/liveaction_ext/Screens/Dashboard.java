@@ -444,9 +444,13 @@ public class Dashboard extends AppCompatActivity {
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
+
+
+
+
         } else if (itemId == R.id.Logout) {
             isLoggedIn = false;
-            a.onInterrupt();
+           a.onDestroy();
 
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();

@@ -1,5 +1,6 @@
 package com.ext.liveaction_ext.Screens;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ext.liveaction_ext.FAQActivity;
 import com.ext.liveaction_ext.QandA;
 import com.ext.liveaction_ext.QuestionAnswerAdapter;
 import com.ext.liveaction_ext.R;
@@ -28,7 +28,10 @@ public class FaQ extends Fragment {
     private RecyclerView recyclerView;
     private QuestionAnswerAdapter adapter;
     private int lastExpandedPosition = -1;
+    Dialog dialog;
+    Context context;
 
+    private static final String PERMISSION_DIALOG_TAG = "permission_dialog";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -54,6 +57,7 @@ public class FaQ extends Fragment {
 //            }
 //            lastExpandedPosition = position;
 //
+
 
         btn_dash.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
@@ -84,4 +88,6 @@ public class FaQ extends Fragment {
         itemList.add(new QandA("How can I unsubscribe and how can I ask for removal of my data?", "For unsubscribing to the app, simply uninstall the app and delete it. This would stop us from having access to your phone as well as to the data coming to us from you. In case you wish us to remove your data, please write to us at support@lifeactions.ai. We will confirm the deletion within seven working days. In case you have any further questions please write to Lifeactionstrack@gmail.com."));
         return itemList;
     }
+
+
 }
