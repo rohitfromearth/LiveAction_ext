@@ -447,21 +447,20 @@ public class Dashboard extends AppCompatActivity {
 
         } else if (itemId == R.id.Logout) {
             isLoggedIn = false;
-            String Dir= "";
-          Dir = getObbDir().getPath();
+
 
             SharedPreferences.Editor myEdit = sh.edit();
-            Set<String> appListSet = sh.getStringSet("APP_LIST", null);
 
-            myEdit.clear();
+            myEdit.putString("firebaseToken", "");
 
 
-            myEdit.putString("dir", Dir);
-            myEdit.putStringSet("APP_LIST", appListSet);
 
-            Intent intent = new Intent(this, Login_verifcation.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+
+           myEdit.apply();
+            startActivity(new Intent(this, Login_verifcation.class));
+
+
+
             finish(); // Finish the current activity
             getSupportActionBar().setTitle("Verification");
 
@@ -487,15 +486,4 @@ public class Dashboard extends AppCompatActivity {
         Log.d("destroyed","dashboard back");
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("destroyed","dashboard destroyed");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("stop","dashboard stop");
-    }
 }
