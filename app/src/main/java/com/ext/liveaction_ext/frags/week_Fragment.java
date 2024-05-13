@@ -55,9 +55,7 @@ public class week_Fragment extends Fragment {
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
 
-
-
-                                Data_show();
+        Data_show();
 
         return view;
     }
@@ -67,8 +65,8 @@ public class week_Fragment extends Fragment {
 
         uid = sh.getInt("UID", uid_z);
 
-        Set<String> daySet = sh.getStringSet("WEEK_LIST", new HashSet<>());
-        for (String jsonString : daySet) {
+        Set<String> weekSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
+        for (String jsonString : weekSet) {
             try {
 
                 JSONObject jsonObject = new JSONObject(jsonString);
@@ -114,8 +112,8 @@ public class week_Fragment extends Fragment {
 
     private List<CardItem> createCardItemsss() {
         List<CardItem> cardItems = new ArrayList<>();
-        Set<String> daySet = sh.getStringSet("WEEK_LIST", new HashSet<>());
-        for (String jsonString : daySet) {
+        Set<String> weekSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
+        for (String jsonString : weekSet) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
 

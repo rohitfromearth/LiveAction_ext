@@ -59,8 +59,6 @@ public class year_Fragment extends Fragment {
 
     private void Data_show() {
 
-
-
         uid = sh.getInt("UID", uid_z);
 
         Set<String> yearset = sh.getStringSet("YEAR_LIST", new HashSet<>());
@@ -115,7 +113,7 @@ public class year_Fragment extends Fragment {
                 String categoryName = jsonObject.optString("category");
                 if (!categoryName.equalsIgnoreCase("Total")) {
                     int logoResId = getLogoResIdForCategory(categoryName);
-                    int tsthisday = jsonObject.optInt("usage_in_mins");
+                    int tsthisday = jsonObject.optInt("usage_in_mins_year");
                     int average = jsonObject.optInt("last_year_usage_in_mins");
                     int variance = jsonObject.optInt("variance_year");
 

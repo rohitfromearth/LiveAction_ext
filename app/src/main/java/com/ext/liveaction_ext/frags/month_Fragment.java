@@ -118,7 +118,7 @@ public class month_Fragment extends Fragment {
 
                 if (!categoryName.equalsIgnoreCase("Total")) {
                     int logoResId = getLogoResIdForCategory(categoryName);
-                    int tsthisday = jsonObject.optInt("usage_in_mins");
+                    int tsthisday = jsonObject.optInt("usage_in_mins_month");
                     int average = jsonObject.optInt("last_month_in_mins");
                     int variance = jsonObject.optInt("variance_month");
 
