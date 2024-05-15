@@ -87,6 +87,14 @@ Set your targets for a better life and get rewarded."
                     android:textColor="#424140"
                     android:textSize="17sp"
                     android:textStyle="italic" />
+                <TextView
+                    android:id="@+id/tym_sync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            android:layout_gravity="center"
+                    android:textColor="#424140"
+                    android:textSize="17sp"
+                    android:textStyle="italic" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/Sliderl"

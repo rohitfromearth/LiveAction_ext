@@ -28,6 +28,8 @@ public class Conn_service {
 
     String endpot = "https://sondersort.online";
 
+//    String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
+
     public ArrayList App_list(Context context) {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -91,9 +93,7 @@ public class Conn_service {
     public String datasender(JSONObject jsonBody, String end, String firbaseTokenn) {
         try {
             String response = "";
-
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
             Log.e("checkjson", String.valueOf(jsonBody));
@@ -115,9 +115,7 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
-
             String reso = urlConnection.getResponseMessage();
-
             Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;

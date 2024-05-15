@@ -46,7 +46,7 @@ import java.util.Set;
 
 public class Dashboard extends AppCompatActivity {
 
-    TextView tvP_usernme,privacyTet,termsTet;
+    TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
 
@@ -79,7 +79,6 @@ public class Dashboard extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
@@ -111,7 +110,6 @@ public class Dashboard extends AppCompatActivity {
             usage_stat = dd.findViewById(R.id.usaegstat_perm1);
             accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
             close_dialog = dd.findViewById(R.id.close_permission1);
-
             close_dialog.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 dd.dismiss();
@@ -120,7 +118,7 @@ public class Dashboard extends AppCompatActivity {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
-                // Disable button2
+
                 accessibility_permission.setEnabled(usage_stat.isEnabled());
             });
             accessibility_permission.setOnClickListener(view -> {
@@ -158,23 +156,12 @@ public class Dashboard extends AppCompatActivity {
 
    String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
-
-
-
-
-
-
-
-
         try {
             JSONObject jsonObject = new JSONObject(res);
             showDummy = jsonObject.getBoolean("showDummy");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
-
-
         dummyList = dummyDayList(resultdummy);
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
@@ -224,6 +211,7 @@ public class Dashboard extends AppCompatActivity {
         manag_btn = findViewById(R.id.mange_btn);
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
+        sync_tym=findViewById(R.id.tym_sync);
         faq_btn = findViewById(R.id.FAQ_btn);
         termsTet= findViewById(R.id.termsd);
         privacyTet= findViewById(R.id.privacyd);
@@ -241,11 +229,12 @@ public class Dashboard extends AppCompatActivity {
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(mobile);
+        String data_sync= sh.getString("Last_sync","");
+        sync_tym.setText(data_sync);
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-
             Fragment go_next = new Manage_screen();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
@@ -393,12 +382,15 @@ public class Dashboard extends AppCompatActivity {
         int itemId = menuItem.getItemId();
 
 
-        if (itemId == R.id.chart_page) {
+        if (itemId == R.id.chart_page)
+        {
 
             startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
-        } else if (itemId == R.id.manage_page) {
+        }
+        else if (itemId == R.id.manage_page)
+        {
 
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
@@ -406,7 +398,9 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.achieve_page) {
+        }
+        else if (itemId == R.id.achieve_page)
+        {
 
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
@@ -414,7 +408,9 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.redeem_page) {
+        }
+        else if (itemId == R.id.redeem_page)
+        {
 
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
@@ -422,7 +418,9 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.contact_us) {
+        }
+        else if (itemId == R.id.contact_us)
+        {
 
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Contact us");
@@ -430,7 +428,9 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.faq) {
+        }
+        else if (itemId == R.id.faq)
+        {
 
             go_next = new FaQ();
             getSupportActionBar().setTitle("FAQ");
@@ -438,14 +438,18 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.perm_new) {
+        }
+        else if (itemId == R.id.perm_new)
+        {
       Log.e("data unknown", String.valueOf(itemId));
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
-        } else if (itemId == R.id.Logout) {
+        }
+        else if (itemId == R.id.Logout)
+        {
             isLoggedIn = false;
 
 
@@ -469,10 +473,6 @@ public class Dashboard extends AppCompatActivity {
 
         }
 
-        // Insert the fragment by replacing any existing fragment
-
-
-        // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
         setTitle(menuItem.getTitle());
