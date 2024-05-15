@@ -45,11 +45,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Dashboard extends AppCompatActivity {
-    private static final String FRAGMENT_TAG_FAQ = "fragment_faq";
-    private static final String FRAGMENT_TAG_OTHER = "fragment_other";
-    TextView tvP_usernme, privacyTet, termsTet;
 
-    Access_new a = new Access_new();
+    TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
 
@@ -63,10 +60,13 @@ public class Dashboard extends AppCompatActivity {
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
     DummyData dumdta = new DummyData();
+
+    Access_new a = new Access_new();
     String mobile;
     FragmentManager fragmentManager;
     Context context;
     Conn_service conn = new Conn_service();
+    ArrayList<String> appl = new ArrayList<String>();
     ArrayList<String> dummyList = new ArrayList<String>();
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
@@ -75,28 +75,28 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sh;
     boolean showDummy;
     private boolean isLoggedIn = false;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
         //FirebaseApp.initializeApp(this);
 
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
         isLoggedIn = sh.getBoolean("isLoggedIn", false);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
+        Set<String> set = sh.getStringSet("APP_LIST", null);
+        Log.e("APPList", String.valueOf(set));
+        appl.addAll(set);
 
 
         String dir = getObbDir().getPath();
 
         setContentView(R.layout.drawer_layout);
-
 
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
@@ -110,7 +110,6 @@ public class Dashboard extends AppCompatActivity {
             usage_stat = dd.findViewById(R.id.usaegstat_perm1);
             accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
             close_dialog = dd.findViewById(R.id.close_permission1);
-
             close_dialog.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 dd.dismiss();
@@ -119,7 +118,7 @@ public class Dashboard extends AppCompatActivity {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
-                // Disable button2
+
                 accessibility_permission.setEnabled(usage_stat.isEnabled());
             });
             accessibility_permission.setOnClickListener(view -> {
@@ -132,10 +131,13 @@ public class Dashboard extends AppCompatActivity {
 //        }
 
 
+
         String fToken = sh.getString("firebaseToken", "");
 
 
         String resultdummy = dumdta.Data_for_dash();
+
+
 
 
         long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means the task has never been performed
@@ -152,55 +154,52 @@ public class Dashboard extends AppCompatActivity {
             // Task has not been performed today
 
 
-            String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-            Log.d("G", "getUsageData");
+   String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+
+        try {
+            JSONObject jsonObject = new JSONObject(res);
+            showDummy = jsonObject.getBoolean("showDummy");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        dummyList = dummyDayList(resultdummy);
+        dayList = dataDayList(res);
+        weekList = dataWeekList(res);
+        monthList = dataMonthList(res);
+        yearList = dataYearList(res);
 
 
-            try {
-                JSONObject jsonObject = new JSONObject(res);
-                showDummy = jsonObject.getBoolean("showDummy");
-            } catch (JSONException e) {
-                throw new RuntimeException(e+"this is error");
-            }
+        SharedPreferences.Editor myEdit = sh.edit();
+
+        myEdit.putString("dir", dir);
+        myEdit.putBoolean("showDummy", showDummy);
 
 
-            dummyList = dummyDayList(resultdummy);
-            dayList = dataDayList(res);
-            weekList = dataWeekList(res);
-            monthList = dataMonthList(res);
-            yearList = dataYearList(res);
+
+        Set<String> dummyset = new HashSet<String>();
+        dummyset.addAll(dummyList);
+
+        Set<String> dayset = new HashSet<String>();
+        dayset.addAll(dayList);
+
+        Set<String> weekset = new HashSet<String>();
+        weekset.addAll(weekList);
+
+        Set<String> monthset = new HashSet<String>();
+        monthset.addAll(monthList);
+
+        Set<String> yearset = new HashSet<String>();
+        yearset.addAll(yearList);
 
 
-            SharedPreferences.Editor myEdit = sh.edit();
-
-            myEdit.putString("dir", dir);
-            myEdit.putBoolean("showDummy", showDummy);
-
-
-            Set<String> dummyset = new HashSet<String>();
-            dummyset.addAll(dummyList);
-
-            Set<String> dayset = new HashSet<String>();
-            dayset.addAll(dayList);
-
-            Set<String> weekset = new HashSet<String>();
-            weekset.addAll(weekList);
-
-            Set<String> monthset = new HashSet<String>();
-            monthset.addAll(monthList);
-
-            Set<String> yearset = new HashSet<String>();
-            yearset.addAll(yearList);
+        myEdit.putStringSet("DUMMY_LIST", dummyset);
+        myEdit.putStringSet("DAY_LIST", dayset);
+        myEdit.putStringSet("WEEK_LIST", weekset);
+        myEdit.putStringSet("MONTH_LIST", monthset);
+        myEdit.putStringSet("YEAR_LIST", yearset);
 
 
-            myEdit.putStringSet("DUMMY_LIST", dummyset);
-            myEdit.putStringSet("DAY_LIST", dayset);
-            myEdit.putStringSet("WEEK_LIST", weekset);
-            myEdit.putStringSet("MONTH_LIST", monthset);
-            myEdit.putStringSet("YEAR_LIST", yearset);
-
-
-            myEdit.apply();
+        myEdit.apply();
             SharedPreferences.Editor editor = sh.edit();
             editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
             editor.apply();
@@ -212,9 +211,10 @@ public class Dashboard extends AppCompatActivity {
         manag_btn = findViewById(R.id.mange_btn);
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
+        sync_tym=findViewById(R.id.tym_sync);
         faq_btn = findViewById(R.id.FAQ_btn);
-        termsTet = findViewById(R.id.termsd);
-        privacyTet = findViewById(R.id.privacyd);
+        termsTet= findViewById(R.id.termsd);
+        privacyTet= findViewById(R.id.privacyd);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
         mDrawer.addDrawerListener(drawerToggle);
@@ -229,11 +229,12 @@ public class Dashboard extends AppCompatActivity {
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(mobile);
+        String data_sync= sh.getString("Last_sync","");
+        sync_tym.setText(data_sync);
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-
             Fragment go_next = new Manage_screen();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
@@ -274,7 +275,6 @@ public class Dashboard extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
     }
-
     public ArrayList dummyDayList(String ss) {
         //april
         try {
@@ -291,14 +291,12 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
-
     public ArrayList dataDayList(String ss) {
         //april
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("day");
             for (int i = 0; i < jsonArray.length(); i++) {
-                System.out.println("Day " + (i + 1) + ": " + jsonArray); // Printing each day
                 dayList.add(jsonArray.getString(i));
             }
         } catch (JSONException e) {
@@ -310,7 +308,6 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
-
     public ArrayList dataWeekList(String ss) {
         //april
 
@@ -345,7 +342,6 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
-
     public ArrayList dataYearList(String ss) {
         //april
         try {
@@ -361,7 +357,6 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -381,16 +376,21 @@ public class Dashboard extends AppCompatActivity {
 
     public void selectDrawerItem(MenuItem menuItem) {
 
-        Fragment go_next = null;
-        String tag = null;
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment go_next;
+
         int itemId = menuItem.getItemId();
 
-        if (itemId == R.id.chart_page) {
+
+        if (itemId == R.id.chart_page)
+        {
 
             startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
-        } else if (itemId == R.id.manage_page) {
+        }
+        else if (itemId == R.id.manage_page)
+        {
 
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
@@ -398,7 +398,9 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.achieve_page) {
+        }
+        else if (itemId == R.id.achieve_page)
+        {
 
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
@@ -406,7 +408,9 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.redeem_page) {
+        }
+        else if (itemId == R.id.redeem_page)
+        {
 
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
@@ -414,7 +418,9 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.contact_us) {
+        }
+        else if (itemId == R.id.contact_us)
+        {
 
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Contact us");
@@ -422,69 +428,51 @@ public class Dashboard extends AppCompatActivity {
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.faq) {
+        }
+        else if (itemId == R.id.faq)
+        {
 
             go_next = new FaQ();
-            tag = FRAGMENT_TAG_FAQ;
             getSupportActionBar().setTitle("FAQ");
             fragmentManager = getSupportFragmentManager();
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.perm_new) {
+        }
+        else if (itemId == R.id.perm_new)
+        {
+      Log.e("data unknown", String.valueOf(itemId));
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
-        } else if (itemId == R.id.Logout) {
+        }
+        else if (itemId == R.id.Logout)
+        {
             isLoggedIn = false;
-            // a.onDestroy();
-
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-            Set<String> appListSet = sh.getStringSet("APP_LIST", null);
-         /*   if (appListSet != null) {
-                for (String app : appListSet) {
-                    System.out.println(app);
-                }
-            } else {
-                System.out.println("APP_LIST is null");
-            }*/
-//            myEdit.putString("firebaseToken", "");
-            myEdit.clear();
-            // myEdit.apply();
 
 
-            myEdit.putStringSet("APP_LIST", appListSet);
-            //myEdit.apply();
-            //startActivity(new Intent(this, Login_verifcation.class));
+            SharedPreferences.Editor myEdit = sh.edit();
+
+            myEdit.putString("firebaseToken", "");
 
 
-            // Clear the activity stack and start a new activity
-            //Intent intent = new Intent(this, Login_verifcation.class);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+           myEdit.apply();
             startActivity(new Intent(this, Login_verifcation.class));
+
+
+
             finish(); // Finish the current activity
             getSupportActionBar().setTitle("Verification");
-            //myEdit.putBoolean("isLoggedIn", false);
 
+            myEdit.putBoolean("isLoggedIn", false);
             myEdit.apply();
 
         }
 
-        // Insert the fragment by replacing any existing fragment
-        // Pass identifier or name to the fragment
-        Bundle args = new Bundle();
-        args.putString("fragment_tag", tag);
-        go_next.setArguments(args);
-
-        // Replace the current fragment with the selected one
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, go_next, tag)
-                .commit();
-
-        // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
         // Set action bar title
         setTitle(menuItem.getTitle());
@@ -495,8 +483,7 @@ public class Dashboard extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        //Log.d("destroyed","dashboard back");
+        Log.d("destroyed","dashboard back");
     }
-
 
 }

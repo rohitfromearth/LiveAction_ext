@@ -94,7 +94,7 @@ public class day_Fragment extends Fragment {
 
 
         showDummyVal = sh.getBoolean("showDummy",dummyVal);
-        System.out.println("boolean value="+showDummyVal);
+
         if (showDummyVal) {
 
             piecreate(dummyList);

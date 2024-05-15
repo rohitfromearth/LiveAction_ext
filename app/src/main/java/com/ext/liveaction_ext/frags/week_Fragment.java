@@ -94,7 +94,6 @@ public class week_Fragment extends Fragment {
 
                     addTableRow(categoryName, String.valueOf(minvalue), Color.parseColor(colorCode));
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }

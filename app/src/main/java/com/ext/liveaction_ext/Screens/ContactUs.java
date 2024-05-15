@@ -16,7 +16,7 @@ public class ContactUs extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
 
         View view = inflater.inflate(R.layout.activity_contact_us, container, false);
         btn_dash = view.findViewById(R.id.dashboard_connect);
