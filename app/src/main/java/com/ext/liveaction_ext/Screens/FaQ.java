@@ -93,7 +93,7 @@ public class FaQ extends Fragment {
         return itemList;
     }
 
-    private void showPermissionDialog() {
+    public void showPermissionDialog() {
         // Show permission dialog here
         // For example:
         dialog = new Dialog(getContext());

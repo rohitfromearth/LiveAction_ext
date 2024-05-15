@@ -1,6 +1,7 @@
 package com.ext.liveaction_ext.Screens;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -45,7 +46,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Dashboard extends AppCompatActivity {
-
+    Fragment go_next;
     TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
@@ -64,6 +65,7 @@ public class Dashboard extends AppCompatActivity {
     Access_new a = new Access_new();
     String mobile;
     FragmentManager fragmentManager;
+    Dialog dialog;
     Context context;
     Conn_service conn = new Conn_service();
     ArrayList<String> appl = new ArrayList<String>();
@@ -74,7 +76,10 @@ public class Dashboard extends AppCompatActivity {
     ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
     boolean showDummy;
+    String data_sync;
+    String timeStatus = "Last sync : ";
     private boolean isLoggedIn = false;
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,6 +139,7 @@ public class Dashboard extends AppCompatActivity {
 
         String fToken = sh.getString("firebaseToken", "");
 
+        Log.e("fToken", fToken);
 
         String resultdummy = dumdta.Data_for_dash();
 
@@ -155,7 +161,7 @@ public class Dashboard extends AppCompatActivity {
 
 
    String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-
+Log.e("res", "res======"+res);
         try {
             JSONObject jsonObject = new JSONObject(res);
             showDummy = jsonObject.getBoolean("showDummy");
@@ -229,8 +235,9 @@ public class Dashboard extends AppCompatActivity {
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(mobile);
-        String data_sync= sh.getString("Last_sync","");
-        sync_tym.setText(data_sync);
+        data_sync= sh.getString("Last_sync","");
+        Log.e("data_sync",data_sync);
+        sync_tym.setText(timeStatus + data_sync);
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
@@ -291,6 +298,17 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("onResume","onResume called");
+        data_sync= sh.getString("Last_sync","");
+        Log.e("data_sync",data_sync);
+        sync_tym.setText(timeStatus + data_sync);
+    }
+
     public ArrayList dataDayList(String ss) {
         //april
         try {
@@ -377,7 +395,7 @@ public class Dashboard extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
 
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment go_next;
+
 
         int itemId = menuItem.getItemId();
 
@@ -441,12 +459,11 @@ public class Dashboard extends AppCompatActivity {
         }
         else if (itemId == R.id.perm_new)
         {
-      Log.e("data unknown", String.valueOf(itemId));
+      //Log.e("data unknown", String.valueOf(itemId));
 
-            Intent intent = new Intent(this, Dashboard.class);
+           Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
-
         }
         else if (itemId == R.id.Logout)
         {
@@ -485,5 +502,24 @@ public class Dashboard extends AppCompatActivity {
         //super.onBackPressed();
         Log.d("destroyed","dashboard back");
     }
-
+    public void showPermissionDialog() {
+        // Show permission dialog here
+        // For example:
+        dialog = new Dialog(getApplicationContext());
+        dialog.setContentView(R.layout.dialog_for_perrmisson);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.show();
+        /*new AlertDialog.Builder(getContext())
+                .setTitle("Permission Dialog")
+                .setMessage("This is a permission dialog.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle OK button click if needed
+                    }
+                })
+                .show();*/
+    }
 }
