@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class FaQ extends Fragment {
         recyclerView.setAdapter(adapter);
 
         boolean showPermissionDialog = getActivity().getIntent().getBooleanExtra("show_permission_dialog", false);
+        Log.e("showPermissionDialog", String.valueOf(showPermissionDialog));
         if (showPermissionDialog) {
             // Show permission dialog
             showPermissionDialog();

@@ -75,6 +75,8 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sh;
     boolean showDummy;
     private boolean isLoggedIn = false;
+    String timeStatus = "Last sync : ";
+    String data_sync;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -223,8 +225,8 @@ public class Dashboard extends AppCompatActivity {
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(mobile);
-        String data_sync= sh.getString("Last_sync","");
-        sync_tym.setText(data_sync);
+        data_sync= sh.getString("Last_sync","");
+        sync_tym.setText(timeStatus + data_sync);
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
@@ -353,7 +355,14 @@ public class Dashboard extends AppCompatActivity {
                     return true;
                 });
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("onResume", "onResume called");
+        data_sync = sh.getString("Last_sync", "");
+        Log.e("data_sync", data_sync);
+        sync_tym.setText(timeStatus + data_sync);
+    }
     public void selectDrawerItem(MenuItem menuItem) {
 
         // Create a new fragment and specify the fragment to show based on nav item clicked
