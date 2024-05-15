@@ -45,8 +45,9 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Dashboard extends AppCompatActivity {
-
-    TextView tvP_usernme,privacyTet,termsTet;
+    private static final String FRAGMENT_TAG_FAQ = "fragment_faq";
+    private static final String FRAGMENT_TAG_OTHER = "fragment_other";
+    TextView tvP_usernme, privacyTet, termsTet;
 
     Access_new a = new Access_new();
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
@@ -74,6 +75,7 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sh;
     boolean showDummy;
     private boolean isLoggedIn = false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,18 +86,16 @@ public class Dashboard extends AppCompatActivity {
                 4);
         //FirebaseApp.initializeApp(this);
 
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         isLoggedIn = sh.getBoolean("isLoggedIn", false);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
 
 
-
         String dir = getObbDir().getPath();
 
         setContentView(R.layout.drawer_layout);
-
 
 
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
@@ -132,13 +132,10 @@ public class Dashboard extends AppCompatActivity {
 //        }
 
 
-
         String fToken = sh.getString("firebaseToken", "");
 
 
         String resultdummy = dumdta.Data_for_dash();
-
-
 
 
         long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means the task has never been performed
@@ -155,63 +152,55 @@ public class Dashboard extends AppCompatActivity {
             // Task has not been performed today
 
 
-   String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-    Log.d("G", "getUsageData");
+            String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+            Log.d("G", "getUsageData");
 
 
+            try {
+                JSONObject jsonObject = new JSONObject(res);
+                showDummy = jsonObject.getBoolean("showDummy");
+            } catch (JSONException e) {
+                throw new RuntimeException(e+"this is error");
+            }
 
 
+            dummyList = dummyDayList(resultdummy);
+            dayList = dataDayList(res);
+            weekList = dataWeekList(res);
+            monthList = dataMonthList(res);
+            yearList = dataYearList(res);
 
 
+            SharedPreferences.Editor myEdit = sh.edit();
+
+            myEdit.putString("dir", dir);
+            myEdit.putBoolean("showDummy", showDummy);
 
 
-        try {
-            JSONObject jsonObject = new JSONObject(res);
-            showDummy = jsonObject.getBoolean("showDummy");
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+            Set<String> dummyset = new HashSet<String>();
+            dummyset.addAll(dummyList);
+
+            Set<String> dayset = new HashSet<String>();
+            dayset.addAll(dayList);
+
+            Set<String> weekset = new HashSet<String>();
+            weekset.addAll(weekList);
+
+            Set<String> monthset = new HashSet<String>();
+            monthset.addAll(monthList);
+
+            Set<String> yearset = new HashSet<String>();
+            yearset.addAll(yearList);
 
 
-
-        dummyList = dummyDayList(resultdummy);
-        dayList = dataDayList(res);
-        weekList = dataWeekList(res);
-        monthList = dataMonthList(res);
-        yearList = dataYearList(res);
-
-
-        SharedPreferences.Editor myEdit = sh.edit();
-
-        myEdit.putString("dir", dir);
-        myEdit.putBoolean("showDummy", showDummy);
+            myEdit.putStringSet("DUMMY_LIST", dummyset);
+            myEdit.putStringSet("DAY_LIST", dayset);
+            myEdit.putStringSet("WEEK_LIST", weekset);
+            myEdit.putStringSet("MONTH_LIST", monthset);
+            myEdit.putStringSet("YEAR_LIST", yearset);
 
 
-
-        Set<String> dummyset = new HashSet<String>();
-        dummyset.addAll(dummyList);
-
-        Set<String> dayset = new HashSet<String>();
-        dayset.addAll(dayList);
-
-        Set<String> weekset = new HashSet<String>();
-        weekset.addAll(weekList);
-
-        Set<String> monthset = new HashSet<String>();
-        monthset.addAll(monthList);
-
-        Set<String> yearset = new HashSet<String>();
-        yearset.addAll(yearList);
-
-
-        myEdit.putStringSet("DUMMY_LIST", dummyset);
-        myEdit.putStringSet("DAY_LIST", dayset);
-        myEdit.putStringSet("WEEK_LIST", weekset);
-        myEdit.putStringSet("MONTH_LIST", monthset);
-        myEdit.putStringSet("YEAR_LIST", yearset);
-
-
-        myEdit.apply();
+            myEdit.apply();
             SharedPreferences.Editor editor = sh.edit();
             editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
             editor.apply();
@@ -224,8 +213,8 @@ public class Dashboard extends AppCompatActivity {
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
         faq_btn = findViewById(R.id.FAQ_btn);
-        termsTet= findViewById(R.id.termsd);
-        privacyTet= findViewById(R.id.privacyd);
+        termsTet = findViewById(R.id.termsd);
+        privacyTet = findViewById(R.id.privacyd);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
         mDrawer.addDrawerListener(drawerToggle);
@@ -285,6 +274,7 @@ public class Dashboard extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(viewPager);
     }
+
     public ArrayList dummyDayList(String ss) {
         //april
         try {
@@ -301,13 +291,14 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
+
     public ArrayList dataDayList(String ss) {
         //april
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("day");
             for (int i = 0; i < jsonArray.length(); i++) {
-                System.out.println("Day " + (i+1) + ": " + jsonArray); // Printing each day
+                System.out.println("Day " + (i + 1) + ": " + jsonArray); // Printing each day
                 dayList.add(jsonArray.getString(i));
             }
         } catch (JSONException e) {
@@ -319,6 +310,7 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
+
     public ArrayList dataWeekList(String ss) {
         //april
 
@@ -353,6 +345,7 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
+
     public ArrayList dataYearList(String ss) {
         //april
         try {
@@ -368,6 +361,7 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -387,11 +381,9 @@ public class Dashboard extends AppCompatActivity {
 
     public void selectDrawerItem(MenuItem menuItem) {
 
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment go_next;
-
+        Fragment go_next = null;
+        String tag = null;
         int itemId = menuItem.getItemId();
-
 
         if (itemId == R.id.chart_page) {
 
@@ -433,6 +425,7 @@ public class Dashboard extends AppCompatActivity {
         } else if (itemId == R.id.faq) {
 
             go_next = new FaQ();
+            tag = FRAGMENT_TAG_FAQ;
             getSupportActionBar().setTitle("FAQ");
             fragmentManager = getSupportFragmentManager();
 
@@ -446,9 +439,9 @@ public class Dashboard extends AppCompatActivity {
 
         } else if (itemId == R.id.Logout) {
             isLoggedIn = false;
-          // a.onDestroy();
+            // a.onDestroy();
 
-            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sharedPreferences.edit();
             Set<String> appListSet = sh.getStringSet("APP_LIST", null);
          /*   if (appListSet != null) {
@@ -460,13 +453,12 @@ public class Dashboard extends AppCompatActivity {
             }*/
 //            myEdit.putString("firebaseToken", "");
             myEdit.clear();
-           // myEdit.apply();
+            // myEdit.apply();
 
 
             myEdit.putStringSet("APP_LIST", appListSet);
-           //myEdit.apply();
+            //myEdit.apply();
             //startActivity(new Intent(this, Login_verifcation.class));
-
 
 
             // Clear the activity stack and start a new activity
@@ -482,7 +474,15 @@ public class Dashboard extends AppCompatActivity {
         }
 
         // Insert the fragment by replacing any existing fragment
+        // Pass identifier or name to the fragment
+        Bundle args = new Bundle();
+        args.putString("fragment_tag", tag);
+        go_next.setArguments(args);
 
+        // Replace the current fragment with the selected one
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, go_next, tag)
+                .commit();
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

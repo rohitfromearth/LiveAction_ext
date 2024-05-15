@@ -6,7 +6,6 @@
     android:gravity="center"
     android:paddingVertical="20dp"
     app:cardBackgroundColor="#E2DAC4"
-    app:cardCornerRadius="25dp"
     app:cardElevation="10dp">
 
     <LinearLayout
