@@ -61,7 +61,7 @@ public class Dashboard extends AppCompatActivity {
     ImageButton close_dialog;
     DummyData dumdta = new DummyData();
 
-    Access_new a = new Access_new();
+
     String mobile;
     FragmentManager fragmentManager;
     Context context;
@@ -71,7 +71,7 @@ public class Dashboard extends AppCompatActivity {
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
-    ArrayList<String> yearList = new ArrayList<String>();
+//    ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
     boolean showDummy;
     private boolean isLoggedIn = false;
@@ -140,7 +140,7 @@ public class Dashboard extends AppCompatActivity {
 
 
 
-        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means the task has never been performed
+        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
 
         Calendar today = Calendar.getInstance();
         Calendar lastTaskCalendar = Calendar.getInstance();
@@ -154,19 +154,14 @@ public class Dashboard extends AppCompatActivity {
             // Task has not been performed today
 
 
-   String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+         String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
-        try {
-            JSONObject jsonObject = new JSONObject(res);
-            showDummy = jsonObject.getBoolean("showDummy");
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+
         dummyList = dummyDayList(resultdummy);
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
-        yearList = dataYearList(res);
+
 
 
         SharedPreferences.Editor myEdit = sh.edit();
@@ -188,15 +183,14 @@ public class Dashboard extends AppCompatActivity {
         Set<String> monthset = new HashSet<String>();
         monthset.addAll(monthList);
 
-        Set<String> yearset = new HashSet<String>();
-        yearset.addAll(yearList);
+
 
 
         myEdit.putStringSet("DUMMY_LIST", dummyset);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
-        myEdit.putStringSet("YEAR_LIST", yearset);
+
 
 
         myEdit.apply();
@@ -342,21 +336,7 @@ public class Dashboard extends AppCompatActivity {
 
         //april
     }
-    public ArrayList dataYearList(String ss) {
-        //april
-        try {
-            JSONObject jsonObject = new JSONObject(ss);
-            JSONArray jsonArray = jsonObject.getJSONArray("year");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                yearList.add(jsonArray.getString(i));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        return yearList;
 
-        //april
-    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
