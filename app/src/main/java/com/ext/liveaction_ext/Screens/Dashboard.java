@@ -1,7 +1,6 @@
 package com.ext.liveaction_ext.Screens;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +45,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Dashboard extends AppCompatActivity {
-    Fragment go_next;
+
     TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
@@ -62,10 +61,9 @@ public class Dashboard extends AppCompatActivity {
     ImageButton close_dialog;
     DummyData dumdta = new DummyData();
 
-    Access_new a = new Access_new();
+
     String mobile;
     FragmentManager fragmentManager;
-    Dialog dialog;
     Context context;
     Conn_service conn = new Conn_service();
     ArrayList<String> appl = new ArrayList<String>();
@@ -73,13 +71,10 @@ public class Dashboard extends AppCompatActivity {
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
-    ArrayList<String> yearList = new ArrayList<String>();
+//    ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
     boolean showDummy;
-    String data_sync;
-    String timeStatus = "Last sync : ";
     private boolean isLoggedIn = false;
-    @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,14 +134,13 @@ public class Dashboard extends AppCompatActivity {
 
         String fToken = sh.getString("firebaseToken", "");
 
-        Log.e("fToken", fToken);
 
         String resultdummy = dumdta.Data_for_dash();
 
 
 
 
-        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means the task has never been performed
+        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
 
         Calendar today = Calendar.getInstance();
         Calendar lastTaskCalendar = Calendar.getInstance();
@@ -160,19 +154,14 @@ public class Dashboard extends AppCompatActivity {
             // Task has not been performed today
 
 
-   String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-Log.e("res", "res======"+res);
-        try {
-            JSONObject jsonObject = new JSONObject(res);
-            showDummy = jsonObject.getBoolean("showDummy");
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+         String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+
+
         dummyList = dummyDayList(resultdummy);
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
-        yearList = dataYearList(res);
+
 
 
         SharedPreferences.Editor myEdit = sh.edit();
@@ -194,15 +183,14 @@ Log.e("res", "res======"+res);
         Set<String> monthset = new HashSet<String>();
         monthset.addAll(monthList);
 
-        Set<String> yearset = new HashSet<String>();
-        yearset.addAll(yearList);
+
 
 
         myEdit.putStringSet("DUMMY_LIST", dummyset);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
-        myEdit.putStringSet("YEAR_LIST", yearset);
+
 
 
         myEdit.apply();
@@ -235,9 +223,8 @@ Log.e("res", "res======"+res);
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(mobile);
-        data_sync= sh.getString("Last_sync","");
-        Log.e("data_sync",data_sync);
-        sync_tym.setText(timeStatus + data_sync);
+        String data_sync= sh.getString("Last_sync","");
+        sync_tym.setText(data_sync);
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
@@ -298,17 +285,6 @@ Log.e("res", "res======"+res);
 
         //april
     }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("onResume","onResume called");
-        data_sync= sh.getString("Last_sync","");
-        Log.e("data_sync",data_sync);
-        sync_tym.setText(timeStatus + data_sync);
-    }
-
     public ArrayList dataDayList(String ss) {
         //april
         try {
@@ -360,21 +336,7 @@ Log.e("res", "res======"+res);
 
         //april
     }
-    public ArrayList dataYearList(String ss) {
-        //april
-        try {
-            JSONObject jsonObject = new JSONObject(ss);
-            JSONArray jsonArray = jsonObject.getJSONArray("year");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                yearList.add(jsonArray.getString(i));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        return yearList;
 
-        //april
-    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -395,7 +357,7 @@ Log.e("res", "res======"+res);
     public void selectDrawerItem(MenuItem menuItem) {
 
         // Create a new fragment and specify the fragment to show based on nav item clicked
-
+        Fragment go_next;
 
         int itemId = menuItem.getItemId();
 
@@ -459,11 +421,12 @@ Log.e("res", "res======"+res);
         }
         else if (itemId == R.id.perm_new)
         {
-      //Log.e("data unknown", String.valueOf(itemId));
+      Log.e("data unknown", String.valueOf(itemId));
 
-           Intent intent = new Intent(this, Dashboard.class);
+            Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
+
         }
         else if (itemId == R.id.Logout)
         {
@@ -502,24 +465,5 @@ Log.e("res", "res======"+res);
         //super.onBackPressed();
         Log.d("destroyed","dashboard back");
     }
-    public void showPermissionDialog() {
-        // Show permission dialog here
-        // For example:
-        dialog = new Dialog(getApplicationContext());
-        dialog.setContentView(R.layout.dialog_for_perrmisson);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.show();
-        /*new AlertDialog.Builder(getContext())
-                .setTitle("Permission Dialog")
-                .setMessage("This is a permission dialog.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle OK button click if needed
-                    }
-                })
-                .show();*/
-    }
+
 }

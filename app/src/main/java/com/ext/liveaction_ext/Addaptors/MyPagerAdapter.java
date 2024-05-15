@@ -7,10 +7,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.ext.liveaction_ext.frags.day_Fragment;
 import com.ext.liveaction_ext.frags.month_Fragment;
 import com.ext.liveaction_ext.frags.week_Fragment;
-import com.ext.liveaction_ext.frags.year_Fragment;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
-    private static final int NUM_TABS = 4;
+    private static final int NUM_TABS = 3;
 
     public MyPagerAdapter(FragmentManager fm) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -26,8 +25,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return new week_Fragment();
             case 2:
                 return new month_Fragment();
-            case 3:
-                return new year_Fragment();
 
             default:
                 return null;
@@ -49,8 +46,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return "Week";
             case 2:
                 return "Month";
-            case 3:
-                return "Year";
 
             default:
                 return null;
