@@ -4,14 +4,14 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -44,8 +44,8 @@ import java.util.ArrayList;
 public class Manage_screen extends Fragment {
     Conn_service servic = new Conn_service();
     TextView tv_commnt;
-    ArrayList<Integer> valuesperList = new ArrayList<>();
-    ArrayList<Integer> valueshrList = new ArrayList<>();// Create an ArrayList to store the values
+    ArrayList<Double> valuesperList = new ArrayList<>();
+    ArrayList<Double> valueshrList = new ArrayList<>();// Create an ArrayList to store the values
     JSONObject jsonBody = new JSONObject();
     int uid_z;
     int uid = 0;
@@ -55,7 +55,7 @@ public class Manage_screen extends Fragment {
     JSONArray jsonAy = new JSONArray();
     TextView tv_btn;
     CardView btn_sv,btn_dash;
-    int valueperInt,valuehrInt;
+    double valueperInt,valuehrInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
     private LinearLayout floatingViewContainer;
     private View floatingView;
@@ -157,12 +157,12 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
                         if (value.contains("_actual_hr")) {
                             financeObj.put("targetInMins", editTextValuehr);
-                            valuehrInt = Integer.parseInt(editTextValuehr.trim());
+                            valuehrInt = Double.parseDouble(editTextValuehr.trim());
                             valueshrList.add(valuehrInt);
 
                         } else {
                             financeObj.put("targetInPercent", editTextValuehr);
-                            valueperInt = Integer.parseInt(editTextValuehr.trim());
+                            valueperInt = Double.parseDouble(editTextValuehr.trim());
                             valuesperList.add(valueperInt);
                         }
                         jsonAy.put(financeObj);
@@ -275,16 +275,16 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
         return editable;
     }
 
-    private boolean validationonper(ArrayList<Integer> valuesList) {
+    private boolean validationonper(ArrayList<Double> valuesList) {
         int sum = 0;
-        for (int number : valuesList) {
+        for (double number : valuesList) {
             sum += number;
         }
         return sum <= 100;
     }
-    private boolean validationonhr(ArrayList<Integer> valuesList) {
+    private boolean validationonhr(ArrayList<Double> valuesList) {
         int sum = 0;
-        for (int number : valuesList) {
+        for (double number : valuesList) {
             sum += number;
         }
         return sum <= 168;
@@ -341,11 +341,9 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     // Get the hour value
                     String hrValue = et_actual_hrr.getText().toString();
 
-                    // If hrValue is empty, clear the corresponding et_actual_prr value
                     if (hrValue.isEmpty()) {
                         et_actual_prr.setText("");
                     } else {
-                        // Calculate hour in terms of percent when focus is lost from et_actual_hrr
                         double hour = Double.parseDouble(hrValue);
 
                         if (hour > 168) {
@@ -354,7 +352,6 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                             et_actual_prr.setText(""); // Clear corresponding percent value
                             return;
                         }
-
                         double percent = hour * 100 / 168;
                         DecimalFormat decimalFormat = new DecimalFormat("#.##");
                         String percentFormatted = decimalFormat.format(percent);
