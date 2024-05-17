@@ -44,7 +44,8 @@ import java.util.ArrayList;
 public class Manage_screen extends Fragment {
     Conn_service servic = new Conn_service();
     TextView tv_commnt;
-    ArrayList<Integer> valuesList = new ArrayList<>(); // Create an ArrayList to store the values
+    ArrayList<Integer> valuesperList = new ArrayList<>();
+    ArrayList<Integer> valueshrList = new ArrayList<>();// Create an ArrayList to store the values
     JSONObject jsonBody = new JSONObject();
     int uid_z;
     int uid = 0;
@@ -54,7 +55,7 @@ public class Manage_screen extends Fragment {
     JSONArray jsonAy = new JSONArray();
     TextView tv_btn;
     CardView btn_sv,btn_dash;
-    int valueInt;
+    int valueperInt,valuehrInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
     private LinearLayout floatingViewContainer;
     private View floatingView;
@@ -156,11 +157,13 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
                         if (value.contains("_actual_hr")) {
                             financeObj.put("targetInMins", editTextValuehr);
+                            valuehrInt = Integer.parseInt(editTextValuehr.trim());
+                            valueshrList.add(valuehrInt);
 
                         } else {
                             financeObj.put("targetInPercent", editTextValuehr);
-                            valueInt = Integer.parseInt(editTextValuehr.trim());
-                            valuesList.add(valueInt);
+                            valueperInt = Integer.parseInt(editTextValuehr.trim());
+                            valuesperList.add(valueperInt);
                         }
                         jsonAy.put(financeObj);
 
@@ -176,8 +179,9 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     throw new RuntimeException(e);
                 }
 
-                boolean validate = validationonper(valuesList);
-                if (validate) {
+                boolean validateper = validationonper(valuesperList);
+                boolean validatehr= validationonhr(valueshrList);
+                if (validateper && validatehr) {
                     addData(jsonBody);
                     //startActivity(new Intent(getContext(), Achieve.class));
                     Fragment go_next = new Achieve();
@@ -188,7 +192,8 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     actionBar.setTitle("Achievements");
                     // getActivity().getActionBar().setTitle("Achievements");
                 } else {
-                    valuesList.clear();
+                    valuesperList.clear();
+                    valueshrList.clear();
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                     // Set the title and message for the dialog
@@ -277,7 +282,13 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
         }
         return sum <= 100;
     }
-
+    private boolean validationonhr(ArrayList<Integer> valuesList) {
+        int sum = 0;
+        for (int number : valuesList) {
+            sum += number;
+        }
+        return sum <= 168;
+    }
 
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
 

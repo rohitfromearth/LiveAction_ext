@@ -61,16 +61,11 @@ public class month_Fragment extends Fragment {
     }
 
     private void Data_show( ) {
-
-
-
         uid = sh.getInt("UID", uid_z);
-
         Set<String> monthset = sh.getStringSet("MONTH_LIST", new HashSet<>());
         for (String jsonString : monthset) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
-
                 Random random = new Random();
                 int red = random.nextInt(256);
                 int green = random.nextInt(256);
@@ -119,7 +114,7 @@ public class month_Fragment extends Fragment {
 
                 if (!categoryName.equalsIgnoreCase("Total")) {
                     int logoResId = getLogoResIdForCategory(categoryName);
-                    double tsThisDay = jsonObject.optDouble("usage_in_mins_month");
+                    double tsThisDay = jsonObject.optDouble("target_in_min_month");
                     double average = jsonObject.optDouble("last_month_in_mins");
                     double variance = jsonObject.optDouble("variance_month");
 
