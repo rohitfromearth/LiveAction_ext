@@ -31,6 +31,8 @@ import org.eazegraph.lib.models.PieModel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -122,23 +124,28 @@ public class day_Fragment extends Fragment {
         for (String jsonString : dSet) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
+                Log.d("jsonObject","jsonObject"+jsonObject.toString());
                 String categoryName = jsonObject.optString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
-                int tsthisday = jsonObject.optInt("usage_in_mins_day");
 
-                int average = jsonObject.optInt("last_7_day_usage_in_mins");
-                int variance = jsonObject.getInt("variance_day");
+                double tsthisday = jsonObject.optDouble("usage_in_mins_day");
+                double average = jsonObject.optDouble("last_7_day_usage_in_mins");
+                double variance = jsonObject.optDouble("variance_day");
 
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                String tsThisDayFormatted = decimalFormat.format(tsthisday);
+                String averageFormatted = decimalFormat.format(average);
+                String varianceFormatted = decimalFormat.format(variance);
 
                 String tsText = "TS this day";
                 String averageText = "Average\n(last 7 days)";
                 String varianceText = "Variance";
 
-                String tsthisdays = " "+ tsthisday;
-                String averages = " " + average;
-                String variences = String.valueOf(variance);
+                String tsThisDays = " "+ tsThisDayFormatted;
+                String averages = " " + averageFormatted;
+                String variances = String.valueOf(varianceFormatted);
 
-                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsthisdays, averages, variences));
+                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsThisDays, averages, variances));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
