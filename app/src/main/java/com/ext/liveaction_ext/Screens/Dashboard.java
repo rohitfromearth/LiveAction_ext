@@ -97,7 +97,7 @@ public class Dashboard extends AppCompatActivity {
         String dir = getObbDir().getPath();
 
         setContentView(R.layout.drawer_layout);
-
+//        initPopupDialog(context);
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
             Dialog dd = new Dialog(Dashboard.this);
@@ -113,6 +113,7 @@ public class Dashboard extends AppCompatActivity {
             close_dialog.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 dd.dismiss();
+
             });
             usage_stat.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
@@ -459,9 +460,31 @@ public class Dashboard extends AppCompatActivity {
         // Close the navigation drawer
         mDrawer.closeDrawers();
     }
-
-    @Override
-    public void onBackPressed() {
+//    private void initPopupDialog(Context context) {
+//        // Create and initialize the popup dialog
+//        Dialog dd = new Dialog();
+//
+//        dd.setContentView(R.layout.navigation_permission_dialog);
+//        dd.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        dd.setCancelable(false);
+//        dd.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+//        dd.show();
+//        usage_stat = dd.findViewById(R.id.usaegstat_perm1);
+//        accessibility_permission = dd.findViewById(R.id.accessibilty_perm1);
+//        close_dialog = dd.findViewById(R.id.close_permission1);
+//        close_dialog.setOnClickListener(view -> {
+//            view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+//            dd.dismiss();
+//        });
+//    }
+//
+//    private void showPopupDialog() {
+//        // Show the initialized popup dialog
+//        if (!dd.isShowing()) {
+//            dd.show();
+//        }
+//    }
+        public void onBackPressed() {
         //super.onBackPressed();
         Log.d("destroyed","dashboard back");
     }

@@ -87,7 +87,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         firebaseToke = task.getResult().getToken();
-                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
                         SharedPreferences.Editor myEdit = sharedPreferences.edit();
                         myEdit.putString("firebaseToken", firebaseToke);
@@ -130,100 +130,89 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
             throw new RuntimeException(e);
         }
 
-        btn_sv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btn_sv.setOnClickListener(view1 -> {
 
-                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.animate().alpha(1f).setDuration(200);
+            view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
+            if (edit) {
+                for (EditText editTextforhr : etList) {
+                    String value = editTextforhr.getTag().toString();
+
+                    String editTextValuehr = editTextforhr.getText().toString();
+
+                    if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
+                        editTextValuehr = "0";
                     }
-                }).start();
-                if (edit) {
-                    for (EditText editTextforhr : etList) {
-                        String value = editTextforhr.getTag().toString();
+                    int indexOfUnderscore = value.indexOf("_");
 
-                        String editTextValuehr = editTextforhr.getText().toString();
-
-                        if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
-                            editTextValuehr = "0";
-                        }
-                        int indexOfUnderscore = value.indexOf("_");
-
-                        String usaage_id = value.substring(0, indexOfUnderscore);
+                    String usaage_id = value.substring(0, indexOfUnderscore);
 
 
-                        try {
-
-                            JSONObject financeObj = new JSONObject();
-                            financeObj.put("userId", uid);
-                            financeObj.put("category", usaage_id);
-
-                            if (value.contains("_actual_hr")) {
-                                financeObj.put("targetInMins", editTextValuehr);
-
-                            } else {
-                                financeObj.put("targetInPercent", editTextValuehr);
-                                valueInt = Integer.parseInt(editTextValuehr.trim());
-                                valuesList.add(valueInt);
-                            }
-                            jsonAy.put(financeObj);
-
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        }
-
-
-                    }
                     try {
-                        jsonBody.put("data", jsonAy);
+
+                        JSONObject financeObj = new JSONObject();
+                        financeObj.put("userId", uid);
+                        financeObj.put("category", usaage_id);
+
+                        if (value.contains("_actual_hr")) {
+                            financeObj.put("targetInMins", editTextValuehr);
+
+                        } else {
+                            financeObj.put("targetInPercent", editTextValuehr);
+                            valueInt = Integer.parseInt(editTextValuehr.trim());
+                            valuesList.add(valueInt);
+                        }
+                        jsonAy.put(financeObj);
+
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
 
-                    boolean validate = validationonper(valuesList);
-                    if (validate) {
-                        addData(jsonBody);
-                        //startActivity(new Intent(getContext(), Achieve.class));
-                        Fragment go_next = new Achieve();
-                        FragmentManager fragmentManager = getParentFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                        assert actionBar != null;
-                        actionBar.setTitle("Achievements");
-                        // getActivity().getActionBar().setTitle("Achievements");
-                    } else {
-                        valuesList.clear();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                        // Set the title and message for the dialog
-                        builder.setTitle("Validation Error");
-                        builder.setMessage("Total of target in hour as well " + " in percentage should be 100 or less than 100");
+                }
+                try {
+                    jsonBody.put("data", jsonAy);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
-                        // Set a positive button and its click listener
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Handle the click event (if needed)
-                            }
-                        });
-
-                        // Create and show the alert dialog
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    }
-
-
-                } else {
+                boolean validate = validationonper(valuesList);
+                if (validate) {
+                    addData(jsonBody);
                     //startActivity(new Intent(getContext(), Achieve.class));
                     Fragment go_next = new Achieve();
                     FragmentManager fragmentManager = getParentFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
                     ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                    assert actionBar != null;
                     actionBar.setTitle("Achievements");
                     // getActivity().getActionBar().setTitle("Achievements");
+                } else {
+                    valuesList.clear();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                    // Set the title and message for the dialog
+                    builder.setTitle("Validation Error");
+                    builder.setMessage("Total of target in hour as well " + " in percentage should be 100 or less than 100");
+
+                    // Set a positive button and its click listener
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        // Handle the click event (if needed)
+                    });
+
+                    // Create and show the alert dialog
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 }
+
+
+            } else {
+                //startActivity(new Intent(getContext(), Achieve.class));
+                Fragment go_next = new Achieve();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                actionBar.setTitle("Achievements");
+                // getActivity().getActionBar().setTitle("Achievements");
             }
         });
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
