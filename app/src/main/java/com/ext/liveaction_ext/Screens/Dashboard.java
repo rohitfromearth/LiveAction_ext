@@ -1,6 +1,7 @@
 package com.ext.liveaction_ext.Screens;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -49,7 +50,6 @@ public class Dashboard extends AppCompatActivity {
     TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
-
     int uid_z;
     int uid = 0;
     private TabLayout tabLayout;
@@ -60,9 +60,8 @@ public class Dashboard extends AppCompatActivity {
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
     DummyData dumdta = new DummyData();
-
-
     String mobile;
+    String res;
     FragmentManager fragmentManager;
     Context context;
     Conn_service conn = new Conn_service();
@@ -75,9 +74,13 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sh;
     boolean showDummy;
     private boolean isLoggedIn = false;
+    String timeStatus = "Last sync : ";
+    String data_sync;
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
@@ -99,6 +102,7 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.drawer_layout);
 //        initPopupDialog(context);
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
+
 
             Dialog dd = new Dialog(Dashboard.this);
 
@@ -131,15 +135,9 @@ public class Dashboard extends AppCompatActivity {
         }
 //        }
 
-
-
         String fToken = sh.getString("firebaseToken", "");
 
-
         String resultdummy = dumdta.Data_for_dash();
-
-
-
 
         long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
 
@@ -153,24 +151,20 @@ public class Dashboard extends AppCompatActivity {
 
         } else {
             // Task has not been performed today
+          res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
-
-         String res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-
+         Log.e("ressss","resssss = "+res);
+            Log.e("ressss","resssss");
 
         dummyList = dummyDayList(resultdummy);
         dayList = dataDayList(res);
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
 
-
-
         SharedPreferences.Editor myEdit = sh.edit();
 
         myEdit.putString("dir", dir);
         myEdit.putBoolean("showDummy", showDummy);
-
-
 
         Set<String> dummyset = new HashSet<String>();
         dummyset.addAll(dummyList);
@@ -184,15 +178,10 @@ public class Dashboard extends AppCompatActivity {
         Set<String> monthset = new HashSet<String>();
         monthset.addAll(monthList);
 
-
-
-
         myEdit.putStringSet("DUMMY_LIST", dummyset);
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
-
-
 
         myEdit.apply();
             SharedPreferences.Editor editor = sh.edit();
@@ -224,8 +213,15 @@ public class Dashboard extends AppCompatActivity {
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(mobile);
-        String data_sync= sh.getString("Last_sync","");
-        sync_tym.setText(data_sync);
+        data_sync= sh.getString("Last_sync","");
+        if (data_sync.isEmpty()) {
+            // If no data is available, display a dash "-"
+            sync_tym.setText(timeStatus + "-");
+        } else {
+            // If data is available, display the value retrieved from shared preferences
+            sync_tym.setText(timeStatus + data_sync);
+        }
+        //sync_tym.setText(timeStatus + data_sync);
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
@@ -294,6 +290,7 @@ public class Dashboard extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 dayList.add(jsonArray.getString(i));
             }
+
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -354,7 +351,21 @@ public class Dashboard extends AppCompatActivity {
                     return true;
                 });
     }
-
+    @SuppressLint("SetTextI18n")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("onResume", "onResume called");
+        data_sync = sh.getString("Last_sync", "");
+        Log.e("data_sync", data_sync);
+        if (data_sync.isEmpty()) {
+            // If no data is available, display a dash "-"
+            sync_tym.setText(timeStatus + "-");
+        } else {
+            // If data is available, display the value retrieved from shared preferences
+            sync_tym.setText(timeStatus + data_sync);
+        }
+    }
     public void selectDrawerItem(MenuItem menuItem) {
 
         // Create a new fragment and specify the fragment to show based on nav item clicked
@@ -487,6 +498,12 @@ public class Dashboard extends AppCompatActivity {
         public void onBackPressed() {
         //super.onBackPressed();
         Log.d("destroyed","dashboard back");
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //AppUtils.deleteCache(getApplicationContext());
+        Log.d("onStop","onStop");
     }
 
 }

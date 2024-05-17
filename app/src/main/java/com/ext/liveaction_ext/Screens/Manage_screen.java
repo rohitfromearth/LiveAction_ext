@@ -38,6 +38,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Manage_screen extends Fragment {
@@ -113,13 +114,13 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
         String res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
-        Log.e("res",res);
+        Log.e("res","/usageStats/manageData : "+res);
         boolean edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");
         }
         String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
-
+        Log.e("res_comnt","/usageStats/comments/ : "+res_comnt);
 
         try {
             JSONObject jsonObj = new JSONObject(res_comnt);
@@ -312,6 +313,51 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
         et_actual_hrr.setTag(usageid + "_actual_hr");
         et_actual_prr.setTag(usageid + "_actual_per");
+        if (!edit_view) {
+            // Disable EditText views if edit_view is false
+            et_actual_hrr.setEnabled(false);
+            et_actual_prr.setEnabled(false);
+        } else {
+            // Enable EditText views if edit_view is true
+            et_actual_hrr.setEnabled(true);
+            et_actual_prr.setEnabled(true);
+        }
+
+        et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    // Calculate hour in terms of percent when focus is lost from et_actual_hrr
+                    String hrValue = et_actual_hrr.getText().toString();
+                    if (!hrValue.isEmpty()) {
+                        double hour = Double.parseDouble(hrValue);
+
+                        double percent = hour * 100 / 168;
+                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                        String percentFormatted = decimalFormat.format(percent);
+                        et_actual_prr.setText(String.valueOf(percentFormatted));
+                    }
+                }
+            }
+        });
+        et_actual_prr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    // Calculate percent in terms of hours when focus is lost from et_actual_prr
+                    String percentValue = et_actual_prr.getText().toString();
+                    if (!percentValue.isEmpty()) {
+                        double percent = Double.parseDouble(percentValue);
+                        // Perform the calculation to get hours
+                        double hours = percent * 168 / 100;
+                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                        String hoursFormatted = decimalFormat.format(hours);
+                        et_actual_hrr.setText(String.valueOf(hoursFormatted));
+                    }
+                }
+            }
+        });
+
         etList.add(et_actual_hrr);
 
         etList.add(et_actual_prr);
@@ -326,7 +372,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
 
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
-        Log.d("setWeeklyTarget",uid);
+        Log.d("setWeeklyTarget","setWeeklyTarget : " +uid);
 
 
     }

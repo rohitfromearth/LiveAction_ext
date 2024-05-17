@@ -6,7 +6,6 @@
     android:gravity="center"
     android:paddingVertical="20dp"
     app:cardBackgroundColor="#E2DAC4"
-
     app:cardElevation="10dp">
 
     <LinearLayout
@@ -21,7 +20,7 @@
             android:layout_gravity="top|right"
             android:background="@drawable/close_bg"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-    />
+            app:cardCornerRadius="20dp" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -5,7 +5,7 @@
     android:layout_gravity="center"
     android:layout_margin="3dp"
     android:background="@drawable/card_background"
-    android:elevation="5dp"
+    android:elevation="10dp"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="1dp">
@@ -42,29 +42,31 @@
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
         android:layout_marginHorizontal="2dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:layout_marginTop="4dp">
 
         <TextView
             android:id="@+id/ts_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+
             android:textFontWeight="1"
-            android:layout_weight="1"
+            android:layout_weight="0.6"
             android:gravity="left"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/ts_value"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            android:layout_weight="1"
+
+            android:layout_weight="0.4"
+            android:textFontWeight="1"
             android:gravity="right"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray"
-            android:textFontWeight="1" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,25 +74,28 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="2dp"
         android:gravity="fill_horizontal"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:layout_marginTop="4dp"
+      >
 
         <TextView
             android:id="@+id/average_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+
             android:textFontWeight="1"
-            android:layout_weight="0.7"
+            android:layout_weight="0.6"
             android:gravity="left"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/average_value"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            android:layout_weight="1.3"
+
+            android:layout_weight="0.4"
             android:textFontWeight="1"
             android:gravity="right"
             android:textAppearance="?android:textAppearanceSmall"
@@ -102,29 +107,31 @@
         android:layout_marginHorizontal="2dp"
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:layout_marginTop="4dp">
 
         <TextView
             android:id="@+id/variance_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+
             android:textFontWeight="1"
-            android:layout_weight="0.7"
+            android:layout_weight="0.6"
             android:gravity="left"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/variance_value"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="2dp"
-            android:layout_weight="1.3"
+
+            android:layout_weight="0.4"
             android:textFontWeight="1"
             android:gravity="right"
             android:textAppearance="?android:textAppearanceSmall"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
 </LinearLayout>
