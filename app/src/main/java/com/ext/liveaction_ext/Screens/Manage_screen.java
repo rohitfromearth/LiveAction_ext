@@ -76,7 +76,7 @@ public class Manage_screen extends Fragment {
         btn_sv = view.findViewById(R.id.save_btn);
         tv_btn = view.findViewById(R.id.savetargt);
         tableLayout = view.findViewById(R.id.tableLayout);
-        floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
+       // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
 btn_dash= view.findViewById(R.id.dashboard_btn_mng);
@@ -105,13 +105,13 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
         // Inflate the floating view layout
         inflater = LayoutInflater.from(getContext());
-        floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
+       // floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
 
         // Add touch listener to make the view movable
-        floatingView.setOnTouchListener(new FloatingViewTouchListener());
+      //  floatingView.setOnTouchListener(new FloatingViewTouchListener());
 
         // Add the floating view to the container
-        floatingViewContainer.addView(floatingView);
+//        floatingViewContainer.addView(floatingView);
 
         String res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
@@ -338,36 +338,63 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    // Calculate hour in terms of percent when focus is lost from et_actual_hrr
+                    // Get the hour value
                     String hrValue = et_actual_hrr.getText().toString();
-                    if (!hrValue.isEmpty()) {
+
+                    // If hrValue is empty, clear the corresponding et_actual_prr value
+                    if (hrValue.isEmpty()) {
+                        et_actual_prr.setText("");
+                    } else {
+                        // Calculate hour in terms of percent when focus is lost from et_actual_hrr
                         double hour = Double.parseDouble(hrValue);
+
+                        if (hour > 168) {
+                            et_actual_hrr.setError("Hours cannot exceed 168");
+                            et_actual_hrr.setText("");
+                            et_actual_prr.setText(""); // Clear corresponding percent value
+                            return;
+                        }
 
                         double percent = hour * 100 / 168;
                         DecimalFormat decimalFormat = new DecimalFormat("#.##");
                         String percentFormatted = decimalFormat.format(percent);
-                        et_actual_prr.setText(String.valueOf(percentFormatted));
+                        et_actual_prr.setText(percentFormatted);
                     }
                 }
             }
         });
+
         et_actual_prr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    // Calculate percent in terms of hours when focus is lost from et_actual_prr
+                    // Get the percent value
                     String percentValue = et_actual_prr.getText().toString();
-                    if (!percentValue.isEmpty()) {
+
+                    // If percentValue is empty, clear the corresponding et_actual_hrr value
+                    if (percentValue.isEmpty()) {
+                        et_actual_hrr.setText("");
+                    } else {
+                        // Calculate percent in terms of hours when focus is lost from et_actual_prr
                         double percent = Double.parseDouble(percentValue);
-                        // Perform the calculation to get hours
+
+                        if (percent > 100) {
+                            et_actual_prr.setError("Percent cannot exceed 100");
+                            et_actual_prr.setText("");
+                            et_actual_hrr.setText(""); // Clear corresponding hour value
+                            return;
+                        }
+
                         double hours = percent * 168 / 100;
                         DecimalFormat decimalFormat = new DecimalFormat("#.##");
                         String hoursFormatted = decimalFormat.format(hours);
-                        et_actual_hrr.setText(String.valueOf(hoursFormatted));
+                        et_actual_hrr.setText(hoursFormatted);
                     }
                 }
             }
         });
+
+
 
         etList.add(et_actual_hrr);
 
@@ -387,7 +414,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
 
     }
-
+/*
     private class FloatingViewTouchListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -416,5 +443,5 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     return false;
             }
         }
-    }
+    }*/
 }
