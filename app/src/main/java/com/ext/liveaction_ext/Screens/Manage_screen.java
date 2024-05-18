@@ -57,6 +57,7 @@ public class Manage_screen extends Fragment {
     CardView btn_sv,btn_dash;
     double valueperInt,valuehrInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
+    private final ArrayList<EditText> etList1 = new ArrayList<>();
     private LinearLayout floatingViewContainer;
     private View floatingView;
     private TableLayout tableLayout;
@@ -66,6 +67,8 @@ public class Manage_screen extends Fragment {
     private FirebaseAuth mAuth;
     private float initialTouchY;
     Context context;
+    DecimalFormat decimalFormat;
+    String percentFormatted;
 
 
     @Override
@@ -132,14 +135,17 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
             throw new RuntimeException(e);
         }
 
-        btn_sv.setOnClickListener(view1 -> {
+       /* btn_sv.setOnClickListener(view1 -> {
 
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             if (edit) {
                 for (EditText editTextforhr : etList) {
+
                     String value = editTextforhr.getTag().toString();
+                    Log.e("value","value : "+value);
 
                     String editTextValuehr = editTextforhr.getText().toString();
+                    Log.e("editTextValuehr","editTextValuehr : "+editTextValuehr);
 
                     if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
                         editTextValuehr = "0";
@@ -220,7 +226,110 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 actionBar.setTitle("Achievements");
                 // getActivity().getActionBar().setTitle("Achievements");
             }
+        });*/
+
+        btn_sv.setOnClickListener(view1 -> {
+            view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
+
+            if (edit) {
+                for (EditText editTextforhr : etList) {
+                    String value = editTextforhr.getTag().toString();
+                    Log.e("value", "value : " + value);
+
+                    String editTextValuehr = editTextforhr.getText().toString();
+                    Log.e("editTextValuehr", "editTextValuehr : " + editTextValuehr);
+
+                    if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
+                        editTextValuehr = "0";
+                    }
+
+                    int indexOfUnderscore = value.indexOf("_");
+                    String usage_id = value.substring(0, indexOfUnderscore);
+
+                    try {
+                        JSONObject financeObj = new JSONObject();
+                        financeObj.put("userId", uid);
+                        financeObj.put("category", usage_id);
+
+                        if (value.contains("_actual_hr")) {
+                            financeObj.put("targetInMins", editTextValuehr);
+                            double valuehrInt = Double.parseDouble(editTextValuehr.trim());
+                            valueshrList.add(valuehrInt);
+
+                            // Get corresponding _actual_per EditText
+                            EditText editTextForPrr = tableLayout.findViewWithTag(usage_id + "_actual_prr");
+                            if (editTextForPrr != null) {
+                                String editTextValuePrr = editTextForPrr.getText().toString();
+
+                                // If _actual_prr is empty, calculate and set its value
+                                if (editTextValuePrr.equals("")) {
+                                    updatePercentFromHour(editTextforhr, editTextForPrr);
+                                }
+                            }
+                        } else if (value.contains("_actual_prr")) {
+                            financeObj.put("targetInPercent", editTextValuehr);
+                            double valueperInt = Double.parseDouble(editTextValuehr.trim());
+                            valuesperList.add(valueperInt);
+
+                            // Get corresponding _actual_hr EditText
+                            EditText editTextForHr = tableLayout.findViewWithTag(usage_id + "_actual_hr");
+                            if (editTextForHr != null) {
+                                String editTextValueHr = editTextForHr.getText().toString();
+
+                                // If _actual_hr is empty, calculate and set its value
+                                if (editTextValueHr.equals("")) {
+                                    updateHourFromPercent(editTextForHr, editTextforhr);
+                                }
+                                Log.e("editTextValueHr",editTextValueHr);
+                            }
+                        }
+
+                        jsonAy.put(financeObj);
+
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                try {
+                    jsonBody.put("data", jsonAy);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                boolean validateper = validationonper(valuesperList);
+                boolean validatehr = validationonhr(valueshrList);
+                if (validateper && validatehr) {
+                    addData(jsonBody);
+                    Fragment go_next = new Achieve();
+                    FragmentManager fragmentManager = getParentFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                    assert actionBar != null;
+                    actionBar.setTitle("Achievements");
+                } else {
+                    valuesperList.clear();
+                    valueshrList.clear();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Validation Error");
+                    builder.setMessage("Total of target in hour as well as in percentage should be 100 or less than 100");
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        // Handle the click event (if needed)
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            } else {
+                Fragment go_next = new Achieve();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
+                ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                actionBar.setTitle("Achievements");
+            }
         });
+
+
+
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
@@ -334,7 +443,65 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
             et_actual_prr.setEnabled(true);
         }
 
-        et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+// Add TextWatcher to et_actual_hrr
+        et_actual_hrr.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action needed before text changed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No action needed as text is being changed
+                updatePercentFromHour(et_actual_hrr, et_actual_prr);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Update et_actual_prr based on the changed value in et_actual_hrr
+
+            }
+        });
+
+// Add TextWatcher to et_actual_prr
+        et_actual_prr.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action needed before text changed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // No action needed as text is being changed
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Update et_actual_hrr based on the changed value in et_actual_prr
+                updateHourFromPercent(et_actual_hrr, et_actual_prr);
+            }
+        });
+
+    /*    et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    updatePercentFromHour(et_actual_hrr, et_actual_prr);
+                }
+            }
+        });
+
+        et_actual_prr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    updateHourFromPercent(et_actual_hrr, et_actual_prr);
+                }
+            }
+        });*/
+
+
+      /*  et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -346,21 +513,21 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     } else {
                         double hour = Double.parseDouble(hrValue);
 
-                        if (hour > 168) {
+                       *//* if (hour > 168) {
                             et_actual_hrr.setError("Hours cannot exceed 168");
                             et_actual_hrr.setText("");
                             et_actual_prr.setText(""); // Clear corresponding percent value
                             return;
-                        }
+                        }*//*
                         double percent = hour * 100 / 168;
-                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                        String percentFormatted = decimalFormat.format(percent);
+                        decimalFormat = new DecimalFormat("#.##");
+                        percentFormatted = decimalFormat.format(percent);
+                        Log.e("percentFormatted","percentFormatted : "+percentFormatted);
                         et_actual_prr.setText(percentFormatted);
                     }
                 }
             }
         });
-
         et_actual_prr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -375,12 +542,12 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                         // Calculate percent in terms of hours when focus is lost from et_actual_prr
                         double percent = Double.parseDouble(percentValue);
 
-                        if (percent > 100) {
+                       *//* if (percent > 100) {
                             et_actual_prr.setError("Percent cannot exceed 100");
                             et_actual_prr.setText("");
                             et_actual_hrr.setText(""); // Clear corresponding hour value
                             return;
-                        }
+                        }*//*
 
                         double hours = percent * 168 / 100;
                         DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -389,16 +556,53 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     }
                 }
             }
-        });
-
-
+        });*/
 
         etList.add(et_actual_hrr);
 
         etList.add(et_actual_prr);
 
-
         tableLayout.addView(row);
+    }
+    private void updatePercentFromHour(EditText et_actual_hrr, EditText et_actual_prr) {
+        // Get the hour value
+        String hrValue = et_actual_hrr.getText().toString();
+
+        if (hrValue.isEmpty()) {
+            et_actual_prr.setText("");
+        } else {
+            try {
+                double hour = Double.parseDouble(hrValue);
+
+                double percent = hour * 100 / 168;
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                String percentFormatted = decimalFormat.format(percent);
+                et_actual_prr.setText(percentFormatted);
+            } catch (NumberFormatException e) {
+                et_actual_hrr.setError("Invalid input");
+                et_actual_prr.setText("");
+            }
+        }
+    }
+
+    private void updateHourFromPercent(EditText et_actual_hrr, EditText et_actual_prr) {
+        // Get the percent value
+        String percentValue = et_actual_prr.getText().toString();
+
+        if (percentValue.isEmpty()) {
+            et_actual_hrr.setText("");
+        } else {
+            try {
+                double percent = Double.parseDouble(percentValue);
+                double hours = percent * 168 / 100;
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                String hoursFormatted = decimalFormat.format(hours);
+                et_actual_hrr.setText(hoursFormatted);
+            } catch (NumberFormatException e) {
+                et_actual_prr.setError("Invalid input");
+                et_actual_hrr.setText("");
+            }
+        }
     }
 
     public void addData(JSONObject jsonbdy) {
