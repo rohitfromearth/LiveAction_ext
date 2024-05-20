@@ -2,6 +2,7 @@ package com.ext.liveaction_ext.Screens;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +12,11 @@ import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -54,8 +57,8 @@ public class Manage_screen extends Fragment {
     String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
     TextView tv_btn;
-    CardView btn_sv,btn_dash;
-    double valueperInt,valuehrInt;
+    CardView btn_sv, btn_dash;
+    double valueperInt, valuehrInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
     private final ArrayList<EditText> etList1 = new ArrayList<>();
     private LinearLayout floatingViewContainer;
@@ -71,18 +74,22 @@ public class Manage_screen extends Fragment {
     String percentFormatted;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
+
+
+
         btn_sv = view.findViewById(R.id.save_btn);
         tv_btn = view.findViewById(R.id.savetargt);
         tableLayout = view.findViewById(R.id.tableLayout);
-       // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
+        // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
-btn_dash= view.findViewById(R.id.dashboard_btn_mng);
+        btn_dash = view.findViewById(R.id.dashboard_btn_mng);
         FirebaseUser use = mAuth.getCurrentUser();
 
 
@@ -105,26 +112,15 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
 
-
-        // Inflate the floating view layout
-        inflater = LayoutInflater.from(getContext());
-       // floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
-
-        // Add touch listener to make the view movable
-      //  floatingView.setOnTouchListener(new FloatingViewTouchListener());
-
-        // Add the floating view to the container
-//        floatingViewContainer.addView(floatingView);
-
         String res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
-        Log.e("res","/usageStats/manageData : "+res);
+        Log.e("res", "/usageStats/manageData : " + res);
         boolean edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");
         }
         String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
-        Log.e("res_comnt","/usageStats/comments/ : "+res_comnt);
+        Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
 
         try {
             JSONObject jsonObj = new JSONObject(res_comnt);
@@ -135,17 +131,16 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
             throw new RuntimeException(e);
         }
 
-       /* btn_sv.setOnClickListener(view1 -> {
-
+        btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             if (edit) {
                 for (EditText editTextforhr : etList) {
 
                     String value = editTextforhr.getTag().toString();
-                    Log.e("value","value : "+value);
+                    Log.e("value", "value : " + value);
 
                     String editTextValuehr = editTextforhr.getText().toString();
-                    Log.e("editTextValuehr","editTextValuehr : "+editTextValuehr);
+                    Log.e("editTextValuehr", "editTextValuehr : " + editTextValuehr);
 
                     if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
                         editTextValuehr = "0";
@@ -186,7 +181,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 }
 
                 boolean validateper = validationonper(valuesperList);
-                boolean validatehr= validationonhr(valueshrList);
+                boolean validatehr = validationonhr(valueshrList);
                 if (validateper && validatehr) {
                     addData(jsonBody);
                     //startActivity(new Intent(getContext(), Achieve.class));
@@ -226,9 +221,9 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 actionBar.setTitle("Achievements");
                 // getActivity().getActionBar().setTitle("Achievements");
             }
-        });*/
+        });
 
-        btn_sv.setOnClickListener(view1 -> {
+     /*   btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
 
             if (edit) {
@@ -326,8 +321,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
                 actionBar.setTitle("Achievements");
             }
-        });
-
+        });*/
 
 
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
@@ -358,14 +352,14 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     if (targetinmin.equals("0") && targetinper.equals("0")) {
 
                         target_hr = "";
-                        target_per = " " ;
+                        target_per = " ";
                     } else if (targetinmin.equals("0") && !targetinper.equals("0")) {
                         target_hr = "";
                         target_per = targetinper + "%";
-                    }   else if (!targetinmin.equals("0")  && targetinper.equals("0")) {
+                    } else if (!targetinmin.equals("0") && targetinper.equals("0")) {
                         target_hr = targetinmin;
-                        target_per = " " ;
-                    }else{
+                        target_per = " ";
+                    } else {
                         target_hr = targetinmin;
                         target_per = targetinper + "%";
                     }
@@ -391,6 +385,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
         }
         return sum <= 100;
     }
+
     private boolean validationonhr(ArrayList<Double> valuesList) {
         int sum = 0;
         for (double number : valuesList) {
@@ -443,8 +438,8 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
             et_actual_prr.setEnabled(true);
         }
 
-// Add TextWatcher to et_actual_hrr
-        et_actual_hrr.addTextChangedListener(new TextWatcher() {
+
+      /*  et_actual_hrr.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // No action needed before text changed
@@ -462,8 +457,6 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
             }
         });
-
-// Add TextWatcher to et_actual_prr
         et_actual_prr.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -480,7 +473,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 // Update et_actual_hrr based on the changed value in et_actual_prr
                 updateHourFromPercent(et_actual_hrr, et_actual_prr);
             }
-        });
+        });*/
 
     /*    et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -501,7 +494,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
         });*/
 
 
-      /*  et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+       et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -512,13 +505,6 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                         et_actual_prr.setText("");
                     } else {
                         double hour = Double.parseDouble(hrValue);
-
-                       *//* if (hour > 168) {
-                            et_actual_hrr.setError("Hours cannot exceed 168");
-                            et_actual_hrr.setText("");
-                            et_actual_prr.setText(""); // Clear corresponding percent value
-                            return;
-                        }*//*
                         double percent = hour * 100 / 168;
                         decimalFormat = new DecimalFormat("#.##");
                         percentFormatted = decimalFormat.format(percent);
@@ -539,16 +525,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     if (percentValue.isEmpty()) {
                         et_actual_hrr.setText("");
                     } else {
-                        // Calculate percent in terms of hours when focus is lost from et_actual_prr
                         double percent = Double.parseDouble(percentValue);
-
-                       *//* if (percent > 100) {
-                            et_actual_prr.setError("Percent cannot exceed 100");
-                            et_actual_prr.setText("");
-                            et_actual_hrr.setText(""); // Clear corresponding hour value
-                            return;
-                        }*//*
-
                         double hours = percent * 168 / 100;
                         DecimalFormat decimalFormat = new DecimalFormat("#.##");
                         String hoursFormatted = decimalFormat.format(hours);
@@ -556,15 +533,15 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                     }
                 }
             }
-        });*/
+        });
 
         etList.add(et_actual_hrr);
 
         etList.add(et_actual_prr);
 
         tableLayout.addView(row);
-    }
-    private void updatePercentFromHour(EditText et_actual_hrr, EditText et_actual_prr) {
+}
+   /* private void updatePercentFromHour(EditText et_actual_hrr, EditText et_actual_prr) {
         // Get the hour value
         String hrValue = et_actual_hrr.getText().toString();
 
@@ -603,7 +580,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
                 et_actual_hrr.setText("");
             }
         }
-    }
+    }*/
 
     public void addData(JSONObject jsonbdy) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -611,7 +588,7 @@ btn_dash= view.findViewById(R.id.dashboard_btn_mng);
 
 
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
-        Log.d("setWeeklyTarget","setWeeklyTarget : " +uid);
+        Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
 
 
     }
