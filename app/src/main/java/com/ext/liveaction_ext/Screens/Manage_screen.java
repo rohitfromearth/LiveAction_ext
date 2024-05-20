@@ -171,8 +171,6 @@ public class Manage_screen extends Fragment {
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
-
-
                 }
                 try {
                     jsonBody.put("data", jsonAy);
