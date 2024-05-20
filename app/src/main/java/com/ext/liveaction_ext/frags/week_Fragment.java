@@ -120,7 +120,7 @@ public class week_Fragment extends Fragment {
                 String categoryName = jsonObject.optString("category");
                 if (!categoryName.equalsIgnoreCase("Total")) {
                     int logoResId = getLogoResIdForCategory(categoryName);
-                    double tsThisDay = jsonObject.optDouble("usage_in_mins_week");
+                    double tsThisDay = jsonObject.optDouble("target_in_mins");
                     double average = jsonObject.optDouble("last_4_week_usage_in_mins");
                     double variance = jsonObject.optDouble("variance_week");
 

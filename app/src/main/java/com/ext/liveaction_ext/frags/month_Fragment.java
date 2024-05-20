@@ -117,21 +117,16 @@ public class month_Fragment extends Fragment {
                     double tsThisDay = jsonObject.optDouble("target_in_min_month");
                     double average = jsonObject.optDouble("last_month_in_mins");
                     double variance = jsonObject.optDouble("variance_month");
-
                     DecimalFormat decimalFormat = new DecimalFormat("#.##");
                     String tsThisDayFormatted = decimalFormat.format(tsThisDay);
                     String averageFormatted = decimalFormat.format(average);
                     String varianceFormatted = decimalFormat.format(variance);
-
                     String tsText = "TS this month";
                     String averageText = "Average\n(last month)";
                     String varianceText = " Variance";
-
                     String tsThisDays = " " + tsThisDayFormatted;
                     String averages = " " + averageFormatted;
                     String variances = String.valueOf(varianceFormatted);
-
-
                     cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText,varianceText, tsThisDays, averages, variances));
                 }
             } catch (JSONException e) {

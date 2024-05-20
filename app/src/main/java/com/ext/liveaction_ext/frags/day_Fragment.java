@@ -129,6 +129,7 @@ public class day_Fragment extends Fragment {
                 int logoResId = getLogoResIdForCategory(categoryName);
 
                 double tsthisday = jsonObject.optDouble("target_in_min_day");
+                Log.e("tsthisday", categoryName+tsthisday);
                 double average = jsonObject.optDouble("last_7_day_usage_in_mins");
                 double variance = jsonObject.optDouble("variance_day");
 

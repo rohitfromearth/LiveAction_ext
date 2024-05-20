@@ -147,17 +147,9 @@ public class Login_verifcation extends AppCompatActivity {
             Accessibilty1 = dialog1.findViewById(R.id.accessibilty_perm);
             close1 = dialog1.findViewById(R.id.close_permission);
 
-            close1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.animate().alpha(1f).setDuration(200);
-                        }
-                    }).start();
-                    dialog1.dismiss();
-                }
+            close1.setOnClickListener(view -> {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                dialog1.dismiss();
             });
             usaegstat1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -177,7 +169,11 @@ public class Login_verifcation extends AppCompatActivity {
             Accessibilty1.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+
+
             });
+
+
         });
         sendotp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,6 +282,7 @@ public class Login_verifcation extends AppCompatActivity {
                     view.animate().alpha(1f).setDuration(200);
                 }
             }).start();
+
             dialog.dismiss();
         });
         usaegstat.setOnClickListener(view -> {
