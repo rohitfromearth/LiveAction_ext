@@ -74,7 +74,7 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sh;
     boolean showDummy;
     private boolean isLoggedIn = false;
-    String timeStatus = "Last sync : ";
+    String timeStatus = "Last sync of user ";
     String data_sync;
     @SuppressLint("SetTextI18n")
     @Override
@@ -153,8 +153,6 @@ public class Dashboard extends AppCompatActivity {
             // Task has not been performed today
           res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
-         Log.e("ressss","resssss = "+res);
-            Log.e("ressss","resssss");
 
         dummyList = dummyDayList(resultdummy);
         dayList = dataDayList(res);
@@ -213,14 +211,16 @@ public class Dashboard extends AppCompatActivity {
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(mobile);
-        data_sync= sh.getString("Last_sync","");
-        if (data_sync.isEmpty()) {
-            // If no data is available, display a dash "-"
-            sync_tym.setText(timeStatus + "-");
-        } else {
-            // If data is available, display the value retrieved from shared preferences
-            sync_tym.setText(timeStatus + data_sync);
-        }
+//        data_sync= sh.getString("Last_sync","");
+//        if (data_sync.isEmpty()) {
+//            // If no data is available, display a dash "-"
+//            sync_tym.setText(timeStatus+uid + "-");
+//            Log.e("userid ", String.valueOf(uid));
+//        } else {
+//            // If data is available, display the value retrieved from shared preferences
+//            sync_tym.setText(timeStatus+uid +  data_sync);
+//            Log.e("userid ", String.valueOf(uid));
+//        }
         //sync_tym.setText(timeStatus + data_sync);
         setupDrawerContent(navigationView);
 
@@ -360,10 +360,10 @@ public class Dashboard extends AppCompatActivity {
         Log.e("data_sync", data_sync);
         if (data_sync.isEmpty()) {
             // If no data is available, display a dash "-"
-            sync_tym.setText(timeStatus + "-");
+            sync_tym.setText(timeStatus+uid + "-");
         } else {
             // If data is available, display the value retrieved from shared preferences
-            sync_tym.setText(timeStatus + data_sync);
+            sync_tym.setText(timeStatus+uid + ": "+ data_sync);
         }
     }
     public void selectDrawerItem(MenuItem menuItem) {
@@ -453,11 +453,20 @@ public class Dashboard extends AppCompatActivity {
 
 
            myEdit.apply();
-            startActivity(new Intent(this, Login_verifcation.class));
 
 
 
-            finish(); // Finish the current activity
+            Intent intent = new Intent(this, Login_verifcation.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+
+
+
+
+
+
+// Finish the current activity
             getSupportActionBar().setTitle("Verification");
 
             myEdit.putBoolean("isLoggedIn", false);

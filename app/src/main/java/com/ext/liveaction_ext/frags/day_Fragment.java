@@ -144,9 +144,8 @@ public class day_Fragment extends Fragment {
 
                 String tsThisDays = " "+ tsThisDayFormatted;
                 String averages = " " + averageFormatted;
-                String variances = String.valueOf(varianceFormatted);
 
-                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsThisDays, averages, variances));
+                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsThisDays, averages, varianceFormatted));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

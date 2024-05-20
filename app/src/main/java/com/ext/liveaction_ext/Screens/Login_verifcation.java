@@ -556,9 +556,9 @@ public class Login_verifcation extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
         Log.d("onBackPressed","back from login");
-
+        moveTaskToBack(true);
         /*if (!isLoggedIn) {
            // super.onBackPressed();
             Intent intent = new Intent(this, MainActivity.class);

@@ -123,7 +123,7 @@ public class month_Fragment extends Fragment {
                     String varianceFormatted = decimalFormat.format(variance);
                     String tsText = "TS this month";
                     String averageText = "Average\n(last month)";
-                    String varianceText = " Variance";
+                    String varianceText = "Variance";
                     String tsThisDays = " " + tsThisDayFormatted;
                     String averages = " " + averageFormatted;
                     String variances = String.valueOf(varianceFormatted);
