@@ -197,13 +197,11 @@ public class Manage_screen extends Fragment {
                     valueshrList.clear();
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                    // Set the title and message for the dialog
                     builder.setTitle("Validation Error");
                     builder.setMessage("Total of target in hour as well " + " in percentage should be 100 or less than 100");
 
-                    // Set a positive button and its click listener
                     builder.setPositiveButton("OK", (dialog, which) -> {
-                        // Handle the click event (if needed)
+
                     });
 
                     // Create and show the alert dialog
