@@ -368,16 +368,11 @@ userid= "user id : "+uid;
         }
     }
     public void selectDrawerItem(MenuItem menuItem) {
-
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment go_next;
-
         int itemId = menuItem.getItemId();
-
-
         if (itemId == R.id.chart_page)
         {
-
             startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
