@@ -413,10 +413,10 @@ public class Manage_screen extends Fragment {
             et_actual_prr.setEnabled(true);
         }
 
+
         TextView tvLastWeek = row.findViewById(R.id.tvushour);
         TextView tvCumulative = row.findViewById(R.id.tvusper);
         TextView tvpointsLastWeek = row.findViewById(R.id.tvvariance);
-
 
         tvCategory.setText(categoryName);
 
