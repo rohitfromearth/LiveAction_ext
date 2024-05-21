@@ -411,10 +411,10 @@ public class Manage_screen extends Fragment {
             et_actual_prr.setEnabled(true);
         }
 
+
         TextView tvLastWeek = row.findViewById(R.id.tvushour);
         TextView tvCumulative = row.findViewById(R.id.tvusper);
         TextView tvpointsLastWeek = row.findViewById(R.id.tvvariance);
-
 
         tvCategory.setText(categoryName);
 
@@ -450,12 +450,18 @@ public class Manage_screen extends Fragment {
                 } else {
                     try {
                         double hour = Double.parseDouble(hrValue);
-                        double percent = hour * 100 / 168;
-                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                        String percentFormatted = decimalFormat.format(percent);
-                        et_actual_prr.setText(percentFormatted);
+                        if (hour > 168) {
+                            et_actual_hrr.setError("Hour value cannot exceed 168");
+                            et_actual_prr.setText("");
+                        } else {
+                            double percent = hour * 100 / 168;
+                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                            String percentFormatted = decimalFormat.format(percent);
+                            et_actual_prr.setText(percentFormatted);
+                        }
                     } catch (NumberFormatException e) {
                         et_actual_prr.setText("");
+
                     }
                 }
                 isUpdating = false;
@@ -481,10 +487,15 @@ public class Manage_screen extends Fragment {
                 } else {
                     try {
                         double percent = Double.parseDouble(percentValue);
-                        double hours = percent * 168 / 100;
-                        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                        String hoursFormatted = decimalFormat.format(hours);
-                        et_actual_hrr.setText(hoursFormatted);
+                        if (percent > 100) {
+                            et_actual_prr.setError("Percent value cannot exceed 100");
+                            et_actual_hrr.setText("");
+                        } else {
+                            double hours = percent * 168 / 100;
+                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                            String hoursFormatted = decimalFormat.format(hours);
+                            et_actual_hrr.setText(hoursFormatted);
+                        }
                     } catch (NumberFormatException e) {
                         et_actual_hrr.setText("");
                     }
@@ -504,15 +515,15 @@ public class Manage_screen extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     String hrValue = et_actual_hrr.getText().toString();
-                    if (hrValue.isEmpty()) {
-                        et_actual_prr.setText("");
-                    } else {
+                    if (!hrValue.isEmpty()) {
                         try {
                             double hour = Double.parseDouble(hrValue);
-                            double percent = hour * 100 / 168;
-                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                            String percentFormatted = decimalFormat.format(percent);
-                            et_actual_prr.setText(percentFormatted);
+                            if (hour <= 168) {
+                                double percent = hour * 100 / 168;
+                                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                                String percentFormatted = decimalFormat.format(percent);
+                                et_actual_prr.setText(percentFormatted);
+                            }
                         } catch (NumberFormatException e) {
                             et_actual_prr.setText("");
                         }
@@ -526,15 +537,15 @@ public class Manage_screen extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     String percentValue = et_actual_prr.getText().toString();
-                    if (percentValue.isEmpty()) {
-                        et_actual_hrr.setText("");
-                    } else {
+                    if (!percentValue.isEmpty()) {
                         try {
                             double percent = Double.parseDouble(percentValue);
-                            double hours = percent * 168 / 100;
-                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                            String hoursFormatted = decimalFormat.format(hours);
-                            et_actual_hrr.setText(hoursFormatted);
+                            if (percent <= 100) {
+                                double hours = percent * 168 / 100;
+                                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                                String hoursFormatted = decimalFormat.format(hours);
+                                et_actual_hrr.setText(hoursFormatted);
+                            }
                         } catch (NumberFormatException e) {
                             et_actual_hrr.setText("");
                         }
@@ -542,6 +553,11 @@ public class Manage_screen extends Fragment {
                 }
             }
         });
+
+
+
+
+
         etList.add(et_actual_hrr);
 
         etList.add(et_actual_prr);

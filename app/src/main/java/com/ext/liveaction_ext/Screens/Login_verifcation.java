@@ -1,11 +1,12 @@
 package com.ext.liveaction_ext.Screens;
 
 import android.Manifest;
+import android.accessibilityservice.AccessibilityService;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -34,20 +35,15 @@ import com.ext.liveaction_ext.service_clas.OTPVerificationHandler;
 import com.ext.liveaction_ext.service_clas.PhoneAuthHandler;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
+import com.ext.liveaction_int.Access_new;
 import com.google.firebase.FirebaseException;
 
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import org.json.JSONException;
@@ -55,11 +51,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class Login_verifcation extends AppCompatActivity {
 
@@ -301,11 +295,42 @@ public class Login_verifcation extends AppCompatActivity {
         Accessibilty.setOnClickListener(view -> {
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+
         });
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+      /*  if (isAccessibilityServiceEnabled(this, Access_new.class)) {
+            Log.d("Accessibility", "Accessibility service is enabled");
+        } else {
+            Log.d("Accessibility", "Accessibility service is disabled");
+        }*/
+    }
+  /*  public boolean isAccessibilityServiceEnabled(Context context, Class<? extends AccessibilityService> service) {
+        ComponentName expectedComponentName = new ComponentName(context, service);
+
+        String enabledServicesSetting = Settings.Secure.getString(
+                context.getContentResolver(),
+                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+
+        if (enabledServicesSetting != null) {
+            TextUtils.SimpleStringSplitter colonSplitter = new TextUtils.SimpleStringSplitter(':');
+            colonSplitter.setString(enabledServicesSetting);
+            while (colonSplitter.hasNext()) {
+                String componentName = colonSplitter.next();
+                ComponentName enabledService = ComponentName.unflattenFromString(componentName);
+                if (enabledService != null && enabledService.equals(expectedComponentName))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+*/
     public boolean isValidMobileNumber(String number) {
         // Regular expression pattern for mobile number validation
         String regex = "^[1-9]\\d{9}$";
