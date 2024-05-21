@@ -110,6 +110,7 @@ public class Login_verifcation extends AppCompatActivity {
         edtOTP = findViewById(R.id.editTextOtp);
         edtPhone = findViewById(R.id.editTextPhone);
 
+        permission_usage.setVisibility(View.GONE);
         btn_verify.setEnabled(false);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         String data = getLocation();
@@ -149,30 +150,30 @@ public class Login_verifcation extends AppCompatActivity {
 
             close1.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
+                boolean acc= sh.getBoolean("accesson", false);
+                if (acc) {
+                    permission_usage.setVisibility(View.GONE);
+                }else{
+                    permission_usage.setVisibility(View.VISIBLE);
+                }
                 dialog1.dismiss();
             });
-            usaegstat1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.animate().alpha(1f).setDuration(200);
-                        }
-                    }).start();
-                    startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
+            usaegstat1.setOnClickListener(view -> {
+                view.animate().alpha(0.5f).setDuration(200).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.animate().alpha(1f).setDuration(200);
+                    }
+                }).start();
+                startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
 
-                    // Disable button2
-                    Accessibilty1.setEnabled(usaegstat1.isEnabled());  // Enable button2
-                }
+                // Disable button2
+                Accessibilty1.setEnabled(usaegstat1.isEnabled());  // Enable button2
             });
             Accessibilty1.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-
-
             });
-
 
         });
         sendotp.setOnClickListener(new View.OnClickListener() {
@@ -282,7 +283,12 @@ public class Login_verifcation extends AppCompatActivity {
                     view.animate().alpha(1f).setDuration(200);
                 }
             }).start();
-
+            boolean acc= sh.getBoolean("accesson", false);
+            if (acc) {
+                permission_usage.setVisibility(View.GONE);
+            }else{
+                permission_usage.setVisibility(View.VISIBLE);
+            }
             dialog.dismiss();
         });
         usaegstat.setOnClickListener(view -> {
@@ -474,7 +480,7 @@ public class Login_verifcation extends AppCompatActivity {
 
 
 
-                                                String username = sh.getString("username", "");
+
 
 
                                                 boolean hasPermission = hasUsageAccessPermission();

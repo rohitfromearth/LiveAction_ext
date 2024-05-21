@@ -73,8 +73,9 @@ public class Dashboard extends AppCompatActivity {
 //    ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
     boolean showDummy;
+    String userid="";
     private boolean isLoggedIn = false;
-    String timeStatus = "Last sync of user ";
+    String timeStatus = "Last synced at";
     String data_sync;
     @SuppressLint("SetTextI18n")
     @Override
@@ -95,7 +96,7 @@ public class Dashboard extends AppCompatActivity {
         Set<String> set = sh.getStringSet("APP_LIST", null);
         Log.e("APPList", String.valueOf(set));
         appl.addAll(set);
-
+userid= "user id : "+uid;
 
         String dir = getObbDir().getPath();
 
@@ -210,7 +211,7 @@ public class Dashboard extends AppCompatActivity {
         TextView name = header.findViewById(R.id.user_name);
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
-        phone.setText(mobile);
+        phone.setText(userid);
 //        data_sync= sh.getString("Last_sync","");
 //        if (data_sync.isEmpty()) {
 //            // If no data is available, display a dash "-"
@@ -360,10 +361,10 @@ public class Dashboard extends AppCompatActivity {
         Log.e("data_sync", data_sync);
         if (data_sync.isEmpty()) {
             // If no data is available, display a dash "-"
-            sync_tym.setText(timeStatus+uid + "-");
+            sync_tym.setText(timeStatus+ "-");
         } else {
             // If data is available, display the value retrieved from shared preferences
-            sync_tym.setText(timeStatus+uid + ": "+ data_sync);
+            sync_tym.setText(timeStatus + ": "+ data_sync);
         }
     }
     public void selectDrawerItem(MenuItem menuItem) {
