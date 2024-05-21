@@ -12,22 +12,17 @@ import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
@@ -71,7 +66,7 @@ public class Manage_screen extends Fragment {
     private float initialTouchY;
     Context context;
     DecimalFormat decimalFormat;
-    String percentFormatted;
+    String percentFormatted, res;
     private boolean isUpdating = false;
 
     @SuppressLint("MissingInflatedId")
@@ -80,7 +75,6 @@ public class Manage_screen extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
-
 
 
         btn_sv = view.findViewById(R.id.save_btn);
@@ -112,7 +106,7 @@ public class Manage_screen extends Fragment {
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
 
-        String res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
+        res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
         Log.e("res", "/usageStats/manageData : " + res);
         boolean edit = onPostExecute(res);
@@ -182,15 +176,12 @@ public class Manage_screen extends Fragment {
                 boolean validateper = validationonper(valuesperList);
                 boolean validatehr = validationonhr(valueshrList);
                 if (validateper && validatehr) {
-                    addData(jsonBody);
-                    //startActivity(new Intent(getContext(), Achieve.class));
-                   /* Fragment go_next = new Achieve();
-                    FragmentManager fragmentManager = getParentFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                    assert actionBar != null;
-                    actionBar.setTitle("Achievements");*/
-                    // getActivity().getActionBar().setTitle("Achievements");
+                    try {
+                        addData(jsonBody);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 } else {
                     valuesperList.clear();
                     valueshrList.clear();
@@ -209,15 +200,7 @@ public class Manage_screen extends Fragment {
                 }
 
 
-            }/* else {
-                //startActivity(new Intent(getContext(), Achieve.class));
-                Fragment go_next = new Achieve();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                actionBar.setTitle("Achievements");
-                // getActivity().getActionBar().setTitle("Achievements");
-            }*/
+            }
         });
 
      /*   btn_sv.setOnClickListener(view1 -> {
@@ -326,6 +309,7 @@ public class Manage_screen extends Fragment {
     }
 
     private boolean onPostExecute(String result) {
+        Log.e("onPostExecute","onPostExecute");
         boolean editable = false;
 
         if (result != null) {
@@ -392,7 +376,7 @@ public class Manage_screen extends Fragment {
     }
 
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
-
+        Log.e("addTableRow","addTableRow");
 
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
 
@@ -436,7 +420,8 @@ public class Manage_screen extends Fragment {
         }
         TextWatcher hourWatcher = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -468,12 +453,14 @@ public class Manage_screen extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         };
 
         TextWatcher percentWatcher = new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -504,7 +491,8 @@ public class Manage_screen extends Fragment {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         };
 
         et_actual_hrr.addTextChangedListener(hourWatcher);
@@ -555,21 +543,34 @@ public class Manage_screen extends Fragment {
         });
 
 
-
-
-
         etList.add(et_actual_hrr);
 
         etList.add(et_actual_prr);
 
         tableLayout.addView(row);
-}
-    public void addData(JSONObject jsonbdy) {
+    }
+
+    public void addData(JSONObject jsonbdy) throws JSONException {
+        Log.e("addData","addData");
+
+      //  boolean success;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
         Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
+      /*  try {
+            String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
+            JSONObject responseJson = null;
+            responseJson = new JSONObject(uid);
+          //  success = responseJson.getBoolean("success");
+            Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+*/
+
+       // return success;
+
     }
 
 }
