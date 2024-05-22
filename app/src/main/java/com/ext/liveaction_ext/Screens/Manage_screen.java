@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -49,7 +48,6 @@ public class Manage_screen extends Fragment {
     int uid_z;
     int uid = 0;
     String firebaseToken = "";
-    ProgressBar loader;
     boolean target_edi = false;
     String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
@@ -57,19 +55,11 @@ public class Manage_screen extends Fragment {
     CardView btn_sv, btn_dash;
     double valueperInt, valuehrInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
-    private final ArrayList<EditText> etList1 = new ArrayList<>();
-    private LinearLayout floatingViewContainer;
-    private View floatingView;
     private TableLayout tableLayout;
-    private int initialX;
-    private int initialY;
-    private float initialTouchX;
     private FirebaseAuth mAuth;
-    private float initialTouchY;
-    Context context;
-    DecimalFormat decimalFormat;
-    String percentFormatted, res;
+    String res;
     private boolean isUpdating = false;
+    private TableLayout row;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -78,15 +68,14 @@ public class Manage_screen extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
 
-loader = view.findViewById(R.id.prog_loader);
+
         btn_sv = view.findViewById(R.id.save_btn);
         tv_btn = view.findViewById(R.id.savetargt);
         tableLayout = view.findViewById(R.id.tableLayout);
+        // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
         btn_dash = view.findViewById(R.id.dashboard_btn_mng);
-
-        loader.setVisibility(View.VISIBLE);
         FirebaseUser use = mAuth.getCurrentUser();
 
 
@@ -128,10 +117,9 @@ loader = view.findViewById(R.id.prog_loader);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-loader.setVisibility(View.GONE);
+
         btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
-            loader.setVisibility(View.VISIBLE);
             if (edit) {
                 for (EditText editTextforhr : etList) {
 
@@ -186,25 +174,6 @@ loader.setVisibility(View.GONE);
                         throw new RuntimeException(e);
                     }
 
-                    res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
-
-                    Log.e("res", "/usageStats/manageData : " + res);
-               onPostExecute(res);
-                    if (edit) {
-                        tv_btn.setText("Save Target");
-                    }
-                    String t = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
-
-                    Log.e("res_comnt", "/usageStats/comments/ : " + t);
-
-                    try {
-                        JSONObject jsonObj = new JSONObject(t);
-                        String Comments_live_action = jsonObj.getString("result");
-                        tv_commnt.setText(Comments_live_action);
-
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
                 } else {
                     valuesperList.clear();
                     valueshrList.clear();
@@ -222,110 +191,35 @@ loader.setVisibility(View.GONE);
                     alertDialog.show();
                 }
 
+row.removeAllViews();
 
-            }
-            loader.setVisibility(View.GONE);
-        });
 
-     /*   btn_sv.setOnClickListener(view1 -> {
-            view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
+                String re = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
-            if (edit) {
-                for (EditText editTextforhr : etList) {
-                    String value = editTextforhr.getTag().toString();
-                    Log.e("value", "value : " + value);
-
-                    String editTextValuehr = editTextforhr.getText().toString();
-                    Log.e("editTextValuehr", "editTextValuehr : " + editTextValuehr);
-
-                    if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
-                        editTextValuehr = "0";
-                    }
-
-                    int indexOfUnderscore = value.indexOf("_");
-                    String usage_id = value.substring(0, indexOfUnderscore);
-
-                    try {
-                        JSONObject financeObj = new JSONObject();
-                        financeObj.put("userId", uid);
-                        financeObj.put("category", usage_id);
-
-                        if (value.contains("_actual_hr")) {
-                            financeObj.put("targetInMins", editTextValuehr);
-                            double valuehrInt = Double.parseDouble(editTextValuehr.trim());
-                            valueshrList.add(valuehrInt);
-
-                            // Get corresponding _actual_per EditText
-                            EditText editTextForPrr = tableLayout.findViewWithTag(usage_id + "_actual_prr");
-                            if (editTextForPrr != null) {
-                                String editTextValuePrr = editTextForPrr.getText().toString();
-
-                                // If _actual_prr is empty, calculate and set its value
-                                if (editTextValuePrr.equals("")) {
-                                    updatePercentFromHour(editTextforhr, editTextForPrr);
-                                }
-                            }
-                        } else if (value.contains("_actual_prr")) {
-                            financeObj.put("targetInPercent", editTextValuehr);
-                            double valueperInt = Double.parseDouble(editTextValuehr.trim());
-                            valuesperList.add(valueperInt);
-
-                            // Get corresponding _actual_hr EditText
-                            EditText editTextForHr = tableLayout.findViewWithTag(usage_id + "_actual_hr");
-                            if (editTextForHr != null) {
-                                String editTextValueHr = editTextForHr.getText().toString();
-
-                                // If _actual_hr is empty, calculate and set its value
-                                if (editTextValueHr.equals("")) {
-                                    updateHourFromPercent(editTextForHr, editTextforhr);
-                                }
-                                Log.e("editTextValueHr",editTextValueHr);
-                            }
-                        }
-
-                        jsonAy.put(financeObj);
-
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+                Log.e("res", "/usageStats/manageData : " + re);
+                boolean ed = onPostExecute(re);
+                if (ed) {
+                    tv_btn.setText("Save Target");
                 }
+                String res_c = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
+
+                Log.e("res_comnt", "/usageStats/comments/ : " + res_c);
 
                 try {
-                    jsonBody.put("data", jsonAy);
+                    JSONObject jsonObj = new JSONObject(res_c);
+                    String Comments_live_action = jsonObj.getString("result");
+                    tv_commnt.setText(Comments_live_action);
+
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
 
-                boolean validateper = validationonper(valuesperList);
-                boolean validatehr = validationonhr(valueshrList);
-                if (validateper && validatehr) {
-                    addData(jsonBody);
-                    Fragment go_next = new Achieve();
-                    FragmentManager fragmentManager = getParentFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                    assert actionBar != null;
-                    actionBar.setTitle("Achievements");
-                } else {
-                    valuesperList.clear();
-                    valueshrList.clear();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Validation Error");
-                    builder.setMessage("Total of target in hour as well as in percentage should be 100 or less than 100");
-                    builder.setPositiveButton("OK", (dialog, which) -> {
-                        // Handle the click event (if needed)
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }
-            } else {
-                Fragment go_next = new Achieve();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
-                ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                actionBar.setTitle("Achievements");
+
+
+
             }
-        });*/
+        });
+
 
 
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
@@ -402,7 +296,7 @@ loader.setVisibility(View.GONE);
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
         Log.e("addTableRow","addTableRow");
 
-        TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
+        row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
 
         TextView tvCategory = row.findViewById(R.id.tvCategor);
         EditText et_actual_hrr = row.findViewById(R.id.et_actual_hr);
@@ -582,19 +476,14 @@ loader.setVisibility(View.GONE);
         StrictMode.setThreadPolicy(policy);
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
         Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
-      /*  try {
-            String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
-            JSONObject responseJson = null;
-            responseJson = new JSONObject(uid);
-          //  success = responseJson.getBoolean("success");
-            Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-*/
-
-       // return success;
 
     }
 
 }
+
+
+
+
+
+///////////////////////////
+
