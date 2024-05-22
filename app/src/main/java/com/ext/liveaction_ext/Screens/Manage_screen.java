@@ -55,37 +55,27 @@ public class Manage_screen extends Fragment {
     CardView btn_sv, btn_dash;
     double valueperInt, valuehrInt;
     private final ArrayList<EditText> etList = new ArrayList<>();
-    private final ArrayList<EditText> etList1 = new ArrayList<>();
-    private LinearLayout floatingViewContainer;
-    private View floatingView;
     private TableLayout tableLayout;
-    private int initialX;
-    private int initialY;
-    private float initialTouchX;
     private FirebaseAuth mAuth;
-    private float initialTouchY;
     Context context;
-    DecimalFormat decimalFormat;
-    String percentFormatted, res;
+    String res;
     private boolean isUpdating = false;
 
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        Log.e("onCreateView","onCreateView");
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
-
 
         btn_sv = view.findViewById(R.id.save_btn);
         tv_btn = view.findViewById(R.id.savetargt);
         tableLayout = view.findViewById(R.id.tableLayout);
-        // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
+
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
         btn_dash = view.findViewById(R.id.dashboard_btn_mng);
         FirebaseUser use = mAuth.getCurrentUser();
-
 
         if (use != null) {
             use.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -137,16 +127,13 @@ public class Manage_screen extends Fragment {
                     String editTextValuehr = editTextforhr.getText().toString();
                     Log.e("editTextValuehr", "editTextValuehr : " + editTextValuehr);
 
-                    if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
+                    if (editTextValuehr.equals("")) {
                         editTextValuehr = "0";
                     }
                     int indexOfUnderscore = value.indexOf("_");
-
                     String usaage_id = value.substring(0, indexOfUnderscore);
 
-
                     try {
-
                         JSONObject financeObj = new JSONObject();
                         financeObj.put("userId", uid);
                         financeObj.put("category", usaage_id);
@@ -178,6 +165,8 @@ public class Manage_screen extends Fragment {
                 if (validateper && validatehr) {
                     try {
                         addData(jsonBody);
+
+                        onPostExecute(res);
                     } catch (JSONException e) {
                         throw new RuntimeException(e);
                     }
@@ -186,20 +175,13 @@ public class Manage_screen extends Fragment {
                     valuesperList.clear();
                     valueshrList.clear();
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
                     builder.setTitle("Validation Error");
                     builder.setMessage("Total of target in hour as well " + " in percentage should be 100 or less than 100");
-
                     builder.setPositiveButton("OK", (dialog, which) -> {
-
                     });
-
-                    // Create and show the alert dialog
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }
-
-
             }
         });
 
@@ -379,7 +361,6 @@ public class Manage_screen extends Fragment {
         Log.e("addTableRow","addTableRow");
 
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
-
         TextView tvCategory = row.findViewById(R.id.tvCategor);
         EditText et_actual_hrr = row.findViewById(R.id.et_actual_hr);
         EditText et_actual_prr = row.findViewById(R.id.et_actual_per);
@@ -394,8 +375,6 @@ public class Manage_screen extends Fragment {
             et_actual_hrr.setEnabled(true);
             et_actual_prr.setEnabled(true);
         }
-
-
         TextView tvLastWeek = row.findViewById(R.id.tvushour);
         TextView tvCumulative = row.findViewById(R.id.tvusper);
         TextView tvpointsLastWeek = row.findViewById(R.id.tvvariance);
@@ -405,7 +384,6 @@ public class Manage_screen extends Fragment {
         tvLastWeek.setText(lastWeek);
         tvCumulative.setText(cumulative);
         tvpointsLastWeek.setText(pointslastWe);
-
 
         et_actual_hrr.setTag(usageid + "_actual_hr");
         et_actual_prr.setTag(usageid + "_actual_per");
@@ -456,7 +434,6 @@ public class Manage_screen extends Fragment {
             public void afterTextChanged(Editable editable) {
             }
         };
-
         TextWatcher percentWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -519,7 +496,6 @@ public class Manage_screen extends Fragment {
                 }
             }
         });
-
         et_actual_prr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -558,11 +534,12 @@ public class Manage_screen extends Fragment {
         StrictMode.setThreadPolicy(policy);
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
         Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
-      /*  try {
+
+      /* try {
             String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
             JSONObject responseJson = null;
             responseJson = new JSONObject(uid);
-          //  success = responseJson.getBoolean("success");
+            success = responseJson.getBoolean("success");
             Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
         } catch (JSONException e) {
             throw new RuntimeException(e);

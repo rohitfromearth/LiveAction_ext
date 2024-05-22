@@ -26,13 +26,12 @@ public class Conn_service {
     SharedPreferences sh;
     ArrayList<String> appl = new ArrayList<String>();
 
-//    String endpot = "https://sondersort.online";
- String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
+    //String endpot = "https://sondersort.online";
+   //String endpot = "https://fc10m5q8-8080.inc1.devtunnels.ms";
 
-//    String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
+   String endpot= "https://7ftjfjrd-8080.inc1.devtunnels.ms";
 
     public ArrayList App_list(Context context) {
-
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 

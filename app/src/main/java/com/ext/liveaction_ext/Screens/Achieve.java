@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -83,14 +84,9 @@ public class Achieve extends Fragment {
         tv_red_points = view.findViewById(R.id.earn_number);
         btn_dsh=view.findViewById(R.id.dash_btn_ach);
         String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
+        Log.e("res","/usageStats/getAchievements/ : "+res);
         congrats_tv.setVisibility(View.GONE);
         onPostExecute(res);
-//        floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
-//
-//        inflater = LayoutInflater.from(getContext());
-//        floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
-//        floatingView.setOnTouchListener(new FloatingViewTouchListener());
-//        floatingViewContainer.addView(floatingView);
 
 
         rede.setOnClickListener(view1 -> {
