@@ -26,8 +26,8 @@ public class Conn_service {
     SharedPreferences sh;
     ArrayList<String> appl = new ArrayList<String>();
 
-//    String endpot = "https://sondersort.online";
- String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
+    String endpot = "https://sondersort.online";
+// String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
 //    String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
@@ -103,14 +103,11 @@ public class Conn_service {
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-
             urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             urlConnection.setRequestProperty("Accept", "application/json");
             urlConnection.setRequestProperty("authorization", "Bearer " + firbaseTokenn);
-
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
-
             DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
             o.writeBytes(jsonBody.toString());
             o.flush();

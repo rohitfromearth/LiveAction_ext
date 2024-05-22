@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class Manage_screen extends Fragment {
     int uid_z;
     int uid = 0;
     String firebaseToken = "";
+    ProgressBar loader;
     boolean target_edi = false;
     String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
@@ -76,14 +78,15 @@ public class Manage_screen extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
 
-
+loader = view.findViewById(R.id.prog_loader);
         btn_sv = view.findViewById(R.id.save_btn);
         tv_btn = view.findViewById(R.id.savetargt);
         tableLayout = view.findViewById(R.id.tableLayout);
-        // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
         tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
         btn_dash = view.findViewById(R.id.dashboard_btn_mng);
+
+        loader.setVisibility(View.VISIBLE);
         FirebaseUser use = mAuth.getCurrentUser();
 
 
@@ -125,9 +128,10 @@ public class Manage_screen extends Fragment {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
+loader.setVisibility(View.GONE);
         btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
+            loader.setVisibility(View.VISIBLE);
             if (edit) {
                 for (EditText editTextforhr : etList) {
 
@@ -182,6 +186,25 @@ public class Manage_screen extends Fragment {
                         throw new RuntimeException(e);
                     }
 
+                    res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
+
+                    Log.e("res", "/usageStats/manageData : " + res);
+               onPostExecute(res);
+                    if (edit) {
+                        tv_btn.setText("Save Target");
+                    }
+                    String t = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
+
+                    Log.e("res_comnt", "/usageStats/comments/ : " + t);
+
+                    try {
+                        JSONObject jsonObj = new JSONObject(t);
+                        String Comments_live_action = jsonObj.getString("result");
+                        tv_commnt.setText(Comments_live_action);
+
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
                     valuesperList.clear();
                     valueshrList.clear();
@@ -201,6 +224,7 @@ public class Manage_screen extends Fragment {
 
 
             }
+            loader.setVisibility(View.GONE);
         });
 
      /*   btn_sv.setOnClickListener(view1 -> {
