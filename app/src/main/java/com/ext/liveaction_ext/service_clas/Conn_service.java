@@ -26,10 +26,10 @@ public class Conn_service {
     SharedPreferences sh;
     ArrayList<String> appl = new ArrayList<String>();
 
-    String endpot = "https://sondersort.online";
+    //String endpot = "https://sondersort.online";
   // String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
-   //String endpot= "https://7ftjfjrd-8080.inc1.devtunnels.ms";
+   String endpot= "https://7ftjfjrd-8080.inc1.devtunnels.ms";
 
     public ArrayList App_list(Context context) {
 
@@ -67,8 +67,6 @@ public class Conn_service {
                 while ((applist = br.readLine()) != null) {
                     response += applist;
                     final JSONObject app = new JSONObject(response);
-
-
 
                     JSONArray appsList = app.getJSONArray("data");
                     for (int i = 0; i < appsList.length(); i++) {
