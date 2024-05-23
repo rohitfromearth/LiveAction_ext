@@ -126,7 +126,7 @@ public class Achieve extends Fragment {
 
                         if (pointslastweekint > 0) {
                             congrats_tv.setVisibility(View.VISIBLE);
-                            tv_red_points.setText(pointslastweekint);
+                            tv_red_points.setText(pointslastweek);
                         }
                     }
                     addTableRow(categoryName, lastWeek, cumulative, pointslastweek, pointscumm);
@@ -159,29 +159,4 @@ public class Achieve extends Fragment {
         tableLayout.addView(row);
     }
 
-//    private class FloatingViewTouchListener implements View.OnTouchListener {
-//        @Override
-//        public boolean onTouch(View v, MotionEvent event) {
-//            switch (event.getAction()) {
-//                case MotionEvent.ACTION_DOWN:
-//                    initialX = (int) event.getRawX();
-//                    initialY = (int) event.getRawY();
-//                    initialTouchX = event.getX();
-//                    initialTouchY = event.getY();
-//                    return true;
-//                case MotionEvent.ACTION_MOVE:
-//                    int deltaX = (int) (event.getRawX() - initialX);
-//                    int deltaY = (int) (event.getRawY() - initialY);
-//
-//                    int newX = (int) (initialX + deltaX - initialTouchX);
-//                    int newY = (int) (initialY + deltaY - initialTouchY);
-//
-//                    floatingView.setX(newX);
-//                    floatingView.setY(newY);
-//                    return true;
-//                default:
-//                    return false;
-//            }
-//        }
-//    }
 }

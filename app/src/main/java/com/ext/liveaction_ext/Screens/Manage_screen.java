@@ -41,6 +41,7 @@ import java.util.ArrayList;
 
 public class Manage_screen extends Fragment {
     Conn_service servic = new Conn_service();
+    SharedPreferences sh ;
     TextView tv_commnt;
     ArrayList<Double> valuesperList = new ArrayList<>();
     ArrayList<Double> valueshrList = new ArrayList<>();// Create an ArrayList to store the values
@@ -52,14 +53,16 @@ public class Manage_screen extends Fragment {
     String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
     TextView tv_btn;
+    boolean edit;
     CardView btn_sv, btn_dash;
     double valueperInt, valuehrInt;
+    TableLayout row;
     private final ArrayList<EditText> etList = new ArrayList<>();
     private TableLayout tableLayout;
     private FirebaseAuth mAuth;
     String res;
     private boolean isUpdating = false;
-    private TableLayout row;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -67,8 +70,7 @@ public class Manage_screen extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
-
-
+        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         btn_sv = view.findViewById(R.id.save_btn);
         tv_btn = view.findViewById(R.id.savetargt);
         tableLayout = view.findViewById(R.id.tableLayout);
@@ -94,30 +96,8 @@ public class Manage_screen extends Fragment {
                 }
             });
         }
-        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        uid = sh.getInt("UID", uid_z);
-        firebaseToken = sh.getString("firebaseToken", "");
 
-        res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
-
-        Log.e("res", "/usageStats/manageData : " + res);
-        boolean edit = onPostExecute(res);
-        if (edit) {
-            tv_btn.setText("Save Target");
-        }
-        String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
-
-        Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
-
-        try {
-            JSONObject jsonObj = new JSONObject(res_comnt);
-            String Comments_live_action = jsonObj.getString("result");
-            tv_commnt.setText(Comments_live_action);
-
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
+fetchdat();
         btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             if (edit) {
@@ -178,7 +158,6 @@ public class Manage_screen extends Fragment {
                     valuesperList.clear();
                     valueshrList.clear();
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
                     builder.setTitle("Validation Error");
                     builder.setMessage("Total of target in hour as well " + " in percentage should be 100 or less than 100");
 
@@ -191,41 +170,36 @@ public class Manage_screen extends Fragment {
                     alertDialog.show();
                 }
 
-row.removeAllViews();
-
-
-                String re = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
-
-                Log.e("res", "/usageStats/manageData : " + re);
-                boolean ed = onPostExecute(re);
-                if (ed) {
-                    tv_btn.setText("Save Target");
-                }
-                String res_c = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
-
-                Log.e("res_comnt", "/usageStats/comments/ : " + res_c);
-
-                try {
-                    JSONObject jsonObj = new JSONObject(res_c);
-                    String Comments_live_action = jsonObj.getString("result");
-                    tv_commnt.setText(Comments_live_action);
-
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-
-
-
-
             }
         });
-
-
-
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
+    private void fetchdat(){
 
+        uid = sh.getInt("UID", uid_z);
+        firebaseToken = sh.getString("firebaseToken", "");
+
+        res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
+
+        Log.e("res", "/usageStats/manageData : " + res);
+        edit = onPostExecute(res);
+        if (edit) {
+            tv_btn.setText("Save Target");
+        }
+        String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
+
+        Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
+
+        try {
+            JSONObject jsonObj = new JSONObject(res_comnt);
+            String Comments_live_action = jsonObj.getString("result");
+            tv_commnt.setText(Comments_live_action);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     private boolean onPostExecute(String result) {
         Log.e("onPostExecute","onPostExecute");
         boolean editable = false;
@@ -295,8 +269,12 @@ row.removeAllViews();
 
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
         Log.e("addTableRow","addTableRow");
-
-        row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
+//boolean nl=sh.getBoolean("newload", false);
+//if (nl) {
+//
+//        }
+//
+ row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
 
         TextView tvCategory = row.findViewById(R.id.tvCategor);
         EditText et_actual_hrr = row.findViewById(R.id.et_actual_hr);
