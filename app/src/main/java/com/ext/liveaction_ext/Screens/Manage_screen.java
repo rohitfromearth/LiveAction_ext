@@ -281,7 +281,6 @@ fetchdat();
     }
 
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
-        Log.e("addTableRow","addTableRow");
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View row = inflater.inflate(R.layout.table_row_for_manag, tableLayout, false);
 

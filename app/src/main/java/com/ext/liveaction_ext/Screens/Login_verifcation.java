@@ -278,7 +278,7 @@ public class Login_verifcation extends AppCompatActivity {
                 }
             }).start();
             boolean acc= sh.getBoolean("accesson", false);
-            if (acc) {
+            if (acc && hasUsageAccessPermission() ) {
                 permission_usage.setVisibility(View.GONE);
             }else{
                 permission_usage.setVisibility(View.VISIBLE);
@@ -541,6 +541,7 @@ public class Login_verifcation extends AppCompatActivity {
                                                 } else {
 
                                                     btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
+                                                    permission_usage.setVisibility(View.VISIBLE);
                                                     AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
 
                                                     // Set the title and message for the dialog
