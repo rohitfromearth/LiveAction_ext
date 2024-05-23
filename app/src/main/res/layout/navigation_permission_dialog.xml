@@ -8,22 +8,27 @@
     app:cardBackgroundColor="#9DB2BF"
     app:cardElevation="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:cardBackgroundColor="#9DB2BF">
+        android:layout_gravity="top|right"
+        android:layout_marginTop="9dp"
+        android:layout_marginRight="9dp"
+        android:gravity="center"
+
+        app:cardCornerRadius="200dp"
+
+        >
 
         <ImageButton
             android:id="@+id/close_permission1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
+
             android:background="@drawable/close_bg"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:cardCornerRadius="20dp"
-            android:contentDescription="TODO" />
-    </LinearLayout>
+            app:cardCornerRadius="200dp" />
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
