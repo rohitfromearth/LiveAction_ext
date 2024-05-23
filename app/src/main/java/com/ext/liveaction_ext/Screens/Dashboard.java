@@ -444,7 +444,6 @@ userid= "user id : "+uid;
         }
         else if (itemId == R.id.perm_new)
         {
-      Log.e("data unknown", String.valueOf(itemId));
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);

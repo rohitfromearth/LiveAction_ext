@@ -12,16 +12,24 @@ android {
         applicationId "com.ext.liveaction_ext"
         minSdk 21
         targetSdk 33
-        versionCode 4
+        versionCode 5
         versionName "1.1"
         archivesBaseName = "Live_Action"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-2
+    signingConfigs {
+        release {
+            keyAlias 'ClubLAkey'
+            keyPassword 'ClubLAkey'
+            storeFile file('D:\\LAKey\\LAkeystore.jks')
+            storePassword 'ClubLAkey'
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {

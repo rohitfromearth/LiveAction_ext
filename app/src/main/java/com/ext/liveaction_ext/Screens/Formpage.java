@@ -313,8 +313,7 @@ ott_other=findViewById(R.id.ott_other_edt);
                             selected_dur_Options.remove(item);
                             stringBuilder.append("Selected options:\n");
                             for (String option : selected_dur_Options) {
-                                Log.d("selected_removed",option);
-                                stringBuilder.append(option).append("\n");
+                                   stringBuilder.append(option).append("\n");
                             }
                             displayList.setText(stringBuilder.toString());
                         }
@@ -357,8 +356,7 @@ ott_other=findViewById(R.id.ott_other_edt);
                     selected_dur_Options.add(selectedItem);
                 }
                 for (String option : selected_dur_Options) {
-                    Log.d("selected_dur_Options",option);
-                }
+                     }
                 durabllist.notifyDataSetChanged();
             }
 
@@ -424,7 +422,6 @@ ott_other=findViewById(R.id.ott_other_edt);
 
                             stringBuilder.append("Selected options:\n");
                             for (String option : selectedProducts) {
-                                Log.d("selectedProducts added", option);
                                 stringBuilder.append(option).append("\n");
                             }
                             displayProduct.setText(stringBuilder.toString());
@@ -432,7 +429,6 @@ ott_other=findViewById(R.id.ott_other_edt);
                             selectedProducts.remove(item);
                             stringBuilder.append("Selected options:\n");
                             for (String option : selectedProducts) {
-                                Log.d("selectedRemoved", option);
                                 stringBuilder.append(option).append("\n");
                             }
                             displayProduct.setText(stringBuilder.toString());

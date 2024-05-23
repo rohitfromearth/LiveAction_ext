@@ -27,7 +27,7 @@ public class Conn_service {
     ArrayList<String> appl = new ArrayList<String>();
 
     String endpot = "https://sondersort.online";
-// String endpot = "https://7ftjfjrd-8080.inc1.devtunnels.ms";
+// String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
 
 //    String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
@@ -45,8 +45,6 @@ public class Conn_service {
         try {
             String response = "";
             URL url = new URL(endpot + "/apps/list");
-            String urlString=endpot + "/apps/list";
-
 
             HttpURLConnection urlConn = null;
 
@@ -56,7 +54,7 @@ public class Conn_service {
             urlConn.setRequestProperty("Accept", "application/json");
             urlConn.setDoInput(true);
             int responseCode = urlConn.getResponseCode();
-
+            Log.e("response", String.valueOf(responseCode));
             String reso = urlConn.getResponseMessage();
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
@@ -110,6 +108,7 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
+            Log.e("response", String.valueOf(responseCode));
             String reso = urlConnection.getResponseMessage();
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
@@ -151,7 +150,7 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
-
+Log.e("response", String.valueOf(responseCode));
             String reso = urlConnection.getResponseMessage();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
@@ -196,8 +195,8 @@ public class Conn_service {
             urlConn.setRequestProperty("authorization", "Bearer " + firbaseTokenn);
             urlConn.setDoInput(true);
             int responseCode = urlConn.getResponseCode();
+            Log.e("response", String.valueOf(responseCode));
             String reso = urlConn.getResponseMessage();
-            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
                 String applist;
@@ -207,8 +206,7 @@ public class Conn_service {
                     response += applist;
 
                 }
-                Log.e("checkRes2", response);
-            }
+                   }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -234,8 +232,6 @@ public class Conn_service {
             StrictMode.setThreadPolicy(policy);
 
             String urlString = endpot + "/appException";
-            Log.e("checkjson", String.valueOf(str1));
-            Log.e("url",urlString);
             URL url = new URL(urlString);
 
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -254,10 +250,9 @@ public class Conn_service {
             o.close();
 
             int responseCode = urlConnection.getResponseCode();
-
+            Log.e("response", String.valueOf(responseCode));
             String reso = urlConnection.getResponseMessage();
 
-            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
@@ -266,7 +261,6 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                    Log.e("responseee", response);
 
                 }
             }
