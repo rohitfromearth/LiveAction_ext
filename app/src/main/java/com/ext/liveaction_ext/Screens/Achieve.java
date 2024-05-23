@@ -30,7 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Achieve extends Fragment {
-    CardView rede, congrats_tv,btn_dsh;
+    CardView rede, congrats_tv, btn_dsh;
     Conn_service servic = new Conn_service();
     int uid_z;
     int uid = 0;
@@ -38,7 +38,7 @@ public class Achieve extends Fragment {
     String firebaseToken = "";
     String firebaseToke = "";
     private TableLayout tableLayout;
-//    private LinearLayout floatingViewContainer;
+    //    private LinearLayout floatingViewContainer;
     private View floatingView;
     private FirebaseAuth mAuth;
     private int initialX;
@@ -48,10 +48,9 @@ public class Achieve extends Fragment {
     private float initialTouchY;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
- sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();
         View view = inflater.inflate(R.layout.activity_achieve, container, false);
 
@@ -82,9 +81,9 @@ public class Achieve extends Fragment {
 
         congrats_tv = view.findViewById(R.id.congrats_tv);
         tv_red_points = view.findViewById(R.id.earn_number);
-        btn_dsh=view.findViewById(R.id.dash_btn_ach);
+        btn_dsh = view.findViewById(R.id.dash_btn_ach);
         String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
-        Log.e("res","/usageStats/getAchievements/ : "+res);
+        Log.e("res", "/usageStats/getAchievements/ : " + res);
         congrats_tv.setVisibility(View.GONE);
         onPostExecute(res);
 

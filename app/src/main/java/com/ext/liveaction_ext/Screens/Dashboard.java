@@ -49,7 +49,7 @@ import java.util.Set;
 
 public class Dashboard extends AppCompatActivity {
 
-    TextView tvP_usernme,privacyTet,termsTet,sync_tym;
+    TextView tvP_usernme, privacyTet, termsTet, sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -72,15 +72,16 @@ public class Dashboard extends AppCompatActivity {
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
-//    ArrayList<String> yearList = new ArrayList<String>();
+    //    ArrayList<String> yearList = new ArrayList<String>();
     SharedPreferences sh;
     boolean showDummy;
-    String userid="";
+    String userid = "";
     ProgressBar pro;
     private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
     String data_sync;
-    @SuppressLint("SetTextI18n")
+
+    @SuppressLint({"SetTextI18n", "MissingInflatedId"})
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +92,7 @@ public class Dashboard extends AppCompatActivity {
                 4);
         //FirebaseApp.initializeApp(this);
 
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         isLoggedIn = sh.getBoolean("isLoggedIn", false);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
@@ -99,15 +100,14 @@ public class Dashboard extends AppCompatActivity {
         Set<String> set = sh.getStringSet("APP_LIST", null);
         Log.e("APPList", String.valueOf(set));
         appl.addAll(set);
-userid= "user id : "+uid;
+        userid = "user id : " + uid;
 
         String dir = getObbDir().getPath();
 
         setContentView(R.layout.drawer_layout);
 
 
-
-        pro = findViewById(R.id.progressBr);
+          pro = findViewById(R.id.progressBr);
 
         // Show the ProgressBar
         pro.setVisibility(View.VISIBLE);
@@ -164,37 +164,36 @@ userid= "user id : "+uid;
 
         } else {
             // Task has not been performed today
-          res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+            res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
 
 
-        dummyList = dummyDayList(resultdummy);
-        dayList = dataDayList(res);
-        weekList = dataWeekList(res);
-        monthList = dataMonthList(res);
+            dummyList = dummyDayList(resultdummy);
+            dayList = dataDayList(res);
+            weekList = dataWeekList(res);
+            monthList = dataMonthList(res);
 
 
+            myEdit.putString("dir", dir);
+            myEdit.putBoolean("showDummy", showDummy);
 
-        myEdit.putString("dir", dir);
-        myEdit.putBoolean("showDummy", showDummy);
+            Set<String> dummyset = new HashSet<String>();
+            dummyset.addAll(dummyList);
 
-        Set<String> dummyset = new HashSet<String>();
-        dummyset.addAll(dummyList);
+            Set<String> dayset = new HashSet<String>();
+            dayset.addAll(dayList);
 
-        Set<String> dayset = new HashSet<String>();
-        dayset.addAll(dayList);
+            Set<String> weekset = new HashSet<String>();
+            weekset.addAll(weekList);
 
-        Set<String> weekset = new HashSet<String>();
-        weekset.addAll(weekList);
+            Set<String> monthset = new HashSet<String>();
+            monthset.addAll(monthList);
 
-        Set<String> monthset = new HashSet<String>();
-        monthset.addAll(monthList);
+            myEdit.putStringSet("DUMMY_LIST", dummyset);
+            myEdit.putStringSet("DAY_LIST", dayset);
+            myEdit.putStringSet("WEEK_LIST", weekset);
+            myEdit.putStringSet("MONTH_LIST", monthset);
 
-        myEdit.putStringSet("DUMMY_LIST", dummyset);
-        myEdit.putStringSet("DAY_LIST", dayset);
-        myEdit.putStringSet("WEEK_LIST", weekset);
-        myEdit.putStringSet("MONTH_LIST", monthset);
-
-        myEdit.apply();
+            myEdit.apply();
             SharedPreferences.Editor editor = sh.edit();
             editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
             editor.apply();
@@ -206,10 +205,10 @@ userid= "user id : "+uid;
         manag_btn = findViewById(R.id.mange_btn);
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
-        sync_tym=findViewById(R.id.tym_sync);
+        sync_tym = findViewById(R.id.tym_sync);
         faq_btn = findViewById(R.id.FAQ_btn);
-        termsTet= findViewById(R.id.termsd);
-        privacyTet= findViewById(R.id.privacyd);
+        termsTet = findViewById(R.id.termsd);
+        privacyTet = findViewById(R.id.privacyd);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
         mDrawer.addDrawerListener(drawerToggle);
@@ -281,6 +280,7 @@ userid= "user id : "+uid;
         pro.setVisibility(View.GONE);
 
     }
+
     public ArrayList dummyDayList(String ss) {
         //april
         try {
@@ -297,6 +297,7 @@ userid= "user id : "+uid;
 
         //april
     }
+
     public ArrayList dataDayList(String ss) {
         //april
         try {
@@ -315,6 +316,7 @@ userid= "user id : "+uid;
 
         //april
     }
+
     public ArrayList dataWeekList(String ss) {
         //april
 
@@ -366,6 +368,7 @@ userid= "user id : "+uid;
                     return true;
                 });
     }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
@@ -375,24 +378,22 @@ userid= "user id : "+uid;
         Log.e("data_sync", data_sync);
         if (data_sync.isEmpty()) {
             // If no data is available, display a dash "-"
-            sync_tym.setText(timeStatus+ "-");
+            sync_tym.setText(timeStatus + "-");
         } else {
             // If data is available, display the value retrieved from shared preferences
-            sync_tym.setText(timeStatus + ": "+ data_sync);
+            sync_tym.setText(timeStatus + ": " + data_sync);
         }
     }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment go_next;
         int itemId = menuItem.getItemId();
-        if (itemId == R.id.chart_page)
-        {
+        if (itemId == R.id.chart_page) {
             startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
-        }
-        else if (itemId == R.id.manage_page)
-        {
+        } else if (itemId == R.id.manage_page) {
 
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
@@ -400,9 +401,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.achieve_page)
-        {
+        } else if (itemId == R.id.achieve_page) {
 
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
@@ -410,9 +409,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.redeem_page)
-        {
+        } else if (itemId == R.id.redeem_page) {
 
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
@@ -420,9 +417,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.contact_us)
-        {
+        } else if (itemId == R.id.contact_us) {
 
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Contact us");
@@ -430,9 +425,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.faq)
-        {
+        } else if (itemId == R.id.faq) {
 
             go_next = new FaQ();
             getSupportActionBar().setTitle("FAQ");
@@ -440,18 +433,14 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.perm_new)
-        {
-      Log.e("data unknown", String.valueOf(itemId));
+        } else if (itemId == R.id.perm_new) {
+            Log.e("data unknown", String.valueOf(itemId));
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
-        }
-        else if (itemId == R.id.Logout)
-        {
+        } else if (itemId == R.id.Logout) {
             isLoggedIn = false;
 
 
@@ -460,20 +449,13 @@ userid= "user id : "+uid;
             myEdit.putString("firebaseToken", "");
 
 
-
-
-           myEdit.apply();
-
+            myEdit.apply();
 
 
             Intent intent = new Intent(this, Login_verifcation.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-
-
-
-
 
 
 // Finish the current activity
@@ -490,7 +472,8 @@ userid= "user id : "+uid;
         // Close the navigation drawer
         mDrawer.closeDrawers();
     }
-//    private void initPopupDialog(Context context) {
+
+    //    private void initPopupDialog(Context context) {
 //        // Create and initialize the popup dialog
 //        Dialog dd = new Dialog();
 //
@@ -514,15 +497,16 @@ userid= "user id : "+uid;
 //            dd.show();
 //        }
 //    }
-        public void onBackPressed() {
+    public void onBackPressed() {
         //super.onBackPressed();
-        Log.d("destroyed","dashboard back");
+        Log.d("destroyed", "dashboard back");
     }
+
     @Override
     protected void onStop() {
         super.onStop();
         //AppUtils.deleteCache(getApplicationContext());
-        Log.d("onStop","onStop");
+        Log.d("onStop", "onStop");
     }
 
 }
