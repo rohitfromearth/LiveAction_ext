@@ -56,7 +56,7 @@ public class Manage_screen extends Fragment {
     boolean edit;
     CardView btn_sv, btn_dash;
     double valueperInt, valuehrInt;
-    TableLayout row;
+
     private final ArrayList<EditText> etList = new ArrayList<>();
     private TableLayout tableLayout;
     private FirebaseAuth mAuth;
@@ -97,7 +97,7 @@ public class Manage_screen extends Fragment {
             });
         }
 
-fetchdat();
+fetchdat(false);
         btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             if (edit) {
@@ -169,13 +169,13 @@ fetchdat();
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }
-
+                fetchdat(true);
             }
         });
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
-    private void fetchdat(){
+    private void fetchdat(boolean clear){
 
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
@@ -183,7 +183,7 @@ fetchdat();
         res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
         Log.e("res", "/usageStats/manageData : " + res);
-        edit = onPostExecute(res);
+        edit = onPostExecute(res,clear);
         if (edit) {
             tv_btn.setText("Save Target");
         }
@@ -200,7 +200,7 @@ fetchdat();
         }
 
     }
-    private boolean onPostExecute(String result) {
+    private boolean onPostExecute(String result,boolean clr) {
         Log.e("onPostExecute","onPostExecute");
         boolean editable = false;
 
@@ -239,7 +239,7 @@ fetchdat();
                     target_edi = item.getBoolean("target_editable");
 
 
-                    addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi);
+                    addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi,clr);
                     if (usage_id == 1) {
                         editable = target_edi;
                     }
@@ -267,15 +267,13 @@ fetchdat();
         return sum <= 168;
     }
 
-    private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
+    private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view,boolean clrr) {
         Log.e("addTableRow","addTableRow");
-//boolean nl=sh.getBoolean("newload", false);
-//if (nl) {
-//
-//        }
-//
- row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
 
+ TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
+if (clrr){
+    clearTable(row);
+}
         TextView tvCategory = row.findViewById(R.id.tvCategor);
         EditText et_actual_hrr = row.findViewById(R.id.et_actual_hr);
         EditText et_actual_prr = row.findViewById(R.id.et_actual_per);
@@ -455,6 +453,13 @@ fetchdat();
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
         Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
 
+    }
+    private void clearTable(TableLayout tableLayout) {
+        int childCount = tableLayout.getChildCount();
+        if (childCount > 0) {
+            // Remove all rows except the header row
+            tableLayout.removeViews(1, childCount - 1);
+        }
     }
 
 }
