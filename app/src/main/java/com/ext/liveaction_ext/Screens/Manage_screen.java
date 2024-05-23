@@ -338,22 +338,33 @@ fetchdat();
                 isUpdating = true;
                 String hrValue = et_actual_hrr.getText().toString();
                 if (hrValue.isEmpty()) {
-                    et_actual_prr.setText("");
+                    et_actual_prr.setText(
+                            ""
+                    );
                 } else {
                     try {
-                        double hour = Double.parseDouble(hrValue);
+                        double hour = Double.
+                                parseDouble
+                                        (hrValue);
                         if (hour > 168) {
-                            et_actual_hrr.setError("Hour value cannot exceed 168");
-                            et_actual_prr.setText("");
+                            et_actual_hrr.setError(
+                                    "Hour value cannot exceed 168"
+                            );
+                            et_actual_prr.setText(
+                                    ""
+                            );
                         } else {
                             double percent = hour * 100 / 168;
-                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                            DecimalFormat decimalFormat = new DecimalFormat(
+                                    "#.##"
+                            );
                             String percentFormatted = decimalFormat.format(percent);
                             et_actual_prr.setText(percentFormatted);
                         }
                     } catch (NumberFormatException e) {
-                        et_actual_prr.setText("");
-
+                        et_actual_prr.setText(
+                                ""
+                        );
                     }
                 }
                 isUpdating = false;
@@ -363,7 +374,6 @@ fetchdat();
             public void afterTextChanged(Editable editable) {
             }
         };
-
         TextWatcher percentWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -377,21 +387,33 @@ fetchdat();
                 isUpdating = true;
                 String percentValue = et_actual_prr.getText().toString();
                 if (percentValue.isEmpty()) {
-                    et_actual_hrr.setText("");
+                    et_actual_hrr.setText(
+                            ""
+                    );
                 } else {
                     try {
-                        double percent = Double.parseDouble(percentValue);
+                        double percent = Double.
+                                parseDouble
+                                        (percentValue);
                         if (percent > 100) {
-                            et_actual_prr.setError("Percent value cannot exceed 100");
-                            et_actual_hrr.setText("");
+                            et_actual_prr.setError(
+                                    "Percent value cannot exceed 100"
+                            );
+                            et_actual_hrr.setText(
+                                    ""
+                            );
                         } else {
                             double hours = percent * 168 / 100;
-                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                            DecimalFormat decimalFormat = new DecimalFormat(
+                                    "#.##"
+                            );
                             String hoursFormatted = decimalFormat.format(hours);
                             et_actual_hrr.setText(hoursFormatted);
                         }
                     } catch (NumberFormatException e) {
-                        et_actual_hrr.setText("");
+                        et_actual_hrr.setText(
+                                ""
+                        );
                     }
                 }
                 isUpdating = false;
