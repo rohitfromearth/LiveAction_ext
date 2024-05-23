@@ -278,7 +278,7 @@ public class Login_verifcation extends AppCompatActivity {
                 }
             }).start();
             boolean acc= sh.getBoolean("accesson", false);
-            if (acc) {
+            if (acc||hasUsageAccessPermission()) {
                 permission_usage.setVisibility(View.GONE);
             }else{
                 permission_usage.setVisibility(View.VISIBLE);
@@ -501,12 +501,6 @@ public class Login_verifcation extends AppCompatActivity {
                                             try{
                                                 String firebaseToken = task1.getResult().getToken();
                                                        boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
-
-
-
-
-
-
 
                                                 boolean hasPermission = hasUsageAccessPermission();
 
