@@ -55,10 +55,11 @@ public class Manage_screen extends Fragment {
     TextView tv_btn;
     boolean edit;
     CardView btn_sv, btn_dash;
-    double valueperInt, valuehrInt;
-    TableLayout row;
-    private final ArrayList<EditText> etList = new ArrayList<>();
     private TableLayout tableLayout;
+    double valueperInt, valuehrInt;
+
+    private final ArrayList<EditText> etList = new ArrayList<>();
+
     private FirebaseAuth mAuth;
     String res;
     private boolean isUpdating = false;
@@ -250,6 +251,18 @@ fetchdat();
         }
         return editable;
     }
+    private void refreshView() {
+        isUpdating = true;
+
+        // Remove all rows except the first row
+        while (tableLayout.getChildCount() > 1) {
+            tableLayout.removeViewAt(1);
+        }
+
+        fetchdat();
+        isUpdating = false;
+    }
+
 
     private boolean validationonper(ArrayList<Double> valuesList) {
         int sum = 0;
@@ -269,12 +282,10 @@ fetchdat();
 
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
         Log.e("addTableRow","addTableRow");
-//boolean nl=sh.getBoolean("newload", false);
-//if (nl) {
-//
-//        }
-//
- row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View row = inflater.inflate(R.layout.table_row_for_manag, tableLayout, false);
+
+// TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
 
         TextView tvCategory = row.findViewById(R.id.tvCategor);
         EditText et_actual_hrr = row.findViewById(R.id.et_actual_hr);
@@ -454,8 +465,10 @@ fetchdat();
         StrictMode.setThreadPolicy(policy);
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
         Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
+        refreshView();
 
     }
+
 
 }
 

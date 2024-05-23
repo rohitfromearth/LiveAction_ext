@@ -3,6 +3,7 @@ package com.ext.liveaction_ext.Screens;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -74,6 +76,7 @@ public class Dashboard extends AppCompatActivity {
     SharedPreferences sh;
     boolean showDummy;
     String userid="";
+    ProgressBar pro;
     private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
     String data_sync;
@@ -101,6 +104,15 @@ userid= "user id : "+uid;
         String dir = getObbDir().getPath();
 
         setContentView(R.layout.drawer_layout);
+
+
+
+        pro = findViewById(R.id.progressBr);
+
+        // Show the ProgressBar
+        pro.setVisibility(View.VISIBLE);
+        SharedPreferences.Editor myEdit = sh.edit();
+//        myEdit.putBoolean("Dashboard", true);
 //        initPopupDialog(context);
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
@@ -160,7 +172,7 @@ userid= "user id : "+uid;
         weekList = dataWeekList(res);
         monthList = dataMonthList(res);
 
-        SharedPreferences.Editor myEdit = sh.edit();
+
 
         myEdit.putString("dir", dir);
         myEdit.putBoolean("showDummy", showDummy);
@@ -266,6 +278,8 @@ userid= "user id : "+uid;
         viewPager.setAdapter(pagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
+        pro.setVisibility(View.GONE);
+
     }
     public ArrayList dummyDayList(String ss) {
         //april

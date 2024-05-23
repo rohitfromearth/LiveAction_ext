@@ -58,8 +58,8 @@ String Dir= "";
         ArrayList pack = conn.App_list(getApplicationContext());
 Log.e(TAG, String.valueOf(pack));
         SharedPreferences.Editor myEdit = sh.edit();
-
-
+boolean act=false;
+//myEdit.putBoolean("Dashboard",false);
         myEdit.putString("dir", Dir);
 
         Set<String> set = new HashSet<String>();
