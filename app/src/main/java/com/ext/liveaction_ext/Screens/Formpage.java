@@ -306,7 +306,6 @@ ott_other=findViewById(R.id.ott_other_edt);
 
                             stringBuilder.append("Selected options:\n");
                             for (String option : selected_dur_Options) {
-                                Log.d("selectedadded",option);
                                 stringBuilder.append(option).append("\n");
                             }
                             displayList.setText(stringBuilder.toString());

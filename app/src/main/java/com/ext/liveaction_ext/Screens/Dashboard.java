@@ -97,7 +97,7 @@ public class Dashboard extends AppCompatActivity {
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
         Set<String> set = sh.getStringSet("APP_LIST", null);
-        Log.e("APPList", String.valueOf(set));
+
         appl.addAll(set);
 userid= "user id : "+uid;
 
@@ -371,9 +371,9 @@ userid= "user id : "+uid;
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("onResume", "onResume called");
+
         data_sync = sh.getString("Last_sync", "");
-        Log.e("data_sync", data_sync);
+
         if (data_sync.isEmpty()) {
             // If no data is available, display a dash "-"
             sync_tym.setText(timeStatus+ "-");

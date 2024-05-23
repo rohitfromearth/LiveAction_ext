@@ -47,7 +47,6 @@ public class Conn_service {
             URL url = new URL(endpot + "/apps/list");
             String urlString=endpot + "/apps/list";
 
-            Log.e("url",urlString);
 
             HttpURLConnection urlConn = null;
 
@@ -59,7 +58,6 @@ public class Conn_service {
             int responseCode = urlConn.getResponseCode();
 
             String reso = urlConn.getResponseMessage();
-            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
 
                 String applist;
@@ -98,8 +96,6 @@ public class Conn_service {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
-            Log.e("checkjson", String.valueOf(jsonBody));
-            Log.e("Url",urlString );
             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
@@ -115,14 +111,12 @@ public class Conn_service {
 
             int responseCode = urlConnection.getResponseCode();
             String reso = urlConnection.getResponseMessage();
-            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                    Log.e("checkRes2", response);
                 }
             }
             urlConnection.disconnect();
@@ -140,12 +134,8 @@ public class Conn_service {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
-            Log.e("checkjson", String.valueOf(jsonBody));
-            Log.e("url",urlString);
-            URL url = new URL(urlString);
-            Log.e("url",url.getPath());
+             URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            Log.e("urlConnection",urlConnection.toString());
             urlConnection.setRequestMethod("POST");
 
             urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -156,7 +146,6 @@ public class Conn_service {
             urlConnection.setDoInput(true);
 
             DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
-            Log.e("DataOutputStream", urlConnection.getOutputStream().toString());
             o.writeBytes(jsonBody.toString());
             o.flush();
             o.close();
@@ -164,7 +153,6 @@ public class Conn_service {
             int responseCode = urlConnection.getResponseCode();
 
             String reso = urlConnection.getResponseMessage();
-            Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
@@ -173,7 +161,6 @@ public class Conn_service {
                 while ((line = br.readLine()) != null) {
                     response += line;
                     UserID = response;
-                    Log.e("checkRes2", response);
 
                 }
             }
@@ -199,8 +186,7 @@ public class Conn_service {
             URL url = new URL(endpot + endr);
             String urlString=endpot+endr;
 
-            Log.e("url",urlString);
-Log.e("ftkn",firbaseTokenn);
+
             HttpURLConnection urlConn;
 
             urlConn = (HttpURLConnection) url.openConnection();

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,19 +51,6 @@ public class FaQ extends Fragment {
         adapter = new QuestionAnswerAdapter(generateSampleData());
         recyclerView.setAdapter(adapter);
 
-        boolean showPermissionDialog = getActivity().getIntent().getBooleanExtra("show_permission_dialog", false);
-        Log.e("showPermissionDialog", String.valueOf(showPermissionDialog));
-        if (showPermissionDialog) {
-            // Show permission dialog
-            showPermissionDialog();
-        }
-//            if (lastExpandedPosition != -1 && lastExpandedPosition != position) {
-//                adapter.collapse(lastExpandedPosition);
-//            }
-//            lastExpandedPosition = position;
-//
-
-
         btn_dash.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             startActivity(new Intent(getContext(), Dashboard.class));
@@ -95,24 +81,4 @@ public class FaQ extends Fragment {
         return itemList;
     }
 
-    public void showPermissionDialog() {
-        // Show permission dialog here
-        // For example:
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_for_perrmisson);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.show();
-        /*new AlertDialog.Builder(getContext())
-                .setTitle("Permission Dialog")
-                .setMessage("This is a permission dialog.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle OK button click if needed
-                    }
-                })
-                .show();*/
-    }
 }

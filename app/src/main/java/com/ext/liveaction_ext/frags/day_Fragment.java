@@ -124,12 +124,10 @@ public class day_Fragment extends Fragment {
         for (String jsonString : dSet) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
-                Log.d("jsonObject","jsonObject"+jsonObject.toString());
                 String categoryName = jsonObject.optString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
 
                 double tsthisday = jsonObject.optDouble("target_in_min_day");
-                Log.e("tsthisday", categoryName+tsthisday);
                 double average = jsonObject.optDouble("last_7_day_usage_in_mins");
                 double variance = jsonObject.optDouble("variance_day");
 
