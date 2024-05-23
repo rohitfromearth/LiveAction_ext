@@ -4,8 +4,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.util.Log;
+
+import com.google.android.gms.common.api.ResultCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +22,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -25,12 +31,13 @@ public class Conn_service {
     String UserID = "";
     SharedPreferences sh;
     ArrayList<String> appl = new ArrayList<String>();
-
-    //String endpot = "https://sondersort.online";
+    ExecutorService executor = Executors.newSingleThreadExecutor();
+    Handler mainHandler = new Handler(Looper.getMainLooper());
+    String endpot = "https://sondersort.online";
 // String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
-    String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
-
+  //  String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
+    String finalResult;
     public ArrayList App_list(Context context) {
 
 
@@ -186,8 +193,67 @@ public class Conn_service {
         return UserID;
     }
 
-    public String pack_rule(String endr, String firbaseTokenn) {
-        String response = "";
+
+
+    public interface ResultCallback {
+        void onResult(String result);
+    }
+
+    public String pack_rule(String endr, String firbaseTokenn, ResultCallback callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String response = "";
+                HttpURLConnection urlConn;
+                try {
+                    String s = "";
+                    URL url = new URL(endpot + endr);
+                    String urlString=endpot+endr;
+
+                    Log.e("url",urlString);
+                    Log.e("ftkn",firbaseTokenn);
+
+
+                    urlConn = (HttpURLConnection) url.openConnection();
+                    urlConn.setRequestMethod("GET");
+                    urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                    urlConn.setRequestProperty("Accept", "application/json");
+                    urlConn.setRequestProperty("authorization", "Bearer " + firbaseTokenn);
+                    urlConn.setDoInput(true);
+                    int responseCode = urlConn.getResponseCode();
+                    String reso = urlConn.getResponseMessage();
+                    Log.e("res","reso_code"+responseCode+"reso_mess"+reso);
+                    if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                        String applist;
+                        BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+
+                        while ((applist = br.readLine()) != null) {
+                            response += applist;
+
+                        }
+                        Log.e("checkRes2", response);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                finalResult = response;
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Update UI with the result
+                        Log.d("API_CALL_RESULT", finalResult);
+                        if (callback != null) {
+                            callback.onResult(finalResult);
+                        }
+                    }
+                });
+            }
+        }).start();
+
+       /* String response = "";
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
@@ -227,13 +293,12 @@ Log.e("ftkn",firbaseTokenn);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return response;*/
 
-
-        return response;
+        Log.e("finalResult","finalResult"+finalResult);
+        return finalResult;
     }
     ///////////////////////////////////////
-
-
     public String crashLog(String str1) {
 
         try {

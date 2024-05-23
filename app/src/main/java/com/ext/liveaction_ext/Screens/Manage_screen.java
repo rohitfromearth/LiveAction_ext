@@ -181,25 +181,37 @@ fetchdat();
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
 
-        res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
+       // res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
         Log.e("res", "/usageStats/manageData : " + res);
         edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");
         }
-        String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
-
-        Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
+      //  String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
+        servic.pack_rule("/usageStats/comments/" + uid, firebaseToken, new Conn_service.ResultCallback() {
+            @Override
+            public void onResult(String result) {
+                // Handle the result here
+                Log.d("CALLBACK_RESULT", result);
+                updateUI(result);
+                // Update the UI or perform other actions with the result
+            }
+        });
+     //   Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
 
         try {
-            JSONObject jsonObj = new JSONObject(res_comnt);
+
+            JSONObject jsonObj = new JSONObject(res);
             String Comments_live_action = jsonObj.getString("result");
             tv_commnt.setText(Comments_live_action);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
+    }
+    private void updateUI(String result) {
+        res = result;
     }
     private boolean onPostExecute(String result) {
         Log.e("onPostExecute","onPostExecute");

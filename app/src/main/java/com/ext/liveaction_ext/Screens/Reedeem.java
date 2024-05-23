@@ -51,6 +51,7 @@ public class Reedeem extends Fragment {
     int totalPoints;
     private TableLayout tableLayout;
     private FirebaseAuth mAuth;
+    String res;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -69,7 +70,7 @@ public class Reedeem extends Fragment {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             startActivity(new Intent(getContext(), Dashboard.class));
         });
-       // achiv_bt = view.findViewById(R.id.achev_btn);
+        // achiv_bt = view.findViewById(R.id.achev_btn);
         minus_count = view.findViewById(R.id.tv_minus_count);
         plus_count = view.findViewById(R.id.tv_plus_count);
         achi_points = view.findViewById(R.id.achi_points);
@@ -110,12 +111,18 @@ public class Reedeem extends Fragment {
         firebaseToken = sh.getString("firebaseToken", "");
 
 
-
-
-        String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken);
-
+        //  String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken);
+        conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken, new Conn_service.ResultCallback() {
+            @Override
+            public void onResult(String result) {
+                // Handle the result here
+                Log.d("CALLBACK_RESULT", result);
+                updateUI(result);
+                // Update the UI or perform other actions with the result
+            }
+        });
         try {
-            JSONObject jsonResponse = new JSONObject(ress);
+            JSONObject jsonResponse = new JSONObject(res);
             JSONObject resultObject = jsonResponse.getJSONObject("result");
 
             totalPoints = resultObject.getInt("total_points");
@@ -146,8 +153,16 @@ public class Reedeem extends Fragment {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                 StrictMode.setThreadPolicy(policy);
-                String res = conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToken);
-
+               // String res = conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToken);
+                conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToken, new Conn_service.ResultCallback() {
+                    @Override
+                    public void onResult(String result) {
+                        // Handle the result here
+                        Log.d("CALLBACK_RESULT", result);
+                        updateUI(result);
+                        // Update the UI or perform other actions with the result
+                    }
+                });
                 onPostExecute(res);
 
             }
@@ -314,6 +329,10 @@ public class Reedeem extends Fragment {
             }
         });
         return view;
+    }
+
+    private void updateUI(String result) {
+        res = result;
     }
 
     private int decreaseCounter() {

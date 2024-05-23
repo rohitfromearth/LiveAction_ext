@@ -164,8 +164,16 @@ public class Dashboard extends AppCompatActivity {
 
         } else {
             // Task has not been performed today
-            res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-
+           // res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
+            conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken, new Conn_service.ResultCallback() {
+                @Override
+                public void onResult(String result) {
+                    // Handle the result here
+                    Log.d("CALLBACK_RESULT", result);
+                    updateUI(result);
+                    // Update the UI or perform other actions with the result
+                }
+            });
 
             dummyList = dummyDayList(resultdummy);
             dayList = dataDayList(res);
@@ -508,5 +516,7 @@ public class Dashboard extends AppCompatActivity {
         //AppUtils.deleteCache(getApplicationContext());
         Log.d("onStop", "onStop");
     }
-
+    private void updateUI(String result) {
+        res = result;
+    }
 }

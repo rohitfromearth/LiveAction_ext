@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,6 +122,7 @@ public class week_Fragment extends Fragment {
                 if (!categoryName.equalsIgnoreCase("Total")) {
                     int logoResId = getLogoResIdForCategory(categoryName);
                     double tsThisDay = jsonObject.optDouble("target_in_mins");
+                    Log.e("tsthisday", categoryName+tsThisDay);
                     double average = jsonObject.optDouble("last_4_week_usage_in_mins");
                     double variance = jsonObject.optDouble("variance_week");
 

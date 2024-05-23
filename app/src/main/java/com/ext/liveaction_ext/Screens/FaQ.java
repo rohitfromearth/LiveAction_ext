@@ -52,12 +52,12 @@ public class FaQ extends Fragment {
         adapter = new QuestionAnswerAdapter(generateSampleData());
         recyclerView.setAdapter(adapter);
 
-        boolean showPermissionDialog = getActivity().getIntent().getBooleanExtra("show_permission_dialog", false);
-        Log.e("showPermissionDialog", String.valueOf(showPermissionDialog));
-        if (showPermissionDialog) {
-            // Show permission dialog
-            showPermissionDialog();
-        }
+//        boolean showPermissionDialog = getActivity().getIntent().getBooleanExtra("show_permission_dialog", false);
+//        Log.e("showPermissionDialog", String.valueOf(showPermissionDialog));
+//        if (showPermissionDialog) {
+//            // Show permission dialog
+//            showPermissionDialog();
+//        }
 //            if (lastExpandedPosition != -1 && lastExpandedPosition != position) {
 //                adapter.collapse(lastExpandedPosition);
 //            }
@@ -95,7 +95,7 @@ public class FaQ extends Fragment {
         return itemList;
     }
 
-    public void showPermissionDialog() {
+   /* public void showPermissionDialog() {
         // Show permission dialog here
         // For example:
         dialog = new Dialog(getContext());
@@ -104,7 +104,7 @@ public class FaQ extends Fragment {
         dialog.setCancelable(false);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
-        /*new AlertDialog.Builder(getContext())
+        *//*new AlertDialog.Builder(getContext())
                 .setTitle("Permission Dialog")
                 .setMessage("This is a permission dialog.")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -113,6 +113,6 @@ public class FaQ extends Fragment {
                         // Handle OK button click if needed
                     }
                 })
-                .show();*/
-    }
+                .show();*//*
+    }*/
 }

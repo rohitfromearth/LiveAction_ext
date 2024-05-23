@@ -5,6 +5,8 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,7 +48,9 @@ public class Achieve extends Fragment {
     private int initialY;
     private float initialTouchX;
     private float initialTouchY;
+    String res;
 
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,7 +86,20 @@ public class Achieve extends Fragment {
         congrats_tv = view.findViewById(R.id.congrats_tv);
         tv_red_points = view.findViewById(R.id.earn_number);
         btn_dsh = view.findViewById(R.id.dash_btn_ach);
-        String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
+
+      //  String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
+        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken, new Conn_service.ResultCallback() {
+            @Override
+            public void onResult(String result) {
+                // Handle the result here
+                Log.d("CALLBACK_RESULT", result);
+                updateUI(result);
+                // Update the UI or perform other actions with the result
+            }
+        });
+
+// Method to update the UI with the result
+
         Log.e("res", "/usageStats/getAchievements/ : " + res);
         congrats_tv.setVisibility(View.GONE);
         onPostExecute(res);
@@ -99,7 +116,9 @@ public class Achieve extends Fragment {
         btn_dsh.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
-
+    private void updateUI(String result) {
+        res = result;
+    }
     private void onPostExecute(String result) {
         if (result != null) {
             try {
