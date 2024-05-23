@@ -55,10 +55,11 @@ public class Manage_screen extends Fragment {
     TextView tv_btn;
     boolean edit;
     CardView btn_sv, btn_dash;
+    private TableLayout tableLayout;
     double valueperInt, valuehrInt;
 
     private final ArrayList<EditText> etList = new ArrayList<>();
-    private TableLayout tableLayout;
+
     private FirebaseAuth mAuth;
     String res;
     private boolean isUpdating = false;
@@ -97,7 +98,7 @@ public class Manage_screen extends Fragment {
             });
         }
 
-fetchdat(false);
+fetchdat();
         btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             if (edit) {
@@ -169,13 +170,13 @@ fetchdat(false);
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
                 }
-                fetchdat(true);
+
             }
         });
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
-    private void fetchdat(boolean clear){
+    private void fetchdat(){
 
         uid = sh.getInt("UID", uid_z);
         firebaseToken = sh.getString("firebaseToken", "");
@@ -183,7 +184,7 @@ fetchdat(false);
         res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
 
         Log.e("res", "/usageStats/manageData : " + res);
-        edit = onPostExecute(res,clear);
+        edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");
         }
@@ -200,7 +201,7 @@ fetchdat(false);
         }
 
     }
-    private boolean onPostExecute(String result,boolean clr) {
+    private boolean onPostExecute(String result) {
         Log.e("onPostExecute","onPostExecute");
         boolean editable = false;
 
@@ -239,7 +240,7 @@ fetchdat(false);
                     target_edi = item.getBoolean("target_editable");
 
 
-                    addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi,clr);
+                    addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi);
                     if (usage_id == 1) {
                         editable = target_edi;
                     }
@@ -250,6 +251,18 @@ fetchdat(false);
         }
         return editable;
     }
+    private void refreshView() {
+        isUpdating = true;
+
+        // Remove all rows except the first row
+        while (tableLayout.getChildCount() > 1) {
+            tableLayout.removeViewAt(1);
+        }
+
+        fetchdat();
+        isUpdating = false;
+    }
+
 
     private boolean validationonper(ArrayList<Double> valuesList) {
         int sum = 0;
@@ -267,13 +280,13 @@ fetchdat(false);
         return sum <= 168;
     }
 
-    private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view,boolean clrr) {
+    private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
         Log.e("addTableRow","addTableRow");
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View row = inflater.inflate(R.layout.table_row_for_manag, tableLayout, false);
 
- TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
-if (clrr){
-    clearTable(row);
-}
+// TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_for_manag, null);
+
         TextView tvCategory = row.findViewById(R.id.tvCategor);
         EditText et_actual_hrr = row.findViewById(R.id.et_actual_hr);
         EditText et_actual_prr = row.findViewById(R.id.et_actual_per);
@@ -452,15 +465,10 @@ if (clrr){
         StrictMode.setThreadPolicy(policy);
         String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
         Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
+        refreshView();
 
     }
-    private void clearTable(TableLayout tableLayout) {
-        int childCount = tableLayout.getChildCount();
-        if (childCount > 0) {
-            // Remove all rows except the header row
-            tableLayout.removeViews(1, childCount - 1);
-        }
-    }
+
 
 }
 
