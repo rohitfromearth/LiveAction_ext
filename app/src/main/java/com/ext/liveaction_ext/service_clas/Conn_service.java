@@ -34,7 +34,7 @@ public class Conn_service {
     ExecutorService executor = Executors.newSingleThreadExecutor();
     Handler mainHandler = new Handler(Looper.getMainLooper());
     String endpot = "https://sondersort.online";
-// String endpot = "https://h17tl5kg-8080.inc1.devtunnels.ms";
+// String endpot = "https://7ftjfjrd-8080.inc1.devtunnels.ms";
 
   //  String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
     String finalResult;

@@ -111,8 +111,9 @@ public class Dashboard extends AppCompatActivity {
 
         // Show the ProgressBar
         pro.setVisibility(View.VISIBLE);
+
         SharedPreferences.Editor myEdit = sh.edit();
-//        myEdit.putBoolean("Dashboard", true);
+        myEdit.putBoolean("Dashboard", true);
 //        initPopupDialog(context);
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
