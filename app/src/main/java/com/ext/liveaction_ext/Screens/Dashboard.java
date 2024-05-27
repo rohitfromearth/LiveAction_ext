@@ -47,7 +47,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Dashboard extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity implements Conn_service.ResultCallback {
 
     TextView tvP_usernme, privacyTet, termsTet, sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
@@ -166,16 +166,7 @@ public class Dashboard extends AppCompatActivity {
         } else {
             // Task has not been performed today
            // res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-            conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken, new Conn_service.ResultCallback() {
-                @Override
-                public void onResult(String result) {
-                    // Handle the result here
-                    Log.d("CALLBACK_RESULT", result);
-                    updateUI(result);
-                    // Update the UI or perform other actions with the result
-                }
-            });
-
+            conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken, this);
             dummyList = dummyDayList(resultdummy);
             dayList = dataDayList(res);
             weekList = dataWeekList(res);
@@ -519,5 +510,21 @@ public class Dashboard extends AppCompatActivity {
     }
     private void updateUI(String result) {
         res = result;
+    }
+
+    @Override
+    public void onResult(String result) {
+        Log.d("dashboardresult", "result = "+result);
+        if (result != null && !result.isEmpty()) {
+
+            dummyList = dummyDayList(result);
+            dayList = dataDayList(result);
+            Log.e("dayList", "dayList"+dayList.toString());
+            weekList = dataWeekList(result);
+            monthList = dataMonthList(result);
+        } else {
+            Log.e("CurrentActivity", "API Result is null or empty");
+            // Handle the null or empty case appropriately
+        }
     }
 }

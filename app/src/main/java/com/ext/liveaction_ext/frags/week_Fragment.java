@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.Addaptors.CardAdapter;
 import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.service_clas.Conn_service;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class week_Fragment extends Fragment {
+public class week_Fragment extends Fragment implements Conn_service.ResultCallback {
     PieChart pieChart;
     int uid_z;
 
@@ -200,4 +201,8 @@ public class week_Fragment extends Fragment {
     }
 
 
+    @Override
+    public void onResult(String result) {
+        Log.d("weekActivity", "API Result: " + result);
+    }
 }

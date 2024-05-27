@@ -34,7 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Reedeem extends Fragment {
+public class Reedeem extends Fragment implements Conn_service.ResultCallback {
     Conn_service conn = new Conn_service();
 
     String firebaseToken = "";
@@ -393,4 +393,8 @@ public class Reedeem extends Fragment {
     }
 
 
+    @Override
+    public void onResult(String result) {
+        Log.d("reesdemactivity", "API Result: " + result);
+    }
 }

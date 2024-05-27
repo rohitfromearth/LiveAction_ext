@@ -39,7 +39,7 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Manage_screen extends Fragment {
+public class Manage_screen extends Fragment implements Conn_service.ResultCallback {
     Conn_service servic = new Conn_service();
     SharedPreferences sh ;
     TextView tv_commnt;
@@ -504,6 +504,10 @@ fetchdat();
     }
 
 
+    @Override
+    public void onResult(String result) {
+        Log.d("manageactivity", "API Result: " + result);
+    }
 }
 
 

@@ -31,7 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Achieve extends Fragment {
+public class Achieve extends Fragment implements Conn_service.ResultCallback {
     CardView rede, congrats_tv, btn_dsh;
     Conn_service servic = new Conn_service();
     int uid_z;
@@ -88,7 +88,7 @@ public class Achieve extends Fragment {
         btn_dsh = view.findViewById(R.id.dash_btn_ach);
 
       //  String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
-        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken, new Conn_service.ResultCallback() {
+   /*     servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken, new Conn_service.ResultCallback() {
             @Override
             public void onResult(String result) {
                 // Handle the result here
@@ -97,6 +97,9 @@ public class Achieve extends Fragment {
                 // Update the UI or perform other actions with the result
             }
         });
+*/
+        // Call the pack_rule method
+        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken, this);
 
 // Method to update the UI with the result
 
@@ -173,4 +176,9 @@ public class Achieve extends Fragment {
         tableLayout.addView(row);
     }
 
+
+    @Override
+    public void onResult(String result) {
+        Log.d("AchievActivity", "API Result: " + result);
+    }
 }
