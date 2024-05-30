@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.ext.liveaction_ext.Screens.Dashboard;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class Splashsscreen extends AppCompatActivity {
 
     private static final String TAG = "Splashsscreen";
-    private Conn_service conn = new Conn_service();
+    private final Conn_service conn = new Conn_service();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +32,24 @@ public class Splashsscreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashsscreen);
 
+        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        new Handler().postDelayed(() -> {
+            SharedPreferences.Editor myEdit = sh.edit();
+            String dir = getObbDir().getPath();
+            ArrayList pack = conn.App_list(getApplicationContext());
+            Log.e(TAG, "Failed to get token: " );
+            myEdit.putString("dir", dir);
+            Set<String> set = new HashSet<String>();
+            set.addAll(pack);
+            myEdit.putStringSet("APP_LIST", set);
 
-      Onboarding();
+            myEdit.apply();
+            Onboarding();
+        },2000);
 
     }
 
     private void Onboarding() {
-        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Log.e(TAG, "Failed to get token: " );
         // Ensure the splash screen remains visible until the Firebase token is fetched
@@ -45,17 +57,7 @@ public class Splashsscreen extends AppCompatActivity {
             user.getIdToken(true)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            String firebaseToken = task.getResult().getToken();
-                            SharedPreferences.Editor myEdit = sh.edit();
-                            String dir = getObbDir().getPath();
-                            ArrayList pack = conn.App_list(getApplicationContext());
-                            Log.e(TAG, "Failed to get token: " );
-                            myEdit.putString("dir", dir);
-                            Set<String> set = new HashSet<String>();
-                            set.addAll(pack);
-                            myEdit.putStringSet("APP_LIST", set);
-                            myEdit.putString("firebaseToken", firebaseToken);
-                            myEdit.apply();
+
                             navigateTo(Dashboard.class);
                         } else {
                             Log.e(TAG, "Failed to get token: " + task.getException());

@@ -10,15 +10,33 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.ext.liveaction_ext.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ContactUs extends Fragment {
     CardView btn_dash;
+    View view;
+    FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser use = mAuth.getCurrentUser();
 
 
-        View view = inflater.inflate(R.layout.activity_contact_us, container, false);
+        if (use == null) {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
+
+        }
+        else {
+
+            view = inflater.inflate(R.layout.activity_contact_us, container, false);
+
+        }
+
         btn_dash = view.findViewById(R.id.dashboard_connect);
         btn_dash.setOnClickListener(view1 -> {
 

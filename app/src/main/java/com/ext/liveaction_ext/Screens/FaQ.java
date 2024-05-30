@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.QandA;
 import com.ext.liveaction_ext.QuestionAnswerAdapter;
 import com.ext.liveaction_ext.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +32,27 @@ public class FaQ extends Fragment {
     private int lastExpandedPosition = -1;
     Dialog dialog;
     Context context;
+    FirebaseAuth mAuth;
+    View view;
+
 
     private static final String PERMISSION_DIALOG_TAG = "permission_dialog";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser use = mAuth.getCurrentUser();
 
-        View view = inflater.inflate(R.layout.activity_fa_q, container, false);
+
+        if (use == null) {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
+        else {
+            view = inflater.inflate(R.layout.activity_fa_q, container, false);
+        }
+
         btn_dash = view.findViewById(R.id.dashboard_btn_faq);
 
         privacy = view.findViewById(R.id.privacyId);

@@ -1,5 +1,7 @@
 package com.ext.liveaction_ext.Screens;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,13 +21,9 @@ CheckBox chek_agree;
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.prominent_disclosure);
-
         getSupportActionBar().setTitle(R.string.app_name);
-
         btn_sbmt= findViewById(R.id.btn_submit_Disclosure);
-
-chek_agree= findViewById(R.id.chk_for_aggree);
-
+        chek_agree= findViewById(R.id.chk_for_aggree);
 
         btn_sbmt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,7 +31,9 @@ chek_agree= findViewById(R.id.chk_for_aggree);
                 boolean checkk = chek_agree.isChecked();
 
                 if(checkk){
+
                 startActivity(new Intent(getApplicationContext(), Login_verifcation.class));
+                finish();
                 }
             }
         });

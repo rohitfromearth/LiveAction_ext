@@ -81,10 +81,6 @@ public class Login_verifcation extends AppCompatActivity {
     private PhoneAuthHandler phoneAuthHandler;
 
 
-    // callback method is called on Phone auth provider.
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,9 +117,7 @@ public class Login_verifcation extends AppCompatActivity {
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
         mAuth = FirebaseAuth.getInstance();
-//        mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
 
-//        firebaseAuthSettings.setAppVerificationDisabledForTesting(true);
         usaegstat = dialog.findViewById(R.id.usaegstat_perm);
         Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
         close = dialog.findViewById(R.id.close_permission);

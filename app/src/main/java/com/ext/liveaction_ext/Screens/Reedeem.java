@@ -37,7 +37,7 @@ import org.json.JSONObject;
 public class Reedeem extends Fragment {
     Conn_service conn = new Conn_service();
 
-    String firebaseToken = "";
+
     CardView reed_btn, dash_bt, achiv_bt;
     ImageButton close_dial;
     TextView total_pnt, pnt_redmed, pnt_avalble, count_txt, txt_hstry, achi_points;
@@ -56,7 +56,26 @@ public class Reedeem extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mAuth = FirebaseAuth.getInstance();
 
+        FirebaseUser use = mAuth.getCurrentUser();
+
+
+        if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            firebaseToke = task.getResult().getToken();
+
+                        }
+                    });
+
+        }
+        else {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
         View view = inflater.inflate(R.layout.activity_reedeem, container, false);
         total_pnt = view.findViewById(R.id.tv_Total_pnt);
         pnt_redmed = view.findViewById(R.id.tv_pnt_redmed);
@@ -69,7 +88,7 @@ public class Reedeem extends Fragment {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             startActivity(new Intent(getContext(), Dashboard.class));
         });
-       // achiv_bt = view.findViewById(R.id.achev_btn);
+
         minus_count = view.findViewById(R.id.tv_minus_count);
         plus_count = view.findViewById(R.id.tv_plus_count);
         achi_points = view.findViewById(R.id.achi_points);
@@ -87,33 +106,15 @@ public class Reedeem extends Fragment {
 
         tableLayout = dialog.findViewById(R.id.tableLayout);
 
-        mAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser use = mAuth.getCurrentUser();
-
-
-        if (use != null) {
-            use.getIdToken(true)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            firebaseToke = task.getResult().getToken();
-                            SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
-                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                            myEdit.putString("firebaseToken", firebaseToke);
-                            myEdit.apply();
-                        }
-                    });
-
-        }
         SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
-        firebaseToken = sh.getString("firebaseToken", "");
 
 
 
 
-        String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken);
+
+        String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToke);
 
         try {
             JSONObject jsonResponse = new JSONObject(ress);
@@ -147,7 +148,7 @@ public class Reedeem extends Fragment {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                 StrictMode.setThreadPolicy(policy);
-                String res = conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToken);
+                String res = conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToke);
 
                 onPostExecute(res);
 
@@ -162,37 +163,6 @@ public class Reedeem extends Fragment {
                 int pp = decreaseCounter();
 
                 int limit_point = pp * 30;
-               /* String before_msg = "Sorry!!! You have already get";
-                String after_msg = "Voucher according to the available points. Thank you";
-
-                int limit_point = pp * 30;
-                if (limit_point < pointsAvailable) {
-                    Log.e("tag---", "match");
-                    reed_btn.setEnabled(true);
-                    reed_btn.setCardBackgroundColor(Color.parseColor("#fe7e34"));
-                } else {
-                    reed_btn.setEnabled(false);
-                    reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                    // Set the title and message for the dialog
-                    builder.setTitle("Incorrect Reedeemtion:");
-                    builder.setMessage("sorry you are not allowed for more vouchers ");
-                    //builder.setMessage("Thank You");
-
-
-                    // Set a positive button and its click listener
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Handle the click event (if needed)
-                        }
-                    });
-
-                    // Create and show the alert dialog
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }*/
 
             }
         });
@@ -252,8 +222,7 @@ public class Reedeem extends Fragment {
 
                     jsonBody.put("userId", uid);
                     jsonBody.put("count", counter);
-                    Log.e("token",uid+"//"+firebaseToken);
-                    String uid = conn.datasender(jsonBody, "/usageStats/redemption", firebaseToken);
+                    String uid = conn.datasender(jsonBody, "/usageStats/redemption", firebaseToke);
                     Log.e("redeemclick", "data===" + uid);
                     Log.e("redeemclick", "pointsAvailable===" + pointsAvailable);
 

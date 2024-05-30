@@ -33,6 +33,7 @@ public class Achieve extends Fragment {
     Conn_service servic = new Conn_service();
     int uid_z;
     int uid = 0;
+    View view;
     TextView tv_red_points;
     String firebaseToken = "";
     String firebaseToke = "";
@@ -50,12 +51,11 @@ public class Achieve extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
- sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sh.edit();
-        View view = inflater.inflate(R.layout.activity_achieve, container, false);
 
-        rede = view.findViewById(R.id.reddem_btn);
-        tableLayout = view.findViewById(R.id.tableLayout);
+
+
+
+
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
@@ -66,32 +66,37 @@ public class Achieve extends Fragment {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             firebaseToke = task.getResult().getToken();
-
-                            myEdit.putString("firebaseToken", firebaseToke);
-                            myEdit.apply();
+                            view = inflater.inflate(R.layout.activity_achieve, container, false);
                         }
                     });
 
+        }else {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
         }
+
+
+
+
+
+        sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+
+
+
+        rede = view.findViewById(R.id.reddem_btn);
+        tableLayout = view.findViewById(R.id.tableLayout);
 
 
         uid = sh.getInt("UID", uid_z);
 
-        firebaseToken = sh.getString("firebaseToken", "");
 
         congrats_tv = view.findViewById(R.id.congrats_tv);
         tv_red_points = view.findViewById(R.id.earn_number);
         btn_dsh=view.findViewById(R.id.dash_btn_ach);
-        String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
+        String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToke);
         congrats_tv.setVisibility(View.GONE);
         onPostExecute(res);
-//        floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
-//
-//        inflater = LayoutInflater.from(getContext());
-//        floatingView = inflater.inflate(R.layout.layout_bell, floatingViewContainer, false);
-//        floatingView.setOnTouchListener(new FloatingViewTouchListener());
-//        floatingViewContainer.addView(floatingView);
-
 
         rede.setOnClickListener(view1 -> {
 

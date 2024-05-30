@@ -43,16 +43,13 @@ import java.util.regex.Pattern;
 public class Formpage extends AppCompatActivity {
     CardView nextActivity_btn, productcrd;
     TextView displayList,displayProduct;
-
     RadioGroup radioGroup;
-
     String Otherapp = "";
     String Otherapp_music = "";
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     Switch onlyn_used_swtch;
     String selectedValue, validationmsg;
     Conn_service servic = new Conn_service();
-
     Spinner gender, Education, Ocupation, product_spinner, Durable_spinn;
     int year = 0;
     int month = 0;
@@ -70,14 +67,9 @@ public class Formpage extends AppCompatActivity {
 
     Switch sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10, sw11, sw12, sw13, sw14;
     Switch sw_1, sw_2, sw_3, sw_4, sw_5, sw_6, sw_7, sw_8, sw_9, sw_10, sw_11, sw_12, sw_13, sw_14;
-
-
     private CheckBox[] checkboxe_fdbk;
     private DatePickerDialog.OnDateSetListener dateSetListener;
-
-
     EditText Et_name, Et_email,ott_other,music_other;
-
     private String selectedDistrict, selectedState;                 //vars to hold the values of selected State and District
     //declaring TextView to show the errors
     private Spinner stateSpinner, districtSpinner;                  //Spinners
@@ -243,7 +235,9 @@ ott_other=findViewById(R.id.ott_other_edt);
                     boolean storesuccess = StoreData();
 
                    if (storesuccess) {
-                        startActivity(new Intent(Formpage.this, Dashboard.class));
+                       Intent intent = new Intent(this, Dashboard.class);
+                       startActivity(intent);
+                       finish();
                     } else {
                         Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
                     }

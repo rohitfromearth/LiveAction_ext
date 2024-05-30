@@ -1,15 +1,18 @@
 package com.ext.liveaction_ext.Screens;
 
+import static android.app.PendingIntent.getActivity;
 import static java.security.AccessController.getContext;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
@@ -77,10 +80,13 @@ public class Dashboard extends AppCompatActivity {
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
 //    ArrayList<String> yearList = new ArrayList<String>();
-    SharedPreferences sh;
+//    SharedPreferences sh;
     boolean showDummy;
+    String firebaseToke = "";
     String userid="";
     ProgressBar pro;
+    SharedPreferences sh ;
+
     private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
     String data_sync;
@@ -89,64 +95,60 @@ public class Dashboard extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.drawer_layout);
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
-
-        FirebaseApp.initializeApp(this);
-
-
-
-
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
-        mAuth = FirebaseAuth.getInstance();
 
+
+
+
+        mAuth = FirebaseAuth.getInstance();
         FirebaseUser use = mAuth.getCurrentUser();
 
 
 
-
+        new Handler().postDelayed(() -> {
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                      String firebaseToke = task.getResult().getToken();
-                            SharedPreferences.Editor myEdit = sh.edit();
-                            myEdit.putString("firebaseToken", firebaseToke);
-                            myEdit.apply();
+                            firebaseToke = task.getResult().getToken();
+Uioperation(firebaseToke);
                         }
                     });
-
-        }else{
-            startActivity(new Intent(this, Login_verifcation.class));
         }
+        else {
+
+            Intent intent = new Intent(Dashboard.this, Login_verifcation.class);
+            startActivity(intent);
+         finish();
+        }
+        },2000);
 
 
 
-        isLoggedIn = sh.getBoolean("isLoggedIn", false);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
         Set<String> set = sh.getStringSet("APP_LIST", null);
-
         appl.addAll(set);
 userid= "user id : "+uid;
 
-        String dir = getObbDir().getPath();
 
-        setContentView(R.layout.drawer_layout);
+
+
 
 
 
         pro = findViewById(R.id.progressBr);
 
-        // Show the ProgressBar
+
         pro.setVisibility(View.VISIBLE);
 
-        SharedPreferences.Editor myEdit = sh.edit();
-        myEdit.putBoolean("Dashboard", true);
-//        initPopupDialog(context);
+
+
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
 
 
@@ -168,72 +170,14 @@ userid= "user id : "+uid;
             usage_stat.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-
-
                 accessibility_permission.setEnabled(usage_stat.isEnabled());
             });
             accessibility_permission.setOnClickListener(view -> {
-
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             });
 
         }
-//        }
-
-        String fToken = sh.getString("firebaseToken", "");
-
-        String resultdummy = dumdta.Data_for_dash();
-
-        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
-
-        Calendar today = Calendar.getInstance();
-        Calendar lastTaskCalendar = Calendar.getInstance();
-        lastTaskCalendar.setTimeInMillis(lastTaskDate);
-
-        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
-                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
-            // Task has already been performed today
-
-        } else {
-            // Task has not been performed today
-          res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-
-
-        dummyList = dummyDayList(resultdummy);
-        dayList = dataDayList(res);
-        weekList = dataWeekList(res);
-        monthList = dataMonthList(res);
-
-
-
-        myEdit.putString("dir", dir);
-        myEdit.putBoolean("showDummy", showDummy);
-
-        Set<String> dummyset = new HashSet<String>();
-        dummyset.addAll(dummyList);
-
-        Set<String> dayset = new HashSet<String>();
-        dayset.addAll(dayList);
-
-        Set<String> weekset = new HashSet<String>();
-        weekset.addAll(weekList);
-
-        Set<String> monthset = new HashSet<String>();
-        monthset.addAll(monthList);
-
-        myEdit.putStringSet("DUMMY_LIST", dummyset);
-        myEdit.putStringSet("DAY_LIST", dayset);
-        myEdit.putStringSet("WEEK_LIST", weekset);
-        myEdit.putStringSet("MONTH_LIST", monthset);
-
-        myEdit.apply();
-            SharedPreferences.Editor editor = sh.edit();
-            editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
-            editor.apply();
-
-        }
-
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         manag_btn = findViewById(R.id.mange_btn);
@@ -288,7 +232,7 @@ userid= "user id : "+uid;
         faq_btn.setOnClickListener(view -> {
 
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-            //startActivity(new Intent(Dashboard.this, FaQ.class));
+
             Fragment go_next = new FaQ();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
@@ -304,32 +248,48 @@ userid= "user id : "+uid;
         privacyTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PrivacyActivity.class)));
         termsTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TermsActivity.class)));
         tvP_usernme = findViewById(R.id.usrname);
-
         tvP_usernme.setText(username);
-
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-
         tabLayout.setupWithViewPager(viewPager);
         pro.setVisibility(View.GONE);
 
     }
-    public ArrayList dummyDayList(String ss) {
-        //april
-        try {
-            JSONObject jsonObject = new JSONObject(ss);
-            JSONArray jsonArray = jsonObject.getJSONArray("day");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                dummyList.add(jsonArray.getString(i));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+    private void Uioperation(String firebaseTok){
+
+        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
+        String dir = getObbDir().getPath();
+        Calendar today = Calendar.getInstance();
+        Calendar lastTaskCalendar = Calendar.getInstance();
+        lastTaskCalendar.setTimeInMillis(lastTaskDate);
+        SharedPreferences.Editor myEdit = sh.edit();
+        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+            // Task has already been performed today
+        } else {
+            // Task has not been performed today
+            res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, firebaseTok);
+            dayList = dataDayList(res);
+            weekList = dataWeekList(res);
+            monthList = dataMonthList(res);
+            myEdit.putString("dir", dir);
+            Set<String> dayset = new HashSet<String>();
+            dayset.addAll(dayList);
+            Set<String> weekset = new HashSet<String>();
+            weekset.addAll(weekList);
+            Set<String> monthset = new HashSet<String>();
+            monthset.addAll(monthList);
+            myEdit.putStringSet("DAY_LIST", dayset);
+            myEdit.putStringSet("WEEK_LIST", weekset);
+            myEdit.putStringSet("MONTH_LIST", monthset);
+            myEdit.apply();
+            SharedPreferences.Editor editor = sh.edit();
+            editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
+            editor.apply();
         }
 
-        return dummyList;
-
-        //april
     }
+
     public ArrayList dataDayList(String ss) {
         //april
         try {
@@ -354,6 +314,7 @@ userid= "user id : "+uid;
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("week");
+            Log.e("Week", "weekis running");
             for (int i = 0; i < jsonArray.length(); i++) {
                 weekList.add(jsonArray.getString(i));
             }
@@ -484,33 +445,13 @@ userid= "user id : "+uid;
         }
         else if (itemId == R.id.Logout)
         {
-            isLoggedIn = false;
-
-
-            SharedPreferences.Editor myEdit = sh.edit();
-
-            myEdit.putString("firebaseToken", "");
-
-
-
-
-           myEdit.apply();
-
-
-
+mAuth.signOut();
             Intent intent = new Intent(this, Login_verifcation.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-
-// Finish the current activity
             getSupportActionBar().setTitle("Verification");
-
-            myEdit.putBoolean("isLoggedIn", false);
-            myEdit.apply();
-
         }
-
         menuItem.setChecked(true);
         // Set action bar title
         setTitle(menuItem.getTitle());

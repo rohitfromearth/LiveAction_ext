@@ -48,7 +48,7 @@ public class Manage_screen extends Fragment {
     JSONObject jsonBody = new JSONObject();
     int uid_z;
     int uid = 0;
-    String firebaseToken = "";
+
     boolean target_edi = false;
     String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
@@ -56,6 +56,7 @@ public class Manage_screen extends Fragment {
     boolean edit;
     CardView btn_sv, btn_dash;
     private TableLayout tableLayout;
+    View view;
     double valueperInt, valuehrInt;
 
     private final ArrayList<EditText> etList = new ArrayList<>();
@@ -69,16 +70,8 @@ public class Manage_screen extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
-        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        btn_sv = view.findViewById(R.id.save_btn);
-        tv_btn = view.findViewById(R.id.savetargt);
-        tableLayout = view.findViewById(R.id.tableLayout);
-        // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
-        tv_commnt = view.findViewById(R.id.comment_live_act);
         mAuth = FirebaseAuth.getInstance();
-        btn_dash = view.findViewById(R.id.dashboard_btn_mng);
+
         FirebaseUser use = mAuth.getCurrentUser();
 
 
@@ -88,17 +81,23 @@ public class Manage_screen extends Fragment {
                 public void onComplete(@NonNull Task<GetTokenResult> task) {
                     if (task.isSuccessful()) {
                         firebaseToke = task.getResult().getToken();
-                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
-                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                        myEdit.putString("firebaseToken", firebaseToke);
-                        myEdit.apply();
+                   view = inflater.inflate(R.layout.activity_manage_screen, container, false);
                     }
                 }
             });
         }
-
-fetchdat();
+        else {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
+         sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        btn_sv = view.findViewById(R.id.save_btn);
+        tv_btn = view.findViewById(R.id.savetargt);
+        tableLayout = view.findViewById(R.id.tableLayout);
+        tv_commnt = view.findViewById(R.id.comment_live_act);
+        btn_dash = view.findViewById(R.id.dashboard_btn_mng);
+        fetchdat();
         btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             if (edit) {
@@ -179,16 +178,15 @@ fetchdat();
     private void fetchdat(){
 
         uid = sh.getInt("UID", uid_z);
-        firebaseToken = sh.getString("firebaseToken", "");
 
-        res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
+        res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToke);
 
         Log.e("res", "/usageStats/manageData : " + res);
         edit = onPostExecute(res);
         if (edit) {
             tv_btn.setText("Save Target");
         }
-        String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
+        String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToke);
 
         Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
 
@@ -484,7 +482,7 @@ fetchdat();
       //  boolean success;
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
+        String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToke);
         Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
         refreshView();
 
