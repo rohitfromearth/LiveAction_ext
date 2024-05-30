@@ -299,38 +299,6 @@ public class Login_verifcation extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-      /*  if (isAccessibilityServiceEnabled(this, Access_new.class)) {
-            Log.d("Accessibility", "Accessibility service is enabled");
-        } else {
-            Log.d("Accessibility", "Accessibility service is disabled");
-        }*/
-    }
-  /*  public boolean isAccessibilityServiceEnabled(Context context, Class<? extends AccessibilityService> service) {
-        ComponentName expectedComponentName = new ComponentName(context, service);
-
-        String enabledServicesSetting = Settings.Secure.getString(
-                context.getContentResolver(),
-                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-
-        if (enabledServicesSetting != null) {
-            TextUtils.SimpleStringSplitter colonSplitter = new TextUtils.SimpleStringSplitter(':');
-            colonSplitter.setString(enabledServicesSetting);
-            while (colonSplitter.hasNext()) {
-                String componentName = colonSplitter.next();
-                ComponentName enabledService = ComponentName.unflattenFromString(componentName);
-                if (enabledService != null && enabledService.equals(expectedComponentName))
-                    return true;
-            }
-        }
-
-        return false;
-    }
-*/
     public boolean isValidMobileNumber(String number) {
         // Regular expression pattern for mobile number validation
         String regex = "^[1-9]\\d{9}$";
@@ -502,22 +470,14 @@ public class Login_verifcation extends AppCompatActivity {
                                                 String firebaseToken = task1.getResult().getToken();
                                                        boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
 
-
-
-
-
-
-
                                                 boolean hasPermission = hasUsageAccessPermission();
 
                                                 if (hasPermission) {
                                                     if (pageID) {
 
-
                                                         startActivity(new Intent(Login_verifcation.this, Dashboard.class));
                                                     } else {
                                                         String data = getLocation();
-
 
                                                         boolean is_val;
                                                         if (Objects.equals(city, "") && Objects.equals(state, "")) {
@@ -547,10 +507,6 @@ public class Login_verifcation extends AppCompatActivity {
                                                     // Set the title and message for the dialog
                                                     builder.setTitle("Permission Requirement:");
                                                     builder.setMessage("Give Usage Stat Permission");
-                                                    //builder.setMessage("Thank You");
-
-
-                                                    // Set a positive button and its click listener
                                                     builder.setPositiveButton("OK", (dialog, which) -> {
                                                         // Handle the click event (if needed)
                                                     });
@@ -591,22 +547,7 @@ public class Login_verifcation extends AppCompatActivity {
 //        super.onBackPressed();
         Log.d("onBackPressed","back from login");
         moveTaskToBack(true);
-        /*if (!isLoggedIn) {
-           // super.onBackPressed();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            //finish(); // Finish the current activity
-            Log.d("onBack","back to main1");
-        } else {
-            // User is logged in, perform default back press action
-            super.onBackPressed();
-            Log.d("onBack","back to main2");
-        }*/
+
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("destroyed","login destroyed");
-    }
 }

@@ -471,11 +471,6 @@ userid= "user id : "+uid;
             startActivity(intent);
             finish();
 
-
-
-
-
-
 // Finish the current activity
             getSupportActionBar().setTitle("Verification");
 
@@ -514,15 +509,5 @@ userid= "user id : "+uid;
 //            dd.show();
 //        }
 //    }
-        public void onBackPressed() {
-        //super.onBackPressed();
-        Log.d("destroyed","dashboard back");
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //AppUtils.deleteCache(getApplicationContext());
-        Log.d("onStop","onStop");
-    }
 
 }
