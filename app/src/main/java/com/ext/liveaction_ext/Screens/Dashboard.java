@@ -281,64 +281,57 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
     }
 
-    public ArrayList dummyDayList(String ss) {
-        //april
-        Log.d("dummyList", "Input string: " + ss);
-
-        if (ss == null || ss.isEmpty()) {
-            Log.e("dummyList", "Input string is null or empty");
-            return dummyList; // Return empty list if input is invalid
-        }
+    public ArrayList<String> dummyDayList(String ss) {
+        ArrayList<String> dummyList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(ss);
-            JSONArray jsonArray = jsonObject.getJSONArray("day");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                dummyList.add(jsonArray.getString(i));
+            // Check if the key "day" exists in the JSON object
+            if (jsonObject.has("day")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("day");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    dummyList.add(jsonArray.getString(i));
+                }
+            } else {
+                Log.e("dummyDayList", "No value for key 'day' in JSON");
+                // Handle the case where "day" key is not present
+                // You might want to set dummyList to a default value or handle this scenario
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e("dummyDayList", "JSONException: " + e.getMessage());
+            // Handle JSON parsing exception
         }
-
         return dummyList;
-
-        //april
     }
+
 
     public ArrayList dataDayList(String ss) {
         //april
-
-        Log.d("dummyDayList", "Input string: " + ss);
-
-        if (ss == null || ss.isEmpty()) {
-            Log.e("dummyDayList", "Input string is null or empty");
-            return dummyList; // Return empty list if input is invalid
-        }
-
+        ArrayList<String> dayList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(ss);
-            JSONArray jsonArray = jsonObject.getJSONArray("day");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                dummyList.add(jsonArray.getString(i));
+            // Check if the key "day" exists in the JSON object
+            if (jsonObject.has("day")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("day");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    dayList.add(jsonArray.getString(i));
+                }
+            } else {
+                Log.e("dummyDayList", "No value for key 'day' in JSON");
+                // Handle the case where "day" key is not present
+                // You might want to set dummyList to a default value or handle this scenario
             }
         } catch (JSONException e) {
-            Log.e("dummyDayList", "JSON parsing error: " + e.getMessage());
-            e.printStackTrace();
+            Log.e("dummyDayList", "JSONException: " + e.getMessage());
+            // Handle JSON parsing exception
         }
-
-        return dummyList;
-
+        return dayList;
         //april
     }
 
     public ArrayList dataWeekList(String ss) {
         //april
-        Log.d("weekList", "Input string: " + ss);
 
-        if (ss == null || ss.isEmpty()) {
-            Log.e("weekList", "Input string is null or empty");
-            return weekList; // Return empty list if input is invalid
-        }
-        try {
+        /*try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("week");
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -349,19 +342,35 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
         }
 
 
-        return weekList;
+        return weekList;*/
 
+
+        ArrayList<String> weekList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            // Check if the key "day" exists in the JSON object
+            if (jsonObject.has("week")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("week");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    weekList.add(jsonArray.getString(i));
+                }
+            } else {
+                Log.e("dummyDayList", "No value for key 'week' in JSON");
+                // Handle the case where "day" key is not present
+                // You might want to set dummyList to a default value or handle this scenario
+            }
+        } catch (JSONException e) {
+            Log.e("dummyDayList", "JSONException: " + e.getMessage());
+            // Handle JSON parsing exception
+        }
+        return weekList;
+        //april
         //april
     }
 
     public ArrayList dataMonthList(String ss) {
         //april
-        Log.d("monthList", "Input string: " + ss);
-
-        if (ss == null || ss.isEmpty()) {
-            Log.e("monthList", "Input string is null or empty");
-            return monthList; // Return empty list if input is invalid
-        }
+  /*
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("month");
@@ -371,8 +380,29 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        return monthList;
+        return monthList;*/
 
+
+
+        ArrayList<String> monthList = new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(ss);
+            // Check if the key "day" exists in the JSON object
+            if (jsonObject.has("month")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("month");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    monthList.add(jsonArray.getString(i));
+                }
+            } else {
+                Log.e("dummyDayList", "No value for key 'monthList' in JSON");
+                // Handle the case where "day" key is not present
+                // You might want to set dummyList to a default value or handle this scenario
+            }
+        } catch (JSONException e) {
+            Log.e("dummyDayList", "JSONException: " + e.getMessage());
+            // Handle JSON parsing exception
+        }
+        return monthList;
         //april
     }
 
