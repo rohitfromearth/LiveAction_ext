@@ -77,14 +77,12 @@ public class Login_verifcation extends AppCompatActivity {
     boolean netpro_enabled = false;
     boolean passive_enabled = false;
     SharedPreferences sh;
-    private FirebaseAuthSettings firebaseAuthSettings;
+
     private PhoneAuthHandler phoneAuthHandler;
-    private OTPVerificationHandler otpVerificationHandler;
+
 
     // callback method is called on Phone auth provider.
 
-    boolean isLoggedIn = true;
-    boolean isFirstPage = false;
 
 
     @Override
@@ -111,7 +109,7 @@ public class Login_verifcation extends AppCompatActivity {
 
 
         phoneAuthHandler = new PhoneAuthHandler();
-        otpVerificationHandler = new OTPVerificationHandler();
+
 
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
@@ -124,7 +122,7 @@ public class Login_verifcation extends AppCompatActivity {
         dialog.show();
         mAuth = FirebaseAuth.getInstance();
 //        mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
-        firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
+
 //        firebaseAuthSettings.setAppVerificationDisabledForTesting(true);
         usaegstat = dialog.findViewById(R.id.usaegstat_perm);
         Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
@@ -447,8 +445,6 @@ public class Login_verifcation extends AppCompatActivity {
     public void verifyOTP(String verificationId, String otp) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
         signInWithPhoneAuthCredential(credential);
-
-
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
@@ -494,7 +490,6 @@ public class Login_verifcation extends AppCompatActivity {
                                                         editor.putString("latitude", latitude);
                                                         editor.putBoolean("enabled", is_val);
                                                         editor.apply();
-                                                        //Log.d("location",city+" and "+state);
                                                         startActivity(new Intent(Login_verifcation.this, Formpage.class));
 
                                                     }

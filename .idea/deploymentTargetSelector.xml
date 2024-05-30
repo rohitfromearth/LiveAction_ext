@@ -4,14 +4,17 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-05-21T10:59:29.585715900Z">
+        <DropdownSelection timestamp="2024-05-29T07:26:04.459089800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="Default" identifier="serial=192.168.1.92:5555;connection=411eaa4c" />
+              <DeviceId pluginId="Default" identifier="serial=192.168.1.56:5555;connection=bda2b6b5" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="Login_verifcation">
+        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
   </component>

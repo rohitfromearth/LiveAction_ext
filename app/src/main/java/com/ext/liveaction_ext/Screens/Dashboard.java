@@ -1,5 +1,7 @@
 package com.ext.liveaction_ext.Screens;
 
+import static java.security.AccessController.getContext;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -36,6 +38,8 @@ import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,18 +84,46 @@ public class Dashboard extends AppCompatActivity {
     private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
     String data_sync;
+    FirebaseAuth mAuth;
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
-        //FirebaseApp.initializeApp(this);
+
+        FirebaseApp.initializeApp(this);
+
+
+
 
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+        mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser use = mAuth.getCurrentUser();
+
+
+
+
+        if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                      String firebaseToke = task.getResult().getToken();
+                            SharedPreferences.Editor myEdit = sh.edit();
+                            myEdit.putString("firebaseToken", firebaseToke);
+                            myEdit.apply();
+                        }
+                    });
+
+        }else{
+            startActivity(new Intent(this, Login_verifcation.class));
+        }
+
+
+
         isLoggedIn = sh.getBoolean("isLoggedIn", false);
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");

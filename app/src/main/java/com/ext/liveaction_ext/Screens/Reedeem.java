@@ -91,6 +91,7 @@ public class Reedeem extends Fragment {
 
         FirebaseUser use = mAuth.getCurrentUser();
 
+
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
@@ -251,6 +252,7 @@ public class Reedeem extends Fragment {
 
                     jsonBody.put("userId", uid);
                     jsonBody.put("count", counter);
+                    Log.e("token",uid+"//"+firebaseToken);
                     String uid = conn.datasender(jsonBody, "/usageStats/redemption", firebaseToken);
                     Log.e("redeemclick", "data===" + uid);
                     Log.e("redeemclick", "pointsAvailable===" + pointsAvailable);

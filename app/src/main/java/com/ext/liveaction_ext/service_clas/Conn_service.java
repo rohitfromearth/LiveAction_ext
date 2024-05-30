@@ -27,7 +27,7 @@ public class Conn_service {
     ArrayList<String> appl = new ArrayList<String>();
 
     String endpot = "https://sondersort.online";
-// String endpot = "https://zr0prhz1-8080.inc1.devtunnels.ms";
+// String endpot = "https://fc10m5q8-8080.inc1.devtunnels.ms";
 
 //    String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
@@ -129,26 +129,20 @@ public class Conn_service {
     public String formdatasend(JSONObject jsonBody, String end) {
         try {
             String response = "";
-
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             String urlString = endpot + end;
              URL url = new URL(urlString);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-
             urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             urlConnection.setRequestProperty("Accept", "application/json");
-
-
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
-
             DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
             o.writeBytes(jsonBody.toString());
             o.flush();
             o.close();
-
             int responseCode = urlConnection.getResponseCode();
 Log.e("response", String.valueOf(responseCode));
             String reso = urlConnection.getResponseMessage();
