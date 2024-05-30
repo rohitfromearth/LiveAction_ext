@@ -283,6 +283,12 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
     public ArrayList dummyDayList(String ss) {
         //april
+        Log.d("dummyList", "Input string: " + ss);
+
+        if (ss == null || ss.isEmpty()) {
+            Log.e("dummyList", "Input string is null or empty");
+            return dummyList; // Return empty list if input is invalid
+        }
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("day");
@@ -300,26 +306,38 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
     public ArrayList dataDayList(String ss) {
         //april
+
+        Log.d("dummyDayList", "Input string: " + ss);
+
+        if (ss == null || ss.isEmpty()) {
+            Log.e("dummyDayList", "Input string is null or empty");
+            return dummyList; // Return empty list if input is invalid
+        }
+
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("day");
             for (int i = 0; i < jsonArray.length(); i++) {
-                dayList.add(jsonArray.getString(i));
+                dummyList.add(jsonArray.getString(i));
             }
-
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e("dummyDayList", "JSON parsing error: " + e.getMessage());
+            e.printStackTrace();
         }
 
-
-        return dayList;
+        return dummyList;
 
         //april
     }
 
     public ArrayList dataWeekList(String ss) {
         //april
+        Log.d("weekList", "Input string: " + ss);
 
+        if (ss == null || ss.isEmpty()) {
+            Log.e("weekList", "Input string is null or empty");
+            return weekList; // Return empty list if input is invalid
+        }
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("week");
@@ -338,6 +356,12 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
     public ArrayList dataMonthList(String ss) {
         //april
+        Log.d("monthList", "Input string: " + ss);
+
+        if (ss == null || ss.isEmpty()) {
+            Log.e("monthList", "Input string is null or empty");
+            return monthList; // Return empty list if input is invalid
+        }
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("month");

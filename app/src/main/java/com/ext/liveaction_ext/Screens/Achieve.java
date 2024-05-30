@@ -40,18 +40,10 @@ public class Achieve extends Fragment implements Conn_service.ResultCallback {
     String firebaseToken = "";
     String firebaseToke = "";
     private TableLayout tableLayout;
-    //    private LinearLayout floatingViewContainer;
-    private View floatingView;
+
     private FirebaseAuth mAuth;
-    private int initialX;
     SharedPreferences sh;
-    private int initialY;
-    private float initialTouchX;
-    private float initialTouchY;
     String res;
-
-    private Handler mainHandler = new Handler(Looper.getMainLooper());
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
@@ -156,7 +148,6 @@ public class Achieve extends Fragment implements Conn_service.ResultCallback {
 
 
     }
-
     private void addTableRow(String categoryName, String lastWeek, String cumulative, String pointslastWe, String pointscumu) {
 
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_achive_item, null);
@@ -175,8 +166,6 @@ public class Achieve extends Fragment implements Conn_service.ResultCallback {
 
         tableLayout.addView(row);
     }
-
-
     @Override
     public void onResult(String result) {
         Log.d("AchievActivity", "API Result: " + result);

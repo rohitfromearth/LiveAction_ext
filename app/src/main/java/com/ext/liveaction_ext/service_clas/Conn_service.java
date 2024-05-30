@@ -242,6 +242,7 @@ public class Conn_service {
                 }
 
                 finalResult = response;
+                Log.d("API_CALL_RESULT", finalResult);
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {

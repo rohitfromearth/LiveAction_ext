@@ -245,7 +245,6 @@ public class day_Fragment extends Fragment implements Conn_service.ResultCallbac
         }
     }
 
-
     @Override
     public void onResult(String result) {
         Log.d("dayActivity", "API Result: " + result);
