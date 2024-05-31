@@ -6,11 +6,11 @@
 
     <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
     <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
-    <string name="terms_condition1">I agree to the <a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
-    <string name="privacy_policy1">, <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; to the Terms of Use </string>
+    <string name="terms_condition1">I agree to the <a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> ,</string>
+    <string name="privacy_policy1"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; to the Terms of Use </string>
+    <string name="disagree">Disagree</string>
 
     <string name="privacy_polcy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
-
 
     <string name="Disclosure">
 

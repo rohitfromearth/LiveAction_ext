@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -14,7 +15,7 @@ import com.ext.liveaction_ext.R;
 
 public class ProminentActivity extends AppCompatActivity {
     CardView btn_sbmt;
-    CheckBox chek_agree;
+    RadioButton chek_agree, check_disAgree;
     TextView privacyTextClick, termsTextClick;
 
     @Override
@@ -27,7 +28,8 @@ public class ProminentActivity extends AppCompatActivity {
 
         btn_sbmt = findViewById(R.id.btn_submit_Disclosure);
 
-        chek_agree = findViewById(R.id.chk_for_agree);
+        chek_agree = findViewById(R.id.radio_for_agree);
+        check_disAgree = findViewById(R.id.radio_for_disAgree);
         privacyTextClick = findViewById(R.id.privacyIdd);
         termsTextClick = findViewById(R.id.termsIdd);
 
