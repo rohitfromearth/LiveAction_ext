@@ -23,22 +23,19 @@ public class ProminentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.prominent_disclosure);
-
+privacyTextClick=findViewById(R.id.policytextradio);
+termsTextClick= findViewById(R.id.termtextradio);
         getSupportActionBar().setTitle(R.string.app_name);
 
         btn_sbmt = findViewById(R.id.btn_submit_Disclosure);
 
-        chek_agree = findViewById(R.id.radio_for_agree);
-        check_disAgree = findViewById(R.id.radio_for_disAgree);
-        privacyTextClick = findViewById(R.id.privacyIdd);
-        termsTextClick = findViewById(R.id.termsIdd);
 
         btn_sbmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean checkk = chek_agree.isChecked();
 
-                if (checkk) {
+
+                if (true) {
                     startActivity(new Intent(getApplicationContext(), Login_verifcation.class));
                 }
             }
