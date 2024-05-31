@@ -46,13 +46,43 @@
         android:gravity="bottom"
         android:orientation="vertical">
 
-        <CheckBox
-            android:id="@+id/chk_for_aggree"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
 
-            android:text="@string/i_agree" />
+            <CheckBox
+                android:id="@+id/chk_for_agree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/privacyIdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="0dp"
+                    android:text="@string/terms_condition1"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/termsIdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="0dp"
+                    android:text="@string/privacy_policy1"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_submit_Disclosure"
             android:layout_width="wrap_content"

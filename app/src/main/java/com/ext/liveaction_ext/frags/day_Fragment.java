@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class day_Fragment extends Fragment {
+public class day_Fragment extends Fragment implements Conn_service.ResultCallback {
     PieChart pieChart;
     DummyData dumdta = new DummyData();
     int uid_z;
@@ -78,7 +78,6 @@ public class day_Fragment extends Fragment {
 
         //april
         Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
-
         Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
 
         // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
@@ -244,6 +243,9 @@ public class day_Fragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResult(String result) {
+        Log.d("dayActivity", "API Result: " + result);
 
-
+    }
 }

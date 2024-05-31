@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.Addaptors.CardAdapter;
 import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.service_clas.Conn_service;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -33,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class month_Fragment extends Fragment {
+public class month_Fragment extends Fragment implements Conn_service.ResultCallback {
     PieChart pieChart;
     int uid_z;
     int uid = 0;
@@ -188,4 +190,8 @@ public class month_Fragment extends Fragment {
     }
 
 
+    @Override
+    public void onResult(String result) {
+        Log.d("monthActivity", "API Result: " + result);
+    }
 }

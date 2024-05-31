@@ -1,24 +1,48 @@
+<!DOCTYPE resources [
+<!ENTITY rsquo "&#x2019;">
+]>
 <resources>
     <string name="app_name">Life Actions</string>
 
     <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
     <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
+    <string name="terms_condition1">I agree to the <a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
+    <string name="privacy_policy1">, <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; to the Terms of Use </string>
+
     <string name="privacy_polcy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
+
+
     <string name="Disclosure">
-        <b>Explanation of Why Accessibility Services API is Used:</b>\n\n
-        <p>Life Actions utilizes the Accessibility Services API to gather anonymized data from the screen interactions within specific apps. This data is then analysed to derive statistical insights relevant to market trends and user behaviour. The use of Accessibility Services helps us improve our app\'s functionality and user experience.</p>\n\n
 
-        <b>Assurances Regarding Data Privacy and Security:</b>\n\n
-        <p>We prioritize data privacy and security. All data collected through Accessibility Services is anonymized and aggregated to ensure user privacy. We do not collect or share any personal or sensitive data using the Accessibility capabilities.</p>\n\n
+        <p>We are Life Actions, a digital company that generates analytics of mobile application usage, consumption and behaviour of our panellists through our LIFE ACTIONS application. </p>\n\n
+        <p><b>Accessibility Service:</b>LIFE ACTIONS uses Accessibility services permission with active consent of the end-user. The Accessibility permissions are used for analysing the application usage on this device as part of an opt-in market research panel. LIFE ACTIONS collects list of Applications installed in the user Mobile on a regular basis. The installed application list is used for analytics &amp; for DMP based monetization.</p>\n\n
+        <p>To facilitate this our application collects:</p>\n\n
 
-        <b>No Personal or Sensitive Data Collected or Shared:</b>\n\n
-<p>It\'s important to note that Life Actions does not collect or share any personal or sensitive data using the Accessibility capabilities. The data collected is strictly limited to screen interactions for market research analysis.</p>\n\n
+<ol>
+    <li>Location information to understand city of usage.</li>\n
+    <li>The Mobile number to contact the panellist if required.</li>\n
+    <li>Mobile number attached to UPI to remit the incentive earned.</li>\n
+    <li>List of apps installed in the mobile phone on a regular basis.</li>\n
+    <li>Usage behaviour of the panellist of relevant apps only.</li>\n
+    <li>Audio, Video OTT and e-commerce app usage details: and</li>\n
+    <li>Ads seen in social apps.</li>
+</ol>\n\n
+           <p>All the data provided by our panellists are uploaded to secure servers in India on
+the cloud that is controlled by LIFE ACTIONS. The application communicates with the server
+on <a href="https://sondersort.com">https://sondersort.com</a> domain. Payload details on what the application sends
+into LIFE ACTIONS servers can be requested by contacting us at <a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a>
 
-        <b>Instructions on How Users Can Consent:</b>\n\n
-<p>To grant Life Actions accessibility permission, simply tap the "Accept" button when prompted. By providing consent, you allow us to utilize Accessibility Services API for market research purposes as described above.</p>\n\n
+</p>\n\n
+       <p>We also have a &rsquo;Wipe-out&rsquo; policy which will delete all Personally Identifiable Information
+           associated with a panellist&rsquo; account. To do the same please contact us on <a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a>
+           The information collected will be analysed and shared as part of industry reports in an anonymized form.
+           Further this information will be also uploaded in various Data Management Platforms (DMP) for third party
+           advertisement purposes. For a complete overview of how we use the data shared by a panellist please go
+           over our Terms of Use and Privacy Policy. </p>\n\n
+        <p>As a panellist you hereby declare and accept the following:</p>\n\n
+<p>&quot;I understand that by downloading, installing this application and by agreeing to the terms and conditions, I have voluntarily agreed to be a panellist for LIFE ACTIONS for the above-mentioned purpose. I understand that transferring of data to LIFE ACTION&rsquo; backend from the application may use data connectivity from my phone, either cellular or Wi-Fi. This will be minimum in quantum and will be part of my usage on mobile data plan/Wi-Fi plan as the case maybe. If I am chosen as a panellist by LIFE ACTIONS, I will be compensated with suitable incentive commensurately. I agree to be a panellist till I continue to keep the application on my phone and hereby consent to LIFE ACTIONS&rsquo;s usage of my data even after I uninstall the application.&quot;</p>
+   </string>
 
-        <b>Additional Information:</b>\n\n
-<p>If you have any questions or concerns regarding the use of Accessibility Services in our app, please contact our support team at lifeactionstrack@gmail.com We are committed to transparency and ensuring a positive user experience.</p>\n\n</string>
     <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy and </a>  </string>
     <string name="terms"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
     <string name="hyperlink_gmail"><a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>
@@ -995,8 +1019,8 @@ Please switch on the button or Life Action app.</string>
     <string name="title_activity_splashsscreen">Splashsscreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="prominent_disclosure">Prominent Disclosure</string>
-    <string name="i_agree">I agree....</string>
+    <string name="prominent_disclosure">Disclosure</string>
+    <string name="i_agree">I agree to the <a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> , <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> and to the Terms of Use</string>
     <string name="text1">text1</string>
     <string name="redemption_history"><u>Redemption History</u></string>
 
