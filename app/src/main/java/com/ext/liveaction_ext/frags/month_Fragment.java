@@ -30,12 +30,13 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class month_Fragment extends Fragment implements Conn_service.ResultCallback {
+public class month_Fragment extends Fragment  {
     PieChart pieChart;
     int uid_z;
     int uid = 0;
@@ -57,8 +58,20 @@ public class month_Fragment extends Fragment implements Conn_service.ResultCallb
         tbklayout = view.findViewById(R.id.tabl_lrgrnd_for_month);
         pieChart = view.findViewById(R.id.piechart_for_month);
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
+        long lastTaskmnth = sh.getLong("KEY_LAST_TASK_DATE_mnth", 0); // 0 means thed task has never been performed
+        Calendar today = Calendar.getInstance();
+        Calendar lastTaskCalendar = Calendar.getInstance();
+        lastTaskCalendar.setTimeInMillis(lastTaskmnth);
+        SharedPreferences.Editor myEdit = sh.edit();
+        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+            // Task has already been performed today
+        } else {
+            Data_show();
+            myEdit.putLong("KEY_LAST_TASK_DATE_mnth", today.getTimeInMillis());
+            myEdit.apply();
+        }
 
-        Data_show();
         return view;
     }
 
@@ -190,8 +203,5 @@ public class month_Fragment extends Fragment implements Conn_service.ResultCallb
     }
 
 
-    @Override
-    public void onResult(String result) {
-        Log.d("monthActivity", "API Result: " + result);
-    }
+
 }

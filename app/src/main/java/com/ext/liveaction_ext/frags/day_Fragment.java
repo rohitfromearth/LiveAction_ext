@@ -34,12 +34,13 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class day_Fragment extends Fragment implements Conn_service.ResultCallback {
+public class day_Fragment extends Fragment {
     PieChart pieChart;
     DummyData dumdta = new DummyData();
     int uid_z;
@@ -66,8 +67,20 @@ public class day_Fragment extends Fragment implements Conn_service.ResultCallbac
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        Data_Show();
 
+        long lastTaskday = sh.getLong("KEY_LAST_TASK_DATE_day", 0); // 0 means thed task has never been performed
+
+        Calendar today = Calendar.getInstance();
+        Calendar lastTaskCalendar = Calendar.getInstance();
+        lastTaskCalendar.setTimeInMillis(lastTaskday);
+        SharedPreferences.Editor myEdit = sh.edit();
+        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+             } else {
+            Data_Show();
+            myEdit.putLong("KEY_LAST_TASK_DATE_day", today.getTimeInMillis());
+            myEdit.apply();
+        }
         return view;
     }
 
@@ -243,9 +256,5 @@ public class day_Fragment extends Fragment implements Conn_service.ResultCallbac
         }
     }
 
-    @Override
-    public void onResult(String result) {
-        Log.d("dayActivity", "API Result: " + result);
 
-    }
 }

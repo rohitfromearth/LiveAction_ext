@@ -27,9 +27,6 @@ public class Conn_service {
     ArrayList<String> appl = new ArrayList<String>();
 
     String endpot = "https://sondersort.online";
-// String endpot = "https://fc10m5q8-8080.inc1.devtunnels.ms";
-
-//    String endpot= "https://h17tl5kg-8080.inc1.devtunnels.ms";
 
     public ArrayList App_list(Context context) {
 
@@ -69,14 +66,10 @@ public class Conn_service {
 
                     JSONArray appsList = app.getJSONArray("data");
                     for (int i = 0; i < appsList.length(); i++) {
-//                         String fg = app.get("data").getString(i);
-//                         appslist[i]= appsList.getString(i);
+
                         appl.add(appsList.getString(i));
 
                     }
-
-//                    appslist= appl.toArray(appslist);
-//                    appslist
 
                 }
 
@@ -227,14 +220,10 @@ Log.e("response", String.valueOf(responseCode));
 
             String urlString = endpot + "/appException";
             URL url = new URL(urlString);
-
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
-
             urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             urlConnection.setRequestProperty("Accept", "application/json");
-            //urlConnection.setRequestProperty("authorization",  "Bearer " + firbaseTokenn);
-
             urlConnection.setDoOutput(true);
             urlConnection.setDoInput(true);
 
@@ -246,8 +235,6 @@ Log.e("response", String.valueOf(responseCode));
             int responseCode = urlConnection.getResponseCode();
             Log.e("response", String.valueOf(responseCode));
             String reso = urlConnection.getResponseMessage();
-
-
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

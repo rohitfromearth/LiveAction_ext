@@ -29,6 +29,9 @@ public class Splashsscreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // Show the splash screen using the SplashScreen API
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+
+
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashsscreen);
 

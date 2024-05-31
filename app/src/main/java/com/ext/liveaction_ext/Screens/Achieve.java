@@ -5,6 +5,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,21 +29,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 public class Achieve extends Fragment {
     CardView rede, congrats_tv,btn_dsh;
     Conn_service servic = new Conn_service();
     int uid_z;
     int uid = 0;
-    View view;
+
     TextView tv_red_points;
     String firebaseToken = "";
-    String firebaseToke = "";
+    public String firebaseToke = "";
     private TableLayout tableLayout;
 //    private LinearLayout floatingViewContainer;
-    private View floatingView;
+
     private FirebaseAuth mAuth;
     private int initialX;
-    SharedPreferences sh;
+   public SharedPreferences sh;
     private int initialY;
     private float initialTouchX;
     private float initialTouchY;
@@ -53,7 +56,9 @@ public class Achieve extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
+        View view = inflater.inflate(R.layout.activity_achieve, container, false);
 
+        sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -61,12 +66,15 @@ public class Achieve extends Fragment {
         FirebaseUser use = mAuth.getCurrentUser();
 
 
+        new Handler().postDelayed(() -> {
+
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             firebaseToke = task.getResult().getToken();
-                            view = inflater.inflate(R.layout.activity_achieve, container, false);
+                             fetchdta(firebaseToke);
+
                         }
                     });
 
@@ -75,12 +83,12 @@ public class Achieve extends Fragment {
             startActivity(intent);
             getActivity().finish();
         }
+        },1000);
 
 
 
 
 
-        sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
 
 
@@ -94,9 +102,6 @@ public class Achieve extends Fragment {
         congrats_tv = view.findViewById(R.id.congrats_tv);
         tv_red_points = view.findViewById(R.id.earn_number);
         btn_dsh=view.findViewById(R.id.dash_btn_ach);
-        String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToke);
-        congrats_tv.setVisibility(View.GONE);
-        onPostExecute(res);
 
         rede.setOnClickListener(view1 -> {
 
@@ -109,7 +114,31 @@ public class Achieve extends Fragment {
         btn_dsh.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
+public void fetchdta(String firebaseTokk){
 
+
+    long lastTaskD = sh.getLong("KEY_LAST_TASK_DATE_ach", 0);
+
+    Calendar today = Calendar.getInstance();
+    Calendar lastTaskCalendar = Calendar.getInstance();
+    lastTaskCalendar.setTimeInMillis(lastTaskD);
+    SharedPreferences.Editor myEdit = sh.edit();
+    if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+            today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+        // Task has already been performed today
+    } else {
+
+
+        // 0 means thed task has never been performed
+        String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk);
+        congrats_tv.setVisibility(View.GONE);
+        onPostExecute(res);
+        myEdit.putLong("KEY_LAST_TASK_DATE_ach", today.getTimeInMillis());
+
+        myEdit.apply();
+    }
+
+}
     private void onPostExecute(String result) {
         if (result != null) {
             try {

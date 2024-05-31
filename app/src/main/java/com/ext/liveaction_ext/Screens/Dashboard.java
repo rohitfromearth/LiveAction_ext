@@ -82,7 +82,7 @@ public class Dashboard extends AppCompatActivity {
 //    ArrayList<String> yearList = new ArrayList<String>();
 //    SharedPreferences sh;
     boolean showDummy;
-    String firebaseToke = "";
+   public String firebaseToke = "";
     String userid="";
     ProgressBar pro;
     SharedPreferences sh ;
@@ -107,7 +107,10 @@ public class Dashboard extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser use = mAuth.getCurrentUser();
 
+        pro = findViewById(R.id.progressBr);
 
+
+        pro.setVisibility(View.VISIBLE);
 
         new Handler().postDelayed(() -> {
         if (use != null) {
@@ -125,7 +128,7 @@ Uioperation(firebaseToke);
             startActivity(intent);
          finish();
         }
-        },2000);
+        },1000);
 
 
 
@@ -136,24 +139,8 @@ Uioperation(firebaseToke);
         appl.addAll(set);
 userid= "user id : "+uid;
 
-
-
-
-
-
-
-        pro = findViewById(R.id.progressBr);
-
-
-        pro.setVisibility(View.VISIBLE);
-
-
-
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
-
-
             Dialog dd = new Dialog(Dashboard.this);
-
             dd.setContentView(R.layout.navigation_permission_dialog);
             dd.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dd.setCancelable(false);
@@ -165,7 +152,6 @@ userid= "user id : "+uid;
             close_dialog.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 dd.dismiss();
-
             });
             usage_stat.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
@@ -201,17 +187,7 @@ userid= "user id : "+uid;
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(userid);
-//        data_sync= sh.getString("Last_sync","");
-//        if (data_sync.isEmpty()) {
-//            // If no data is available, display a dash "-"
-//            sync_tym.setText(timeStatus+uid + "-");
-//            Log.e("userid ", String.valueOf(uid));
-//        } else {
-//            // If data is available, display the value retrieved from shared preferences
-//            sync_tym.setText(timeStatus+uid +  data_sync);
-//            Log.e("userid ", String.valueOf(uid));
-//        }
-        //sync_tym.setText(timeStatus + data_sync);
+
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
@@ -255,6 +231,12 @@ userid= "user id : "+uid;
         pro.setVisibility(View.GONE);
 
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
     private void Uioperation(String firebaseTok){
 
         long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
@@ -282,10 +264,9 @@ userid= "user id : "+uid;
             myEdit.putStringSet("DAY_LIST", dayset);
             myEdit.putStringSet("WEEK_LIST", weekset);
             myEdit.putStringSet("MONTH_LIST", monthset);
+            myEdit.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
+            myEdit.putBoolean("Dashboard", true);
             myEdit.apply();
-            SharedPreferences.Editor editor = sh.edit();
-            editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
-            editor.apply();
         }
 
     }
@@ -314,9 +295,10 @@ userid= "user id : "+uid;
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("week");
-            Log.e("Week", "weekis running");
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 weekList.add(jsonArray.getString(i));
+                Log.e("Week", String.valueOf(weekList));
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);

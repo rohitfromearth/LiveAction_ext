@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,21 +35,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 public class Reedeem extends Fragment {
     Conn_service conn = new Conn_service();
-
-
     CardView reed_btn, dash_bt, achiv_bt;
     ImageButton close_dial;
     TextView total_pnt, pnt_redmed, pnt_avalble, count_txt, txt_hstry, achi_points;
     int counter = 00;
     int uid_z;
-    int uid = 0;
+  public int uid = 0;
     CardView plus_count, minus_count;
     Dialog dialog;
     int pointsAvailable;
-    String firebaseToke = "";
+   public String firebaseToke = "";
     int totalPoints;
+    public SharedPreferences sh;
     private TableLayout tableLayout;
     private FirebaseAuth mAuth;
 
@@ -56,17 +58,22 @@ public class Reedeem extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.activity_reedeem, container, false);
+
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
 
+sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
+
+        new Handler().postDelayed(() -> {
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             firebaseToke = task.getResult().getToken();
-
+fectdta(firebaseToke);
                         }
                     });
 
@@ -76,7 +83,7 @@ public class Reedeem extends Fragment {
             startActivity(intent);
             getActivity().finish();
         }
-        View view = inflater.inflate(R.layout.activity_reedeem, container, false);
+        },1000);
         total_pnt = view.findViewById(R.id.tv_Total_pnt);
         pnt_redmed = view.findViewById(R.id.tv_pnt_redmed);
         pnt_avalble = view.findViewById(R.id.tv_pont_avalbl);
@@ -107,31 +114,6 @@ public class Reedeem extends Fragment {
         tableLayout = dialog.findViewById(R.id.tableLayout);
 
 
-        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        uid = sh.getInt("UID", uid_z);
-
-
-
-
-
-        String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToke);
-
-        try {
-            JSONObject jsonResponse = new JSONObject(ress);
-            JSONObject resultObject = jsonResponse.getJSONObject("result");
-
-            totalPoints = resultObject.getInt("total_points");
-            int pointsRedeemed = resultObject.getInt("points_redeemed");
-            pointsAvailable = resultObject.getInt("points_available");
-            //pointsAvailable = 32;
-            total_pnt.setText(String.valueOf(totalPoints));
-            achi_points.setText(String.valueOf(totalPoints));
-            pnt_redmed.setText(String.valueOf(pointsRedeemed));
-            pnt_avalble.setText(String.valueOf(pointsAvailable));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         close_dial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,7 +268,42 @@ public class Reedeem extends Fragment {
         });
         return view;
     }
+public void fectdta(String firebaseTokk){
 
+
+    long lastTask = sh.getLong("KEY_LAST_TASK_DATE_redm", 0); // 0 means thed task has never been performed
+        Calendar today = Calendar.getInstance();
+    Calendar lastTaskCalendar = Calendar.getInstance();
+    lastTaskCalendar.setTimeInMillis(lastTask);
+    SharedPreferences.Editor myEdit = sh.edit();
+    if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+            today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+        // Task has already been performed today
+    } else {
+        uid = sh.getInt("UID", uid_z);
+
+        String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseTokk);
+
+        try {
+            JSONObject jsonResponse = new JSONObject(ress);
+            JSONObject resultObject = jsonResponse.getJSONObject("result");
+
+            totalPoints = resultObject.getInt("total_points");
+            int pointsRedeemed = resultObject.getInt("points_redeemed");
+            pointsAvailable = resultObject.getInt("points_available");
+            //pointsAvailable = 32;
+            total_pnt.setText(String.valueOf(totalPoints));
+            achi_points.setText(String.valueOf(totalPoints));
+            pnt_redmed.setText(String.valueOf(pointsRedeemed));
+            pnt_avalble.setText(String.valueOf(pointsAvailable));
+            myEdit.putLong("KEY_LAST_TASK_DATE_redm", today.getTimeInMillis());
+            myEdit.apply();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
     private int decreaseCounter() {
         if (counter > 0) {
 

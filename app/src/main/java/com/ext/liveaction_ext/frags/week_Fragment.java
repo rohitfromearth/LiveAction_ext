@@ -30,12 +30,13 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class week_Fragment extends Fragment implements Conn_service.ResultCallback {
+public class week_Fragment extends Fragment {
     PieChart pieChart;
     int uid_z;
 
@@ -58,8 +59,27 @@ public class week_Fragment extends Fragment implements Conn_service.ResultCallba
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
 
-        Data_show();
+        long lastTaskweek = sh.getLong("KEY_LAST_TASK_DATE_week", 0); // 0 means thed task has never been performed
 
+        Calendar today = Calendar.getInstance();
+        Calendar lastTaskCalendar = Calendar.getInstance();
+        lastTaskCalendar.setTimeInMillis(lastTaskweek);
+        SharedPreferences.Editor myEdit = sh.edit();
+        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+            // Task has already been performed today
+        } else {
+
+
+            Data_show();
+
+
+            myEdit.putLong("KEY_LAST_TASK_DATE_week", today.getTimeInMillis());
+
+            myEdit.apply();
+
+
+        }
         return view;
     }
 
@@ -201,8 +221,5 @@ public class week_Fragment extends Fragment implements Conn_service.ResultCallba
     }
 
 
-    @Override
-    public void onResult(String result) {
-        Log.d("weekActivity", "API Result: " + result);
-    }
+
 }

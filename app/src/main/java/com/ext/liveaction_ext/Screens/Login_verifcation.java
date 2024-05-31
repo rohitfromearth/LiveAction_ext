@@ -508,8 +508,7 @@ public class Login_verifcation extends AppCompatActivity {
                                             } catch (Exception e) {
                                                 Log.e("crashtext", e.getMessage());
                                             }
-                                            // Pass the firebaseToken to your backend developer through the API
-                                            // You can make an API call and include the token in the request headers or body
+
                                         }  // Handle error getting the token
                                     });
                         }
