@@ -1097,8 +1097,6 @@ ott_other=findViewById(R.id.ott_other_edt);
         }
         return false; // No switches are checked
     }
-
-
     @Override
     public void onResult(String result) {
         try {
