@@ -59,27 +59,13 @@ public class week_Fragment extends Fragment {
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
 
-        long lastTaskweek = sh.getLong("KEY_LAST_TASK_DATE_week", 0); // 0 means thed task has never been performed
 
-        Calendar today = Calendar.getInstance();
-        Calendar lastTaskCalendar = Calendar.getInstance();
-        lastTaskCalendar.setTimeInMillis(lastTaskweek);
         SharedPreferences.Editor myEdit = sh.edit();
-        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
-                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
-            // Task has already been performed today
-        } else {
-
 
             Data_show();
 
 
-            myEdit.putLong("KEY_LAST_TASK_DATE_week", today.getTimeInMillis());
 
-            myEdit.apply();
-
-
-        }
         return view;
     }
 

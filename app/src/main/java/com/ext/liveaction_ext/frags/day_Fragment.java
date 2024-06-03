@@ -62,25 +62,18 @@ public class day_Fragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment1, container, false);
+        sh = getActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
 
 
-        long lastTaskday = sh.getLong("KEY_LAST_TASK_DATE_day", 0); // 0 means thed task has never been performed
 
-        Calendar today = Calendar.getInstance();
-        Calendar lastTaskCalendar = Calendar.getInstance();
-        lastTaskCalendar.setTimeInMillis(lastTaskday);
         SharedPreferences.Editor myEdit = sh.edit();
-        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
-                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
-             } else {
+
             Data_Show();
-            myEdit.putLong("KEY_LAST_TASK_DATE_day", today.getTimeInMillis());
-            myEdit.apply();
-        }
+
         return view;
     }
 
@@ -92,19 +85,9 @@ public class day_Fragment extends Fragment {
         //april
         Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
         Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
-
+Log.e("dayset", daySet.toString());
         // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
 
-        String resultdummy = dumdta.Data_for_dash();
-        try {
-            JSONObject jsonObject = new JSONObject(resultdummy);
-
-
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
 
         showDummyVal = sh.getBoolean("showDummy",dummyVal);

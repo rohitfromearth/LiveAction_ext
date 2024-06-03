@@ -49,7 +49,7 @@ public class Formpage extends AppCompatActivity {
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     Switch onlyn_used_swtch;
     String selectedValue, validationmsg;
-    Conn_service servic = new Conn_service();
+
     Spinner gender, Education, Ocupation, product_spinner, Durable_spinn;
     int year = 0;
     int month = 0;
@@ -1021,7 +1021,9 @@ ott_other=findViewById(R.id.ott_other_edt);
         jsonBody.put("latitude", lati);
         jsonBody.put("longitude", longi);
 
-        String userId = servic.formdatasend(jsonBody, "/user/create");
+        String userId ="";
+        Conn_service servic = new Conn_service(this);
+//                servic.formdatasend(jsonBody, "/user/create");
         try {
             JSONObject jsonResponse = new JSONObject(userId);
             int uId = jsonResponse.getInt("user_id");

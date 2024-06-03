@@ -54,7 +54,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Dashboard extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity implements Conn_service.PackRuleCallback{
 
     TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
@@ -73,7 +73,8 @@ public class Dashboard extends AppCompatActivity {
     String res;
     FragmentManager fragmentManager;
     Context context;
-    Conn_service conn = new Conn_service();
+
+    Calendar today;
     ArrayList<String> appl = new ArrayList<String>();
     ArrayList<String> dummyList = new ArrayList<String>();
     ArrayList<String> dayList = new ArrayList<String>();
@@ -128,7 +129,7 @@ Uioperation(firebaseToke);
             startActivity(intent);
          finish();
         }
-        },1000);
+        },500);
 
 
 
@@ -187,7 +188,17 @@ userid= "user id : "+uid;
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(userid);
-
+//        data_sync= sh.getString("Last_sync","");
+//        if (data_sync.isEmpty()) {
+//            // If no data is available, display a dash "-"
+//            sync_tym.setText(timeStatus+uid + "-");
+//            Log.e("userid ", String.valueOf(uid));
+//        } else {
+//            // If data is available, display the value retrieved from shared preferences
+//            sync_tym.setText(timeStatus+uid +  data_sync);
+//            Log.e("userid ", String.valueOf(uid));
+//        }
+        //sync_tym.setText(timeStatus + data_sync);
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
@@ -240,33 +251,22 @@ userid= "user id : "+uid;
     private void Uioperation(String firebaseTok){
 
         long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
-        String dir = getObbDir().getPath();
-        Calendar today = Calendar.getInstance();
+
+ today = Calendar.getInstance();
         Calendar lastTaskCalendar = Calendar.getInstance();
         lastTaskCalendar.setTimeInMillis(lastTaskDate);
-        SharedPreferences.Editor myEdit = sh.edit();
+
         if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
                 today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
             // Task has already been performed today
         } else {
             // Task has not been performed today
-            res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, firebaseTok);
-            dayList = dataDayList(res);
-            weekList = dataWeekList(res);
-            monthList = dataMonthList(res);
-            myEdit.putString("dir", dir);
-            Set<String> dayset = new HashSet<String>();
-            dayset.addAll(dayList);
-            Set<String> weekset = new HashSet<String>();
-            weekset.addAll(weekList);
-            Set<String> monthset = new HashSet<String>();
-            monthset.addAll(monthList);
-            myEdit.putStringSet("DAY_LIST", dayset);
-            myEdit.putStringSet("WEEK_LIST", weekset);
-            myEdit.putStringSet("MONTH_LIST", monthset);
-            myEdit.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
-            myEdit.putBoolean("Dashboard", true);
-            myEdit.apply();
+            res = ";";
+            Conn_service conn = new Conn_service(this);
+            conn.pack_rule("/usageStats/getUsageData?userId=" + uid, firebaseTok, this);
+
+//                    conn.pack_rule("/usageStats/getUsageData?userId=" + uid, firebaseTok);
+
         }
 
     }
@@ -439,6 +439,30 @@ mAuth.signOut();
         setTitle(menuItem.getTitle());
         // Close the navigation drawer
         mDrawer.closeDrawers();
+    }
+
+    @Override
+    public void onResult(String result) {
+        SharedPreferences.Editor myEdit = sh.edit();
+        String dir = getObbDir().getPath();
+        dayList = dataDayList(result);
+        weekList = dataWeekList(result);
+        monthList = dataMonthList(result);
+        myEdit.putString("dir", dir);
+        Set<String> dayset = new HashSet<String>();
+        dayset.addAll(dayList);
+        Set<String> weekset = new HashSet<String>();
+        weekset.addAll(weekList);
+        Set<String> monthset = new HashSet<String>();
+        monthset.addAll(monthList);
+        myEdit.putStringSet("DAY_LIST", dayset);
+        myEdit.putStringSet("WEEK_LIST", weekset);
+        myEdit.putStringSet("MONTH_LIST", monthset);
+        myEdit.apply();
+        SharedPreferences.Editor editor = sh.edit();
+        editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
+        editor.putBoolean("Dashboard", true);
+        editor.apply();
     }
 //    private void initPopupDialog(Context context) {
 //        // Create and initialize the popup dialog

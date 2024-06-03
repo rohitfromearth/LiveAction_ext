@@ -41,8 +41,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Manage_screen extends Fragment {
-    Conn_service servic = new Conn_service();
+public class Manage_screen extends Fragment implements Conn_service.PackRuleCallback, Conn_service.PackRulecommentCallback {
+
     SharedPreferences sh ;
     TextView tv_commnt;
     ArrayList<Double> valuesperList = new ArrayList<>();
@@ -65,6 +65,7 @@ public class Manage_screen extends Fragment {
 
     private FirebaseAuth mAuth;
     String res;
+
     private boolean isUpdating = false;
 
 
@@ -183,43 +184,11 @@ public class Manage_screen extends Fragment {
     private void fetchdat(String firebasetTokk) {
 
         uid = sh.getInt("UID", uid_z);
-        long lastTaskDa = sh.getLong("KEY_LAST_TASK_DATE_mng", 0);
+        Conn_service servic = new Conn_service(getActivity());
+                servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebasetTokk,this);
 
-        Calendar today = Calendar.getInstance();
-        Calendar lastTaskCalendar = Calendar.getInstance();
-        lastTaskCalendar.setTimeInMillis(lastTaskDa);
+                servic.PackRulecomment("/usageStats/comments/" + uid, firebaseToke,this);
 
-        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
-                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
-
-        } else {
-//
-
-
-        res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebasetTokk);
-
-        Log.e("res", "/usageStats/manageData : " + res);
-        edit = onPostExecute(res);
-        SharedPreferences.Editor myEdit = sh.edit();
-        myEdit.putLong("KEY_LAST_TASK_DATE_mng", today.getTimeInMillis());
-        myEdit.apply();
-
-        if (edit) {
-            tv_btn.setText("Save Target");
-
-        }
-        String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToke);
-
-        Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
-
-        try {
-            JSONObject jsonObj = new JSONObject(res_comnt);
-            String Comments_live_action = jsonObj.getString("result");
-            tv_commnt.setText(Comments_live_action);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     }
     private boolean onPostExecute(String result) {
@@ -258,9 +227,9 @@ public class Manage_screen extends Fragment {
                         target_hr = targetinmin;
                         target_per = targetinper + "%";
                     }
-//                    target_edi = item.getBoolean("target_editable");
+                    target_edi = item.getBoolean("target_editable");
 
-                    target_edi = true;
+//                    target_edi = true;
                     addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi);
                     if (usage_id == 1) {
                         editable = target_edi;
@@ -500,15 +469,45 @@ public class Manage_screen extends Fragment {
         Log.e("addData","addData");
 
       //  boolean success;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToke);
-        Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
-        refreshView();
+        Conn_service servic = new Conn_service(getActivity());
+//        conn.datasender(jsonBody, "/usageStats/redemption", firebaseToke
+                servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToke,
+                        v -> {
+                            refreshView();
+                            // This code block will execute when data is sent successfully
+                            // Perform any UI updates or processing
+                        },
+                        response -> {
+
+                        });
+
+
 
     }
 
 
+    @Override
+    public void onResult(String result) {
+        Log.e("data",result);
+        edit = onPostExecute(result);
+
+
+        if (edit) {
+            tv_btn.setText("Save Target");
+
+        }
+    }
+
+    @Override
+    public void onResultcomment(String result) {
+        try {
+            JSONObject jsonObj = new JSONObject(result);
+            String Comments_live_action = jsonObj.getString("result");
+            tv_commnt.setText(Comments_live_action);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 
 

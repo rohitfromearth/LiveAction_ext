@@ -1,5 +1,7 @@
 package com.ext.liveaction_ext;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
@@ -20,35 +22,32 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Splashsscreen extends AppCompatActivity {
+public class Splashsscreen extends AppCompatActivity implements Conn_service.AppListCallback {
 
     private static final String TAG = "Splashsscreen";
-    private final Conn_service conn = new Conn_service();
+//    private final Conn_service conn = new Conn_service();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Show the splash screen using the SplashScreen API
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
 
-
+        Conn_service conn = new Conn_service(this);
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashsscreen);
 
-        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        new Handler().postDelayed(() -> {
-            SharedPreferences.Editor myEdit = sh.edit();
-            String dir = getObbDir().getPath();
-            ArrayList pack = conn.App_list(getApplicationContext());
-            Log.e(TAG, "Failed to get token: " );
-            myEdit.putString("dir", dir);
-            Set<String> set = new HashSet<String>();
-            set.addAll(pack);
-            myEdit.putStringSet("APP_LIST", set);
 
-            myEdit.apply();
-            Onboarding();
-        },2000);
+        new Handler().postDelayed(() -> {
+
+//            ArrayList pack = conn.App_list(getApplicationContext());
+            conn.App_list(this, this);
+
+
+
+//            Log.e(TAG, "Failed to get token: "+pack );
+
+        },500);
 
     }
 
@@ -82,4 +81,22 @@ public class Splashsscreen extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    @Override
+    public void onResult(ArrayList<String> appl) {
+        // Handle the result of App_list method
+        Log.d("MainActivity", "App list: " + appl.toString());
+
+        SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor myEdit = sh.edit();
+        String dir = getObbDir().getPath();
+        myEdit.putString("dir", dir);
+        Set<String> set = new HashSet<String>();
+        set.addAll(appl);
+        myEdit.putStringSet("APP_LIST", set);
+
+        myEdit.apply();
+        Onboarding();
+          }
+
+
 }

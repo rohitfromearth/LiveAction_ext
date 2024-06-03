@@ -19,13 +19,13 @@
         <p>To facilitate this our application collects:</p>\n\n
 
 <ol>
-    <li>Location information to understand city of usage.</li>\n
-    <li>The Mobile number to contact the panellist if required.</li>\n
-    <li>Mobile number attached to UPI to remit the incentive earned.</li>\n
-    <li>List of apps installed in the mobile phone on a regular basis.</li>\n
-    <li>Usage behaviour of the panellist of relevant apps only.</li>\n
-    <li>Audio, Video OTT and e-commerce app usage details: and</li>\n
-    <li>Ads seen in social apps.</li>
+    <li>1. Location information to understand city of usage.</li>\n
+    <li>2. The Mobile number to contact the panellist if required.</li>\n
+    <li>3. Mobile number attached to UPI to remit the incentive earned.</li>\n
+    <li>4. List of apps installed in the mobile phone on a regular basis.</li>\n
+    <li>5. Usage behaviour of the panellist of relevant apps only.</li>\n
+    <li>6. Audio, Video OTT and e-commerce app usage details: and</li>\n
+    <li>7. Ads seen in social apps.</li>
 </ol>\n\n
            <p>All the data provided by our panellists are uploaded to secure servers in India on
 the cloud that is controlled by LIFE ACTIONS. The application communicates with the server
@@ -43,7 +43,7 @@ into LIFE ACTIONS servers can be requested by contacting us at <a href="mailto:l
 <p>&quot;I understand that by downloading, installing this application and by agreeing to the terms and conditions, I have voluntarily agreed to be a panellist for LIFE ACTIONS for the above-mentioned purpose. I understand that transferring of data to LIFE ACTION&rsquo; backend from the application may use data connectivity from my phone, either cellular or Wi-Fi. This will be minimum in quantum and will be part of my usage on mobile data plan/Wi-Fi plan as the case maybe. If I am chosen as a panellist by LIFE ACTIONS, I will be compensated with suitable incentive commensurately. I agree to be a panellist till I continue to keep the application on my phone and hereby consent to LIFE ACTIONS&rsquo;s usage of my data even after I uninstall the application.&quot;</p>
    </string>
 
-    <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy and </a>  </string>
+    <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy  </a>  </string>
     <string name="terms"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
     <string name="hyperlink_gmail"><a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>
 

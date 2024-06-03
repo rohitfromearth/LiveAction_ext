@@ -2,10 +2,13 @@ package com.ext.liveaction_ext.service_clas;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.StrictMode;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,241 +21,296 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import okhttp3.Response;
+
 public class Conn_service {
-    String UserID = "";
-    SharedPreferences sh;
-    ArrayList<String> appl = new ArrayList<String>();
+    private static final String TAG = "Conn_service";
+    private String UserID = "";
+    private SharedPreferences sh;
+    private ArrayList<String> appl = new ArrayList<>();
+    private String endpot = "https://sondersort.online";
+    private Activity activity;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    public Conn_service(Activity activity) {
+        this.activity = activity;
+    }
 
-    String endpot = "https://sondersort.online";
-
-    public ArrayList App_list(Context context) {
-
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-        sh = context.getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sh.edit();
-        myEdit.putString("endpt",endpot);
-        myEdit.apply();
-        String[] appslist = new String[]{};
-        try {
-            String response = "";
-            URL url = new URL(endpot + "/apps/list");
-
-            HttpURLConnection urlConn = null;
-
-            urlConn = (HttpURLConnection) url.openConnection();
-            urlConn.setRequestMethod("GET");
-            urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            urlConn.setRequestProperty("Accept", "application/json");
-            urlConn.setDoInput(true);
-            int responseCode = urlConn.getResponseCode();
-            Log.e("response", String.valueOf(responseCode));
-            String reso = urlConn.getResponseMessage();
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-
-                String applist;
-                BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
-
-                while ((applist = br.readLine()) != null) {
-                    response += applist;
+    public void App_list(Context context, AppListCallback callback) {
+        executorService.execute(() -> {
+            sh = context.getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = sh.edit();
+            myEdit.putString("endpt", endpot);
+            myEdit.apply();
+            try {
+                String response = "";
+                URL url = new URL(endpot + "/apps/list");
+                Log.e(TAG, String.valueOf(url));
+                HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+                urlConn.setRequestMethod("GET");
+                urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                urlConn.setRequestProperty("Accept", "application/json");
+                urlConn.setDoInput(true);
+                int responseCode = urlConn.getResponseCode();
+                Log.e(TAG, String.valueOf(responseCode));
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+                    String applist;
+                    while ((applist = br.readLine()) != null) {
+                        response += applist;
+                    }
                     final JSONObject app = new JSONObject(response);
-
-
-
                     JSONArray appsList = app.getJSONArray("data");
                     for (int i = 0; i < appsList.length(); i++) {
-
                         appl.add(appsList.getString(i));
-
                     }
-
                 }
-
+            } catch (IOException | JSONException e) {
+                Log.e(TAG, e.getMessage());
             }
-
-        } catch (IOException | JSONException e) {
-            Log.e("Exep", e.getMessage());
-        }
-
-        return appl;
+            // Pass result to callback
+            callback.onResult(appl);
+        });
     }
-    public String datasender(JSONObject jsonBody, String end, String firbaseTokenn) {
-        try {
-            String response = "";
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            String urlString = endpot + end;
-            URL url = new URL(urlString);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            urlConnection.setRequestProperty("Accept", "application/json");
-            urlConnection.setRequestProperty("authorization", "Bearer " + firbaseTokenn);
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-            DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
-            o.writeBytes(jsonBody.toString());
-            o.flush();
-            o.close();
 
-            int responseCode = urlConnection.getResponseCode();
-            Log.e("response", String.valueOf(responseCode));
-            String reso = urlConnection.getResponseMessage();
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                while ((line = br.readLine()) != null) {
-                    response += line;
+    public void datasender(JSONObject jsonBody, String end, String firebaseToken, View.OnClickListener onClickListener, ResponseCallback responseCallback) {
+        executorService.execute(() -> {
+            try {
+                String response = "";
+                String urlString = endpot + end;
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                urlConnection.setRequestProperty("authorization", "Bearer " + firebaseToken);
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
+                o.writeBytes(jsonBody.toString());
+                o.flush();
+                o.close();
+                int responseCode = urlConnection.getResponseCode();
+                Log.e(TAG, String.valueOf(responseCode));
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        response += line;
+                    }
                     UserID = response;
                 }
-            }
-            urlConnection.disconnect();
+                urlConnection.disconnect();
+//                onClickListener.onClick(null); // You can pass a View object if needed
+                activity.runOnUiThread(() -> onClickListener.onClick(null));
 
-        } catch (Exception e) {
-            Log.e("Exect", String.valueOf(e));
-        }
-        return UserID;
+                // Pass the response to the ResponseCallback interface
+                activity.runOnUiThread(() -> responseCallback.onResponse(UserID));
+                // Pass the response to the ResponseCallback interface
+//                responseCallback.onResponse(response);
+            } catch (Exception e) {
+                Log.e(TAG, String.valueOf(e));
+            }
+            // Pass result to callback
+
+
+        });
     }
 
-    public String formdatasend(JSONObject jsonBody, String end) {
-        try {
-            String response = "";
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            String urlString = endpot + end;
-             URL url = new URL(urlString);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            urlConnection.setRequestProperty("Accept", "application/json");
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-            DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
-            o.writeBytes(jsonBody.toString());
-            o.flush();
-            o.close();
-            int responseCode = urlConnection.getResponseCode();
-Log.e("response", String.valueOf(responseCode));
-            String reso = urlConnection.getResponseMessage();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-                while ((line = br.readLine()) != null) {
-                    response += line;
+    public void formdatasend(JSONObject jsonBody, String end, FormDataSendCallback callback) {
+        executorService.execute(() -> {
+            try {
+                String response = "";
+                String urlString = endpot + end;
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
+                o.writeBytes(jsonBody.toString());
+                o.flush();
+                o.close();
+                int responseCode = urlConnection.getResponseCode();
+                Log.e(TAG, String.valueOf(responseCode));
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        response += line;
+                    }
                     UserID = response;
-
                 }
+                urlConnection.disconnect();
+            } catch (Exception e) {
+                Log.e(TAG, String.valueOf(e));
             }
-
-            urlConnection.disconnect();
-
-        } catch (Exception e) {
-            Log.e("checkRes3", String.valueOf(e));
-        }
-        return UserID;
+            // Pass result to callback
+            callback.onResult(UserID);
+        });
     }
-
-    public String pack_rule(String endr, String firbaseTokenn) {
-        String response = "";
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-        String[] appslist = new String[]{};
-
-        try {
-
-
-            URL url = new URL(endpot + endr);
-            String urlString=endpot+endr;
-
-
-            HttpURLConnection urlConn;
-
-            urlConn = (HttpURLConnection) url.openConnection();
-            urlConn.setRequestMethod("GET");
-            urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            urlConn.setRequestProperty("Accept", "application/json");
-            urlConn.setRequestProperty("authorization", "Bearer " + firbaseTokenn);
-            urlConn.setDoInput(true);
-            int responseCode = urlConn.getResponseCode();
-            Log.e("response", String.valueOf(responseCode));
-            String reso = urlConn.getResponseMessage();
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-
-                String applist;
-                BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
-
-                while ((applist = br.readLine()) != null) {
-                    response += applist;
-
-                }
-                   }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        return response;
-    }
-    ///////////////////////////////////////
-
-
-    public String crashLog(String str1) {
-
-        try {
+    public void PackRulecomment(String endr, String firebaseToken, PackRulecommentCallback callback) {
+        executorService.execute(() -> {
             String response = "";
-
-            JSONObject obj = new JSONObject();
-            obj.put("exception_msg", str1);
-
-            //make single thread
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-            StrictMode.setThreadPolicy(policy);
-
-            String urlString = endpot + "/appException";
-            URL url = new URL(urlString);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-            urlConnection.setRequestProperty("Accept", "application/json");
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-
-            DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
-            o.writeBytes(obj.toString());
-            o.flush();
-            o.close();
-
-            int responseCode = urlConnection.getResponseCode();
-            Log.e("response", String.valueOf(responseCode));
-            String reso = urlConnection.getResponseMessage();
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-                while ((line = br.readLine()) != null) {
-                    response += line;
-                    UserID = response;
-
+            try {
+                URL url = new URL(endpot + endr);
+                HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+                urlConn.setRequestMethod("GET");
+                urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                urlConn.setRequestProperty("Accept", "application/json");
+                urlConn.setRequestProperty("authorization", "Bearer " + firebaseToken);
+                urlConn.setDoInput(true);
+                int responseCode = urlConn.getResponseCode();
+                Log.e(TAG, String.valueOf(responseCode)+url);
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+                    String applist;
+                    while ((applist = br.readLine()) != null) {
+                        response += applist;
+                    }
+                    Log.e(TAG, response);
                 }
+                String finalResponse = response;
+                activity.runOnUiThread(() -> callback.onResultcomment(finalResponse));
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
             }
+            // Pass result to callback
 
-            urlConnection.disconnect();
-
-        } catch (Exception e) {
-            Log.e("Exect", String.valueOf(e));
-        }
-
-        return str1;
+        });
     }
 
+    public void pack_rule(String endr, String firebaseToken, PackRuleCallback callback) {
+        executorService.execute(() -> {
+            String response = "";
+            try {
+                URL url = new URL(endpot + endr);
+                HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+                urlConn.setRequestMethod("GET");
+                urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                urlConn.setRequestProperty("Accept", "application/json");
+                urlConn.setRequestProperty("authorization", "Bearer " + firebaseToken);
+                urlConn.setDoInput(true);
+                int responseCode = urlConn.getResponseCode();
+                Log.e(TAG, String.valueOf(responseCode)+url);
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+                    String applist;
+                    while ((applist = br.readLine()) != null) {
+                        response += applist;
+                    }
+                    Log.e(TAG, response);
+                }
+                String finalResponse = response;
+                activity.runOnUiThread(() ->  callback.onResult(finalResponse));
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            }
+        });
+    }
+    public void pack_ruleclick( String endr, String firebaseToken, View.OnClickListener onClickListener, PackRuleClickCallback resCallback) {
+        executorService.execute(() -> {
+            String response = "";
+            try {
+                URL url = new URL(endpot + endr);
+                HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+                urlConn.setRequestMethod("GET");
+                urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                urlConn.setRequestProperty("Accept", "application/json");
+                urlConn.setRequestProperty("authorization", "Bearer " + firebaseToken);
+                urlConn.setDoInput(true);
+                int responseCode = urlConn.getResponseCode();
+                Log.e(TAG, String.valueOf(responseCode)+url);
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+                    String applist;
+                    while ((applist = br.readLine()) != null) {
+                        response += applist;
+                    }
+                    Log.e(TAG, response);
+                }
+                activity.runOnUiThread(() -> onClickListener.onClick(null));
+
+                // Pass the response to the ResponseCallback interface
+                String finalResponse = response;
+                activity.runOnUiThread(() -> resCallback.onResposeClick(finalResponse));
+
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            }
+            // Pass result to callback
+
+        });
+    }
+
+    public void crashLog(String str1, CrashLogCallback callback) {
+        executorService.execute(() -> {
+            try {
+                String response = "";
+                JSONObject obj = new JSONObject();
+                obj.put("exception_msg", str1);
+                String urlString = endpot+"/appException";
+                URL url = new URL(urlString);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                DataOutputStream o = new DataOutputStream(urlConnection.getOutputStream());
+                o.writeBytes(obj.toString());
+                o.flush();
+                o.close();
+                int responseCode = urlConnection.getResponseCode();
+                Log.e(TAG, String.valueOf(responseCode));
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        response += line;
+                    }
+                    UserID = response;
+                }
+                urlConnection.disconnect();
+            } catch (Exception e) {
+                Log.e(TAG, String.valueOf(e));
+            }
+            // Pass result to callback
+            callback.onCrash(str1);
+        });
+    }
+
+    public interface AppListCallback {
+        void onResult(ArrayList<String> appl);
+    }
+
+
+
+    public interface ResponseCallback {
+        void onResponse(String response);
+    }
+    public interface FormDataSendCallback {
+        void onResult(String result);
+    }
+
+    public interface PackRuleCallback {
+        void onResult(String result);
+    }
+    public interface PackRulecommentCallback {
+        void onResultcomment(String result);
+    }
+    public interface PackRuleClickCallback {
+        void onResposeClick(String response);
+    }
+
+
+    public interface CrashLogCallback {
+        void onCrash(String result);
+    }
 }

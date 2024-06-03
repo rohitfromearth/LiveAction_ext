@@ -31,11 +31,12 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-public class Achieve extends Fragment {
+public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
     CardView rede, congrats_tv,btn_dsh;
-    Conn_service servic = new Conn_service();
+
     int uid_z;
     int uid = 0;
+    Calendar today;
 
     TextView tv_red_points;
     String firebaseToken = "";
@@ -83,15 +84,7 @@ public class Achieve extends Fragment {
             startActivity(intent);
             getActivity().finish();
         }
-        },1000);
-
-
-
-
-
-
-
-
+        },500);
         rede = view.findViewById(R.id.reddem_btn);
         tableLayout = view.findViewById(R.id.tableLayout);
 
@@ -117,30 +110,18 @@ public class Achieve extends Fragment {
 public void fetchdta(String firebaseTokk){
 
 
-    long lastTaskD = sh.getLong("KEY_LAST_TASK_DATE_ach", 0);
 
-    Calendar today = Calendar.getInstance();
-    Calendar lastTaskCalendar = Calendar.getInstance();
-    lastTaskCalendar.setTimeInMillis(lastTaskD);
-    SharedPreferences.Editor myEdit = sh.edit();
-    if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
-            today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
-        // Task has already been performed today
-    } else {
-
-
-        // 0 means thed task has never been performed
-        String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk);
+    Conn_service servic = new Conn_service(getActivity());
+        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk,this);
+//                servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk);
         congrats_tv.setVisibility(View.GONE);
-        onPostExecute(res);
-        myEdit.putLong("KEY_LAST_TASK_DATE_ach", today.getTimeInMillis());
 
-        myEdit.apply();
-    }
+
 
 }
     private void onPostExecute(String result) {
         if (result != null) {
+            getActivity().runOnUiThread(() -> {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -169,6 +150,7 @@ public void fetchdta(String firebaseTokk){
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            });
         }
 
 
@@ -193,4 +175,12 @@ public void fetchdta(String firebaseTokk){
         tableLayout.addView(row);
     }
 
+    @Override
+    public void onResult(String result) {
+
+
+
+            onPostExecute(result);
+
+    }
 }
