@@ -259,6 +259,10 @@ fectdta(firebaseToke);
                                     AlertDialog alertDialog = builder.create();
                                     alertDialog.show();
                                 } else {
+
+
+
+                                    fectdta(firebaseToke);
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                                     builder.setTitle("Congratulations!!!");

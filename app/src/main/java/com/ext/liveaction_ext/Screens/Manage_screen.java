@@ -478,7 +478,8 @@ public class Manage_screen extends Fragment implements Conn_service.PackRuleCall
                             // Perform any UI updates or processing
                         },
                         response -> {
-
+                            valuesperList.clear();
+                            valueshrList.clear();
                         });
 
 
