@@ -113,7 +113,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
         pro.setVisibility(View.VISIBLE);
 
-        new Handler().postDelayed(() -> {
+
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
@@ -129,7 +129,7 @@ Uioperation(firebaseToke);
             startActivity(intent);
          finish();
         }
-        },500);
+
 
 
 

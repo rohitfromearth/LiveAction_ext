@@ -462,7 +462,7 @@ public class Login_verifcation extends AppCompatActivity implements Conn_service
                                             try{
                                                 String firebaseToken = task1.getResult().getToken();
                                                        boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
-
+                                                Log.e("crashtext", firebaseToken);
                                             } catch (Exception e) {
                                                 Log.e("crashtext", e.getMessage());
                                             }

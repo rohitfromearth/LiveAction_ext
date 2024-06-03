@@ -40,8 +40,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 
-public class Formpage extends AppCompatActivity {
+public class Formpage extends AppCompatActivity implements Conn_service.FormDataSendCallback {
     CardView nextActivity_btn, productcrd;
+    String Name="";
     TextView displayList,displayProduct;
     RadioGroup radioGroup;
     String Otherapp = "";
@@ -232,15 +233,8 @@ ott_other=findViewById(R.id.ott_other_edt);
             try {
                 boolean valid = validat();
                 if (valid) {
-                    boolean storesuccess = StoreData();
+                  StoreData();
 
-                   if (storesuccess) {
-                       Intent intent = new Intent(this, Dashboard.class);
-                       startActivity(intent);
-                       finish();
-                    } else {
-                        Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
-                    }
                 }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -472,66 +466,7 @@ ott_other=findViewById(R.id.ott_other_edt);
             }
         });
 
-      /*  ArrayAdapter<String> productList = new ArrayAdapter<String>(this, R.layout.item_dropdown) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return createItemView(position, convertView, parent);
-            }
 
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                return createItemView(position, convertView, parent);
-            }
-
-            private View createItemView(int position, View convertView, ViewGroup parent) {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown, parent, false);
-                CheckBox checkbox = view.findViewById(R.id.checkboxq);
-                TextView textView = view.findViewById(R.id.textviewq);
-
-                String item = getItem(position);
-                textView.setText(item);
-                checkbox.setChecked(selectedProducts.contains(item));
-
-                checkbox.setOnClickListener(v -> {
-                    if (checkbox.isChecked()) {
-                        selectedProducts.add(item);
-                    } else {
-                        selectedProducts.remove(item);
-                    }
-                });
-
-                return view;
-            }
-        };
-        product_spinner.setAdapter(productList);
-
-        List<String> itemse = new ArrayList<>();
-        itemse.add("Clothing & Footwear");
-        itemse.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
-        itemse.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
-        itemse.add("Mobile & Mobile accessories");
-        itemse.add("Children toys & games");
-        productList.addAll(itemse);
-
-        product_spinner.setPadding(0, 0, 0, 15);
-        product_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
-
-                if (selectedProducts.contains(selectedItem)) {
-                    selectedProducts.remove(selectedItem);
-                } else {
-                    selectedProducts.add(selectedItem);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
-        });*/
-        //////////////////////////cust ui change
         gender = findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> gendersip = ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_item);
 
@@ -958,17 +893,16 @@ ott_other=findViewById(R.id.ott_other_edt);
         return arry_music;
     }
 
-    private boolean StoreData() throws JSONException {
+    private void StoreData() throws JSONException {
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
         String longi = "";
         String lati = "";
         SharedPreferences sh = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         longi = sh.getString("longitude", "");
         lati = sh.getString("latitude", "");
         String mobile = sh.getString("mobile_number", "");
-        String Name = Et_name.getText().toString().trim();
+        Name = Et_name.getText().toString().trim();
 
         String Email = Et_email.getText().toString().trim();
         String genders = (String) gender.getSelectedItem();
@@ -1023,27 +957,8 @@ ott_other=findViewById(R.id.ott_other_edt);
 
         String userId ="";
         Conn_service servic = new Conn_service(this);
-//                servic.formdatasend(jsonBody, "/user/create");
-        try {
-            JSONObject jsonResponse = new JSONObject(userId);
-            int uId = jsonResponse.getInt("user_id");
+                servic.formdatasend(jsonBody, "/user/create",this);
 
-            SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-            myEdit.putInt("UID", uId);
-            myEdit.putString("username", Name);
-            myEdit.apply();
-
-
-            if (uId != 0) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
@@ -1184,4 +1099,30 @@ ott_other=findViewById(R.id.ott_other_edt);
     }
 
 
+    @Override
+    public void onResult(String result) {
+        try {
+            JSONObject jsonResponse = new JSONObject(result);
+            int uId = jsonResponse.getInt("user_id");
+
+            SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            myEdit.putInt("UID", uId);
+            myEdit.putString("username", Name);
+            myEdit.apply();
+
+
+            if (uId != 0) {
+                    Intent intent = new Intent(this, Dashboard.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
+                }
+
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

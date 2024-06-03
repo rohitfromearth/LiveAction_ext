@@ -81,7 +81,7 @@ public class Manage_screen extends Fragment implements Conn_service.PackRuleCall
 
         FirebaseUser use = mAuth.getCurrentUser();
 
-        new Handler().postDelayed(() -> {
+
         if (use != null) {
             use.getIdToken(true).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -96,7 +96,7 @@ public class Manage_screen extends Fragment implements Conn_service.PackRuleCall
             getActivity().finish();
         }
 
-        },1000);
+
          sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         btn_sv = view.findViewById(R.id.save_btn);
         tv_btn = view.findViewById(R.id.savetargt);

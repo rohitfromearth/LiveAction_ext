@@ -68,7 +68,7 @@ public class Reedeem extends Fragment implements Conn_service.PackRuleCallback ,
 sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
 
-        new Handler().postDelayed(() -> {
+
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
@@ -84,7 +84,7 @@ fectdta(firebaseToke);
             startActivity(intent);
             getActivity().finish();
         }
-        },500);
+
         total_pnt = view.findViewById(R.id.tv_Total_pnt);
         pnt_redmed = view.findViewById(R.id.tv_pnt_redmed);
         pnt_avalble = view.findViewById(R.id.tv_pont_avalbl);
@@ -359,8 +359,8 @@ public void fectdta(String firebaseTokk){
 
             totalPoints = resultObject.getInt("total_points");
             int pointsRedeemed = resultObject.getInt("points_redeemed");
-//            pointsAvailable = resultObject.getInt("points_available");
-pointsAvailable=400;
+            pointsAvailable = resultObject.getInt("points_available");
+
             total_pnt.setText(String.valueOf(totalPoints));
             achi_points.setText(String.valueOf(totalPoints));
             pnt_redmed.setText(String.valueOf(pointsRedeemed));

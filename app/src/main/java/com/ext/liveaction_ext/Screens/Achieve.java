@@ -67,7 +67,7 @@ public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
         FirebaseUser use = mAuth.getCurrentUser();
 
 
-        new Handler().postDelayed(() -> {
+
 
         if (use != null) {
             use.getIdToken(true)
@@ -84,7 +84,7 @@ public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
             startActivity(intent);
             getActivity().finish();
         }
-        },500);
+
         rede = view.findViewById(R.id.reddem_btn);
         tableLayout = view.findViewById(R.id.tableLayout);
 
