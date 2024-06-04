@@ -188,17 +188,7 @@ userid= "user id : "+uid;
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(userid);
-//        data_sync= sh.getString("Last_sync","");
-//        if (data_sync.isEmpty()) {
-//            // If no data is available, display a dash "-"
-//            sync_tym.setText(timeStatus+uid + "-");
-//            Log.e("userid ", String.valueOf(uid));
-//        } else {
-//            // If data is available, display the value retrieved from shared preferences
-//            sync_tym.setText(timeStatus+uid +  data_sync);
-//            Log.e("userid ", String.valueOf(uid));
-//        }
-        //sync_tym.setText(timeStatus + data_sync);
+
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
