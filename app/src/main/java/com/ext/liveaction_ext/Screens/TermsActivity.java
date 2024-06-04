@@ -19,18 +19,11 @@ public class TermsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser use = mAuth.getCurrentUser();
 
-        if (use == null ) {
-            Intent intent = new Intent(this, Login_verifcation.class);
-            startActivity(intent);
-            finish();
-        }
-else {
+
             setContentView(R.layout.terms_activity);
-        }
+
 
 
 

@@ -83,31 +83,31 @@ public class day_Fragment extends Fragment {
         uid = sh.getInt("UID", uid_z);
 
         //april
-        Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
+//        Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
         Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
-Log.e("dayset", daySet.toString());
+//Log.e("dayset", daySet.toString());
         // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
 
 
 
-        showDummyVal = sh.getBoolean("showDummy",dummyVal);
+//        showDummyVal = sh.getBoolean("showDummy",dummyVal);
 
-        if (showDummyVal) {
-
-            piecreate(dummyList);
-            List<CardItem> cardItems = createCardItems(dummyList);
-            cardAdapter = new CardAdapter(cardItems, requireContext());
-            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-            recyclerView.setAdapter(cardAdapter);
-
-        } else {
+//        if (showDummyVal) {
+//
+//            piecreate(dummyList);
+//            List<CardItem> cardItems = createCardItems(dummyList);
+//            cardAdapter = new CardAdapter(cardItems, requireContext());
+//            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+//            recyclerView.setAdapter(cardAdapter);
+//
+//        } else {
 
             piecreate( daySet);
             List<CardItem> cardItems = createCardItems(daySet);
             cardAdapter = new CardAdapter(cardItems, requireContext());
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
             recyclerView.setAdapter(cardAdapter);
-        }
+//        }
 
     }
 

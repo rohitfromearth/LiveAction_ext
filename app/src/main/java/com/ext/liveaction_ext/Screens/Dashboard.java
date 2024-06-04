@@ -261,7 +261,7 @@ userid= "user id : "+uid;
             // Task has already been performed today
         } else {
             // Task has not been performed today
-            res = ";";
+
             Conn_service conn = new Conn_service(this);
             conn.pack_rule("/usageStats/getUsageData?userId=" + uid, firebaseTok, this);
 
@@ -458,11 +458,10 @@ mAuth.signOut();
         myEdit.putStringSet("DAY_LIST", dayset);
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
+
+        myEdit.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
+        myEdit.putBoolean("Dashboard", true);
         myEdit.apply();
-        SharedPreferences.Editor editor = sh.edit();
-        editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
-        editor.putBoolean("Dashboard", true);
-        editor.apply();
     }
 //    private void initPopupDialog(Context context) {
 //        // Create and initialize the popup dialog

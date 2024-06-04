@@ -12,7 +12,7 @@ android {
         applicationId "com.ext.liveaction_ext"
         minSdk 21
         targetSdk 33
-        versionCode 7
+        versionCode 10
         versionName "1.1"
         archivesBaseName = "Live_Action"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -68,7 +68,7 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation files("../library/app-debug.aar")
+    implementation files("../library/app-release.aar")
 
 
 
