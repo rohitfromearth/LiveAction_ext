@@ -30,12 +30,13 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class week_Fragment extends Fragment implements Conn_service.ResultCallback {
+public class week_Fragment extends Fragment {
     PieChart pieChart;
     int uid_z;
 
@@ -58,7 +59,12 @@ public class week_Fragment extends Fragment implements Conn_service.ResultCallba
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
 
-        Data_show();
+
+        SharedPreferences.Editor myEdit = sh.edit();
+
+            Data_show();
+
+
 
         return view;
     }
@@ -201,8 +207,5 @@ public class week_Fragment extends Fragment implements Conn_service.ResultCallba
     }
 
 
-    @Override
-    public void onResult(String result) {
-        Log.d("weekActivity", "API Result: " + result);
-    }
+
 }

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private boolean isFirstPage = true;
+
     CardView Viewbtn;
 
 
@@ -43,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        isFirstPage = true;
-        //sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+
 
         boolean isLocationEnabled = isLocationServicesEnabled(getApplicationContext());
 
@@ -78,11 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (termsChecked && privacyChecked) {
 
-//                    try {
-////                        StoreData();
-//                    } catch (JSONException e) {
-//                        throw new RuntimeException(e);
-//                    }
                 startActivity(new Intent(MainActivity.this, ProminentActivity.class));
             } else {
                 // Display a message below the button

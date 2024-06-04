@@ -30,12 +30,13 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class month_Fragment extends Fragment implements Conn_service.ResultCallback {
+public class month_Fragment extends Fragment  {
     PieChart pieChart;
     int uid_z;
     int uid = 0;
@@ -58,7 +59,11 @@ public class month_Fragment extends Fragment implements Conn_service.ResultCallb
         pieChart = view.findViewById(R.id.piechart_for_month);
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
 
-        Data_show();
+        SharedPreferences.Editor myEdit = sh.edit();
+
+            Data_show();
+
+
         return view;
     }
 
@@ -190,8 +195,5 @@ public class month_Fragment extends Fragment implements Conn_service.ResultCallb
     }
 
 
-    @Override
-    public void onResult(String result) {
-        Log.d("monthActivity", "API Result: " + result);
-    }
+
 }

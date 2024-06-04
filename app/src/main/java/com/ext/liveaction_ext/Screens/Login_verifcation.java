@@ -18,6 +18,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,8 @@ import com.ext.liveaction_ext.service_clas.PhoneAuthHandler;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.ext.liveaction_int.Access_new;
+import com.google.android.gms.common.api.Response;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 
 import com.google.firebase.appcheck.FirebaseAppCheck;
@@ -55,7 +58,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Login_verifcation extends AppCompatActivity {
+import javax.security.auth.callback.Callback;
+
+public class Login_verifcation extends AppCompatActivity implements Conn_service.FormDataSendCallback,Conn_service.CrashLogCallback{
 
     protected LocationManager locationManager;
     CardView btn_verify, perm, usaegstat, usaegstat1, Accessibilty, Accessibilty1, sendotp, permission_usage;
@@ -65,7 +70,7 @@ public class Login_verifcation extends AppCompatActivity {
 
     private static final int REQUEST_LOCATION = 1;
     EditText edtPhone, edtOTP;
-    Conn_service servic = new Conn_service();
+    Conn_service servic = new Conn_service(this);
     Dialog dialog;
     private String verificationId;
     private FirebaseAuth mAuth;
@@ -77,14 +82,8 @@ public class Login_verifcation extends AppCompatActivity {
     boolean netpro_enabled = false;
     boolean passive_enabled = false;
     SharedPreferences sh;
-    private FirebaseAuthSettings firebaseAuthSettings;
+
     private PhoneAuthHandler phoneAuthHandler;
-    private OTPVerificationHandler otpVerificationHandler;
-
-    // callback method is called on Phone auth provider.
-
-    boolean isLoggedIn = true;
-    boolean isFirstPage = false;
 
 
     @Override
@@ -92,7 +91,7 @@ public class Login_verifcation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_verifcation);
 
-        //FirebaseApp.initializeApp(this);
+        FirebaseApp.initializeApp(this);
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
         firebaseAppCheck.installAppCheckProviderFactory(
                 PlayIntegrityAppCheckProviderFactory.getInstance());
@@ -103,19 +102,12 @@ public class Login_verifcation extends AppCompatActivity {
         permission_usage = findViewById(R.id.permission_button);
         edtOTP = findViewById(R.id.editTextOtp);
         edtPhone = findViewById(R.id.editTextPhone);
-
         permission_usage.setVisibility(View.GONE);
         btn_verify.setEnabled(false);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         String data = getLocation();
-
-
         phoneAuthHandler = new PhoneAuthHandler();
-        otpVerificationHandler = new OTPVerificationHandler();
-
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
-
         dialog = new Dialog(Login_verifcation.this);
         dialog.setContentView(R.layout.dialog_for_perrmisson);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -123,9 +115,7 @@ public class Login_verifcation extends AppCompatActivity {
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.show();
         mAuth = FirebaseAuth.getInstance();
-//        mAuth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(true);
-        firebaseAuthSettings = mAuth.getFirebaseAuthSettings();
-//        firebaseAuthSettings.setAppVerificationDisabledForTesting(true);
+
         usaegstat = dialog.findViewById(R.id.usaegstat_perm);
         Accessibilty = dialog.findViewById(R.id.accessibilty_perm);
         close = dialog.findViewById(R.id.close_permission);
@@ -278,7 +268,7 @@ public class Login_verifcation extends AppCompatActivity {
                 }
             }).start();
             boolean acc= sh.getBoolean("accesson", false);
-            if (acc||hasUsageAccessPermission()) {
+            if (acc && hasUsageAccessPermission() ) {
                 permission_usage.setVisibility(View.GONE);
             }else{
                 permission_usage.setVisibility(View.VISIBLE);
@@ -299,38 +289,6 @@ public class Login_verifcation extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-      /*  if (isAccessibilityServiceEnabled(this, Access_new.class)) {
-            Log.d("Accessibility", "Accessibility service is enabled");
-        } else {
-            Log.d("Accessibility", "Accessibility service is disabled");
-        }*/
-    }
-  /*  public boolean isAccessibilityServiceEnabled(Context context, Class<? extends AccessibilityService> service) {
-        ComponentName expectedComponentName = new ComponentName(context, service);
-
-        String enabledServicesSetting = Settings.Secure.getString(
-                context.getContentResolver(),
-                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
-
-        if (enabledServicesSetting != null) {
-            TextUtils.SimpleStringSplitter colonSplitter = new TextUtils.SimpleStringSplitter(':');
-            colonSplitter.setString(enabledServicesSetting);
-            while (colonSplitter.hasNext()) {
-                String componentName = colonSplitter.next();
-                ComponentName enabledService = ComponentName.unflattenFromString(componentName);
-                if (enabledService != null && enabledService.equals(expectedComponentName))
-                    return true;
-            }
-        }
-
-        return false;
-    }
-*/
     public boolean isValidMobileNumber(String number) {
         // Regular expression pattern for mobile number validation
         String regex = "^[1-9]\\d{9}$";
@@ -355,32 +313,39 @@ public class Login_verifcation extends AppCompatActivity {
         try {
             JSONObject requestBody = new JSONObject();
             requestBody.put("mobile_no", mob_no);
-            String uiddd = servic.formdatasend(requestBody, "/user/login");
-            JSONObject jsonResponse = new JSONObject(uiddd);
-            JSONObject data = jsonResponse.getJSONObject("data");
-            boolean userExists = data.getBoolean("user_exists");
-//           boolean userExists=false;
-            if (userExists) {
-                int userId = data.getInt("user_id");
-                String userName = data.getString("user_name");
-                SharedPreferences.Editor myEdit = sh.edit();
-                myEdit.putString("firebaseToken", firbastkn);
-                myEdit.putInt("UID", userId);
-                myEdit.putString("mobile_number", mob_no);
-                myEdit.putString("username", userName);
-                myEdit.apply();
-                return true;
-            } else {
+            String uiddd = "";
+//                    servic.formdatasend(requestBody, "/user/login");
 
-                SharedPreferences.Editor myEdit = sh.edit();
-                myEdit.putString("firebaseToken", firbastkn);
-                myEdit.putString("mobile_number", mob_no);
-                myEdit.apply();
-                return false;
-            }
+
+            // Call the formdatasend method
+            servic.formdatasend(requestBody, "/user/login", this);
+
+//            JSONObject jsonResponse = new JSONObject(uiddd);
+//            JSONObject data = jsonResponse.getJSONObject("data");
+//            boolean userExists = data.getBoolean("user_exists");
+////           boolean userExists=false;
+//            if (userExists) {
+//                int userId = data.getInt("user_id");
+//                String userName = data.getString("user_name");
+//                SharedPreferences.Editor myEdit = sh.edit();
+//                myEdit.putString("firebaseToken", firbastkn);
+//                myEdit.putInt("UID", userId);
+//                myEdit.putString("mobile_number", mob_no);
+//                myEdit.putString("username", userName);
+//                myEdit.apply();
+//                return true;
+//            } else {
+//
+//                SharedPreferences.Editor myEdit = sh.edit();
+//                myEdit.putString("firebaseToken", firbastkn);
+//                myEdit.putString("mobile_number", mob_no);
+//                myEdit.apply();
+//                return false;
+//            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
     //code start location
     private String getLocation() {
@@ -479,13 +444,9 @@ public class Login_verifcation extends AppCompatActivity {
     public void verifyOTP(String verificationId, String otp) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
         signInWithPhoneAuthCredential(credential);
-
-
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-
-
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -501,63 +462,12 @@ public class Login_verifcation extends AppCompatActivity {
                                             try{
                                                 String firebaseToken = task1.getResult().getToken();
                                                        boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
-
-                                                boolean hasPermission = hasUsageAccessPermission();
-
-                                                if (hasPermission) {
-                                                    if (pageID) {
-
-
-                                                        startActivity(new Intent(Login_verifcation.this, Dashboard.class));
-                                                    } else {
-                                                        String data = getLocation();
-
-
-                                                        boolean is_val;
-                                                        if (Objects.equals(city, "") && Objects.equals(state, "")) {
-                                                            is_val = false;
-                                                        } else {
-                                                            is_val = true;
-                                                        }
-
-                                                        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
-                                                        SharedPreferences.Editor editor = sharedPref.edit();
-                                                        editor.putString("value", city);
-                                                        editor.putString("valueState", state);
-                                                        editor.putString("longitude", longitude);
-                                                        editor.putString("latitude", latitude);
-                                                        editor.putBoolean("enabled", is_val);
-                                                        editor.apply();
-                                                        //Log.d("location",city+" and "+state);
-                                                        startActivity(new Intent(Login_verifcation.this, Formpage.class));
-
-                                                    }
-                                                } else {
-
-                                                    btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
-                                                    AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
-
-                                                    // Set the title and message for the dialog
-                                                    builder.setTitle("Permission Requirement:");
-                                                    builder.setMessage("Give Usage Stat Permission");
-                                                    //builder.setMessage("Thank You");
-
-
-                                                    // Set a positive button and its click listener
-                                                    builder.setPositiveButton("OK", (dialog, which) -> {
-                                                        // Handle the click event (if needed)
-                                                    });
-
-                                                    // Create and show the alert dialog
-                                                    AlertDialog alertDialog = builder.create();
-                                                    alertDialog.show();
-                                                }
+                                                Log.e("crashtext", firebaseToken);
 
                                             } catch (Exception e) {
                                                 Log.e("crashtext", e.getMessage());
                                             }
-                                            // Pass the firebaseToken to your backend developer through the API
-                                            // You can make an API call and include the token in the request headers or body
+
                                         }  // Handle error getting the token
                                     });
                         }
@@ -573,7 +483,7 @@ public class Login_verifcation extends AppCompatActivity {
                         Log.e("new_string---sign in", task.getException().toString());
                         //  Log.e("new_exception", result_str);
                         Toast.makeText(Login_verifcation.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        servic.crashLog(result_str );
+                        servic.crashLog(result_str,this );
 
                     }
 
@@ -584,22 +494,77 @@ public class Login_verifcation extends AppCompatActivity {
 //        super.onBackPressed();
         Log.d("onBackPressed","back from login");
         moveTaskToBack(true);
-        /*if (!isLoggedIn) {
-           // super.onBackPressed();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            //finish(); // Finish the current activity
-            Log.d("onBack","back to main1");
-        } else {
-            // User is logged in, perform default back press action
-            super.onBackPressed();
-            Log.d("onBack","back to main2");
-        }*/
+
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("destroyed","login destroyed");
+    public void onResult(String result) {
+        try {
+            JSONObject jsonResponse = new JSONObject(result);
+            JSONObject data = jsonResponse.getJSONObject("data");
+            boolean userExists = data.getBoolean("user_exists");
+//           boolean userExists=false;
+                     boolean hasPermission = hasUsageAccessPermission();
+            if (hasPermission) {
+                if (userExists) {
+                    Log.e("onBackPressed","back from login");
+                    int userId = data.getInt("user_id");
+                    String userName = data.getString("user_name");
+                    SharedPreferences.Editor myEdit = sh.edit();
+                    myEdit.putInt("UID", userId);
+                    myEdit.putString("username", userName);
+                    myEdit.apply();
+                    startActivity(new Intent(Login_verifcation.this, Dashboard.class));
+                } else {
+                    String da = getLocation();
+
+                    boolean is_val;
+                    if (Objects.equals(city, "") && Objects.equals(state, "")) {
+                        is_val = false;
+                    } else {
+                        is_val = true;
+                    }
+
+                    SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("LifeSharedPref", context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("value", city);
+                    editor.putString("valueState", state);
+                    editor.putString("longitude", longitude);
+                    editor.putString("latitude", latitude);
+                    editor.putBoolean("enabled", is_val);
+                    editor.apply();
+                    startActivity(new Intent(Login_verifcation.this, Formpage.class));
+
+                }
+            } else {
+
+                btn_verify.setCardBackgroundColor(Color.parseColor("#808080"));
+                permission_usage.setVisibility(View.VISIBLE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Login_verifcation.this);
+
+                // Set the title and message for the dialog
+                builder.setTitle("Permission Requirement:");
+                builder.setMessage("Give Usage Stat Permission");
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    // Handle the click event (if needed)
+                });
+
+                // Create and show the alert dialog
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+
+
+
+
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void onCrash(String result) {
+
     }
 }

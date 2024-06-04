@@ -94,6 +94,14 @@
                     android:layout_margin="3dp"
                     android:text="@string/privacy"
                     android:textColor="@color/black" />
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_margin="3dp"
+                    android:text="and"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/termsId"

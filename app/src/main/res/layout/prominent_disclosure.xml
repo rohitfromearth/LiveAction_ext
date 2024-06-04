@@ -58,57 +58,59 @@
 
                 <RadioButton
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:textColor="@color/gray"
-                    android:textSize="15sp"
+
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rdagree"
+
+
                     />
 
                 <RadioButton
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:textColor="@color/gray"
-                    android:textSize="15sp" />
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rddisagree"
+                 />
             </RadioGroup>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginStart="10dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="10dp">
-
-                <TextView
-                    android:id="@+id/privacyIdd"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/terms_condition1"
-                    android:textColor="@color/black" />
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp">
 
-                <TextView
-                    android:id="@+id/termsIdd"
+                    <TextView
+                        android:id="@+id/privacyIdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/terms_condition1"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/termsIdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/privacy_policy1"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/privacy_policy1"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp">
+                    android:orientation="horizontal"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp">
 
-                <TextView
-                    android:id="@+id/disagree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Disagree"
-                    android:textColor="@color/black" />
+                    <TextView
+                        android:id="@+id/disagree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Disagree"
+                        android:textColor="@color/black" />
 
-            </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -124,7 +126,7 @@
             android:visibility="visible">
 
 
-        <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"

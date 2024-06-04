@@ -1,13 +1,18 @@
 package com.ext.liveaction_ext.Screens;
 
+import static android.app.PendingIntent.getActivity;
+import static java.security.AccessController.getContext;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
@@ -36,6 +41,8 @@ import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,9 +54,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Dashboard extends AppCompatActivity implements Conn_service.ResultCallback {
+public class Dashboard extends AppCompatActivity implements Conn_service.PackRuleCallback{
 
-    TextView tvP_usernme, privacyTet, termsTet, sync_tym;
+    TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -66,60 +73,75 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
     String res;
     FragmentManager fragmentManager;
     Context context;
-    Conn_service conn = new Conn_service();
+
+    Calendar today;
     ArrayList<String> appl = new ArrayList<String>();
     ArrayList<String> dummyList = new ArrayList<String>();
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
-    //    ArrayList<String> yearList = new ArrayList<String>();
-    SharedPreferences sh;
+//    ArrayList<String> yearList = new ArrayList<String>();
+//    SharedPreferences sh;
     boolean showDummy;
-    String userid = "";
+   public String firebaseToke = "";
+    String userid="";
     ProgressBar pro;
+    SharedPreferences sh ;
+
     private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
     String data_sync;
-
-    @SuppressLint({"SetTextI18n", "MissingInflatedId"})
+    FirebaseAuth mAuth;
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        setContentView(R.layout.drawer_layout);
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
-        //FirebaseApp.initializeApp(this);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
 
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        isLoggedIn = sh.getBoolean("isLoggedIn", false);
+
+
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser use = mAuth.getCurrentUser();
+
+        pro = findViewById(R.id.progressBr);
+
+
+        pro.setVisibility(View.VISIBLE);
+
+
+        if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            firebaseToke = task.getResult().getToken();
+Uioperation(firebaseToke);
+                        }
+                    });
+        }
+        else {
+
+            Intent intent = new Intent(Dashboard.this, Login_verifcation.class);
+            startActivity(intent);
+         finish();
+        }
+
+
+
+
         uid = sh.getInt("UID", uid_z);
         username = sh.getString("username", "");
         mobile = sh.getString("mobile_number", "");
         Set<String> set = sh.getStringSet("APP_LIST", null);
-        Log.e("APPList", String.valueOf(set));
         appl.addAll(set);
-        userid = "user id : " + uid;
+userid= "user id : "+uid;
 
-        String dir = getObbDir().getPath();
-
-        setContentView(R.layout.drawer_layout);
-
-
-          pro = findViewById(R.id.progressBr);
-
-        // Show the ProgressBar
-        pro.setVisibility(View.VISIBLE);
-
-        SharedPreferences.Editor myEdit = sh.edit();
-        myEdit.putBoolean("Dashboard", true);
-//        initPopupDialog(context);
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
-
-
             Dialog dd = new Dialog(Dashboard.this);
-
             dd.setContentView(R.layout.navigation_permission_dialog);
             dd.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dd.setCancelable(false);
@@ -131,84 +153,27 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
             close_dialog.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 dd.dismiss();
-
             });
             usage_stat.setOnClickListener(view -> {
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
-
-
                 accessibility_permission.setEnabled(usage_stat.isEnabled());
             });
             accessibility_permission.setOnClickListener(view -> {
-
                 view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
                 startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             });
 
         }
-//        }
-
-        String fToken = sh.getString("firebaseToken", "");
-
-        String resultdummy = dumdta.Data_for_dash();
-
-        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
-
-        Calendar today = Calendar.getInstance();
-        Calendar lastTaskCalendar = Calendar.getInstance();
-        lastTaskCalendar.setTimeInMillis(lastTaskDate);
-
-        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
-                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
-            // Task has already been performed today
-
-        } else {
-            // Task has not been performed today
-           // res = conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken);
-            conn.pack_rule("/usageStats/getUsageData?userId=" + uid, fToken, this);
-            dummyList = dummyDayList(resultdummy);
-            dayList = dataDayList(res);
-            weekList = dataWeekList(res);
-            monthList = dataMonthList(res);
-
-
-            myEdit.putString("dir", dir);
-            myEdit.putBoolean("showDummy", showDummy);
-
-            Set<String> dummyset = new HashSet<String>();
-            dummyset.addAll(dummyList);
-
-            Set<String> dayset = new HashSet<String>();
-            dayset.addAll(dayList);
-
-            Set<String> weekset = new HashSet<String>();
-            weekset.addAll(weekList);
-
-            Set<String> monthset = new HashSet<String>();
-            monthset.addAll(monthList);
-
-            myEdit.putStringSet("DUMMY_LIST", dummyset);
-            myEdit.putStringSet("DAY_LIST", dayset);
-            myEdit.putStringSet("WEEK_LIST", weekset);
-            myEdit.putStringSet("MONTH_LIST", monthset);
-
-            myEdit.apply();
-            SharedPreferences.Editor editor = sh.edit();
-            editor.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
-            editor.apply();
-
-        }
-
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         manag_btn = findViewById(R.id.mange_btn);
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
-        sync_tym = findViewById(R.id.tym_sync);
+        sync_tym=findViewById(R.id.tym_sync);
         faq_btn = findViewById(R.id.FAQ_btn);
-        termsTet = findViewById(R.id.termsd);
-        privacyTet = findViewById(R.id.privacyd);
+        termsTet= findViewById(R.id.termsd);
+        privacyTet= findViewById(R.id.privacyd);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
         mDrawer.addDrawerListener(drawerToggle);
@@ -223,17 +188,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
         TextView phone = header.findViewById(R.id.user_phone);
         name.setText(username);
         phone.setText(userid);
-//        data_sync= sh.getString("Last_sync","");
-//        if (data_sync.isEmpty()) {
-//            // If no data is available, display a dash "-"
-//            sync_tym.setText(timeStatus+uid + "-");
-//            Log.e("userid ", String.valueOf(uid));
-//        } else {
-//            // If data is available, display the value retrieved from shared preferences
-//            sync_tym.setText(timeStatus+uid +  data_sync);
-//            Log.e("userid ", String.valueOf(uid));
-//        }
-        //sync_tym.setText(timeStatus + data_sync);
+
         setupDrawerContent(navigationView);
 
         manag_btn.setOnClickListener(view -> {
@@ -254,7 +209,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
         faq_btn.setOnClickListener(view -> {
 
             view.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view.animate().alpha(1f).setDuration(200)).start();
-            //startActivity(new Intent(Dashboard.this, FaQ.class));
+
             Fragment go_next = new FaQ();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
@@ -270,107 +225,83 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
         privacyTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), PrivacyActivity.class)));
         termsTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TermsActivity.class)));
         tvP_usernme = findViewById(R.id.usrname);
-
         tvP_usernme.setText(username);
-
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-
         tabLayout.setupWithViewPager(viewPager);
         pro.setVisibility(View.GONE);
 
     }
 
-    public ArrayList<String> dummyDayList(String ss) {
-        ArrayList<String> dummyList = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(ss);
-            // Check if the key "day" exists in the JSON object
-            if (jsonObject.has("day")) {
-                JSONArray jsonArray = jsonObject.getJSONArray("day");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    dummyList.add(jsonArray.getString(i));
-                }
-            } else {
-                Log.e("dummyDayList", "No value for key 'day' in JSON");
-                // Handle the case where "day" key is not present
-                // You might want to set dummyList to a default value or handle this scenario
-            }
-        } catch (JSONException e) {
-            Log.e("dummyDayList", "JSONException: " + e.getMessage());
-            // Handle JSON parsing exception
-        }
-        return dummyList;
+    @Override
+    public void onBackPressed() {
+
     }
 
+    private void Uioperation(String firebaseTok){
+
+        long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
+
+ today = Calendar.getInstance();
+        Calendar lastTaskCalendar = Calendar.getInstance();
+        lastTaskCalendar.setTimeInMillis(lastTaskDate);
+
+        if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
+                today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+            // Task has already been performed today
+        } else {
+            // Task has not been performed today
+
+            Conn_service conn = new Conn_service(this);
+            conn.pack_rule("/usageStats/getUsageData?userId=" + uid, firebaseTok, this);
+
+//                    conn.pack_rule("/usageStats/getUsageData?userId=" + uid, firebaseTok);
+
+        }
+
+    }
 
     public ArrayList dataDayList(String ss) {
         //april
-        ArrayList<String> dayList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(ss);
-            // Check if the key "day" exists in the JSON object
-            if (jsonObject.has("day")) {
-                JSONArray jsonArray = jsonObject.getJSONArray("day");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    dayList.add(jsonArray.getString(i));
-                }
-            } else {
-                Log.e("dummyDayList", "No value for key 'day' in JSON");
-                // Handle the case where "day" key is not present
-                // You might want to set dummyList to a default value or handle this scenario
+            JSONArray jsonArray = jsonObject.getJSONArray("day");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                dayList.add(jsonArray.getString(i));
             }
+
         } catch (JSONException e) {
-            Log.e("dummyDayList", "JSONException: " + e.getMessage());
-            // Handle JSON parsing exception
+            throw new RuntimeException(e);
         }
+
+
         return dayList;
+
         //april
     }
-
     public ArrayList dataWeekList(String ss) {
         //april
 
-        /*try {
+        try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("week");
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 weekList.add(jsonArray.getString(i));
+                Log.e("Week", String.valueOf(weekList));
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
 
-        return weekList;*/
-
-
-        ArrayList<String> weekList = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(ss);
-            // Check if the key "day" exists in the JSON object
-            if (jsonObject.has("week")) {
-                JSONArray jsonArray = jsonObject.getJSONArray("week");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    weekList.add(jsonArray.getString(i));
-                }
-            } else {
-                Log.e("dummyDayList", "No value for key 'week' in JSON");
-                // Handle the case where "day" key is not present
-                // You might want to set dummyList to a default value or handle this scenario
-            }
-        } catch (JSONException e) {
-            Log.e("dummyDayList", "JSONException: " + e.getMessage());
-            // Handle JSON parsing exception
-        }
         return weekList;
-        //april
+
         //april
     }
 
     public ArrayList dataMonthList(String ss) {
         //april
-  /*
         try {
             JSONObject jsonObject = new JSONObject(ss);
             JSONArray jsonArray = jsonObject.getJSONArray("month");
@@ -380,29 +311,8 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        return monthList;*/
-
-
-
-        ArrayList<String> monthList = new ArrayList<>();
-        try {
-            JSONObject jsonObject = new JSONObject(ss);
-            // Check if the key "day" exists in the JSON object
-            if (jsonObject.has("month")) {
-                JSONArray jsonArray = jsonObject.getJSONArray("month");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    monthList.add(jsonArray.getString(i));
-                }
-            } else {
-                Log.e("dummyDayList", "No value for key 'monthList' in JSON");
-                // Handle the case where "day" key is not present
-                // You might want to set dummyList to a default value or handle this scenario
-            }
-        } catch (JSONException e) {
-            Log.e("dummyDayList", "JSONException: " + e.getMessage());
-            // Handle JSON parsing exception
-        }
         return monthList;
+
         //april
     }
 
@@ -422,32 +332,33 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
                     return true;
                 });
     }
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("onResume", "onResume called");
+
         data_sync = sh.getString("Last_sync", "");
-        Log.e("data_sync", data_sync);
+
         if (data_sync.isEmpty()) {
             // If no data is available, display a dash "-"
-            sync_tym.setText(timeStatus + "-");
+            sync_tym.setText(timeStatus+ "-");
         } else {
             // If data is available, display the value retrieved from shared preferences
-            sync_tym.setText(timeStatus + ": " + data_sync);
+            sync_tym.setText(timeStatus + ": "+ data_sync);
         }
     }
-
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment go_next;
         int itemId = menuItem.getItemId();
-        if (itemId == R.id.chart_page) {
+        if (itemId == R.id.chart_page)
+        {
             startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
-        } else if (itemId == R.id.manage_page) {
+        }
+        else if (itemId == R.id.manage_page)
+        {
 
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
@@ -455,7 +366,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.achieve_page) {
+        }
+        else if (itemId == R.id.achieve_page)
+        {
 
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
@@ -463,7 +376,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.redeem_page) {
+        }
+        else if (itemId == R.id.redeem_page)
+        {
 
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
@@ -471,7 +386,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.contact_us) {
+        }
+        else if (itemId == R.id.contact_us)
+        {
 
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Contact us");
@@ -479,7 +396,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.faq) {
+        }
+        else if (itemId == R.id.faq)
+        {
 
             go_next = new FaQ();
             getSupportActionBar().setTitle("FAQ");
@@ -487,39 +406,24 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.perm_new) {
-            Log.e("data unknown", String.valueOf(itemId));
+        }
+        else if (itemId == R.id.perm_new)
+        {
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
-        } else if (itemId == R.id.Logout) {
-            isLoggedIn = false;
-
-
-            SharedPreferences.Editor myEdit = sh.edit();
-
-            myEdit.putString("firebaseToken", "");
-
-
-            myEdit.apply();
-
-
+        }
+        else if (itemId == R.id.Logout)
+        {
+mAuth.signOut();
             Intent intent = new Intent(this, Login_verifcation.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-
-
-// Finish the current activity
             getSupportActionBar().setTitle("Verification");
-
-            myEdit.putBoolean("isLoggedIn", false);
-            myEdit.apply();
-
         }
-
         menuItem.setChecked(true);
         // Set action bar title
         setTitle(menuItem.getTitle());
@@ -527,7 +431,29 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
         mDrawer.closeDrawers();
     }
 
-    //    private void initPopupDialog(Context context) {
+    @Override
+    public void onResult(String result) {
+        SharedPreferences.Editor myEdit = sh.edit();
+        String dir = getObbDir().getPath();
+        dayList = dataDayList(result);
+        weekList = dataWeekList(result);
+        monthList = dataMonthList(result);
+        myEdit.putString("dir", dir);
+        Set<String> dayset = new HashSet<String>();
+        dayset.addAll(dayList);
+        Set<String> weekset = new HashSet<String>();
+        weekset.addAll(weekList);
+        Set<String> monthset = new HashSet<String>();
+        monthset.addAll(monthList);
+        myEdit.putStringSet("DAY_LIST", dayset);
+        myEdit.putStringSet("WEEK_LIST", weekset);
+        myEdit.putStringSet("MONTH_LIST", monthset);
+
+        myEdit.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
+        myEdit.putBoolean("Dashboard", true);
+        myEdit.apply();
+    }
+//    private void initPopupDialog(Context context) {
 //        // Create and initialize the popup dialog
 //        Dialog dd = new Dialog();
 //
@@ -551,34 +477,5 @@ public class Dashboard extends AppCompatActivity implements Conn_service.ResultC
 //            dd.show();
 //        }
 //    }
-    public void onBackPressed() {
-        //super.onBackPressed();
-        Log.d("destroyed", "dashboard back");
-    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //AppUtils.deleteCache(getApplicationContext());
-        Log.d("onStop", "onStop");
-    }
-    private void updateUI(String result) {
-        res = result;
-    }
-
-    @Override
-    public void onResult(String result) {
-        Log.d("dashboardresult", "result = "+result);
-        if (result != null && !result.isEmpty()) {
-
-            dummyList = dummyDayList(result);
-            dayList = dataDayList(result);
-            Log.e("dayList", "dayList"+dayList.toString());
-            weekList = dataWeekList(result);
-            monthList = dataMonthList(result);
-        } else {
-            Log.e("CurrentActivity", "API Result is null or empty");
-            // Handle the null or empty case appropriately
-        }
-    }
 }

@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,31 +35,56 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Reedeem extends Fragment implements Conn_service.ResultCallback {
-    Conn_service conn = new Conn_service();
+import java.util.Calendar;
 
-    String firebaseToken = "";
+public class Reedeem extends Fragment implements Conn_service.PackRuleCallback ,Conn_service.ResponseCallback,Conn_service.PackRuleClickCallback{
+
     CardView reed_btn, dash_bt, achiv_bt;
     ImageButton close_dial;
     TextView total_pnt, pnt_redmed, pnt_avalble, count_txt, txt_hstry, achi_points;
     int counter = 00;
     int uid_z;
-    int uid = 0;
+  public int uid = 0;
     CardView plus_count, minus_count;
     Dialog dialog;
     int pointsAvailable;
-    String firebaseToke = "";
+   public String firebaseToke = "";
     int totalPoints;
+    Conn_service conn;
+    public SharedPreferences sh;
     private TableLayout tableLayout;
     private FirebaseAuth mAuth;
-    String res;
 
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.activity_reedeem, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
+  conn = new Conn_service(getActivity());
+        FirebaseUser use = mAuth.getCurrentUser();
+
+sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+
+
+
+        if (use != null) {
+            use.getIdToken(true)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            firebaseToke = task.getResult().getToken();
+fectdta(firebaseToke);
+                        }
+                    });
+
+        }
+        else {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
+
         total_pnt = view.findViewById(R.id.tv_Total_pnt);
         pnt_redmed = view.findViewById(R.id.tv_pnt_redmed);
         pnt_avalble = view.findViewById(R.id.tv_pont_avalbl);
@@ -70,13 +96,12 @@ public class Reedeem extends Fragment implements Conn_service.ResultCallback {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             startActivity(new Intent(getContext(), Dashboard.class));
         });
-        // achiv_bt = view.findViewById(R.id.achev_btn);
+
         minus_count = view.findViewById(R.id.tv_minus_count);
         plus_count = view.findViewById(R.id.tv_plus_count);
         achi_points = view.findViewById(R.id.achi_points);
         reed_btn = view.findViewById(R.id.Reedem_btn);
         txt_hstry = view.findViewById(R.id.red_histry);
-
         dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_for_reedeem);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -87,56 +112,6 @@ public class Reedeem extends Fragment implements Conn_service.ResultCallback {
         close_dial = dialog.findViewById(R.id.close_permission);
 
         tableLayout = dialog.findViewById(R.id.tableLayout);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        FirebaseUser use = mAuth.getCurrentUser();
-
-        if (use != null) {
-            use.getIdToken(true)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            firebaseToke = task.getResult().getToken();
-                            SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
-                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                            myEdit.putString("firebaseToken", firebaseToke);
-                            myEdit.apply();
-                        }
-                    });
-
-        }
-        SharedPreferences sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        uid = sh.getInt("UID", uid_z);
-        firebaseToken = sh.getString("firebaseToken", "");
-
-
-        //  String ress = conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken);
-        conn.pack_rule("/usageStats/getPoints/" + uid, firebaseToken, new Conn_service.ResultCallback() {
-            @Override
-            public void onResult(String result) {
-                // Handle the result here
-                Log.d("CALLBACK_RESULT", result);
-                updateUI(result);
-                // Update the UI or perform other actions with the result
-            }
-        });
-        try {
-            JSONObject jsonResponse = new JSONObject(res);
-            JSONObject resultObject = jsonResponse.getJSONObject("result");
-
-            totalPoints = resultObject.getInt("total_points");
-            int pointsRedeemed = resultObject.getInt("points_redeemed");
-            pointsAvailable = resultObject.getInt("points_available");
-            //pointsAvailable = 32;
-            total_pnt.setText(String.valueOf(totalPoints));
-            achi_points.setText(String.valueOf(totalPoints));
-            pnt_redmed.setText(String.valueOf(pointsRedeemed));
-            pnt_avalble.setText(String.valueOf(pointsAvailable));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
         close_dial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,25 +120,24 @@ public class Reedeem extends Fragment implements Conn_service.ResultCallback {
                 tableLayout.removeViews(1, countOf_row);
             }
         });
-
         txt_hstry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.show();
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-                StrictMode.setThreadPolicy(policy);
-               // String res = conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToken);
-                conn.pack_rule("/usageStats/redemptionHistory/" + uid, firebaseToken, new Conn_service.ResultCallback() {
-                    @Override
-                    public void onResult(String result) {
-                        // Handle the result here
-                        Log.d("CALLBACK_RESULT", result);
-                        updateUI(result);
-                        // Update the UI or perform other actions with the result
-                    }
-                });
-                onPostExecute(res);
+                String res = "";
+
+                        conn.pack_ruleclick("/usageStats/redemptionHistory/" + uid, firebaseToke, v -> {
+                                    // This code block will execute when data is sent successfully
+                                    // Perform any UI updates or processing
+                                },
+                                response -> {
+
+                            Log.e("callback",response);
+                                    onPostExecute(response);
+                                });
+
+
 
             }
         });
@@ -176,37 +150,6 @@ public class Reedeem extends Fragment implements Conn_service.ResultCallback {
                 int pp = decreaseCounter();
 
                 int limit_point = pp * 30;
-               /* String before_msg = "Sorry!!! You have already get";
-                String after_msg = "Voucher according to the available points. Thank you";
-
-                int limit_point = pp * 30;
-                if (limit_point < pointsAvailable) {
-                    Log.e("tag---", "match");
-                    reed_btn.setEnabled(true);
-                    reed_btn.setCardBackgroundColor(Color.parseColor("#fe7e34"));
-                } else {
-                    reed_btn.setEnabled(false);
-                    reed_btn.setCardBackgroundColor(Color.parseColor("#808080"));
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                    // Set the title and message for the dialog
-                    builder.setTitle("Incorrect Reedeemtion:");
-                    builder.setMessage("sorry you are not allowed for more vouchers ");
-                    //builder.setMessage("Thank You");
-
-
-                    // Set a positive button and its click listener
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Handle the click event (if needed)
-                        }
-                    });
-
-                    // Create and show the alert dialog
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-                }*/
 
             }
         });
@@ -257,71 +200,87 @@ public class Reedeem extends Fragment implements Conn_service.ResultCallback {
                     }
                 }).start();
                 Log.e("tag--=", "inside btn reedeem" + counter);
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-                StrictMode.setThreadPolicy(policy);
 
                 try {
                     JSONObject jsonBody = new JSONObject();
 
                     jsonBody.put("userId", uid);
                     jsonBody.put("count", counter);
-                    String uid = conn.datasender(jsonBody, "/usageStats/redemption", firebaseToken);
+                    String uid = "";
+
+//                            conn.datasender(jsonBody, "/usageStats/redemption", firebaseToke,v ->{} );
+                    conn.datasender(jsonBody, "/usageStats/redemption", firebaseToke,
+                            v -> {
+                                // This code block will execute when data is sent successfully
+                                // Perform any UI updates or processing
+                            },
+                            response -> {
+                                // This code block will execute when the response is received
+                                // Handle the response in your UI
+
+                                Log.e("Response", response);
+                                if (response.contains("false")) {
+
+                                    Log.e("Response", "success:false");
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setTitle("Incorrect Redemption:");
+                                    builder.setMessage("Redeemable points is lower than requested");
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // Handle the click event (if needed)
+                                        }
+                                    });
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                } else if (counter < 1 && pointsAvailable < 30) {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setTitle("Sorry");
+                                    builder.setMessage("You can not redeem");
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    });
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                } else if (pointsAvailable > 30 && counter < 1) {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                    builder.setTitle("Note:");
+                                    builder.setMessage("You can redeem points in multiple of 30");
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    });
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                } else {
+
+
+
+                                    fectdta(firebaseToke);
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                                    builder.setTitle("Congratulations!!!");
+                                    builder.setMessage("Successfully Redeemed with " + counter + " Voucher");
+                                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    });
+                                    AlertDialog alertDialog = builder.create();
+                                    alertDialog.show();
+                                }
+
+                            });
                     Log.e("redeemclick", "data===" + uid);
                     Log.e("redeemclick", "pointsAvailable===" + pointsAvailable);
 
 
-                    if (uid.contains("false")) {
-
-                        Log.e("Response", "success:false");
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("Incorrect Redemption:");
-                        builder.setMessage("Redeemable points is lower than requested");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Handle the click event (if needed)
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    } else if (counter < 1 && pointsAvailable < 30) {
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("Sorry");
-                        builder.setMessage("You can not redeem");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    } else if (pointsAvailable > 30 && counter < 1) {
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("Note:");
-                        builder.setMessage("You can redeem points in multiple of 30");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    } else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                        builder.setTitle("Congratulations!!!");
-                        builder.setMessage("Successfully Redeemed with " + counter + " Voucher");
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
-                    }
 
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -330,11 +289,13 @@ public class Reedeem extends Fragment implements Conn_service.ResultCallback {
         });
         return view;
     }
+public void fectdta(String firebaseTokk){
 
-    private void updateUI(String result) {
-        res = result;
-    }
+        uid = sh.getInt("UID", uid_z);
 
+        conn.pack_rule("/usageStats/getPoints/" + uid,firebaseTokk,this);
+
+}
     private int decreaseCounter() {
         if (counter > 0) {
 
@@ -395,6 +356,36 @@ public class Reedeem extends Fragment implements Conn_service.ResultCallback {
 
     @Override
     public void onResult(String result) {
-        Log.d("reesdemactivity", "API Result: " + result);
+        try {
+
+            JSONObject jsonResponse = new JSONObject(result);
+            JSONObject resultObject = jsonResponse.getJSONObject("result");
+
+            totalPoints = resultObject.getInt("total_points");
+            int pointsRedeemed = resultObject.getInt("points_redeemed");
+            pointsAvailable = resultObject.getInt("points_available");
+
+            total_pnt.setText(String.valueOf(totalPoints));
+            achi_points.setText(String.valueOf(totalPoints));
+            pnt_redmed.setText(String.valueOf(pointsRedeemed));
+            pnt_avalble.setText(String.valueOf(pointsAvailable));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    @Override
+    public void onResponse(String response) {
+
+
+    }
+
+    @Override
+    public void onResposeClick(String result) {
+
     }
 }

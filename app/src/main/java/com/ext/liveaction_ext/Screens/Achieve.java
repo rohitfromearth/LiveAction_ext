@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,30 +29,44 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Achieve extends Fragment implements Conn_service.ResultCallback {
-    CardView rede, congrats_tv, btn_dsh;
-    Conn_service servic = new Conn_service();
+import java.util.Calendar;
+
+public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
+    CardView rede, congrats_tv,btn_dsh;
+
     int uid_z;
     int uid = 0;
+    Calendar today;
+
     TextView tv_red_points;
     String firebaseToken = "";
-    String firebaseToke = "";
+    public String firebaseToke = "";
     private TableLayout tableLayout;
+//    private LinearLayout floatingViewContainer;
 
     private FirebaseAuth mAuth;
-    SharedPreferences sh;
-    String res;
+    private int initialX;
+   public SharedPreferences sh;
+    private int initialY;
+    private float initialTouchX;
+    private float initialTouchY;
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sh.edit();
+
+
         View view = inflater.inflate(R.layout.activity_achieve, container, false);
 
-        rede = view.findViewById(R.id.reddem_btn);
-        tableLayout = view.findViewById(R.id.tableLayout);
+        sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+
+
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
+
+
 
 
         if (use != null) {
@@ -62,43 +74,27 @@ public class Achieve extends Fragment implements Conn_service.ResultCallback {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             firebaseToke = task.getResult().getToken();
+                             fetchdta(firebaseToke);
 
-                            myEdit.putString("firebaseToken", firebaseToke);
-                            myEdit.apply();
                         }
                     });
 
+        }else {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
         }
+
+        rede = view.findViewById(R.id.reddem_btn);
+        tableLayout = view.findViewById(R.id.tableLayout);
 
 
         uid = sh.getInt("UID", uid_z);
 
-        firebaseToken = sh.getString("firebaseToken", "");
 
         congrats_tv = view.findViewById(R.id.congrats_tv);
         tv_red_points = view.findViewById(R.id.earn_number);
-        btn_dsh = view.findViewById(R.id.dash_btn_ach);
-
-      //  String res = servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken);
-   /*     servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken, new Conn_service.ResultCallback() {
-            @Override
-            public void onResult(String result) {
-                // Handle the result here
-                Log.d("CALLBACK_RESULT", result);
-                updateUI(result);
-                // Update the UI or perform other actions with the result
-            }
-        });
-*/
-        // Call the pack_rule method
-        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseToken, this);
-
-// Method to update the UI with the result
-
-        Log.e("res", "/usageStats/getAchievements/ : " + res);
-        congrats_tv.setVisibility(View.GONE);
-        onPostExecute(res);
-
+        btn_dsh=view.findViewById(R.id.dash_btn_ach);
 
         rede.setOnClickListener(view1 -> {
 
@@ -111,11 +107,21 @@ public class Achieve extends Fragment implements Conn_service.ResultCallback {
         btn_dsh.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
-    private void updateUI(String result) {
-        res = result;
-    }
+public void fetchdta(String firebaseTokk){
+
+
+
+    Conn_service servic = new Conn_service(getActivity());
+        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk,this);
+//                servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk);
+        congrats_tv.setVisibility(View.GONE);
+
+
+
+}
     private void onPostExecute(String result) {
         if (result != null) {
+            getActivity().runOnUiThread(() -> {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("result");
@@ -144,10 +150,12 @@ public class Achieve extends Fragment implements Conn_service.ResultCallback {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            });
         }
 
 
     }
+
     private void addTableRow(String categoryName, String lastWeek, String cumulative, String pointslastWe, String pointscumu) {
 
         TableLayout row = (TableLayout) getLayoutInflater().inflate(R.layout.table_row_achive_item, null);
@@ -166,8 +174,13 @@ public class Achieve extends Fragment implements Conn_service.ResultCallback {
 
         tableLayout.addView(row);
     }
+
     @Override
     public void onResult(String result) {
-        Log.d("AchievActivity", "API Result: " + result);
+
+
+
+            onPostExecute(result);
+
     }
 }

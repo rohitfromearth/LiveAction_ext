@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,9 +39,10 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class Manage_screen extends Fragment implements Conn_service.ResultCallback {
-    Conn_service servic = new Conn_service();
+public class Manage_screen extends Fragment implements Conn_service.PackRuleCallback, Conn_service.PackRulecommentCallback {
+
     SharedPreferences sh ;
     TextView tv_commnt;
     ArrayList<Double> valuesperList = new ArrayList<>();
@@ -48,20 +50,22 @@ public class Manage_screen extends Fragment implements Conn_service.ResultCallba
     JSONObject jsonBody = new JSONObject();
     int uid_z;
     int uid = 0;
-    String firebaseToken = "";
+
     boolean target_edi = false;
-    String firebaseToke = "";
+    public String firebaseToke = "";
     JSONArray jsonAy = new JSONArray();
     TextView tv_btn;
     boolean edit;
     CardView btn_sv, btn_dash;
     private TableLayout tableLayout;
+  public String Firebastokk ;
     double valueperInt, valuehrInt;
 
     private final ArrayList<EditText> etList = new ArrayList<>();
 
     private FirebaseAuth mAuth;
     String res;
+
     private boolean isUpdating = false;
 
 
@@ -71,34 +75,35 @@ public class Manage_screen extends Fragment implements Conn_service.ResultCallba
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
-        sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-        btn_sv = view.findViewById(R.id.save_btn);
-        tv_btn = view.findViewById(R.id.savetargt);
-        tableLayout = view.findViewById(R.id.tableLayout);
-        // floatingViewContainer = view.findViewById(R.id.floatingViewContainer);
-        tv_commnt = view.findViewById(R.id.comment_live_act);
+
+
         mAuth = FirebaseAuth.getInstance();
-        btn_dash = view.findViewById(R.id.dashboard_btn_mng);
+
         FirebaseUser use = mAuth.getCurrentUser();
 
 
         if (use != null) {
-            use.getIdToken(true).addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                @Override
-                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                    if (task.isSuccessful()) {
-                        firebaseToke = task.getResult().getToken();
-                        SharedPreferences sharedPreferences = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-
-                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                        myEdit.putString("firebaseToken", firebaseToke);
-                        myEdit.apply();
-                    }
+            use.getIdToken(true).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    firebaseToke = task.getResult().getToken();
+              fetchdat(firebaseToke);
                 }
             });
         }
+        else {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
 
-fetchdat();
+
+         sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        btn_sv = view.findViewById(R.id.save_btn);
+        tv_btn = view.findViewById(R.id.savetargt);
+        tableLayout = view.findViewById(R.id.tableLayout);
+        tv_commnt = view.findViewById(R.id.comment_live_act);
+        btn_dash = view.findViewById(R.id.dashboard_btn_mng);
+
         btn_sv.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
             if (edit) {
@@ -176,42 +181,15 @@ fetchdat();
         btn_dash.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
-    private void fetchdat(){
+    private void fetchdat(String firebasetTokk) {
 
         uid = sh.getInt("UID", uid_z);
-        firebaseToken = sh.getString("firebaseToken", "");
+        Conn_service servic = new Conn_service(getActivity());
+                servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebasetTokk,this);
 
-       // res = servic.pack_rule("/usageStats/manageData?duration=week&userId=" + uid, firebaseToken);
+                servic.PackRulecomment("/usageStats/comments/" + uid, firebaseToke,this);
 
-        Log.e("res", "/usageStats/manageData : " + res);
-        edit = onPostExecute(res);
-        if (edit) {
-            tv_btn.setText("Save Target");
-        }
-      //  String res_comnt = servic.pack_rule("/usageStats/comments/" + uid, firebaseToken);
-        servic.pack_rule("/usageStats/comments/" + uid, firebaseToken, new Conn_service.ResultCallback() {
-            @Override
-            public void onResult(String result) {
-                // Handle the result here
-                Log.d("CALLBACK_RESULT", result);
-                updateUI(result);
-                // Update the UI or perform other actions with the result
-            }
-        });
-     //   Log.e("res_comnt", "/usageStats/comments/ : " + res_comnt);
 
-        try {
-
-            JSONObject jsonObj = new JSONObject(res);
-            String Comments_live_action = jsonObj.getString("result");
-            tv_commnt.setText(Comments_live_action);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-    private void updateUI(String result) {
-        res = result;
     }
     private boolean onPostExecute(String result) {
         Log.e("onPostExecute","onPostExecute");
@@ -251,12 +229,13 @@ fetchdat();
                     }
                     target_edi = item.getBoolean("target_editable");
 
-
+//                    target_edi = true;
                     addTableRow(usage_id, target_hr, target_per, categoryName, lastWeek, cumulative, pointslastweek, target_edi);
                     if (usage_id == 1) {
                         editable = target_edi;
                     }
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -271,7 +250,7 @@ fetchdat();
             tableLayout.removeViewAt(1);
         }
 
-        fetchdat();
+        fetchdat(firebaseToke);
         isUpdating = false;
     }
 
@@ -293,7 +272,6 @@ fetchdat();
     }
 
     private void addTableRow(int usageid, String target_hr, String target_per, String categoryName, String lastWeek, String cumulative, String pointslastWe, boolean edit_view) {
-        Log.e("addTableRow","addTableRow");
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View row = inflater.inflate(R.layout.table_row_for_manag, tableLayout, false);
 
@@ -439,28 +417,24 @@ fetchdat();
         et_actual_hrr.addTextChangedListener(hourWatcher);
         et_actual_prr.addTextChangedListener(percentWatcher);
 
-        et_actual_hrr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    String hrValue = et_actual_hrr.getText().toString();
-                    if (!hrValue.isEmpty()) {
-                        try {
-                            double hour = Double.parseDouble(hrValue);
-                            if (hour <= 168) {
-                                double percent = hour * 100 / 168;
-                                DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                                String percentFormatted = decimalFormat.format(percent);
-                                et_actual_prr.setText(percentFormatted);
-                            }
-                        } catch (NumberFormatException e) {
-                            et_actual_prr.setText("");
+        et_actual_hrr.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String hrValue = et_actual_hrr.getText().toString();
+                if (!hrValue.isEmpty()) {
+                    try {
+                        double hour = Double.parseDouble(hrValue);
+                        if (hour <= 168) {
+                            double percent = hour * 100 / 168;
+                            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                            String percentFormatted = decimalFormat.format(percent);
+                            et_actual_prr.setText(percentFormatted);
                         }
+                    } catch (NumberFormatException e) {
+                        et_actual_prr.setText("");
                     }
                 }
             }
         });
-
         et_actual_prr.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -495,18 +469,45 @@ fetchdat();
         Log.e("addData","addData");
 
       //  boolean success;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        String uid = servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToken);
-        Log.d("setWeeklyTarget", "setWeeklyTarget : " + uid);
-        refreshView();
+        Conn_service servic = new Conn_service(getActivity());
+//        conn.datasender(jsonBody, "/usageStats/redemption", firebaseToke
+                servic.datasender(jsonbdy, "/usageStats/setWeeklyTarget", firebaseToke,
+                        v -> {
+                            refreshView();
+                            // This code block will execute when data is sent successfully
+                            // Perform any UI updates or processing
+                        },
+                        response -> {
+                            valuesperList.clear();
+                            valueshrList.clear();
+                        });
+
+
 
     }
 
 
     @Override
     public void onResult(String result) {
-        Log.d("manageactivity", "API Result: " + result);
+        Log.e("data",result);
+        edit = onPostExecute(result);
+
+
+        if (edit) {
+            tv_btn.setText("Save Target");
+
+        }
+    }
+
+    @Override
+    public void onResultcomment(String result) {
+        try {
+            JSONObject jsonObj = new JSONObject(result);
+            String Comments_live_action = jsonObj.getString("result");
+            tv_commnt.setText(Comments_live_action);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

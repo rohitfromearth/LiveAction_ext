@@ -40,18 +40,16 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 
-public class Formpage extends AppCompatActivity {
+public class Formpage extends AppCompatActivity implements Conn_service.FormDataSendCallback {
     CardView nextActivity_btn, productcrd;
+    String Name="";
     TextView displayList,displayProduct;
-
     RadioGroup radioGroup;
-
     String Otherapp = "";
     String Otherapp_music = "";
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     Switch onlyn_used_swtch;
     String selectedValue, validationmsg;
-    Conn_service servic = new Conn_service();
 
     Spinner gender, Education, Ocupation, product_spinner, Durable_spinn;
     int year = 0;
@@ -70,14 +68,9 @@ public class Formpage extends AppCompatActivity {
 
     Switch sw1, sw2, sw3, sw4, sw5, sw6, sw7, sw8, sw9, sw10, sw11, sw12, sw13, sw14;
     Switch sw_1, sw_2, sw_3, sw_4, sw_5, sw_6, sw_7, sw_8, sw_9, sw_10, sw_11, sw_12, sw_13, sw_14;
-
-
     private CheckBox[] checkboxe_fdbk;
     private DatePickerDialog.OnDateSetListener dateSetListener;
-
-
     EditText Et_name, Et_email,ott_other,music_other;
-
     private String selectedDistrict, selectedState;                 //vars to hold the values of selected State and District
     //declaring TextView to show the errors
     private Spinner stateSpinner, districtSpinner;                  //Spinners
@@ -240,13 +233,8 @@ ott_other=findViewById(R.id.ott_other_edt);
             try {
                 boolean valid = validat();
                 if (valid) {
-                    boolean storesuccess = StoreData();
+                  StoreData();
 
-                   if (storesuccess) {
-                        startActivity(new Intent(Formpage.this, Dashboard.class));
-                    } else {
-                        Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
-                    }
                 }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -306,7 +294,6 @@ ott_other=findViewById(R.id.ott_other_edt);
 
                             stringBuilder.append("Selected options:\n");
                             for (String option : selected_dur_Options) {
-                                Log.d("selectedadded",option);
                                 stringBuilder.append(option).append("\n");
                             }
                             displayList.setText(stringBuilder.toString());
@@ -314,8 +301,7 @@ ott_other=findViewById(R.id.ott_other_edt);
                             selected_dur_Options.remove(item);
                             stringBuilder.append("Selected options:\n");
                             for (String option : selected_dur_Options) {
-                                Log.d("selected_removed",option);
-                                stringBuilder.append(option).append("\n");
+                                   stringBuilder.append(option).append("\n");
                             }
                             displayList.setText(stringBuilder.toString());
                         }
@@ -358,8 +344,7 @@ ott_other=findViewById(R.id.ott_other_edt);
                     selected_dur_Options.add(selectedItem);
                 }
                 for (String option : selected_dur_Options) {
-                    Log.d("selected_dur_Options",option);
-                }
+                     }
                 durabllist.notifyDataSetChanged();
             }
 
@@ -425,7 +410,6 @@ ott_other=findViewById(R.id.ott_other_edt);
 
                             stringBuilder.append("Selected options:\n");
                             for (String option : selectedProducts) {
-                                Log.d("selectedProducts added", option);
                                 stringBuilder.append(option).append("\n");
                             }
                             displayProduct.setText(stringBuilder.toString());
@@ -433,7 +417,6 @@ ott_other=findViewById(R.id.ott_other_edt);
                             selectedProducts.remove(item);
                             stringBuilder.append("Selected options:\n");
                             for (String option : selectedProducts) {
-                                Log.d("selectedRemoved", option);
                                 stringBuilder.append(option).append("\n");
                             }
                             displayProduct.setText(stringBuilder.toString());
@@ -483,66 +466,7 @@ ott_other=findViewById(R.id.ott_other_edt);
             }
         });
 
-      /*  ArrayAdapter<String> productList = new ArrayAdapter<String>(this, R.layout.item_dropdown) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                return createItemView(position, convertView, parent);
-            }
 
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                return createItemView(position, convertView, parent);
-            }
-
-            private View createItemView(int position, View convertView, ViewGroup parent) {
-                View view = LayoutInflater.from(getContext()).inflate(R.layout.item_dropdown, parent, false);
-                CheckBox checkbox = view.findViewById(R.id.checkboxq);
-                TextView textView = view.findViewById(R.id.textviewq);
-
-                String item = getItem(position);
-                textView.setText(item);
-                checkbox.setChecked(selectedProducts.contains(item));
-
-                checkbox.setOnClickListener(v -> {
-                    if (checkbox.isChecked()) {
-                        selectedProducts.add(item);
-                    } else {
-                        selectedProducts.remove(item);
-                    }
-                });
-
-                return view;
-            }
-        };
-        product_spinner.setAdapter(productList);
-
-        List<String> itemse = new ArrayList<>();
-        itemse.add("Clothing & Footwear");
-        itemse.add("Grocery (staples, packaged food, snacks, beverages, dairy items etc)");
-        itemse.add("Beauty & personal Care (soaps, shampoo, skin creams, makeup etc)");
-        itemse.add("Mobile & Mobile accessories");
-        itemse.add("Children toys & games");
-        productList.addAll(itemse);
-
-        product_spinner.setPadding(0, 0, 0, 15);
-        product_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = (String) parent.getItemAtPosition(position);
-
-                if (selectedProducts.contains(selectedItem)) {
-                    selectedProducts.remove(selectedItem);
-                } else {
-                    selectedProducts.add(selectedItem);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Do nothing
-            }
-        });*/
-        //////////////////////////cust ui change
         gender = findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> gendersip = ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_item);
 
@@ -969,17 +893,16 @@ ott_other=findViewById(R.id.ott_other_edt);
         return arry_music;
     }
 
-    private boolean StoreData() throws JSONException {
+    private void StoreData() throws JSONException {
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
         String longi = "";
         String lati = "";
         SharedPreferences sh = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         longi = sh.getString("longitude", "");
         lati = sh.getString("latitude", "");
         String mobile = sh.getString("mobile_number", "");
-        String Name = Et_name.getText().toString().trim();
+        Name = Et_name.getText().toString().trim();
 
         String Email = Et_email.getText().toString().trim();
         String genders = (String) gender.getSelectedItem();
@@ -1032,27 +955,10 @@ ott_other=findViewById(R.id.ott_other_edt);
         jsonBody.put("latitude", lati);
         jsonBody.put("longitude", longi);
 
-        String userId = servic.formdatasend(jsonBody, "/user/create");
-        try {
-            JSONObject jsonResponse = new JSONObject(userId);
-            int uId = jsonResponse.getInt("user_id");
+        String userId ="";
+        Conn_service servic = new Conn_service(this);
+                servic.formdatasend(jsonBody, "/user/create",this);
 
-            SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
-            SharedPreferences.Editor myEdit = sharedPreferences.edit();
-            myEdit.putInt("UID", uId);
-            myEdit.putString("username", Name);
-            myEdit.apply();
-
-
-            if (uId != 0) {
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
@@ -1191,6 +1097,30 @@ ott_other=findViewById(R.id.ott_other_edt);
         }
         return false; // No switches are checked
     }
+    @Override
+    public void onResult(String result) {
+        try {
+            JSONObject jsonResponse = new JSONObject(result);
+            int uId = jsonResponse.getInt("user_id");
+
+            SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+            myEdit.putInt("UID", uId);
+            myEdit.putString("username", Name);
+            myEdit.apply();
 
 
+            if (uId != 0) {
+                    Intent intent = new Intent(this, Dashboard.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(Formpage.this, "Data Sending unsuccessful ", Toast.LENGTH_SHORT).show();
+                }
+
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

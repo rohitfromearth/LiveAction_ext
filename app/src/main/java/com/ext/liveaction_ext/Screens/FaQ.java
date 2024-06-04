@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.QandA;
 import com.ext.liveaction_ext.QuestionAnswerAdapter;
 import com.ext.liveaction_ext.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +32,27 @@ public class FaQ extends Fragment {
     private int lastExpandedPosition = -1;
     Dialog dialog;
     Context context;
+    FirebaseAuth mAuth;
+    View view;
+
 
     private static final String PERMISSION_DIALOG_TAG = "permission_dialog";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser use = mAuth.getCurrentUser();
 
-        View view = inflater.inflate(R.layout.activity_fa_q, container, false);
+
+        if (use == null) {
+            Intent intent = new Intent(getActivity(), Login_verifcation.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
+        else {
+            view = inflater.inflate(R.layout.activity_fa_q, container, false);
+        }
+
         btn_dash = view.findViewById(R.id.dashboard_btn_faq);
 
         privacy = view.findViewById(R.id.privacyId);
@@ -51,19 +66,6 @@ public class FaQ extends Fragment {
 
         adapter = new QuestionAnswerAdapter(generateSampleData());
         recyclerView.setAdapter(adapter);
-
-//        boolean showPermissionDialog = getActivity().getIntent().getBooleanExtra("show_permission_dialog", false);
-//        Log.e("showPermissionDialog", String.valueOf(showPermissionDialog));
-//        if (showPermissionDialog) {
-//            // Show permission dialog
-//            showPermissionDialog();
-//        }
-//            if (lastExpandedPosition != -1 && lastExpandedPosition != position) {
-//                adapter.collapse(lastExpandedPosition);
-//            }
-//            lastExpandedPosition = position;
-//
-
 
         btn_dash.setOnClickListener(view1 -> {
             view1.animate().alpha(0.5f).setDuration(200).withEndAction(() -> view1.animate().alpha(1f).setDuration(200)).start();
@@ -95,24 +97,4 @@ public class FaQ extends Fragment {
         return itemList;
     }
 
-   /* public void showPermissionDialog() {
-        // Show permission dialog here
-        // For example:
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialog_for_perrmisson);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.setCancelable(false);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.show();
-        *//*new AlertDialog.Builder(getContext())
-                .setTitle("Permission Dialog")
-                .setMessage("This is a permission dialog.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Handle OK button click if needed
-                    }
-                })
-                .show();*//*
-    }*/
 }

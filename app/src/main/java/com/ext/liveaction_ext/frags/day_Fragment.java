@@ -34,12 +34,13 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class day_Fragment extends Fragment implements Conn_service.ResultCallback {
+public class day_Fragment extends Fragment {
     PieChart pieChart;
     DummyData dumdta = new DummyData();
     int uid_z;
@@ -61,12 +62,17 @@ public class day_Fragment extends Fragment implements Conn_service.ResultCallbac
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment1, container, false);
+        sh = getActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
         tbklayout = view.findViewById(R.id.tabl_lrgrnd);
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        Data_Show();
+
+
+        SharedPreferences.Editor myEdit = sh.edit();
+
+            Data_Show();
 
         return view;
     }
@@ -77,41 +83,31 @@ public class day_Fragment extends Fragment implements Conn_service.ResultCallbac
         uid = sh.getInt("UID", uid_z);
 
         //april
-        Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
+//        Set<String> dummyList = sh.getStringSet("DUMMY_LIST", new HashSet<>());
         Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
-
+//Log.e("dayset", daySet.toString());
         // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
 
-        String resultdummy = dumdta.Data_for_dash();
-        try {
-            JSONObject jsonObject = new JSONObject(resultdummy);
 
 
+//        showDummyVal = sh.getBoolean("showDummy",dummyVal);
 
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        showDummyVal = sh.getBoolean("showDummy",dummyVal);
-
-        if (showDummyVal) {
-
-            piecreate(dummyList);
-            List<CardItem> cardItems = createCardItems(dummyList);
-            cardAdapter = new CardAdapter(cardItems, requireContext());
-            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-            recyclerView.setAdapter(cardAdapter);
-
-        } else {
+//        if (showDummyVal) {
+//
+//            piecreate(dummyList);
+//            List<CardItem> cardItems = createCardItems(dummyList);
+//            cardAdapter = new CardAdapter(cardItems, requireContext());
+//            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+//            recyclerView.setAdapter(cardAdapter);
+//
+//        } else {
 
             piecreate( daySet);
             List<CardItem> cardItems = createCardItems(daySet);
             cardAdapter = new CardAdapter(cardItems, requireContext());
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
             recyclerView.setAdapter(cardAdapter);
-        }
+//        }
 
     }
 
@@ -123,12 +119,10 @@ public class day_Fragment extends Fragment implements Conn_service.ResultCallbac
         for (String jsonString : dSet) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
-                Log.d("jsonObject","jsonObject"+jsonObject.toString());
                 String categoryName = jsonObject.optString("category");
                 int logoResId = getLogoResIdForCategory(categoryName);
 
                 double tsthisday = jsonObject.optDouble("target_in_min_day");
-                Log.e("tsthisday", categoryName+tsthisday);
                 double average = jsonObject.optDouble("last_7_day_usage_in_mins");
                 double variance = jsonObject.optDouble("variance_day");
 
@@ -245,9 +239,5 @@ public class day_Fragment extends Fragment implements Conn_service.ResultCallbac
         }
     }
 
-    @Override
-    public void onResult(String result) {
-        Log.d("dayActivity", "API Result: " + result);
 
-    }
 }
