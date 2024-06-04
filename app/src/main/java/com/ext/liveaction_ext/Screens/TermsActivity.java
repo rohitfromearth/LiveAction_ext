@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class TermsActivity extends AppCompatActivity {
     WebView webView;
-    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
