@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class month_Fragment extends Fragment  {
+public class month_Fragment extends Fragment implements Conn_service.PackRuleCallback {
     PieChart pieChart;
     int uid_z;
     int uid = 0;
@@ -50,6 +50,7 @@ public class month_Fragment extends Fragment  {
     SharedPreferences sh;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -59,15 +60,16 @@ public class month_Fragment extends Fragment  {
         pieChart = view.findViewById(R.id.piechart_for_month);
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
 
-        SharedPreferences.Editor myEdit = sh.edit();
 
-            Data_show();
+
+
+
 
 
         return view;
     }
 
-    private void Data_show( ) {
+   public void Data_show_month( ) {
         uid = sh.getInt("UID", uid_z);
         Set<String> monthset = sh.getStringSet("MONTH_LIST", new HashSet<>());
         for (String jsonString : monthset) {
@@ -81,6 +83,7 @@ public class month_Fragment extends Fragment  {
                 // Format the RGB values into a hexadecimal color code
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
                 String categoryName = jsonObject.optString("category");
+                Log.e("damnedata",categoryName);
                 if (!categoryName.equals("Total")) {
 
                     double pievalue = jsonObject.getDouble("usage_percent_month");
@@ -195,5 +198,10 @@ public class month_Fragment extends Fragment  {
     }
 
 
-
+    @Override
+    public void onResult(String result) {
+        if(result!=null) {
+            Data_show_month();
+        }
+    }
 }

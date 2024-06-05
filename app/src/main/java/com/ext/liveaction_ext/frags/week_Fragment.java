@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class week_Fragment extends Fragment {
+public class week_Fragment extends Fragment implements  Conn_service.PackRuleCallback{
     PieChart pieChart;
     int uid_z;
 
@@ -46,6 +46,7 @@ public class week_Fragment extends Fragment {
 
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
+
 
     SharedPreferences sh;
 
@@ -60,18 +61,14 @@ public class week_Fragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView_week);
 
 
-        SharedPreferences.Editor myEdit = sh.edit();
-
-            Data_show();
-
 
 
         return view;
     }
 
-    private void Data_show() {
+    private void Data_Show_Week() {
 
-
+Log.e("data in week","inside");
         uid = sh.getInt("UID", uid_z);
 
         Set<String> weekSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
@@ -207,5 +204,14 @@ public class week_Fragment extends Fragment {
     }
 
 
+    @Override
+    public void onResult(String result) {
 
+        Log.e("data in week","inside69");
+        if(result!=null) {
+
+            Log.e("data in week","inside2");
+            Data_Show_Week();
+        }
+    }
 }

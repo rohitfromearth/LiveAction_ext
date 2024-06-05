@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class day_Fragment extends Fragment {
+public class day_Fragment extends Fragment implements  Conn_service.PackRuleCallback{
     PieChart pieChart;
     DummyData dumdta = new DummyData();
     int uid_z;
@@ -68,11 +68,6 @@ public class day_Fragment extends Fragment {
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-
-
-        SharedPreferences.Editor myEdit = sh.edit();
-
-            Data_Show();
 
         return view;
     }
@@ -240,4 +235,10 @@ public class day_Fragment extends Fragment {
     }
 
 
+    @Override
+    public void onResult(String result) {
+        if(result!=null){
+        Data_Show();
+        }
+    }
 }
