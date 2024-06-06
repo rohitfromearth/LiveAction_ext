@@ -113,10 +113,9 @@ promng.setVisibility(View.VISIBLE);
                 for (EditText editTextforhr : etList) {
 
                     String value = editTextforhr.getTag().toString();
-                    Log.e("value", "value : " + value);
 
                     String editTextValuehr = editTextforhr.getText().toString();
-                    Log.e("editTextValuehr", "editTextValuehr : " + editTextValuehr);
+
 
                     if (editTextValuehr.equals("")) { // detect an empty string and set it to "0" instead
                         editTextValuehr = "0";
@@ -492,7 +491,7 @@ promng.setVisibility(View.VISIBLE);
 
     @Override
     public void onResult(String result) {
-        Log.e("data",result);
+
         edit = onPostExecute(result);
 
         promng.setVisibility(View.GONE);

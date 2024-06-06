@@ -133,7 +133,7 @@ fectdta(firebaseToke);
                                 },
                                 response -> {
 
-                            Log.e("callback",response);
+
                                     onPostExecute(response);
                                 });
 
@@ -199,7 +199,7 @@ fectdta(firebaseToke);
                         view.animate().alpha(1f).setDuration(200);
                     }
                 }).start();
-                Log.e("tag--=", "inside btn reedeem" + counter);
+
 
 
                 try {
@@ -222,7 +222,7 @@ fectdta(firebaseToke);
                                 Log.e("Response", response);
                                 if (response.contains("false")) {
 
-                                    Log.e("Response", "success:false");
+
                                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                     builder.setTitle("Incorrect Redemption:");
                                     builder.setMessage("Redeemable points is lower than requested");
@@ -277,8 +277,7 @@ fectdta(firebaseToke);
                                 }
 
                             });
-                    Log.e("redeemclick", "data===" + uid);
-                    Log.e("redeemclick", "pointsAvailable===" + pointsAvailable);
+
 
 
 
@@ -323,7 +322,7 @@ public void fectdta(String firebaseTokk){
 
                     int value1 = item.getInt("no_of_vouchers");
                     int value2 = item.getInt("total_points_redeemed");
-                    Log.e("denodata", String.valueOf(value2));
+
                     String value1_s = String.valueOf(value1);
                     String value2_s = String.valueOf(value2);
                     String value3 = item.getString("redemption_date");

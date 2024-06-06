@@ -84,7 +84,7 @@ public class Splashsscreen extends AppCompatActivity implements Conn_service.App
     @Override
     public void onResult(ArrayList<String> appl) {
         // Handle the result of App_list method
-        Log.d("MainActivity", "App list: " + appl.toString());
+
 
         SharedPreferences sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();

@@ -65,7 +65,7 @@ Data_Show_Week();
 
     private void Data_Show_Week() {
 
-Log.e("data in week","inside");
+
         uid = sh.getInt("UID", uid_z);
 
         Set<String> weekSet = sh.getStringSet("WEEK_LIST", new HashSet<>());
@@ -123,7 +123,7 @@ Log.e("data in week","inside");
                 if (!categoryName.equalsIgnoreCase("Total")) {
                     int logoResId = getLogoResIdForCategory(categoryName);
                     double tsThisDay = jsonObject.optDouble("target_in_mins");
-                    Log.e("tsthisday", categoryName+tsThisDay);
+
                     double average = jsonObject.optDouble("last_4_week_usage_in_mins");
                     double variance = jsonObject.optDouble("variance_week");
 

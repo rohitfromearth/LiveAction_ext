@@ -80,7 +80,7 @@ Data_show_month();
                 // Format the RGB values into a hexadecimal color code
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
                 String categoryName = jsonObject.optString("category");
-                Log.e("damnedata",categoryName);
+
                 if (!categoryName.equals("Total")) {
 
                     double pievalue = jsonObject.getDouble("usage_percent_month");
