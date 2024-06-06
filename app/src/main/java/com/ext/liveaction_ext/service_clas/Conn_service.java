@@ -117,7 +117,8 @@ public class Conn_service {
                 activity.runOnUiThread(() -> onClickListener.onClick(null));
 
                 // Pass the response to the ResponseCallback interface
-                activity.runOnUiThread(() -> responseCallback.onResponse(UserID));
+                if (activity != null) {
+                activity.runOnUiThread(() -> responseCallback.onResponse(UserID));}
                 // Pass the response to the ResponseCallback interface
 //                responseCallback.onResponse(response);
             } catch (Exception e) {
@@ -193,7 +194,8 @@ public class Conn_service {
                     showFailureScreen();
                 }
                 String finalResponse = response;
-                activity.runOnUiThread(() -> callback.onResultcomment(finalResponse));
+                if (activity != null) {
+                activity.runOnUiThread(() -> callback.onResultcomment(finalResponse));}
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
                 showFailureScreen();
@@ -227,7 +229,8 @@ public class Conn_service {
                     showFailureScreen();
                 }
                 String finalResponse = response;
-                activity.runOnUiThread(() ->  callback.onResult(finalResponse));
+                if (activity != null) {
+                activity.runOnUiThread(() ->  callback.onResult(finalResponse));}
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
                 showFailureScreen();
@@ -262,7 +265,8 @@ public class Conn_service {
 
                 // Pass the response to the ResponseCallback interface
                 String finalResponse = response;
-                activity.runOnUiThread(() -> resCallback.onResposeClick(finalResponse));
+                if (activity != null) {
+                activity.runOnUiThread(() -> resCallback.onResposeClick(finalResponse));}
 
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());

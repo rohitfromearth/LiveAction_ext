@@ -20,12 +20,7 @@ public class TermsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-            setContentView(R.layout.terms_activity);
-
-
-
+        setContentView(R.layout.terms_activity);
 
         getSupportActionBar().setTitle(R.string.app_name);
 

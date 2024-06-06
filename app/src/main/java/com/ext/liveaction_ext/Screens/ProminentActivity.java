@@ -20,9 +20,9 @@ import com.ext.liveaction_ext.R;
 public class ProminentActivity extends AppCompatActivity {
     CardView btn_sbmt;
     RadioGroup rdgrp;
-    boolean goahead= false;
+    boolean goahead = false;
     TextView privacyTextClick, termsTextClick;
-    RadioButton radioAgree,radioDisagree;
+    RadioButton radioAgree, radioDisagree;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -30,12 +30,12 @@ public class ProminentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.prominent_disclosure);
-radioAgree=findViewById(R.id.rdagree);
-radioDisagree=findViewById(R.id.rddisagree);
-        rdgrp= findViewById(R.id.radiogrppDisclosure);
-privacyTextClick=findViewById(R.id.privacyIdd);
-termsTextClick= findViewById(R.id.termsIdd);
-btn_sbmt=findViewById(R.id.btn_submit_Disclosure);
+        radioAgree = findViewById(R.id.rdagree);
+        radioDisagree = findViewById(R.id.rddisagree);
+        rdgrp = findViewById(R.id.radiogrppDisclosure);
+        privacyTextClick = findViewById(R.id.privacyIdd);
+        termsTextClick = findViewById(R.id.termsIdd);
+        btn_sbmt = findViewById(R.id.btn_submit_Disclosure);
 
         rdgrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -58,8 +58,8 @@ btn_sbmt=findViewById(R.id.btn_submit_Disclosure);
                             .setPositiveButton("OK", null)
                             .show();
                 } else {
-startActivity(new Intent(ProminentActivity.this, Login_verifcation.class));
-finish();
+                    startActivity(new Intent(ProminentActivity.this, Login_verifcation.class));
+                    finish();
                 }
             }
         });
@@ -69,8 +69,7 @@ finish();
             public void onClick(View v) {
 
 
-
-                    startActivity(new Intent(getApplicationContext(), Login_verifcation.class));
+                startActivity(new Intent(getApplicationContext(), Login_verifcation.class));
 
             }
         });
