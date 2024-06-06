@@ -21,7 +21,6 @@ import com.ext.liveaction_ext.Addaptors.CardAdapter;
 import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
-import com.ext.liveaction_ext.service_clas.Conn_service;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -35,13 +34,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class DayFragment extends Fragment implements Conn_service.PackRuleCallback {
+public class DayFragment extends Fragment{
     PieChart pieChart;
-    DummyData dumdta = new DummyData();
+
     int uid_z;
     int uid = 0;
-    boolean showDummyVal;
-    boolean dummyVal = false;
+
 
     TableLayout tbklayout;
 
@@ -63,15 +61,11 @@ public class DayFragment extends Fragment implements Conn_service.PackRuleCallba
         pieChart = view.findViewById(R.id.piechart);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-
-        SharedPreferences.Editor myEdit = sh.edit();
-
-//            Data_Show();
-
+Data_Show();
         return view;
     }
 
-    public void Data_Show() {
+    private void Data_Show() {
 
         sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
@@ -81,6 +75,7 @@ public class DayFragment extends Fragment implements Conn_service.PackRuleCallba
         Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
 //Log.e("dayset", daySet.toString());
         // String liveData = sh.getString("key_live_data", ""); // Provide default value if key not found
+
 
 
 //        showDummyVal = sh.getBoolean("showDummy",dummyVal);
@@ -95,20 +90,20 @@ public class DayFragment extends Fragment implements Conn_service.PackRuleCallba
 //
 //        } else {
 
-        piecreate(daySet);
-        List<CardItem> cardItems = createCardItems(daySet);
-        cardAdapter = new CardAdapter(cardItems, requireContext());
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        recyclerView.setAdapter(cardAdapter);
+            piedaycreate( daySet);
+            List<CardItem> cardItems = createdayCardItems(daySet);
+            cardAdapter = new CardAdapter(cardItems, requireContext());
+            recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+            recyclerView.setAdapter(cardAdapter);
 //        }
 
     }
 
 
-    private List<CardItem> createCardItems(Set<String> dSet) {
+   public List<CardItem> createdayCardItems(Set<String> dSet) {
 
         List<CardItem> cardItems = new ArrayList<>();
-        //  Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
+      //  Set<String> daySet = sh.getStringSet("DAY_LIST", new HashSet<>());
         for (String jsonString : dSet) {
             try {
                 JSONObject jsonObject = new JSONObject(jsonString);
@@ -128,20 +123,20 @@ public class DayFragment extends Fragment implements Conn_service.PackRuleCallba
                 String averageText = "Average\n(last 7 days)";
                 String varianceText = "Variance";
 
-                String tsThisDays = " " + tsThisDayFormatted;
+                String tsThisDays = " "+ tsThisDayFormatted;
                 String averages = " " + averageFormatted;
 
-                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsThisDays, averages, varianceFormatted));
+                cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText,tsThisDays, averages, varianceFormatted));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
 
+
         return cardItems;
     }
-
-    private void piecreate(Set<String> dSet) {
+public void piedaycreate( Set<String> dSet ) {
         for (String jsonString : dSet) {
 
             try {
@@ -233,10 +228,5 @@ public class DayFragment extends Fragment implements Conn_service.PackRuleCallba
     }
 
 
-    @Override
-    public void onResult(String result) {
-        if (result != null) {
-            Data_Show();
-        }
-    }
+
 }

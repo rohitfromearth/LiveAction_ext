@@ -41,7 +41,7 @@ import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.FirebaseApp;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -55,9 +55,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Dashboard extends AppCompatActivity implements Conn_service.PackRuleCallback {
+public class Dashboard extends AppCompatActivity implements Conn_service.PackRuleCallback{
 
-    TextView tvP_usernme, privacyTet, termsTet, sync_tym;
+    TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -81,20 +81,18 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
-    //    ArrayList<String> yearList = new ArrayList<String>();
+//    ArrayList<String> yearList = new ArrayList<String>();
 //    SharedPreferences sh;
-    DayFragment df = new DayFragment();
     boolean showDummy;
-    public String firebaseToke = "";
-    String userid = "";
+   public String firebaseToke = "";
+    String userid="";
     ProgressBar pro;
-    SharedPreferences sh;
+    SharedPreferences sh ;
 
-    private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
+
     String data_sync;
     FirebaseAuth mAuth;
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,7 +101,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
+
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -119,16 +119,20 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+
                             firebaseToke = task.getResult().getToken();
-                            Uioperation(firebaseToke);
+Uioperation(firebaseToke);
                         }
                     });
-        } else {
+        }
+        else {
 
             Intent intent = new Intent(Dashboard.this, Login_verifcation.class);
             startActivity(intent);
-            finish();
+         finish();
         }
+
+
 
 
         uid = sh.getInt("UID", uid_z);
@@ -136,7 +140,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
         mobile = sh.getString("mobile_number", "");
         Set<String> set = sh.getStringSet("APP_LIST", null);
         appl.addAll(set);
-        userid = "user id : " + uid;
+userid= "user id : "+uid;
 
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
             Dialog dd = new Dialog(Dashboard.this);
@@ -168,10 +172,10 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
         manag_btn = findViewById(R.id.mange_btn);
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
-        sync_tym = findViewById(R.id.tym_sync);
+        sync_tym=findViewById(R.id.tym_sync);
         faq_btn = findViewById(R.id.FAQ_btn);
-        termsTet = findViewById(R.id.termsd);
-        privacyTet = findViewById(R.id.privacyd);
+        termsTet= findViewById(R.id.termsd);
+        privacyTet= findViewById(R.id.privacyd);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
         mDrawer.addDrawerListener(drawerToggle);
@@ -224,10 +228,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
         termsTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TermsActivity.class)));
         tvP_usernme = findViewById(R.id.usrname);
         tvP_usernme.setText(username);
-        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        pro.setVisibility(View.GONE);
+
 
     }
 
@@ -236,16 +237,20 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
     }
 
-    private void Uioperation(String firebaseTok) {
+    private void Uioperation(String firebaseTok){
 
         long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
 
-        today = Calendar.getInstance();
+ today = Calendar.getInstance();
         Calendar lastTaskCalendar = Calendar.getInstance();
         lastTaskCalendar.setTimeInMillis(lastTaskDate);
 
         if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
                 today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+            MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(pagerAdapter);
+            tabLayout.setupWithViewPager(viewPager);
+            pro.setVisibility(View.GONE);
             // Task has already been performed today
         } else {
             // Task has not been performed today
@@ -277,7 +282,6 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
         //april
     }
-
     public ArrayList dataWeekList(String ss) {
         //april
 
@@ -331,7 +335,6 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
                     return true;
                 });
     }
-
     @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
@@ -341,22 +344,24 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
         if (data_sync.isEmpty()) {
             // If no data is available, display a dash "-"
-            sync_tym.setText(timeStatus + "-");
+            sync_tym.setText(timeStatus+ "-");
         } else {
             // If data is available, display the value retrieved from shared preferences
-            sync_tym.setText(timeStatus + ": " + data_sync);
+            sync_tym.setText(timeStatus + ": "+ data_sync);
         }
     }
-
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment go_next;
         int itemId = menuItem.getItemId();
-        if (itemId == R.id.chart_page) {
+        if (itemId == R.id.chart_page)
+        {
             startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
-        } else if (itemId == R.id.manage_page) {
+        }
+        else if (itemId == R.id.manage_page)
+        {
 
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
@@ -364,7 +369,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.achieve_page) {
+        }
+        else if (itemId == R.id.achieve_page)
+        {
 
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
@@ -372,7 +379,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.redeem_page) {
+        }
+        else if (itemId == R.id.redeem_page)
+        {
 
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
@@ -380,7 +389,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.contact_us) {
+        }
+        else if (itemId == R.id.contact_us)
+        {
 
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Contact us");
@@ -388,7 +399,9 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.faq) {
+        }
+        else if (itemId == R.id.faq)
+        {
 
             go_next = new FaQ();
             getSupportActionBar().setTitle("FAQ");
@@ -396,14 +409,18 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        } else if (itemId == R.id.perm_new) {
+        }
+        else if (itemId == R.id.perm_new)
+        {
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
-        } else if (itemId == R.id.Logout) {
-            mAuth.signOut();
+        }
+        else if (itemId == R.id.Logout)
+        {
+mAuth.signOut();
             Intent intent = new Intent(this, Login_verifcation.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -435,12 +452,14 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
 
-
         myEdit.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
         myEdit.putBoolean("Dashboard", true);
         myEdit.apply();
+        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        pro.setVisibility(View.GONE);
 
-        df.Data_Show();
     }
 //    private void initPopupDialog(Context context) {
 //        // Create and initialize the popup dialog

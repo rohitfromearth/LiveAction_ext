@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
    public SharedPreferences sh;
     private int initialY;
     private float initialTouchX;
+    ProgressBar proach;
     private float initialTouchY;
 
 
@@ -58,7 +60,8 @@ public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
 
 
         View view = inflater.inflate(R.layout.activity_achieve, container, false);
-
+proach= view.findViewById(R.id.progressach);
+proach.setVisibility(View.VISIBLE);
         sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
 
@@ -109,7 +112,8 @@ public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
     }
 public void fetchdta(String firebaseTokk){
 
-
+rede.setEnabled(false);
+btn_dsh.setEnabled(false);
 
     Conn_service servic = new Conn_service(getActivity());
         servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk,this);
@@ -181,6 +185,8 @@ public void fetchdta(String firebaseTokk){
 
 
             onPostExecute(result);
-
+proach.setVisibility(View.GONE);
+        rede.setEnabled(true);
+        btn_dsh.setEnabled(true);
     }
 }
