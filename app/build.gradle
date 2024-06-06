@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'com.ext.liveaction_ext'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.ext.liveaction_ext"
@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
 
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
     implementation 'androidx.activity:activity:1.9.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.github.blackfizz:eazegraph:1.2.5l@aar'
@@ -69,7 +69,7 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation files("../library/app-release.aar")
+    implementation files("../library/app-debug.aar")
 
 
 

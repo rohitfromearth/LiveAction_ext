@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "LiveAction_ext"
-include ':app','app-release'
+include ':app','app-debug'
