@@ -118,7 +118,7 @@ public class Conn_service {
 
                 // Pass the response to the ResponseCallback interface
                 if (activity != null) {
-                activity.runOnUiThread(() -> responseCallback.onResponse(UserID));}
+                    activity.runOnUiThread(() -> responseCallback.onResponse(UserID));}
                 // Pass the response to the ResponseCallback interface
 //                responseCallback.onResponse(response);
             } catch (Exception e) {
@@ -195,7 +195,7 @@ public class Conn_service {
                 }
                 String finalResponse = response;
                 if (activity != null) {
-                activity.runOnUiThread(() -> callback.onResultcomment(finalResponse));}
+                    activity.runOnUiThread(() -> callback.onResultcomment(finalResponse));}
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
                 showFailureScreen();
@@ -230,7 +230,7 @@ public class Conn_service {
                 }
                 String finalResponse = response;
                 if (activity != null) {
-                activity.runOnUiThread(() ->  callback.onResult(finalResponse));}
+                    activity.runOnUiThread(() ->  callback.onResult(finalResponse));}
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
                 showFailureScreen();
@@ -266,7 +266,7 @@ public class Conn_service {
                 // Pass the response to the ResponseCallback interface
                 String finalResponse = response;
                 if (activity != null) {
-                activity.runOnUiThread(() -> resCallback.onResposeClick(finalResponse));}
+                    activity.runOnUiThread(() -> resCallback.onResposeClick(finalResponse));}
 
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());

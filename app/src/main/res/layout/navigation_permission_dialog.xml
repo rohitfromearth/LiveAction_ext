@@ -6,6 +6,7 @@
     android:gravity="center"
     android:paddingVertical="20dp"
     app:cardBackgroundColor="#9DB2BF"
+    app:cardCornerRadius="20dp"
     app:cardElevation="10dp">
 
     <androidx.cardview.widget.CardView
@@ -43,7 +44,7 @@
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="Direction : The button will redirect to usage stat permission,find Live Actions turn switch on "
+            android:text="Direction : The button will redirect to usage stat permission,find Live Action's turn switch on "
             android:textColor="@color/white"
             android:textSize="15dp"
             android:textStyle="italic" />
@@ -52,6 +53,7 @@
             android:id="@+id/usaegstat_perm1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="40dp"
             android:layout_marginVertical="30dp"
             android:padding="40dp"
@@ -65,6 +67,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginVertical="5dp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:text="Usage Stat Permission"
                 android:textColor="@color/white"
@@ -88,11 +91,11 @@
             android:id="@+id/accessibilty_perm1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="40dp"
             android:layout_marginVertical="30dp"
             android:padding="40dp"
             app:cardBackgroundColor="#fe7e34"
-
             app:cardCornerRadius="40dp"
             app:cardElevation="20dp">
 
@@ -102,6 +105,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginVertical="5dp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:text="Accessibity Permission "
                 android:textColor="@color/white"

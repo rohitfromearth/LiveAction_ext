@@ -6,11 +6,13 @@
     android:gravity="center"
     android:paddingVertical="20dp"
     app:cardBackgroundColor="#E2DAC4"
+    app:cardCornerRadius="20dp"
     app:cardElevation="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cardCornerRadius="20dp"
         android:orientation="vertical">
 
         <ImageButton
@@ -20,7 +22,7 @@
             android:layout_gravity="top|right"
             android:background="@drawable/close_bg"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:cardCornerRadius="20dp" />
+            app:cardCornerRadius="60dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
+
             android:stretchColumns="*">
 
             <!-- Headers -->
