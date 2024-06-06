@@ -2,7 +2,6 @@ package com.ext.liveaction_ext.frags;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.Addaptors.CardAdapter;
 import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.R;
-import com.ext.liveaction_ext.service_clas.Conn_service;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -30,13 +28,12 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class month_Fragment extends Fragment implements Conn_service.PackRuleCallback {
+public class MonthFragment extends Fragment {
     PieChart pieChart;
     int uid_z;
     int uid = 0;
@@ -63,13 +60,13 @@ public class month_Fragment extends Fragment implements Conn_service.PackRuleCal
 
 
 
-
+Data_show_month();
 
 
         return view;
     }
 
-   public void Data_show_month( ) {
+   private void Data_show_month( ) {
         uid = sh.getInt("UID", uid_z);
         Set<String> monthset = sh.getStringSet("MONTH_LIST", new HashSet<>());
         for (String jsonString : monthset) {
@@ -198,10 +195,5 @@ public class month_Fragment extends Fragment implements Conn_service.PackRuleCal
     }
 
 
-    @Override
-    public void onResult(String result) {
-        if(result!=null) {
-            Data_show_month();
-        }
-    }
+
 }

@@ -145,16 +145,21 @@ Target can be changed with a deviation of 10% from your actuals."
 
             </TableLayout>
 
-            <ProgressBar
-                android:id="@+id/prog_loader"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
 
-                 />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                >
+                <ProgressBar
+                    android:id="@+id/progressmng"
+                    android:layout_margin="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+
+                    android:visibility="gone" />
+            </LinearLayout>
             <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

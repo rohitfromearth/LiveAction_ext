@@ -1,6 +1,4 @@
-<!DOCTYPE resources [
-<!ENTITY rsquo "&#x2019;">
-]>
+<!DOCTYPE resources [<!ENTITY rsquo "&#x2019;">]>
 <resources>
     <string name="app_name">Life Actions</string>
 
@@ -40,7 +38,8 @@ into LIFE ACTIONS servers can be requested by contacting us at <a href="mailto:l
            advertisement purposes. For a complete overview of how we use the data shared by a panellist please go
            over our Terms of Use and Privacy Policy. </p>\n\n
         <p>As a panellist you hereby declare and accept the following:</p>\n\n
-<p>&quot;I understand that by downloading, installing this application and by agreeing to the terms and conditions, I have voluntarily agreed to be a panellist for LIFE ACTIONS for the above-mentioned purpose. I understand that transferring of data to LIFE ACTION&rsquo; backend from the application may use data connectivity from my phone, either cellular or Wi-Fi. This will be minimum in quantum and will be part of my usage on mobile data plan/Wi-Fi plan as the case maybe. If I am chosen as a panellist by LIFE ACTIONS, I will be compensated with suitable incentive commensurately. I agree to be a panellist till I continue to keep the application on my phone and hereby consent to LIFE ACTIONS&rsquo;s usage of my data even after I uninstall the application.&quot;</p>
+<p>&quot;I understand that by downloading, installing this application and by agreeing to the terms and conditions, I have voluntarily agreed to be a panellist for LIFE ACTIONS for the above-mentioned purpose. I understand that transferring of data to LIFE ACTION&rsquo;
+    backend from the application may use data connectivity from my phone, either cellular or Wi-Fi. This will be minimum in quantum and will be part of my usage on mobile data plan/Wi-Fi plan as the case maybe. If I am chosen as a panellist by LIFE ACTIONS, I will be compensated with suitable incentive commensurately. I agree to be a panellist till I continue to keep the application on my phone and hereby consent to LIFE ACTIONS&rsquo;s usage of my data even after I uninstall the application.&quot;</p>
    </string>
 
     <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy  </a>  </string>

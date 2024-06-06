@@ -4,11 +4,14 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+
+import com.ext.liveaction_ext.Screens.FailureScreenActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,9 +71,12 @@ public class Conn_service {
                     for (int i = 0; i < appsList.length(); i++) {
                         appl.add(appsList.getString(i));
                     }
+                }else{
+                    showFailureScreen();
                 }
             } catch (IOException | JSONException e) {
                 Log.e(TAG, e.getMessage());
+                showFailureScreen();
             }
             // Pass result to callback
             callback.onResult(appl);
@@ -103,6 +109,8 @@ public class Conn_service {
                         response += line;
                     }
                     UserID = response;
+                }else {
+                    showFailureScreen();
                 }
                 urlConnection.disconnect();
 //                onClickListener.onClick(null); // You can pass a View object if needed
@@ -114,6 +122,7 @@ public class Conn_service {
 //                responseCallback.onResponse(response);
             } catch (Exception e) {
                 Log.e(TAG, String.valueOf(e));
+                showFailureScreen();
             }
             // Pass result to callback
 
@@ -147,9 +156,13 @@ public class Conn_service {
                     }
                     UserID = response;
                 }
+                else{
+                    showFailureScreen();
+                }
                 urlConnection.disconnect();
             } catch (Exception e) {
                 Log.e(TAG, String.valueOf(e));
+                showFailureScreen();
             }
             // Pass result to callback
             callback.onResult(UserID);
@@ -176,10 +189,14 @@ public class Conn_service {
                     }
                     Log.e(TAG, response);
                 }
+                else{
+                    showFailureScreen();
+                }
                 String finalResponse = response;
                 activity.runOnUiThread(() -> callback.onResultcomment(finalResponse));
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
+                showFailureScreen();
             }
             // Pass result to callback
 
@@ -206,11 +223,14 @@ public class Conn_service {
                         response += applist;
                     }
                     Log.e(TAG, response);
+                }else{
+                    showFailureScreen();
                 }
                 String finalResponse = response;
                 activity.runOnUiThread(() ->  callback.onResult(finalResponse));
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
+                showFailureScreen();
             }
         });
     }
@@ -235,6 +255,9 @@ public class Conn_service {
                     }
                     Log.e(TAG, response);
                 }
+                else{
+                    showFailureScreen();
+                }
                 activity.runOnUiThread(() -> onClickListener.onClick(null));
 
                 // Pass the response to the ResponseCallback interface
@@ -243,6 +266,7 @@ public class Conn_service {
 
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
+                showFailureScreen();
             }
             // Pass result to callback
 
@@ -283,6 +307,12 @@ public class Conn_service {
             }
             // Pass result to callback
             callback.onCrash(str1);
+        });
+    }
+    private void showFailureScreen() {
+        activity.runOnUiThread(() -> {
+            Intent intent = new Intent(activity, FailureScreenActivity.class);
+            activity.startActivity(intent);
         });
     }
 

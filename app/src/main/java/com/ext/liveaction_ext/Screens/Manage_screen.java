@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -67,6 +68,7 @@ public class Manage_screen extends Fragment implements Conn_service.PackRuleCall
     String res;
 
     private boolean isUpdating = false;
+    ProgressBar promng;
 
 
     @SuppressLint("MissingInflatedId")
@@ -76,7 +78,8 @@ public class Manage_screen extends Fragment implements Conn_service.PackRuleCall
 
         View view = inflater.inflate(R.layout.activity_manage_screen, container, false);
 
-
+promng=view.findViewById(R.id.progressmng);
+promng.setVisibility(View.VISIBLE);
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser use = mAuth.getCurrentUser();
@@ -492,7 +495,7 @@ public class Manage_screen extends Fragment implements Conn_service.PackRuleCall
         Log.e("data",result);
         edit = onPostExecute(result);
 
-
+        promng.setVisibility(View.GONE);
         if (edit) {
             tv_btn.setText("Save Target");
 

@@ -36,11 +36,12 @@ import androidx.viewpager.widget.ViewPager;
 import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
 import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.frags.DayFragment;
 import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.FirebaseApp;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -88,8 +89,8 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
     ProgressBar pro;
     SharedPreferences sh ;
 
-    private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
+
     String data_sync;
     FirebaseAuth mAuth;
     @SuppressLint("SetTextI18n")
@@ -118,6 +119,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
+
                             firebaseToke = task.getResult().getToken();
 Uioperation(firebaseToke);
                         }
@@ -226,10 +228,7 @@ userid= "user id : "+uid;
         termsTet.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), TermsActivity.class)));
         tvP_usernme = findViewById(R.id.usrname);
         tvP_usernme.setText(username);
-        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-        pro.setVisibility(View.GONE);
+
 
     }
 
@@ -248,6 +247,10 @@ userid= "user id : "+uid;
 
         if (today.get(Calendar.YEAR) == lastTaskCalendar.get(Calendar.YEAR) &&
                 today.get(Calendar.DAY_OF_YEAR) == lastTaskCalendar.get(Calendar.DAY_OF_YEAR)) {
+            MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(pagerAdapter);
+            tabLayout.setupWithViewPager(viewPager);
+            pro.setVisibility(View.GONE);
             // Task has already been performed today
         } else {
             // Task has not been performed today
@@ -452,6 +455,11 @@ mAuth.signOut();
         myEdit.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
         myEdit.putBoolean("Dashboard", true);
         myEdit.apply();
+        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        pro.setVisibility(View.GONE);
+
     }
 //    private void initPopupDialog(Context context) {
 //        // Create and initialize the popup dialog

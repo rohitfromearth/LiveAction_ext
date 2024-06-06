@@ -2,7 +2,6 @@ package com.ext.liveaction_ext.frags;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ext.liveaction_ext.Addaptors.CardAdapter;
 import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.R;
-import com.ext.liveaction_ext.service_clas.Conn_service;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
@@ -30,13 +28,12 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class week_Fragment extends Fragment implements  Conn_service.PackRuleCallback{
+public class WeekFragment extends Fragment {
     PieChart pieChart;
     int uid_z;
 
@@ -60,7 +57,7 @@ public class week_Fragment extends Fragment implements  Conn_service.PackRuleCal
         pieChart = view.findViewById(R.id.piechart_for_week);
         recyclerView = view.findViewById(R.id.recyclerView_week);
 
-
+Data_Show_Week();
 
 
         return view;
@@ -204,14 +201,5 @@ Log.e("data in week","inside");
     }
 
 
-    @Override
-    public void onResult(String result) {
 
-        Log.e("data in week","inside69");
-        if(result!=null) {
-
-            Log.e("data in week","inside2");
-            Data_Show_Week();
-        }
-    }
 }
