@@ -36,6 +36,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
 import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
+import com.ext.liveaction_ext.frags.DayFragment;
 import com.ext.liveaction_ext.service_clas.Conn_service;
 import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
@@ -54,9 +55,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Dashboard extends AppCompatActivity implements Conn_service.PackRuleCallback{
+public class Dashboard extends AppCompatActivity implements Conn_service.PackRuleCallback {
 
-    TextView tvP_usernme,privacyTet,termsTet,sync_tym;
+    TextView tvP_usernme, privacyTet, termsTet, sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
     int uid_z;
@@ -80,18 +81,20 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
-//    ArrayList<String> yearList = new ArrayList<String>();
+    //    ArrayList<String> yearList = new ArrayList<String>();
 //    SharedPreferences sh;
+    DayFragment df = new DayFragment();
     boolean showDummy;
-   public String firebaseToke = "";
-    String userid="";
+    public String firebaseToke = "";
+    String userid = "";
     ProgressBar pro;
-    SharedPreferences sh ;
+    SharedPreferences sh;
 
     private boolean isLoggedIn = false;
     String timeStatus = "Last synced at";
     String data_sync;
     FirebaseAuth mAuth;
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,9 +103,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
-        sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
-
-
+        sh = getApplicationContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -119,18 +120,15 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             firebaseToke = task.getResult().getToken();
-Uioperation(firebaseToke);
+                            Uioperation(firebaseToke);
                         }
                     });
-        }
-        else {
+        } else {
 
             Intent intent = new Intent(Dashboard.this, Login_verifcation.class);
             startActivity(intent);
-         finish();
+            finish();
         }
-
-
 
 
         uid = sh.getInt("UID", uid_z);
@@ -138,7 +136,7 @@ Uioperation(firebaseToke);
         mobile = sh.getString("mobile_number", "");
         Set<String> set = sh.getStringSet("APP_LIST", null);
         appl.addAll(set);
-userid= "user id : "+uid;
+        userid = "user id : " + uid;
 
         if (getIntent().getBooleanExtra("show_permission_dialog", false)) {
             Dialog dd = new Dialog(Dashboard.this);
@@ -170,10 +168,10 @@ userid= "user id : "+uid;
         manag_btn = findViewById(R.id.mange_btn);
         achieve_btn = findViewById(R.id.achie_btn);
         connect_btn = findViewById(R.id.connectbtn);
-        sync_tym=findViewById(R.id.tym_sync);
+        sync_tym = findViewById(R.id.tym_sync);
         faq_btn = findViewById(R.id.FAQ_btn);
-        termsTet= findViewById(R.id.termsd);
-        privacyTet= findViewById(R.id.privacyd);
+        termsTet = findViewById(R.id.termsd);
+        privacyTet = findViewById(R.id.privacyd);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.nav_open, R.string.nav_close);
         mDrawer.addDrawerListener(drawerToggle);
@@ -238,11 +236,11 @@ userid= "user id : "+uid;
 
     }
 
-    private void Uioperation(String firebaseTok){
+    private void Uioperation(String firebaseTok) {
 
         long lastTaskDate = sh.getLong("KEY_LAST_TASK_DATE", 0); // 0 means thed task has never been performed
 
- today = Calendar.getInstance();
+        today = Calendar.getInstance();
         Calendar lastTaskCalendar = Calendar.getInstance();
         lastTaskCalendar.setTimeInMillis(lastTaskDate);
 
@@ -279,6 +277,7 @@ userid= "user id : "+uid;
 
         //april
     }
+
     public ArrayList dataWeekList(String ss) {
         //april
 
@@ -332,6 +331,7 @@ userid= "user id : "+uid;
                     return true;
                 });
     }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onResume() {
@@ -341,24 +341,22 @@ userid= "user id : "+uid;
 
         if (data_sync.isEmpty()) {
             // If no data is available, display a dash "-"
-            sync_tym.setText(timeStatus+ "-");
+            sync_tym.setText(timeStatus + "-");
         } else {
             // If data is available, display the value retrieved from shared preferences
-            sync_tym.setText(timeStatus + ": "+ data_sync);
+            sync_tym.setText(timeStatus + ": " + data_sync);
         }
     }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment go_next;
         int itemId = menuItem.getItemId();
-        if (itemId == R.id.chart_page)
-        {
+        if (itemId == R.id.chart_page) {
             startActivity(new Intent(this, Dashboard.class));
             Objects.requireNonNull(getSupportActionBar()).setTitle("Dashboard");
 
-        }
-        else if (itemId == R.id.manage_page)
-        {
+        } else if (itemId == R.id.manage_page) {
 
             go_next = new Manage_screen();
             getSupportActionBar().setTitle("Manage");
@@ -366,9 +364,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.achieve_page)
-        {
+        } else if (itemId == R.id.achieve_page) {
 
             go_next = new Achieve();
             getSupportActionBar().setTitle("Achievements");
@@ -376,9 +372,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.redeem_page)
-        {
+        } else if (itemId == R.id.redeem_page) {
 
             go_next = new Reedeem();
             getSupportActionBar().setTitle("Redeem");
@@ -386,9 +380,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.contact_us)
-        {
+        } else if (itemId == R.id.contact_us) {
 
             go_next = new ContactUs();
             getSupportActionBar().setTitle("Contact us");
@@ -396,9 +388,7 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.faq)
-        {
+        } else if (itemId == R.id.faq) {
 
             go_next = new FaQ();
             getSupportActionBar().setTitle("FAQ");
@@ -406,18 +396,14 @@ userid= "user id : "+uid;
 
             fragmentManager.beginTransaction().replace(R.id.framelayout, go_next).commit();
 
-        }
-        else if (itemId == R.id.perm_new)
-        {
+        } else if (itemId == R.id.perm_new) {
 
             Intent intent = new Intent(this, Dashboard.class);
             intent.putExtra("show_permission_dialog", true);
             startActivity(intent);
 
-        }
-        else if (itemId == R.id.Logout)
-        {
-mAuth.signOut();
+        } else if (itemId == R.id.Logout) {
+            mAuth.signOut();
             Intent intent = new Intent(this, Login_verifcation.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -449,9 +435,12 @@ mAuth.signOut();
         myEdit.putStringSet("WEEK_LIST", weekset);
         myEdit.putStringSet("MONTH_LIST", monthset);
 
+
         myEdit.putLong("KEY_LAST_TASK_DATE", today.getTimeInMillis());
         myEdit.putBoolean("Dashboard", true);
         myEdit.apply();
+
+        df.Data_Show();
     }
 //    private void initPopupDialog(Context context) {
 //        // Create and initialize the popup dialog

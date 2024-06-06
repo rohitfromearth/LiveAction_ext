@@ -2,8 +2,6 @@ package com.ext.liveaction_ext.frags;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -24,23 +22,20 @@ import com.ext.liveaction_ext.CardItem;
 import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
-import com.google.firebase.auth.FirebaseAuth;
 
 import org.eazegraph.lib.charts.PieChart;
 import org.eazegraph.lib.models.PieModel;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class day_Fragment extends Fragment {
+public class DayFragment extends Fragment implements Conn_service.PackRuleCallback{
     PieChart pieChart;
     DummyData dumdta = new DummyData();
     int uid_z;
@@ -72,12 +67,12 @@ public class day_Fragment extends Fragment {
 
         SharedPreferences.Editor myEdit = sh.edit();
 
-            Data_Show();
+//            Data_Show();
 
         return view;
     }
 
-    private void Data_Show() {
+    public void Data_Show() {
 
         sh = requireActivity().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
         uid = sh.getInt("UID", uid_z);
@@ -240,4 +235,10 @@ public class day_Fragment extends Fragment {
     }
 
 
+    @Override
+    public void onResult(String result) {
+        if(result!= null){
+            Data_Show();
+        }
+    }
 }

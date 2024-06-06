@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.ext.liveaction_ext.frags.day_Fragment;
+import com.ext.liveaction_ext.frags.DayFragment;
 import com.ext.liveaction_ext.frags.month_Fragment;
 import com.ext.liveaction_ext.frags.week_Fragment;
 
@@ -20,7 +20,7 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         // Return the fragment instance based on the tab position
         switch (position) {
             case 0:
-                return new day_Fragment();
+                return new DayFragment();
             case 1:
                 return new week_Fragment();
             case 2:
