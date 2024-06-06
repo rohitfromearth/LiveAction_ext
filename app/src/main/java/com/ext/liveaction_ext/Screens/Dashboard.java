@@ -69,21 +69,20 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
     NavigationView navigationView;
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
-    DummyData dumdta = new DummyData();
     String mobile;
-    String res;
+
     FragmentManager fragmentManager;
-    Context context;
+
 
     Calendar today;
     ArrayList<String> appl = new ArrayList<String>();
-    ArrayList<String> dummyList = new ArrayList<String>();
+
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
 //    ArrayList<String> yearList = new ArrayList<String>();
 //    SharedPreferences sh;
-    boolean showDummy;
+
    public String firebaseToke = "";
     String userid="";
     ProgressBar pro;
