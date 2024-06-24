@@ -462,7 +462,7 @@ public class Login_verifcation extends AppCompatActivity implements Conn_service
                                             try{
                                                 String firebaseToken = task1.getResult().getToken();
                                                        boolean pageID = senddata(edtPhone.getText().toString(), firebaseToken);
-                                                Log.e("crashtext", firebaseToken);
+
 
                                             } catch (Exception e) {
                                                 Log.e("crashtext", e.getMessage());
@@ -507,7 +507,7 @@ public class Login_verifcation extends AppCompatActivity implements Conn_service
                      boolean hasPermission = hasUsageAccessPermission();
             if (hasPermission) {
                 if (userExists) {
-                    Log.e("onBackPressed","back from login");
+
                     int userId = data.getInt("user_id");
                     String userName = data.getString("user_name");
                     SharedPreferences.Editor myEdit = sh.edit();

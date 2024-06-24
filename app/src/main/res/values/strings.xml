@@ -1,6 +1,6 @@
 <!DOCTYPE resources [<!ENTITY rsquo "&#x2019;">]>
 <resources>
-    <string name="app_name">Life Action\'s</string>
+    <string name="app_name">Life Action</string>
 
     <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
     <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>

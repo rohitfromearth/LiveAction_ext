@@ -1,20 +1,12 @@
 package com.ext.liveaction_ext.Screens;
 
-import static android.app.PendingIntent.getActivity;
-import static java.security.AccessController.getContext;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +26,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
-import com.ext.liveaction_ext.DummyData;
 import com.ext.liveaction_ext.R;
-import com.ext.liveaction_ext.frags.DayFragment;
 import com.ext.liveaction_ext.service_clas.Conn_service;
-import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -290,8 +278,7 @@ userid= "user id : "+uid;
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 weekList.add(jsonArray.getString(i));
-                Log.e("Week", String.valueOf(weekList));
-            }
+               }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

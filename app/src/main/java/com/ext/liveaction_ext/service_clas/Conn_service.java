@@ -6,8 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
@@ -28,8 +26,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import okhttp3.Response;
 
 public class Conn_service {
     private static final String TAG = "Conn_service";
@@ -52,7 +48,7 @@ public class Conn_service {
             try {
                 String response = "";
                 URL url = new URL(endpot + "/apps/list");
-                Log.e(TAG, String.valueOf(url));
+
                 HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
                 urlConn.setRequestMethod("GET");
                 urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -101,7 +97,7 @@ public class Conn_service {
                 o.flush();
                 o.close();
                 int responseCode = urlConnection.getResponseCode();
-                Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     String line;
@@ -149,6 +145,7 @@ public class Conn_service {
                 o.close();
                 int responseCode = urlConnection.getResponseCode();
                 Log.e(TAG, String.valueOf(responseCode));
+
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     String line;
@@ -181,7 +178,8 @@ public class Conn_service {
                 urlConn.setRequestProperty("authorization", "Bearer " + firebaseToken);
                 urlConn.setDoInput(true);
                 int responseCode = urlConn.getResponseCode();
-                Log.e(TAG, String.valueOf(responseCode)+url);
+                Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
                     String applist;
@@ -217,14 +215,15 @@ public class Conn_service {
                 urlConn.setRequestProperty("authorization", "Bearer " + firebaseToken);
                 urlConn.setDoInput(true);
                 int responseCode = urlConn.getResponseCode();
-                Log.e(TAG, String.valueOf(responseCode)+url);
+                Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
                     String applist;
                     while ((applist = br.readLine()) != null) {
                         response += applist;
                     }
-                    Log.e(TAG, response);
+
                 }else{
                     showFailureScreen();
                 }
@@ -249,14 +248,15 @@ public class Conn_service {
                 urlConn.setRequestProperty("authorization", "Bearer " + firebaseToken);
                 urlConn.setDoInput(true);
                 int responseCode = urlConn.getResponseCode();
-                Log.e(TAG, String.valueOf(responseCode)+url);
+                Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
                     String applist;
                     while ((applist = br.readLine()) != null) {
                         response += applist;
                     }
-                    Log.e(TAG, response);
+
                 }
                 else{
                     showFailureScreen();
