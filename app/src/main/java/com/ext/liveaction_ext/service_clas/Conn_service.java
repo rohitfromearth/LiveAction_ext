@@ -97,7 +97,7 @@ public class Conn_service {
                 o.flush();
                 o.close();
                 int responseCode = urlConnection.getResponseCode();
-                Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     String line;
@@ -145,6 +145,7 @@ public class Conn_service {
                 o.close();
                 int responseCode = urlConnection.getResponseCode();
                 Log.e(TAG, String.valueOf(responseCode));
+
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                     String line;
@@ -178,6 +179,7 @@ public class Conn_service {
                 urlConn.setDoInput(true);
                 int responseCode = urlConn.getResponseCode();
                 Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
                     String applist;
@@ -214,6 +216,7 @@ public class Conn_service {
                 urlConn.setDoInput(true);
                 int responseCode = urlConn.getResponseCode();
                 Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
                     String applist;
@@ -246,6 +249,7 @@ public class Conn_service {
                 urlConn.setDoInput(true);
                 int responseCode = urlConn.getResponseCode();
                 Log.e(TAG, String.valueOf(responseCode));
+                Log.e(TAG, firebaseToken);
                 if (responseCode == HttpsURLConnection.HTTP_OK) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
                     String applist;
