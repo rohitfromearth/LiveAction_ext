@@ -8,6 +8,7 @@ import androidx.core.splashscreen.SplashScreen;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -30,22 +31,27 @@ public class Splashsscreen extends AppCompatActivity implements Conn_service.App
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Show the splash screen using the SplashScreen API
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        //SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
 
-        Conn_service conn = new Conn_service(this);
-        getSupportActionBar().hide();
+        // Check if the Android version is greater than 11 (API level 30)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+            SplashScreen  splashScreen = SplashScreen.installSplashScreen(this);
+            getSupportActionBar().hide();
+        }
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_splashsscreen);
+        Conn_service conn = new Conn_service(this);
+
 
 
         new Handler().postDelayed(() -> {
 
-//            ArrayList pack = conn.App_list(getApplicationContext());
+
+            //ArrayList pack = conn.App_list(getApplicationContext());
             conn.App_list(this, this);
-
-
-
-//            Log.e(TAG, "Failed to get token: "+pack );
+            //Log.e(TAG, "Failed to get token: "+pack );
 
         },500);
 

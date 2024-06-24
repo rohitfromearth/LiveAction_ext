@@ -47,7 +47,6 @@ public class MonthFragment extends Fragment {
     SharedPreferences sh;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -58,15 +57,13 @@ public class MonthFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView_formonth);
 
 
-
-
-Data_show_month();
+        Data_show_month();
 
 
         return view;
     }
 
-   private void Data_show_month( ) {
+    private void Data_show_month() {
         uid = sh.getInt("UID", uid_z);
         Set<String> monthset = sh.getStringSet("MONTH_LIST", new HashSet<>());
         for (String jsonString : monthset) {
@@ -80,7 +77,7 @@ Data_show_month();
                 // Format the RGB values into a hexadecimal color code
                 String colorCode = String.format("#%02x%02x%02x", red, green, blue);
                 String categoryName = jsonObject.optString("category");
-
+                Log.e("damnedata", categoryName);
                 if (!categoryName.equals("Total")) {
 
                     double pievalue = jsonObject.getDouble("usage_percent_month");
@@ -110,6 +107,7 @@ Data_show_month();
         recyclerView.setAdapter(cardAdapter);
 
     }
+
     private List<CardItem> createCardItemsss() {
         List<CardItem> cardItems = new ArrayList<>();
         Set<String> monthset = sh.getStringSet("MONTH_LIST", new HashSet<>());
@@ -134,7 +132,7 @@ Data_show_month();
                     String tsThisDays = " " + tsThisDayFormatted;
                     String averages = " " + averageFormatted;
                     String variances = String.valueOf(varianceFormatted);
-                    cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText,varianceText, tsThisDays, averages, variances));
+                    cardItems.add(new CardItem(logoResId, categoryName, tsText, averageText, varianceText, tsThisDays, averages, variances));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -193,7 +191,6 @@ Data_show_month();
                 return 0;
         }
     }
-
 
 
 }

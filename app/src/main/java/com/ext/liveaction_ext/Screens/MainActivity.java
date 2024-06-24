@@ -1,5 +1,7 @@
 package com.ext.liveaction_ext.Screens;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
+import com.google.firebase.encoders.json.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,13 +31,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
 
-
-
-
     CardView Viewbtn;
-
-
-
     CheckBox termsCheckbox, privacyCheckbox;
     TextView messageTextView, privacyText, termsText;
     //SharedPreferences sh;
@@ -51,9 +48,20 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS}, 4);
 
+        // Get the version code
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+
+        Log.d(TAG, "Current version name: " + versionCode + "and " +versionName);
+
+       // SharedPreferences sharedPreferences = getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
+       // SharedPreferences.Editor myEdit = sharedPreferences.edit();
+        //myEdit.putString("version_code", String.valueOf(versionCode));
+
         if (!isLocationEnabled) {
             showSettingsAlert();
         }
+
 
         messageTextView = findViewById(R.id.validationmasg);
         privacyText = findViewById(R.id.privacyId);

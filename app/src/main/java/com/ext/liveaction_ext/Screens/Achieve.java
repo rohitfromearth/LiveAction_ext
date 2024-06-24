@@ -32,8 +32,8 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 
-public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
-    CardView rede, congrats_tv,btn_dsh;
+public class Achieve extends Fragment implements Conn_service.PackRuleCallback {
+    CardView rede, congrats_tv, btn_dsh;
 
     int uid_z;
     int uid = 0;
@@ -47,12 +47,11 @@ public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
 
     private FirebaseAuth mAuth;
     private int initialX;
-   public SharedPreferences sh;
+    public SharedPreferences sh;
     private int initialY;
     private float initialTouchX;
     ProgressBar proach;
     private float initialTouchY;
-
 
 
     @Override
@@ -60,8 +59,8 @@ public class Achieve extends Fragment implements Conn_service.PackRuleCallback{
 
 
         View view = inflater.inflate(R.layout.activity_achieve, container, false);
-proach= view.findViewById(R.id.progressach);
-proach.setVisibility(View.VISIBLE);
+        proach = view.findViewById(R.id.progressach);
+        proach.setVisibility(View.VISIBLE);
         sh = getContext().getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
 
 
@@ -70,19 +69,17 @@ proach.setVisibility(View.VISIBLE);
         FirebaseUser use = mAuth.getCurrentUser();
 
 
-
-
         if (use != null) {
             use.getIdToken(true)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             firebaseToke = task.getResult().getToken();
-                             fetchdta(firebaseToke);
+                            fetchdta(firebaseToke);
 
                         }
                     });
 
-        }else {
+        } else {
             Intent intent = new Intent(getActivity(), Login_verifcation.class);
             startActivity(intent);
             getActivity().finish();
@@ -97,7 +94,7 @@ proach.setVisibility(View.VISIBLE);
 
         congrats_tv = view.findViewById(R.id.congrats_tv);
         tv_red_points = view.findViewById(R.id.earn_number);
-        btn_dsh=view.findViewById(R.id.dash_btn_ach);
+        btn_dsh = view.findViewById(R.id.dash_btn_ach);
 
         rede.setOnClickListener(view1 -> {
 
@@ -110,50 +107,51 @@ proach.setVisibility(View.VISIBLE);
         btn_dsh.setOnClickListener(v -> startActivity(new Intent(getContext(), Dashboard.class)));
         return view;
     }
-public void fetchdta(String firebaseTokk){
 
-rede.setEnabled(false);
-btn_dsh.setEnabled(false);
+    public void fetchdta(String firebaseTokk) {
 
-    Conn_service servic = new Conn_service(getActivity());
-        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk,this);
+        rede.setEnabled(false);
+        btn_dsh.setEnabled(false);
+
+        Conn_service servic = new Conn_service(getActivity());
+        servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk, this);
 //                servic.pack_rule("/usageStats/getAchievements/" + uid, firebaseTokk);
         congrats_tv.setVisibility(View.GONE);
 
 
+    }
 
-}
     private void onPostExecute(String result) {
         if (result != null) {
             getActivity().runOnUiThread(() -> {
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("result");
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray jsonArray = jsonObject.getJSONArray("result");
 
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item = jsonArray.getJSONObject(i);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject item = jsonArray.getJSONObject(i);
 
-                    String categoryName = item.getString("category_name");
-                    String lastWeek = item.getString("last_week");
-                    String cumulative = item.getString("cumulative_till_date");
-                    int pointslastweekint = item.getInt("points_last_week");
-                    int pointscumm_I = item.getInt("points_cumulative");
-                    String pointslastweek = String.valueOf(pointslastweekint);
-                    String pointscumm = String.valueOf(pointscumm_I);
+                        String categoryName = item.getString("category_name");
+                        String lastWeek = item.getString("last_week");
+                        String cumulative = item.getString("cumulative_till_date");
+                        int pointslastweekint = item.getInt("points_last_week");
+                        int pointscumm_I = item.getInt("points_cumulative");
+                        String pointslastweek = String.valueOf(pointslastweekint);
+                        String pointscumm = String.valueOf(pointscumm_I);
 
-                    if (categoryName.equals("Total")) {
+                        if (categoryName.equals("Total")) {
 
-                        if (pointslastweekint > 0) {
-                            congrats_tv.setVisibility(View.VISIBLE);
-                            tv_red_points.setText(pointslastweek);
+                            if (pointslastweekint > 0) {
+                                congrats_tv.setVisibility(View.VISIBLE);
+                                tv_red_points.setText(pointslastweek);
+                            }
                         }
-                    }
-                    addTableRow(categoryName, lastWeek, cumulative, pointslastweek, pointscumm);
+                        addTableRow(categoryName, lastWeek, cumulative, pointslastweek, pointscumm);
 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
             });
         }
 
@@ -183,9 +181,8 @@ btn_dsh.setEnabled(false);
     public void onResult(String result) {
 
 
-
-            onPostExecute(result);
-proach.setVisibility(View.GONE);
+        onPostExecute(result);
+        proach.setVisibility(View.GONE);
         rede.setEnabled(true);
         btn_dsh.setEnabled(true);
     }
