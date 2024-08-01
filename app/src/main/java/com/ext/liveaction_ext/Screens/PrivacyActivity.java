@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ext.liveaction_ext.R;
 
 public class PrivacyActivity extends AppCompatActivity {
-    WebView webView, webView1;
+    WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,11 +1,9 @@
 package com.ext.liveaction_ext.Screens;
 
 import android.Manifest;
-import android.accessibilityservice.AccessibilityService;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +16,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.telecom.Call;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -32,19 +29,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
-import com.ext.liveaction_ext.service_clas.OTPVerificationHandler;
 import com.ext.liveaction_ext.service_clas.PhoneAuthHandler;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
-import com.ext.liveaction_int.Access_new;
-import com.google.android.gms.common.api.Response;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -57,8 +50,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-
-import javax.security.auth.callback.Callback;
 
 public class Login_verifcation extends AppCompatActivity implements Conn_service.FormDataSendCallback,Conn_service.CrashLogCallback{
 
@@ -349,9 +340,9 @@ public class Login_verifcation extends AppCompatActivity implements Conn_service
     }
     //code start location
     private String getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Login_verifcation.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
-                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+                    {Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
         } else {
 
             lgps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);

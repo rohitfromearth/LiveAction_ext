@@ -6,10 +6,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.RequiresApi;
+
 import com.ext.liveaction_ext.Screens.FailureScreenActivity;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,11 +29,15 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 import javax.net.ssl.HttpsURLConnection;
 
 public class Conn_service {
+
+
     private static final String TAG = "Conn_service";
     private String UserID = "";
+
     private SharedPreferences sh;
     private ArrayList<String> appl = new ArrayList<>();
     private String endpot = "https://sondersort.online";
@@ -39,8 +47,10 @@ public class Conn_service {
         this.activity = activity;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void App_list(Context context, AppListCallback callback) {
         executorService.execute(() -> {
+
             sh = context.getSharedPreferences("LifeSharedPref", MODE_PRIVATE);
             SharedPreferences.Editor myEdit = sh.edit();
             myEdit.putString("endpt", endpot);
@@ -48,7 +58,6 @@ public class Conn_service {
             try {
                 String response = "";
                 URL url = new URL(endpot + "/apps/list");
-
                 HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
                 urlConn.setRequestMethod("GET");
                 urlConn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
@@ -56,7 +65,8 @@ public class Conn_service {
                 urlConn.setDoInput(true);
                 int responseCode = urlConn.getResponseCode();
                 Log.e(TAG, String.valueOf(responseCode));
-                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                if (responseCode == HttpsURLConnection.HTTP_OK)
+                {
                     BufferedReader br = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
                     String applist;
                     while ((applist = br.readLine()) != null) {

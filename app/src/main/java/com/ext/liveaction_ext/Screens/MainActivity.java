@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -113,54 +114,35 @@ public class MainActivity extends AppCompatActivity {
 //        app1.put("installed",true);
 //        app1.put("watched_in_last_year",true);
 //
-//
-//
 //        arry_ott.put(app1);
-//
-//
 //        return arry_ott;
 //    }
-//
 //    private JSONArray MusictData() throws JSONException {
 //        JSONArray arry_music = new JSONArray();
-//
 //        JSONObject app1 = new JSONObject();
 //        app1.put("app_name", "Jio savan");
 //        app1.put("installed", true);
 //        app1.put("watched_in_last_year",true);
-//
-//
-//
 //        arry_music.put(app1);
-//
-//
-//
 //        return arry_music;
 //    }
 //    public void StoreData() throws JSONException {
 //        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //        StrictMode.setThreadPolicy(policy);
-//
 //        JSONArray jsonAry = new JSONArray();
 //        jsonAry.put("value1");
 //        jsonAry.put("value2");
 //        jsonAry.put("value3");
 //        JSONArray ottdta = OttData();
 //        JSONArray musicdata = MusictData();
-
 //        JSONObject jsonBody = new JSONObject();
 //        jsonBody.put("mobile_no", "8483858864");
 //        jsonBody.put("name", "Dummyname");
 //        jsonBody.put("birthDate", 21);
 //        jsonBody.put("birthMonth", 1);
 //        jsonBody.put("birthYear",2001);
-//
-//
 //            jsonBody.put("city","East Godavari");
-//
 //            jsonBody.put("state", "Andhra Pradesh");
-//
-//
 //        jsonBody.put("gender", "male");
 //        jsonBody.put("emailId", "dummy@dummy.com");
 //        jsonBody.put("education", "Up to standard 4" );
@@ -175,19 +157,14 @@ public class MainActivity extends AppCompatActivity {
 //        jsonBody.put("feedbackChoice","Yes, via call or via Sms");
 //        jsonBody.put("latitude", "");
 //        jsonBody.put("longitude","");
-//
 //        String userId = servic.formdatasend(jsonBody, "/user/create");
 //        try {
 //            JSONObject jsonResponse = new JSONObject(userId);
 //            int uId = jsonResponse.getInt("user_id");
 //Log.e("testrun", String.valueOf(uId));
-//
-//
-//
 //        } catch (JSONException e) {
 //     Log.e("testrun2", e.getMessage());
 //        }
-//
 //    }
 
     public void showSettingsAlert() {

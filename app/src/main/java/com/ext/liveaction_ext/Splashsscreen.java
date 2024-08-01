@@ -8,6 +8,7 @@ import androidx.core.splashscreen.SplashScreen;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,9 +16,13 @@ import android.util.Log;
 import com.ext.liveaction_ext.Screens.Dashboard;
 import com.ext.liveaction_ext.Screens.MainActivity;
 import com.ext.liveaction_ext.service_clas.Conn_service;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,17 +37,22 @@ public class Splashsscreen extends AppCompatActivity implements Conn_service.App
         // Show the splash screen using the SplashScreen API
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
 
-        Conn_service conn = new Conn_service(this);
         getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance());
         setContentView(R.layout.activity_splashsscreen);
 
 
+        Conn_service conn = new Conn_service(this);
         new Handler().postDelayed(() -> {
 
 //            ArrayList pack = conn.App_list(getApplicationContext());
-            conn.App_list(this, this);
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                conn.App_list(this, this);
+            }
 
 
 //            Log.e(TAG, "Failed to get token: "+pack );
@@ -90,6 +100,7 @@ public class Splashsscreen extends AppCompatActivity implements Conn_service.App
         SharedPreferences.Editor myEdit = sh.edit();
         String dir = getObbDir().getPath();
         myEdit.putString("dir", dir);
+
         Set<String> set = new HashSet<String>();
         set.addAll(appl);
         myEdit.putStringSet("APP_LIST", set);

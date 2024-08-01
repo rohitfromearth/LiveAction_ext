@@ -28,6 +28,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.ext.liveaction_ext.Addaptors.MyPagerAdapter;
 import com.ext.liveaction_ext.R;
 import com.ext.liveaction_ext.service_clas.Conn_service;
+import com.ext.liveaction_int.Access_new;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +45,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Dashboard extends AppCompatActivity implements Conn_service.PackRuleCallback{
-
     TextView tvP_usernme,privacyTet,termsTet,sync_tym;
     CardView manag_btn, achieve_btn, faq_btn, connect_btn;
     String username;
@@ -58,26 +58,19 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
     CardView usage_stat, accessibility_permission;
     ImageButton close_dialog;
     String mobile;
-
     FragmentManager fragmentManager;
-
-
     Calendar today;
     ArrayList<String> appl = new ArrayList<String>();
-
     ArrayList<String> dayList = new ArrayList<String>();
     ArrayList<String> weekList = new ArrayList<String>();
     ArrayList<String> monthList = new ArrayList<String>();
 //    ArrayList<String> yearList = new ArrayList<String>();
 //    SharedPreferences sh;
-
    public String firebaseToke = "";
     String userid="";
     ProgressBar pro;
     SharedPreferences sh ;
-
     String timeStatus = "Last synced at";
-
     String data_sync;
     FirebaseAuth mAuth;
     @SuppressLint("SetTextI18n")
@@ -88,6 +81,7 @@ public class Dashboard extends AppCompatActivity implements Conn_service.PackRul
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.POST_NOTIFICATIONS},
                 4);
+
         sh = getApplicationContext().getSharedPreferences("LifeSharedPref",MODE_PRIVATE);
 
 
