@@ -1,45 +1,81 @@
+<!DOCTYPE resources [<!ENTITY rsquo "&#x2019;">]>
 <resources>
-    <string name="app_name">LiveAction_ext</string>
-    <string name="hyperlink_gmail"><a href="lifeactionstrack@gmail.com">lifeactionstrack</a></string>
+    <string name="app_name">Life Action</string>
+
+    <string name="privacy_policy">I have read the <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
+    <string name="terms_condition"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
+    <string name="terms_condition1">I agree to the <a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> ,</string>
+    <string name="privacy_policy1"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; to the Terms of Use </string>
+    <string name="disagree">Disagree</string>
+
+    <string name="privacy_polcy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> &amp; </string>
+
+    <string name="Disclosure">
+
+        <p>We are Life Action\'s, a digital company that generates analytics of mobile application usage, consumption and behaviour of our panellists through our Life Action\'s application. </p>\n\n
+        <p><b>Accessibility Service:</b>Life Action uses Accessibility services permission with active consent of the end-user. The Accessibility permissions are used for analysing the application usage on this device as part of an opt-in market research panel. LIFE ACTIONS collects list of Applications installed in the user Mobile on a regular basis. The installed application list is used for analytics &amp; for DMP based monetization.</p>\n\n
+        <p>To facilitate this our application collects:</p>\n\n
+
+<ol>
+    <li>Location information to understand city of usage.</li>\n
+    <li>The Mobile number to contact the panellist if required.</li>\n
+    <li>Mobile number attached to UPI to remit the incentive earned.</li>\n
+    <li>List of apps installed in the mobile phone on a regular basis.</li>\n
+    <li>Usage behaviour of the panellist of relevant apps only.</li>\n
+    <li>Audio, Video OTT and e-commerce app usage details: and</li>\n
+    <li>Ads seen in social apps.</li>
+</ol>
+        \n\n
+           <p>All the data provided by our panellists are uploaded to secure servers in India on
+the cloud that is controlled by Life Action\'s. The application communicates with the server
+on <a href="https://sondersort.com">https://sondersort.com</a> domain. Payload details on what the application sends
+into Life Action\'s servers can be requested by contacting us at <a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a>
+
+</p>\n\n
+       <p>We also have a &rsquo;Wipe-out&rsquo; policy which will delete all Personally Identifiable Information
+           associated with a panellist&rsquo; account. To do the same please contact us on <a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a>
+           The information collected will be analysed and shared as part of industry reports in an anonymized form.
+           Further this information will be also uploaded in various Data Management Platforms (DMP) for third party
+           advertisement purposes. For a complete overview of how we use the data shared by a panellist please go
+           over our Terms of Use and Privacy Policy. </p>\n\n
+        <p>As a panellist you hereby declare and accept the following:</p>\n\n
+<p>&quot;I understand that by downloading, installing this application and by agreeing to the terms and conditions, I have voluntarily agreed to be a panellist for LIFE ACTION for the above-mentioned purpose. I understand that transferring of data to Life Action\'s&rsquo;
+    backend from the application may use data connectivity from my phone, either cellular or Wi-Fi. This will be minimum in quantum and will be part of my usage on mobile data plan/Wi-Fi plan as the case maybe. If I am chosen as a panellist by LIFE ACTION, I will be compensated with suitable incentive commensurately. I agree to be a panellist till I continue to keep the application on my phone and hereby consent to Life Action\'s usage of my data even after I uninstall the application.&quot;</p>
+   </string>
+
+    <string name="privacy"> <a href="file:///android_asset/privacypolicy.html">Privacy Policy  </a>  </string>
+    <string name="terms"><a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> </string>
+    <string name="hyperlink_gmail"><a href="mailto:lifeactionstrack@gmail.com">lifeactionstrack@gmail.com</a></string>
+
+    <string name="instruction_one">After verifying your mobile number, the Usage Data Access page will open.
+Please switch on the button or Life Action app.</string>
+    <string name="instruction_two">After that please click on Usage Stat Permission button below.</string>
+
+    <string name="about_us_data">Welcome to Club LA! This is an exclusive, by invitation only group. Our members/ panellists, use our app which tracks the use of their phones and reports back on how they use their time. By using their own personal phone usage behaviour, our members get a view of how their time is currently being spent. They use their own personal behaviour to set goals for improvement, changing and optimizing their phone usage behaviour Club LA members can continue to see their own performance on a weekly basis and modify, reset and track their goals.</string>
+    <string name="Member_ben">As a member of the Club LA, we also incentivise you. For every week that you are a part of the Club LA, we credit an incentive of Rs 10 to your own personal incentive account.For successful achievement of any goals that you have set, we celebrate your achievement by crediting an additional incentive. And all your incentives and how you have earned them are clearly visible to you on your personal dashboard in-built in the app.</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
     <string-array name="Gender">
         <item>Gender</item>
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>
-        <item>Prefer not to tell</item>
+
 
     </string-array>
     <string-array name="Education">
-        <item>Educaton</item>
+        <item>Education</item>
+        <item>Illiterate/No schooling</item>
+        <item>Up to Std 4</item>
+        <item>Std 5 to 9</item>
+        <item>SSC/HSC/Diploma</item>
+        <item>Grad/PG: BA/MA, BSc/MSc, etc</item>
+        <item>Professional: MBBS, Law, Architecture, etc</item>
+    </string-array>
 
-        <item>Illiterate/ No formal schooling</item>
-        <item>Upto standard 4</item>
-        <item>Standard 5 to 9</item>
-        <item>SSC/ HSC e. Diploma/ Went to college but did not complete graduation</item>
-        <item>Graduate/ Post Graduate - General: BA/MA, BSC/MSc/BCom, etc</item>
-        <item>Graduate/ Post Graduate - Professional: MBBS, MBA, BE/ME, Law, Architecture, etc</item>
-    </string-array>
-    <string-array name="Durables">
-        <item>Two Wheeler</item>
-        <item>4 wheeler  </item>
-        <item>Colour TV</item>
-        <item>Refrigerator</item>
-        <item>Washing Machine</item>
-        <item>PC and/or Laptop</item>
-        <item>Air Conditioner</item>
-        <item>  Agricultural Land (Checkbox)</item>
-    </string-array>
-    <string-array name="productslist">
 
-        <item>product</item>
-        <item>Grocery (staples, packaged food, snacks, beverages, dairy items, etc)</item>
-        <item>Beauty &amp; Personal Care (soaps, shampoo, skin creams, makeup, etc)</item>
-        <item>Mobile &amp; Mobile accessories</item>
-        <item>Clothing &amp; Footwear</item>
-        <item>Children toys &amp; games</item>
-    </string-array>
     <string-array name="Ocupation">
-
         <item>Ocupation</item>
         <item>Student</item>
         <item>Housewife</item>
@@ -980,4 +1016,12 @@
         <item>Puducherry</item>
         <item>Yanam</item>
     </string-array>
+    <string name="title_activity_splashsscreen">Splashsscreen</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="prominent_disclosure">Disclosure</string>
+    <string name="i_agree">I agree to the <a href="file:///android_asset/termscondition.html">Terms  &amp; Conditions</a> , <a href="file:///android_asset/privacypolicy.html">Privacy Policy</a> and to the Terms of Use</string>
+    <string name="text1">text1</string>
+    <string name="redemption_history"><u>Redemption History</u></string>
+
 </resources>
